@@ -13,16 +13,16 @@ calc_qx(dt, age_start, age_end, id_cols = c())
 
 \item{age_end}{numeric, year of age to end at (e.g. 5 for 5q0)}
 
-\item{id_cols}{character vector of column names in dt that, along with age_start and age_end,
-uniquely identify all rows in dt}
+\item{id_cols}{character vector of column names in dt that, along with age_start
+and age_end, uniquely identify all rows in dt}
 }
 \value{
 data.table with id_cols and a variable called qx_#q#, where the first is
 age_end - age_start, and the second is age_start
 }
 \description{
-Given a data.table with a qx variable and ID variables that uniquely identify the data,
-compile granular ages and aggregate into combined qx values.
+Given a data.table with a qx variable and ID variables that uniquely
+identify the data, compile granular ages and aggregate into combined qx values.
 }
 \examples{
 dt <- data.table::data.table(

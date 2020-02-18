@@ -2,7 +2,7 @@
 % Please edit documentation in R/qx_to_lx.R
 \name{qx_to_lx}
 \alias{qx_to_lx}
-\title{Convert qx to lx}
+\title{Use qx to calculate lx}
 \usage{
 qx_to_lx(dt, id_cols, assert_na = T)
 }
@@ -17,9 +17,7 @@ qx_to_lx(dt, id_cols, assert_na = T)
 dt, with "lx" column added
 }
 \description{
-Convert probability of dying (qx) to proportion of survivors in the beginning of an age group (lx)
-}
-\details{
+Convert probability of dying (qx) to proportion of survivors in the beginning of an age group (lx).
 Given a data.table with a qx variable, calculate and generate lx.
 Starting with lx = 1 at age 0, lx = lx_previous * (1-qx_previous).
 }

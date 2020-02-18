@@ -1,9 +1,8 @@
-#' Convert qx to lx
+#' Use qx to calculate lx
 #'
-#' Convert probability of dying (qx) to proportion of survivors in the beginning of an age group (lx)
-#'
-#' Given a data.table with a qx variable, calculate and generate lx.
-#' Starting with lx = 1 at age 0, lx = lx_previous * (1-qx_previous).
+#' Convert probability of dying (qx) to proportion of survivors in the beginning of an age group (lx).
+#'   Given a data.table with a qx variable, calculate and generate lx.
+#'   Starting with lx = 1 at age 0, lx = lx_previous * (1-qx_previous).
 #'
 #' @param dt data.table with variables: qx, age, and all id columns
 #' @param id_cols character vector of column names (excluding "age") that uniquely identify rows
@@ -24,9 +23,7 @@
 #' @import assertive
 #' @import assertthat
 #' @export
-
 qx_to_lx <- function(dt, id_cols, assert_na = T) {
-
   # check `id_cols` argument
   assertive::assert_is_character(id_cols)
   assertthat::assert_that(!"age" %in% id_cols, msg = "`id_cols` must not include 'age'.")

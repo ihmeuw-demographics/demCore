@@ -23,21 +23,21 @@ qx_ax_to_mx(q, a, t)
 mx_to_ax(m, t)
 }
 \arguments{
-\item{m}{numeric mx (mortality death rate) value to use in conversion}
+\item{m}{numeric mx (mortality death rate)}
 
 \item{t}{numeric representing the time length of the interval (e.g. 5 for age 5-9)}
 
-\item{a}{numeric ax (average number of years lived in the age interval of those who died) value to use in conversion}
+\item{a}{numeric ax (average number of years lived in the age interval of those who died)}
 
-\item{q}{numeric qx (probability of death) value to use in conversion}
+\item{q}{numeric qx (probability of death)}
 }
 \value{
 Numeric value representing the converted mx, qx, or ax value.
 }
 \description{
 Convert between mx and qx values given a time for an age interval.
-If ax (the average number of years lived in the x to x + n age interval by those dying
-in the interval) exists, use the \emph{\emph{ax_to}} functions.
+If ax (the average number of years lived in the x to x + n age interval
+by those dying in the interval) exists, use the \emph{\emph{ax_to}} functions.
 The mx_to_qx and qx_to_mx functions assume smooth mortality across the interval.
 }
 \examples{
