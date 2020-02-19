@@ -26,6 +26,7 @@ calc_qx <- function(dt, age_start, age_end, id_cols = c()) {
 
   # Validations and prep ----------------------------------------------------
 
+  assertable::assert_colnames(dt, c("age_start", "age_end", id_cols), only_colnames = F, quiet = T)
   if (age_start > age_end) stop("Age start can't be larger than age end")
   if (age_start < min(dt$age_start)) stop("Age start is lower than lowest age start in dt")
   if (age_end > max(dt$age_end)) stop("Age end is higher than highest age end in dt")
@@ -39,14 +40,14 @@ calc_qx <- function(dt, age_start, age_end, id_cols = c()) {
   setnames(dt, "age_end", "age_group_years_end")
 
   # Calculate age length
-  dt[, age_length := age_group_years_end - age_group_years_start]
+  dt[, age_int := age_group_years_end - age_group_years_start]
 
   # Subset to ages of interest
   dt <- dt[age_group_years_start >= age_start & age_group_years_end <= age_end]
 
   # Check that you have all consecutive age groups
   setorderv(dt, c(id_cols, "age_group_years_start"))
-  dt[, test := ifelse(age_group_years_start + age_length ==
+  dt[, test := ifelse(age_group_years_start + age_int ==
     shift(age_group_years_start, type = "lead"), 0, 1), by = id_cols]
   dt[age_group_years_end == age_end, test := 0]
   if (nrow(dt[test == 1]) > 0) stop("Need a full set of consecutive age groups")

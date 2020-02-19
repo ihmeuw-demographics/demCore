@@ -2,7 +2,7 @@
 % Please edit documentation in R/qx_to_lx.R
 \name{qx_to_lx}
 \alias{qx_to_lx}
-\title{Use qx to calculate lx}
+\title{qx to lx}
 \usage{
 qx_to_lx(dt, id_cols, assert_na = T)
 }

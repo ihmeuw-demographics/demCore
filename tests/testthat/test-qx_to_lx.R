@@ -36,5 +36,5 @@ test_that("check `qx_to_lx()` errors are thrown for different cases", {
 test_that("check resulting lx is monotonic by age", {
   output_dt <- qx_to_lx(input_dt, id_cols)
   output_females <- output_dt[sex == "female"]$lx
-  assertthat::assert_that(all(output_females == cummin(output_females)))
+  testthat::expect_equal(T, all(output_females == cummin(output_females)))
 })

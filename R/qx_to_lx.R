@@ -1,4 +1,4 @@
-#' Use qx to calculate lx
+#' qx to lx
 #'
 #' Convert probability of dying (qx) to proportion of survivors in the beginning of an age group (lx).
 #'   Given a data.table with a qx variable, calculate and generate lx.
@@ -24,6 +24,9 @@
 #' @import assertthat
 #' @export
 qx_to_lx <- function(dt, id_cols, assert_na = T) {
+
+  # validate and prep -------------------------------------------------------
+
   # check `id_cols` argument
   assertive::assert_is_character(id_cols)
   assertthat::assert_that(!"age" %in% id_cols, msg = "`id_cols` must not include 'age'.")
@@ -33,23 +36,25 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
 
   # check for duplicates
   dt[, test := .N, by = c(id_cols, "age")]
-  assertable::assert_values(dt, c("test"), test = "equal", test_val = 1)
+  assertable::assert_values(dt, c("test"), test = "equal", test_val = 1,
+                            quiet = T, display_rows = F)
   dt[, test := NULL]
 
   # set key
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols, "age"))
 
-  # calculate `lx`
+  # calculate lx ------------------------------------------------------------
+
   dt[, lx := 1]
   dt[, lx := lx[1] * cumprod(c(1, head(1 - qx, -1))), by = id_cols]
 
-  # check results
-  if (assert_na == T) assertable::assert_values(dt, "lx", "not_na", quiet = T)
-  assertable::assert_values(dt, c("lx"), test = "gte", test_val = 0)
-  assertable::assert_values(dt, c("lx"), test = "lte", test_val = 1)
+  # check and return --------------------------------------------------------
 
-  # return
+  if (assert_na == T) assertable::assert_values(dt, "lx", "not_na", quiet = T)
+  assertable::assert_values(dt, c("lx"), test = "gte", test_val = 0, quiet = T)
+  assertable::assert_values(dt, c("lx"), test = "lte", test_val = 1, quiet = T)
+
   setkeyv(dt, original_keys)
   return(dt)
 }

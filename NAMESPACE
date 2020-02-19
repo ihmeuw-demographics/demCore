@@ -2,6 +2,8 @@
 
 export(calc_qx)
 export(gen_ex)
+export(gen_nLx)
+export(lx_to_dx)
 export(mx_ax_to_qx)
 export(mx_qx_to_ax)
 export(mx_to_ax)

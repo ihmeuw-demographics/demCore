@@ -26,7 +26,8 @@ test_that("check `calc_qx` errors are thrown for different cases", {
   testthat::expect_error(calc_qx(input_dt, 15, 40, "hola"))
 
   # Check error thrown when missing age_end in data
-  testthat::expect_error(calc_qx(input_dt[, .(sex, age_start, qx)], age_start = 15, age_end = 40, id_cols = id_cols))
+  testthat::expect_error(calc_qx(input_dt[, c("sex", "age_start", "qx")],
+                                 age_start = 15, age_end = 40, id_cols = id_cols))
 
   # Check that error thrown when age_end > largest age_end in data
   testthat::expect_error(calc_qx(input_dt, age_start = 15, age_end = 70, id_cols = id_cols))
