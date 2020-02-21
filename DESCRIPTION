@@ -1,12 +1,12 @@
 Package: lifetableUtils
 Title: Life table utilities
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "Katie",
-           family = "Paulson",
-           role = c("aut", "cre"),
-           email = "krpaul@uw.edu",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
+             person("Grant", "Nguyen", email = "gngu@uw.edu", role = "aut"),
+             person("Charlton", "Callender", email = "chacalle@uw.edu", role = "aut"),
+             person("Spencer", "Pease", email = "spease@uw.edu", role = "aut"),
+             person("Haidong", "Wang", email = "haidong@uw.edu", role = "cre"),
+             person("Institute for Health Metrics and Evaluation", role = c("cph", "fnd")))
 Description: This package includes functions for conversions
     between life table parameters mx, qx, ax, lx, dx, nLx, Tx,
     and ex. It also includes convenience functions for common
@@ -25,7 +25,7 @@ VignetteBuilder: knitr
 Language: en-US
 Imports: 
     data.table,
-    assertable,
+    assertable (>= 0.2.7),
     assertive,
     assertthat,
     testthat
