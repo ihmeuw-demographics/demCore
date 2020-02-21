@@ -1,4 +1,4 @@
-#' Calculate aggregated age qx values given granular age qx
+#' Aggregate qx values over age
 #'
 #' Given a data.table with a qx variable and ID variables that uniquely
 #'   identify the data, compile granular ages and aggregate into combined qx values.
@@ -10,7 +10,7 @@
 #'   and age_end, uniquely identify all rows in dt
 #'
 #' @return data.table with id_cols and a variable called qx_#q#, where the first is
-#'          age_end - age_start, and the second is age_start
+#'   age_end - age_start, and the second is age_start
 #' @import data.table
 #'
 #' @examples
@@ -19,10 +19,10 @@
 #'   age_start = rep(seq(15, 35, 5), 2),
 #'   age_end = rep(seq(20, 40, 5), 2)
 #' )
-#' calc_qx(dt, age_start = 15, age_end = 40, id_cols = "id")
+#' agg_qx(dt, age_start = 15, age_end = 40, id_cols = "id")
 #'
 #' @export
-calc_qx <- function(dt, age_start, age_end, id_cols = c()) {
+agg_qx <- function(dt, age_start, age_end, id_cols = c()) {
 
   # Validations and prep ----------------------------------------------------
 
