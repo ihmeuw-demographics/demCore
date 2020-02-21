@@ -4,25 +4,37 @@
 \alias{agg_qx}
 \title{Aggregate qx values over age}
 \usage{
-agg_qx(dt, age_start, age_end, id_cols = c())
+agg_qx(dt, id_cols, target_ages_dt)
 }
 \arguments{
-\item{dt}{data.table with variables: qx, age_start, age_end, all id_cols}
+\item{dt}{data.table with data to be aggregated.
+\itemize{
+\item must only include columns 'qx' and those specified in \code{id_cols}
+\item must include 'age_start' and 'age_end' columns
+\item \code{id_cols} must uniquely identify each row
+}}
 
-\item{age_start}{numeric, year of age to start at (e.g. 0 for 5q0)}
+\item{id_cols}{character vector of column names that uniquely identify each row
+of \code{dt}}
 
-\item{age_end}{numeric, year of age to end at (e.g. 5 for 5q0)}
-
-\item{id_cols}{character vector of column names in dt that, along with age_start
-and age_end, uniquely identify all rows in dt}
+\item{target_ages_dt}{data.table defining age groups to aggregate to.
+\itemize{
+\item must include 'age_start' and 'age_end' columns.
+}}
 }
 \value{
-data.table with id_cols and a variable called qx_#q#, where the first is
-age_end - age_start, and the second is age_start
+data.table with \code{id_cols} and \code{qx} columns for aggregate age groups.
 }
 \description{
 Given a data.table with a qx variable and ID variables that uniquely
 identify the data, compile granular ages and aggregate into combined qx values.
+Using probability rules, we convert qx to px (conditional survival probability),
+multiply these px values within a specified age range together to get the
+conditional probability of survival through all granular age groups, and
+subtract from one to get the aggregated conditional probability of death (qx).
+}
+\details{
+this function is a wrapper for demUtils::aggregate_age
 }
 \examples{
 dt <- data.table::data.table(
@@ -30,6 +42,8 @@ dt <- data.table::data.table(
   age_start = rep(seq(15, 35, 5), 2),
   age_end = rep(seq(20, 40, 5), 2)
 )
-agg_qx(dt, age_start = 15, age_end = 40, id_cols = "id")
+target_dt <- data.table::data.table(age_start = c(15),
+                                    age_end = c(40))
+agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
 
 }
