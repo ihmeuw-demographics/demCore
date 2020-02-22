@@ -70,7 +70,7 @@
 #' dt <- qx_to_lx(dt, id_cols = c("sex"))
 #' dt <- lx_to_dx(dt, id_cols = c("sex"), terminal_age = 15)
 #' dt <- gen_nLx(dt, id_cols = c("sex"), terminal_age = 15)
-#' dt <- gen_Tx(dt)
+#' dt <- gen_Tx(dt, id_cols = c("sex"))
 #' dt <- gen_ex(dt)
 #'
 #' @import data.table
@@ -81,7 +81,7 @@ NULL
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-qx_to_lx2 <- function(dt, id_cols, assert_na = T) {
+qx_to_lx <- function(dt, id_cols, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
@@ -92,11 +92,12 @@ qx_to_lx2 <- function(dt, id_cols, assert_na = T) {
   # check `age` column
   assertthat::assert_that("age" %in% names(dt), msg = "`age` must be a column in `dt`")
 
-  # check for duplicates
-  dt[, test := .N, by = c(id_cols, "age")]
-  assertable::assert_values(dt, c("test"), test = "equal", test_val = 1,
-                            quiet = T, display_rows = F)
-  dt[, test := NULL]
+  # check `dt`
+  assertive::assert_is_data.table(dt)
+  assertable::assert_colnames(dt, c("qx", id_cols), only_colnames = F, quiet = T)
+  assertable::assert_values(dt, c("qx"), test = "gte", test_val = 0, quiet = T)
+  assertable::assert_values(dt, c("qx"), test = "lte", test_val = 1, quiet = T)
+  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
 
   # set key
   original_keys <- key(dt)
@@ -121,7 +122,7 @@ qx_to_lx2 <- function(dt, id_cols, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-lx_to_dx2 <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
+lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
@@ -157,7 +158,7 @@ lx_to_dx2 <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-gen_nLx2 <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
+gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
@@ -195,7 +196,7 @@ gen_nLx2 <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-gen_Tx2 <- function(dt, id_cols, assert_na = T) {
+gen_Tx <- function(dt, id_cols, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
@@ -228,7 +229,7 @@ gen_Tx2 <- function(dt, id_cols, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-gen_ex2 <- function(dt, assert_na = T) {
+gen_ex <- function(dt, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
