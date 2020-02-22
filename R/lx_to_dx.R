@@ -28,20 +28,22 @@
 lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
   # validate ----------------------------------------------------------------
-  assertive::assert_is_data.table(dt)
-  assertive::assert_is_character(id_cols)
-  assertive::assert_is_numeric(terminal_age)
-  assertive::assert_is_logical(assert_na)
 
+  # check `id_cols`
+  assertive::assert_is_character(id_cols)
+
+  # check `terminal_age`
+  assertive::assert_is_numeric(terminal_age)
+
+  # check `dt`
+  assertive::assert_is_data.table(dt)
   assertable::assert_colnames(dt, c("age", "lx", id_cols), only_colnames = F, quiet = T)
   assertive::assert_is_numeric(dt[["age"]])
   assertable::assert_values(dt, c("age"), test = "lte", test_val = terminal_age, quiet = T)
+  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
 
-  # check for duplicates - TODO: replace with demUtils::assert_is_unique_dt
-  dt[, test := .N, by = c(id_cols, "age")]
-  assertable::assert_values(dt, c("test"), test = "equal", test_val = 1,
-                            quiet = T, display_rows = F)
-  dt[, test := NULL]
+  # check `assert_na`
+  assertive::assert_is_logical(assert_na)
 
   # calculate dx -------------------------------------------------------------
   dt <- dt[order(age)]

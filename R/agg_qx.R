@@ -21,7 +21,6 @@
 #' @import data.table
 #'
 #' @examples
-#' \donotrun{
 #' dt <- data.table::data.table(
 #'   id = c(rep(1, 5), rep(2, 5)), qx = c(rep(.1, 5), rep(.2, 5)),
 #'   age_start = rep(seq(15, 35, 5), 2),
@@ -30,7 +29,6 @@
 #' target_dt <- data.table::data.table(age_start = c(15),
 #'                                     age_end = c(40))
 #' agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
-#' }
 #'
 #' @export
 agg_qx <- function(dt, id_cols, target_ages_dt) {

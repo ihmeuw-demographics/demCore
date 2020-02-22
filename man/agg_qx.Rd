@@ -34,7 +34,7 @@ conditional probability of survival through all granular age groups, and
 subtract from one to get the aggregated conditional probability of death (qx).
 }
 \details{
-this function is a wrapper for demUtils::aggregate_age
+This function is a wrapper for demUtils::aggregate_age
 }
 \examples{
 dt <- data.table::data.table(
