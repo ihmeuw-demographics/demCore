@@ -251,6 +251,7 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
   # add age_int -- TODO: switch to demUtils function
   dt[, age_int := shift(age, 1, type = "lead") - age, by = id_cols_no_age]
+  dt[age == terminal_age, age_int := 100]
 
   # calculte nLx
   dt[, nLx := age_int * shift(lx, 1, type = "lead") + ax * dx, by = id_cols_no_age]
