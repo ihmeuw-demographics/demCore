@@ -5,9 +5,9 @@
 #'   by those dying in the interval) exists, use the *_ax_to_* functions.
 #'   The mx_to_qx and qx_to_mx functions assume smooth mortality across the interval.
 #'
-#' @param m numeric mx (mortality death rate)
-#' @param q numeric qx (probability of death)
-#' @param a numeric ax (average number of years lived in the age interval of those who died)
+#' @param mx numeric mx (mortality death rate)
+#' @param qx numeric qx (probability of death)
+#' @param ax numeric ax (average number of years lived in the age interval of those who died)
 #' @param t numeric representing the time length of the interval (e.g. 5 for age 5-9)
 #'
 #' @return Numeric value representing the converted mx, qx, or ax value.
@@ -24,42 +24,42 @@ NULL
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_to_qx <- function(m, t) {
-  result <- 1 - exp((-1 * t) * m)
+mx_to_qx <- function(mx, t) {
+  result <- 1 - exp((-1 * t) * mx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_ax_to_qx <- function(m, a, t) {
-  result <- (t * m) / (1 + (t - a) * m)
+mx_ax_to_qx <- function(mx, ax, t) {
+  result <- (t * mx) / (1 + (t - ax) * mx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-qx_to_mx <- function(q, t) {
-  result <- log(1 - q) / (-1 * t)
+qx_to_mx <- function(qx, t) {
+  result <- log(1 - qx) / (-1 * t)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_qx_to_ax <- function(m, q, t) {
-  result <- (q + (m * t * (q - 1))) / (m * q)
+mx_qx_to_ax <- function(mx, qx, t) {
+  result <- (qx + (mx * t * (qx - 1))) / (mx * qx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-qx_ax_to_mx <- function(q, a, t) {
-  result <- q / (t - (t * q) + (a * q))
+qx_ax_to_mx <- function(qx, ax, t) {
+  result <- qx / (t - (t * qx) + (ax * qx))
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_to_ax <- function(m, t) {
-  result <- t + 1 / m - t / (1 - exp(-t * m))
+mx_to_ax <- function(mx, t) {
+  result <- t + 1 / mx - t / (1 - exp(-t * mx))
   return(result)
 }

@@ -16,6 +16,8 @@
 #' @param id_cols character vector of id columns that uniquely identify each row of `dt`.
 #' @param terminal_age numeric, the terminal age group for the data. Default: 110.
 #' @param assert_na logical, whether to check for NA values in the generated nLx variable.
+#' @param param_cols character vector of columns containing life table parameters (qx, lx, etc.)
+#'   -- `param_cols` used only for validation function validate_param_conversion_input
 #'
 #' @return dt with column added for new life table parameter.
 #'
@@ -67,46 +69,117 @@
 #'   ax = c(2.5, 2.5, 2.5, 2.5)
 #' )
 #' dt[, qx := mx_ax_to_qx(mx, ax, age_int)]
-#' dt <- qx_to_lx(dt, id_cols = c("sex"))
-#' dt <- lx_to_dx(dt, id_cols = c("sex"), terminal_age = 15)
-#' dt <- gen_nLx(dt, id_cols = c("sex"), terminal_age = 15)
-#' dt <- gen_Tx(dt, id_cols = c("sex"))
+#' dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
+#' dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' dt <- gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' dt <- gen_Tx(dt, id_cols = c("sex", "age"))
 #' dt <- gen_ex(dt)
 #'
-#' @import data.table
-#' @import assertable
 #' @name gen_lifetable_parameters
 NULL
+
+# ============================================================================
+#' @rdname gen_lifetable_parameters
+validate_param_conversion_input <- function(dt, id_cols = c(), param_cols = c(),
+                                            terminal_age = NA, assert_na = NA) {
+
+  # check `id_cols` argument ---------------------------------------------------
+
+  if(length(id_cols) > 0) {
+
+    # character
+    assertive::assert_is_character(id_cols)
+
+    # includes "age"
+    assertthat::assert_that("age" %in% id_cols,
+                            msg = "`id_cols` must include 'age'.")
+
+    # shouldn't include other age variables
+    if("age_start" %in% id_cols) stop("'age_start' cannot be in id_cols.")
+    if("age_end" %in% id_cols) stop("'age_end' cannot be in id_cols.")
+    if("age_int" %in% id_cols) stop("'age_int' cannot be in id_cols.")
+    if("age_group" %in% id_cols) stop("'age_group' cannot be in id_cols.")
+    if("age_group_id" %in% id_cols) stop("'age_group_id' cannot be in id_cols.")
+    id_cols_no_age <- id_cols[id_cols != "age"]
+    if(any(tolower(id_cols_no_age) %like% "age")) {
+      warning("Double check that no age variables other than 'age' are in 'id_cols'.")
+    }
+  }
+
+  # check `dt` -----------------------------------------------------------------
+
+  # data.table
+  assertive::assert_is_data.table(dt)
+
+  # unique
+  if(length(id_cols) > 0) {
+    assert_is_unique_dt(dt, id_cols = id_cols) # demUtils not working
+  }
+
+  # has correct columns
+  assertable::assert_colnames(dt, c(param_cols, id_cols),
+                              only_colnames = F, quiet = T)
+
+  # age and parameter columns numeric
+  if("age" %in% names(dt)) assertive::assert_is_numeric(dt[["age"]])
+  for(param in param_cols) {
+    assertive::assert_is_numeric(dt[[param]])
+  }
+
+  # all life table params > 0
+  assertable::assert_values(dt, param_cols, test = "gte",
+                            test_val = 0, quiet = T)
+
+  # qx, lx, dx < 1
+  params_lte_1 <- intersect(param_cols, c("qx", "lx", "dx"))
+  if(length(params_lte_1) > 0) {
+    assertable::assert_values(dt, params_lte_1, test = "lte",
+                              test_val = 1, quiet = T)
+  }
+
+  # check `terminal_age` --------------------------------------------------------
+
+  if(!is.na(terminal_age)) {
+    # numeric
+    assertive::assert_is_numeric(terminal_age)
+    # all age values are less than terminal age
+    assertable::assert_values(dt, c("age"), test = "lte",
+                              test_val = terminal_age, quiet = T)
+  }
+
+  # check `assert_na` -----------------------------------------------------------
+
+  if(!is.na(assert_na)) {
+    assertive::assert_is_logical(assert_na)
+  }
+
+}
+
 
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
 qx_to_lx <- function(dt, id_cols, assert_na = T) {
 
-  # validate ----------------------------------------------------------------
+  # prep ----------------------------------------------------------------
 
-  # check `id_cols` argument
-  assertive::assert_is_character(id_cols)
-  assertthat::assert_that(!"age" %in% id_cols, msg = "`id_cols` must not include 'age'.")
+  # validate inputs
+  validate_param_conversion_input(dt = dt,
+                                  id_cols = id_cols,
+                                  param_cols = c("qx"),
+                                  assert_na = assert_na)
 
-  # check `age` column
-  assertthat::assert_that("age" %in% names(dt), msg = "`age` must be a column in `dt`")
-
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("qx", id_cols), only_colnames = F, quiet = T)
-  assertable::assert_values(dt, c("qx"), test = "gte", test_val = 0, quiet = T)
-  assertable::assert_values(dt, c("qx"), test = "lte", test_val = 1, quiet = T)
-  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
+  # create `id_cols` without age
+  id_cols_no_age <- id_cols[id_cols != "age"]
 
   # set key
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age"))
 
   # calculate lx ------------------------------------------------------------
 
   dt[, lx := 1]
-  dt[, lx := lx[1] * cumprod(c(1, head(1 - qx, -1))), by = id_cols]
+  dt[, lx := lx[1] * cumprod(c(1, head(1 - qx, -1))), by = id_cols_no_age]
 
   # check and return --------------------------------------------------------
 
@@ -124,33 +197,31 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
 #' @export
 lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
-  # validate ----------------------------------------------------------------
+  # prep -------------------------------------------------------------------
 
-  # check `id_cols`
-  assertive::assert_is_character(id_cols)
+  # validate inputs
+  validate_param_conversion_input(dt = dt,
+                                  id_cols = id_cols,
+                                  param_cols = c("lx"),
+                                  terminal_age = terminal_age,
+                                  assert_na = assert_na)
 
-  # check `terminal_age`
-  assertive::assert_is_numeric(terminal_age)
+  # create `id_cols` without age
+  id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("age", "lx", id_cols), only_colnames = F, quiet = T)
-  assertive::assert_is_numeric(dt[["age"]])
-  assertable::assert_values(dt, c("age"), test = "lte", test_val = terminal_age, quiet = T)
-  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
-
-  # check `assert_na`
-  assertive::assert_is_logical(assert_na)
+  # set key
+  original_keys <- key(dt)
+  setkeyv(dt, c(id_cols_no_age, "age"))
 
   # calculate dx -------------------------------------------------------------
-  dt <- dt[order(age)]
-  dt[, dx := lx - shift(lx, 1, type = "lead"), by = c(id_cols[!id_cols %like% "age"])]
+  dt[, dx := lx - shift(lx, 1, type = "lead"), by = c(id_cols_no_age)]
   dt[age == terminal_age, dx := lx]
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) {
     assertable::assert_values(dt, "dx", "not_na", quiet = T)
   }
+  setkeyv(dt, original_keys)
   return(dt)
 }
 
@@ -160,35 +231,36 @@ lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 #' @export
 gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
-  # validate ----------------------------------------------------------------
+  # prep -------------------------------------------------------------------
 
-  # check `id_cols`
-  assertive::assert_is_character(id_cols)
+  # validate inputs
+  validate_param_conversion_input(dt = dt,
+                                  id_cols = id_cols,
+                                  param_cols = c("lx", "ax", "dx", "mx"),
+                                  terminal_age = terminal_age,
+                                  assert_na = assert_na)
 
-  # check `terminal_age`
-  assertive::assert_is_numeric(terminal_age)
+  # create `id_cols` without age
+  id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("age", "age_int", "lx", "ax", "dx", "mx", id_cols),
-                              only_colnames = F, quiet = T)
-  assertive::assert_is_numeric(dt[["age"]])
-  assertable::assert_values(dt, c("age"), test = "lte", test_val = terminal_age, quiet = T)
-  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
-
-  # check `assert_na`
-  assertive::assert_is_logical(assert_na)
+  # set key
+  original_keys <- key(dt)
+  setkeyv(dt, c(id_cols_no_age, "age"))
 
   # calculate nLx -----------------------------------------------------------
-  dt <- dt[order(age)]
-  dt[, nLx := age_int * shift(lx, 1, type = "lead") + ax * dx,
-     by = c(id_cols[!id_cols %like% "age"])]
+
+  # add age_int -- TODO: switch to demUtils function
+  dt[, age_int := shift(age, 1, type = "lead") - age, by = id_cols_no_age]
+
+  # calculte nLx
+  dt[, nLx := age_int * shift(lx, 1, type = "lead") + ax * dx, by = id_cols_no_age]
   dt[age == terminal_age, nLx := lx / mx]
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) {
     assertable::assert_values(dt[age != terminal_age], "nLx", "not_na", quiet = T)
   }
+  setkeyv(dt, original_keys)
   return(dt)
 }
 
@@ -198,30 +270,31 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 #' @export
 gen_Tx <- function(dt, id_cols, assert_na = T) {
 
-  # validate ----------------------------------------------------------------
+  # prep -------------------------------------------------------------------
 
-  # check `id_cols`
-  assertive::assert_is_character(id_cols)
+  # validate inputs
+  validate_param_conversion_input(dt = dt,
+                                  id_cols = id_cols,
+                                  param_cols = c("nLx"),
+                                  assert_na = assert_na)
 
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("age", "nLx", id_cols), only_colnames = F, quiet = T)
-  assertive::assert_is_numeric(dt[["age"]])
-  demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
+  # create `id_cols` without age
+  id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # check `assert_na`
-  assertive::assert_is_logical(assert_na)
+  # set key
+  original_keys <- key(dt)
+  setkeyv(dt, c(id_cols_no_age, "age"))
 
   # calculate Tx -------------------------------------------------------------
 
-  id_cols_noage <- id_cols[!id_cols %in% c("age", "age_start", "age_end")]
-
   # Set descending order to begin the cumulative sum at the oldest age group
-  setorderv(dt, id_vars, order = -1)
-  dt[, Tx := cumsum(nLx), by = id_cols_noage]
+  setorderv(dt, id_cols, order = -1)
+  dt[, Tx := cumsum(nLx), by = id_cols_no_age]
+  setorderv(dt, id_cols) # undo reverse order
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) assertable::assert_values(dt, "Tx", "not_na", quiet = T)
+  setkeyv(dt, original_keys)
   return(dt)
 }
 
@@ -233,13 +306,9 @@ gen_ex <- function(dt, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("Tx", "lx"), only_colnames = F, quiet = T)
-  assertable::assert_values(dt, colnames = c("Tx", "lx"), test = "gte", test_val = 0)
-
-  # check `assert_na`
-  assertive::assert_is_logical(assert_na)
+  validate_param_conversion_input(dt = dt,
+                                  param_cols = c("Tx", "lx"),
+                                  assert_na = assert_na)
 
   # calculate ex -------------------------------------------------------------
   dt[, ex := Tx / lx]

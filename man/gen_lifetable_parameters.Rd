@@ -2,31 +2,43 @@
 % Please edit documentation in R/gen_lifetable_parameters.R
 \name{gen_lifetable_parameters}
 \alias{gen_lifetable_parameters}
-\alias{qx_to_lx2}
-\alias{lx_to_dx2}
-\alias{gen_nLx2}
-\alias{gen_Tx2}
-\alias{gen_ex2}
+\alias{validate_param_conversion_input}
+\alias{qx_to_lx}
+\alias{lx_to_dx}
+\alias{gen_nLx}
+\alias{gen_Tx}
+\alias{gen_ex}
 \title{Generate life table parameters}
 \usage{
-qx_to_lx2(dt, id_cols, assert_na = T)
+validate_param_conversion_input(
+  dt,
+  id_cols = c(),
+  param_cols = c(),
+  terminal_age = NA,
+  assert_na = NA
+)
 
-lx_to_dx2(dt, id_cols, terminal_age = 110, assert_na = T)
+qx_to_lx(dt, id_cols, assert_na = T)
 
-gen_nLx2(dt, id_cols, terminal_age = 110, assert_na = T)
+lx_to_dx(dt, id_cols, terminal_age = 110, assert_na = T)
 
-gen_Tx2(dt, id_cols, assert_na = T)
+gen_nLx(dt, id_cols, terminal_age = 110, assert_na = T)
 
-gen_ex2(dt, assert_na = T)
+gen_Tx(dt, id_cols, assert_na = T)
+
+gen_ex(dt, assert_na = T)
 }
 \arguments{
 \item{dt}{data.table with lx, ax, dx, mx, age, and age_int variables.}
 
 \item{id_cols}{character vector of id columns that uniquely identify each row of \code{dt}.}
 
-\item{assert_na}{logical, whether to check for NA values in the generated nLx variable.}
+\item{param_cols}{character vector of columns containing life table parameters (qx, lx, etc.)
+-- \code{param_cols} used only for validation function validate_param_conversion_input}
 
 \item{terminal_age}{numeric, the terminal age group for the data. Default: 110.}
+
+\item{assert_na}{logical, whether to check for NA values in the generated nLx variable.}
 }
 \value{
 dt with column added for new life table parameter.
@@ -93,10 +105,10 @@ dt <- data.table::data.table(
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_int)]
-dt <- qx_to_lx(dt, id_cols = c("sex"))
-dt <- lx_to_dx(dt, id_cols = c("sex"), terminal_age = 15)
-dt <- gen_nLx(dt, id_cols = c("sex"), terminal_age = 15)
-dt <- gen_Tx(dt)
+dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
+dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+dt <- gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+dt <- gen_Tx(dt, id_cols = c("sex", "age"))
 dt <- gen_ex(dt)
 
 }

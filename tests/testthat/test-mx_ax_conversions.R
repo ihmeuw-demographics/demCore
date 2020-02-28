@@ -1,46 +1,39 @@
-testthat::context("mx qx ax tests")
 library(data.table)
 
 test_that("check `mx_to_qx` basic functionality works", {
   output <- mx_to_qx(0.25, 45)
   expected <- 0.999987
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check `mx_ax_to_qx` basic functionality works", {
   output <- mx_ax_to_qx(.2, 3, 5)
   expected <- 0.7142857
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check `qx_to_mx` basic functionality works", {
   output <- qx_to_mx(.5, 5)
   expected <- 0.1386294
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check `mx_qx_to_ax` basic functionality works", {
   output <- mx_qx_to_ax(0.02, 0.095, 5)
   expected <- 2.368421
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check `qx_ax_to_mx` basic functionality works", {
   output <- qx_ax_to_mx(0.02, 2.5, 5)
   expected <- 0.004040404
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check `mx_to_ax` basic functionality works", {
   output <- mx_to_ax(0.05, 5)
   expected <- 2.395942
-  testthat::expect_equal(T, output < 1.01 * expected)
-  testthat::expect_equal(T, output > 0.99 * expected)
+  testthat::expect_equal(expected, output, tolerance = 0.001)
 })
 
 test_that("check inverse functionality works", {
@@ -52,7 +45,7 @@ test_that("check inverse functionality works", {
   expected <- 0.02
   testthat::expect_equal(output, expected)
 
-  output <- mx_qx_to_ax(m = 0.02, q = mx_ax_to_qx(m = 0.02, a = 2.4, t = 5), t = 5)
+  output <- mx_qx_to_ax(mx = 0.02, qx = mx_ax_to_qx(mx = 0.02, ax = 2.4, t = 5), t = 5)
   expected <- 2.4
   testthat::expect_equal(output, expected)
 })

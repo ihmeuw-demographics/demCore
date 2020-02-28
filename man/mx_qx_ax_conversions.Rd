@@ -10,26 +10,26 @@
 \alias{mx_to_ax}
 \title{Convert between mx, qx, and ax values}
 \usage{
-mx_to_qx(m, t)
+mx_to_qx(mx, t)
 
-mx_ax_to_qx(m, a, t)
+mx_ax_to_qx(mx, ax, t)
 
-qx_to_mx(q, t)
+qx_to_mx(qx, t)
 
-mx_qx_to_ax(m, q, t)
+mx_qx_to_ax(mx, qx, t)
 
-qx_ax_to_mx(q, a, t)
+qx_ax_to_mx(qx, ax, t)
 
-mx_to_ax(m, t)
+mx_to_ax(mx, t)
 }
 \arguments{
-\item{m}{numeric mx (mortality death rate)}
+\item{mx}{numeric mx (mortality death rate)}
 
 \item{t}{numeric representing the time length of the interval (e.g. 5 for age 5-9)}
 
-\item{a}{numeric ax (average number of years lived in the age interval of those who died)}
+\item{ax}{numeric ax (average number of years lived in the age interval of those who died)}
 
-\item{q}{numeric qx (probability of death)}
+\item{qx}{numeric qx (probability of death)}
 }
 \value{
 Numeric value representing the converted mx, qx, or ax value.

@@ -28,4 +28,7 @@ Imports:
     assertable (>= 0.2.7),
     assertive,
     assertthat,
-    testthat
+    testthat,
+    demUtils
+Remotes:
+    ihmeuw/demUtils

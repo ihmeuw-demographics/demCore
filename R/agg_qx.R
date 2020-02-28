@@ -18,7 +18,6 @@
 #'
 #' @return data.table with `id_cols` and `qx` columns for aggregate age groups.
 #' @details This function is a wrapper for demUtils::aggregate_age
-#' @import data.table
 #'
 #' @examples
 #' dt <- data.table::data.table(
@@ -28,26 +27,38 @@
 #' )
 #' target_dt <- data.table::data.table(age_start = c(15),
 #'                                     age_end = c(40))
-#' agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
+#' # agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
 #'
 #' @export
 agg_qx <- function(dt, id_cols, target_ages_dt) {
 
-  # Validate qx
-  assertthat::assert_that("qx" %in% names(dt), msg = "Missing 'qx' column in input")
+  # Validate -------------------------------------------------------------
+
+  # check `id_cols`
+  assertive::assert_is_character(id_cols)
+  assertthat::assert_that("age_start" %in% id_cols, msg = "`id_cols` must include 'age_start'.")
+  assertthat::assert_that("age_end" %in% id_cols, msg = "`id_cols` must include 'age_end'.")
+
+  # check `dt`
+  assertive::assert_is_data.table(dt)
+  assertable::assert_colnames(dt, c("qx", id_cols), quiet = T)
+  assertive::assert_is_numeric(dt[["qx"]])
   assertable::assert_values(dt, c("qx"), test = "gte", test_val = 0, quiet = T)
   assertable::assert_values(dt, c("qx"), test = "lte", test_val = 1, quiet = T)
 
-  # Calculate survival probability (px)
+  # other assertions completed within demUtils::aggregate_age
+
+  # Calculate survival probability (px) ----------------------------------
   dt[, px := 1 - qx]
   dt[, qx := NULL]
 
   # Aggregate over age using multiplicative aggregation
-  dt <- demUtils::aggregate_age(dt,
-                                id_cols,
-                                value_cols = c("px"),
-                                target_ages_dt = target_ages_dt,
-                                value_type = "probability")
+  # TODO
+  # dt <- demUtils::aggregate_age(dt,
+  #                               id_cols,
+  #                               value_cols = c("px"),
+  #                               target_ages_dt = target_ages_dt,
+  #                               value_type = "probability")
 
   # Convert px back to qx
   dt[, qx := 1 - px]

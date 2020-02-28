@@ -44,6 +44,6 @@ dt <- data.table::data.table(
 )
 target_dt <- data.table::data.table(age_start = c(15),
                                     age_end = c(40))
-agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
+# agg_qx(dt, id_cols = c("id", "age_start", "age_end"), target_ages_dt = target_dt)
 
 }
