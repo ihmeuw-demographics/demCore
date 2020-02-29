@@ -2,6 +2,7 @@
 
 export(agg_qx)
 export(gen_Tx)
+export(gen_abridged_lt)
 export(gen_ex)
 export(gen_nLx)
 export(lifetable)

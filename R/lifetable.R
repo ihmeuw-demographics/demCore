@@ -37,7 +37,8 @@ lifetable <- function(dt, id_cols, terminal_age = 110, preserve_u5 = F, assert_n
 
   # check `dt` for 2/3 of mx, ax, qx
   assertthat::assert_that(length(intersect(c("mx", "ax", "qx"),
-                                            names(dt))) >= 2)
+                                            names(dt))) >= 2,
+                          msg = "Need at least two of mx, ax, qx.")
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
