@@ -7,33 +7,36 @@
 lifetable(dt, id_cols, terminal_age = 110, preserve_u5 = F, assert_na = T)
 }
 \arguments{
-\item{dt}{data.table with variables: 'qx', 'mx', 'ax', 'age', 'age_int',
+\item{dt}{data.table with variables: 'qx', 'mx', 'ax', 'age', 'age_length',
 and all \code{id_cols}}
 
-\item{id_cols}{character vector of id columns that uniquely identify each row of \code{dt}}
+\item{id_cols}{character vector of id columns that uniquely identify each
+row of \code{dt}}
 
 \item{terminal_age}{numeric, the terminal age group for the data. Default: 110}
 
-\item{preserve_u5}{logical, whether to preserve under-5 qx estimates rather than
-reclaculating them based on mx and ax. Default: F.}
+\item{preserve_u5}{logical, whether to preserve under-5 qx estimates rather
+than reclaculating them based on mx and ax. Default: F.}
 
-\item{assert_na}{logical, whether to assert that there is no missingness. Default T.}
+\item{assert_na}{logical, whether to assert that there is no missingness.
+Default T.}
 }
 \value{
-data.frame or data.table with additional variables px, lx, dx, Tx, nLx, ex
+data.frame or data.table with additional variables px, lx, dx, Tx,
+nLx, ex
 }
 \description{
-Given a data.table with at least two of variables mx, ax, and
-qx, compute a full life table.
+Given a data.table with at least two of variables mx, ax, and qx, compute a
+full life table.
 }
 \examples{
 dt <- data.table::data.table(
   sex = rep("both", 4),
   age = c(0, 5, 10, 15),
-  age_int = c(5, 5, 5, 120),
+  age_length = c(5, 5, 5, 120),
   mx = c(0.1, 0.2, 0.3, 0.4),
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
-dt[, qx := mx_ax_to_qx(mx, ax, age_int)]
+dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
 dt <- lifetable(dt, id_cols = c("sex", "age"), terminal_age = 15)
 }

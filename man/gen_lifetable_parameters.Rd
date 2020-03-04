@@ -4,6 +4,7 @@
 \alias{gen_lifetable_parameters}
 \alias{validate_param_conversion_input}
 \alias{qx_to_lx}
+\alias{lx_to_qx}
 \alias{lx_to_dx}
 \alias{gen_nLx}
 \alias{gen_Tx}
@@ -20,6 +21,8 @@ validate_param_conversion_input(
 
 qx_to_lx(dt, id_cols, assert_na = T)
 
+lx_to_qx(dt, id_cols, terminal_age = 110, assert_na = T)
+
 lx_to_dx(dt, id_cols, terminal_age = 110, assert_na = T)
 
 gen_nLx(dt, id_cols, terminal_age = 110, assert_na = T)
@@ -29,16 +32,19 @@ gen_Tx(dt, id_cols, assert_na = T)
 gen_ex(dt, assert_na = T)
 }
 \arguments{
-\item{dt}{data.table with lx, ax, dx, mx, age, and age_int variables.}
+\item{dt}{data.table with lx, ax, dx, mx, age, and age_length variables.}
 
-\item{id_cols}{character vector of id columns that uniquely identify each row of \code{dt}.}
+\item{id_cols}{character vector of id columns that uniquely identify each row
+of \code{dt}.}
 
-\item{param_cols}{character vector of columns containing life table parameters (qx, lx, etc.)
--- \code{param_cols} used only for validation function validate_param_conversion_input}
+\item{param_cols}{character vector of columns containing life table
+parameters (qx, lx, etc.)
+-- \code{param_cols} used only for 'validate_param_conversion_input' function}
 
 \item{terminal_age}{numeric, the terminal age group for the data. Default: 110.}
 
-\item{assert_na}{logical, whether to check for NA values in the generated nLx variable.}
+\item{assert_na}{logical, whether to check for NA values in the generated nLx
+variable.}
 }
 \value{
 dt with column added for new life table parameter.
@@ -52,6 +58,7 @@ these functions:
 \itemize{
 \item dx requires lx
 \item lx requires qx
+\item qx requires lx
 \item ex requires lx and Tx
 \item Tx requires nLx
 \item nLx requires lx, ax, and dx
@@ -65,16 +72,22 @@ For an age interval x to x+n:
 \item qx = probability of death, conditional on survival to x-th birthay
 \item ax = average years lived of those who died in the age interval
 \item dx = number (or proportion of cohort) who died in the age interval
-\item lx = number (or proportion of cohort) alive at the beginning of the age interval
+\item lx = number (or proportion of cohort) alive at the beginning of the age
+interval
 \item ex = life expectancy, expected value for years lived after age x
 \item Tx =  total person-years lived beyond age x
 \item nLx = total person-years lived in interval
 }
 
-\strong{qx_to_lx:} We can use probability of death (qx) to get the proportion of survivors
-in the beginning of an age group (lx).
+\strong{qx_to_lx:} We can use probability of death (qx) to get the proportion of
+survivors in the beginning of an age group (lx).
 \deqn{At age = 0: lx = 1}
 \deqn{At age > 0: lx = lx_previous * (1-qx_previous)}
+
+\strong{lx_to_qx:} We can use survival proportion (lx) and survival proportion at
+next age group (l{x+n}) to get probability of death (qx).
+\deqn{qx = 1 - (l{x+n}/lx)}
+\deqn{For terminal age group: qx = 1}
 
 \strong{lx_to_dx:} Given the proportion surviving to each age group (lx), we can
 calculate the proportion dying in the age interval (dx).
@@ -87,29 +100,31 @@ lived equals number at the start of the age group divided by the death rate.
 \deqn{nLx = n * l{x+n} + ax * d_x}
 \deqn{For terminal age group: infinityLx = lx / mx}
 
-\strong{gen_Tx:} Person-years lived above age x (Tx) is based on person-years lived by
-people in each age interval above age x (nLx).
+\strong{gen_Tx:} Person-years lived above age x (Tx) is based on person-years
+lived by people in each age interval above age x (nLx).
 \deqn{For terminal age group: Tx = nLx}
 \deqn{Otherwise: Tx = cumulative sum of nLx beyond age x}
 
-\strong{gen_ex:} Life expectancy (ex) at age x is based on person-years lived above the
-age group (Tx) and proportion of people alive at the start of age group (lx).
+\strong{gen_ex:} Life expectancy (ex) at age x is based on person-years lived
+above the age group (Tx) and proportion of people alive at the start of
+age group (lx).
 \deqn{ex = Tx / lx}
 }
 \examples{
 dt <- data.table::data.table(
   sex = rep("both", 4),
   age = c(0, 5, 10, 15),
-  age_int = c(5, 5, 5, 120),
+  age_length = c(5, 5, 5, 120),
   mx = c(0.1, 0.2, 0.3, 0.4),
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
-dt[, qx := mx_ax_to_qx(mx, ax, age_int)]
+dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
 dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
 dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 dt <- gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 dt <- gen_Tx(dt, id_cols = c("sex", "age"))
 dt <- gen_ex(dt)
+dt <- lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 
 }
 \seealso{

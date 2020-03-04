@@ -7,10 +7,9 @@ Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Spencer", "Pease", email = "spease@uw.edu", role = "aut"),
              person("Haidong", "Wang", email = "haidong@uw.edu", role = "cre"),
              person("Institute for Health Metrics and Evaluation", role = c("cph", "fnd")))
-Description: This package includes functions for conversions
-    between life table parameters mx, qx, ax, lx, dx, nLx, Tx,
-    and ex. It also includes convenience functions for common
-    life table manipulations.
+Description: This package includes functions for conversion between life table
+  parameters mx, qx, ax, lx, dx, nLx, Tx, and ex. It also includes convenience
+  functions for common life table manipulations.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -32,3 +31,4 @@ Imports:
     demUtils
 Remotes:
     ihmeuw/demUtils
+Depends: R (>= 2.10)

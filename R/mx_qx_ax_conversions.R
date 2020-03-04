@@ -1,14 +1,16 @@
 #' Convert between mx, qx, and ax values
 #'
-#' Convert between mx and qx values given a time for an age interval.
-#'   If ax (the average number of years lived in the x to x + n age interval
-#'   by those dying in the interval) exists, use the *_ax_to_* functions.
-#'   The mx_to_qx and qx_to_mx functions assume smooth mortality across the interval.
+#' Convert between mx and qx values given a time for an age interval. If ax
+#'   (the average number of years lived in the x to x + n age interval by those
+#'   dying in the interval) exists, use the *_ax_to_* functions. The mx_to_qx
+#'   and qx_to_mx functions assume smooth mortality across the interval.
 #'
 #' @param mx numeric mx (mortality death rate)
 #' @param qx numeric qx (probability of death)
-#' @param ax numeric ax (average number of years lived in the age interval of those who died)
-#' @param t numeric representing the time length of the interval (e.g. 5 for age 5-9)
+#' @param ax numeric ax (average number of years lived in the age interval of
+#'   those who died)
+#' @param t numeric representing the time length of the interval (e.g. 5 for
+#'   age 5-9)
 #'
 #' @return Numeric value representing the converted mx, qx, or ax value.
 #'

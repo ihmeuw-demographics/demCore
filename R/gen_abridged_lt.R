@@ -1,19 +1,18 @@
 #' Generate abridged life table from full life table
 #'
-#' Convert full (single-year-age) life tables to abridged
-#'   (5-year age group) life tables using standard lifetable
-#'   aggregation functions.
+#' Convert full (single-year-age) life tables to abridged (5-year age group)
+#'   life tables using standard lifetable aggregation functions.
 #'
-#' @param dt data.table with full life table(s), and variables `age`,
-#'   all vars in `id_cols`, and at least two of `qx`, `ax`, and `mx`.
-#'   `dx` is used but if it is not provided it is calculated within.
-#' @param id_cols character vector with variables that uniquely
-#'   identify observations
-#' @param abridged_ages integer vector, ages to break the single-year
-#'   ages into. Default = c(0, 1, seq(5, 110, 5)).
+#' @param dt data.table with full life table(s), and variables `age`, all vars
+#'   in `id_cols`, and at least two of `qx`, `ax`, and `mx`. `dx` is used but if
+#'   it is not provided it is calculated within.
+#' @param id_cols character vector with variables that uniquely identify
+#'   observations
+#' @param abridged_ages integer vector, ages to break the single-year ages into.
+#'   Default = c(0, 1, seq(5, 110, 5)).
 #'
-#' @return data.table with `id_cols`, `qx`, and `ax`, for abridged
-#'   ages specified in `abridged_ages`
+#' @return data.table with `id_cols`, `qx`, and `ax`, for abridged ages
+#'   specified in `abridged_ages`
 #'
 #' @examples
 #' dt <- data.table::data.table(

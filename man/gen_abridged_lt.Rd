@@ -7,24 +7,23 @@
 gen_abridged_lt(dt, id_cols, abridged_ages = c(0, 1, seq(5, 110, 5)))
 }
 \arguments{
-\item{dt}{data.table with full life table(s), and variables \code{age},
-all vars in \code{id_cols}, and at least two of \code{qx}, \code{ax}, and \code{mx}.
-\code{dx} is used but if it is not provided it is calculated within.}
+\item{dt}{data.table with full life table(s), and variables \code{age}, all vars
+in \code{id_cols}, and at least two of \code{qx}, \code{ax}, and \code{mx}. \code{dx} is used but if
+it is not provided it is calculated within.}
 
-\item{id_cols}{character vector with variables that uniquely
-identify observations}
+\item{id_cols}{character vector with variables that uniquely identify
+observations}
 
-\item{abridged_ages}{integer vector, ages to break the single-year
-ages into. Default = c(0, 1, seq(5, 110, 5)).}
+\item{abridged_ages}{integer vector, ages to break the single-year ages into.
+Default = c(0, 1, seq(5, 110, 5)).}
 }
 \value{
-data.table with \code{id_cols}, \code{qx}, and \code{ax}, for abridged
-ages specified in \code{abridged_ages}
+data.table with \code{id_cols}, \code{qx}, and \code{ax}, for abridged ages
+specified in \code{abridged_ages}
 }
 \description{
-Convert full (single-year-age) life tables to abridged
-(5-year age group) life tables using standard lifetable
-aggregation functions.
+Convert full (single-year-age) life tables to abridged (5-year age group)
+life tables using standard lifetable aggregation functions.
 }
 \examples{
 dt <- data.table::data.table(

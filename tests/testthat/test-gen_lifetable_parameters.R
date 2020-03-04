@@ -87,11 +87,11 @@ test_that("check `qx_to_lx()` errors are thrown for different cases", {
 dt <- data.table::data.table(
   sex = rep("both", 4),
   age = c(0, 5, 10, 15),
-  age_int = c(5, 5, 5, 120),
+  age_length = c(5, 5, 5, 120),
   mx = c(0.1, 0.2, 0.3, 0.4),
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
-dt[, qx := mx_ax_to_qx(mx, ax, age_int)]
+dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
 dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
 dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 id_cols <- c("sex", "age")
