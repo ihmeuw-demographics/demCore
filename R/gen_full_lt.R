@@ -13,8 +13,8 @@
 #'
 #'   The second method is a **regression method** to predict log full qx from
 #'   log abridged qx:
-#'   \deqn{\text{log}(q_x) = \beta_0 + \beta_1 \text{log}(q_{x,\text{abridged}}}
-#'   Where the parameters \eqn{\beta_0} and \eqn{\beta_1} are fit using high
+#'   \deqn{log(qx) = B0 + B1 log(qx,abridged)}
+#'   Where the parameters \eqn{B0} and \eqn{B1} are fit using high
 #'   quality single-year life tables (like those from Human Mortality Database),
 #'   and passed into this function. The regression-based method has its own
 #'   challenges, where scalloping qx patterns may arise because we do not take
