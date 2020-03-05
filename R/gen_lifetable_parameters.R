@@ -29,7 +29,7 @@
 #' **Parameter definitions:**
 #' For an age interval x to x+n:
 #'   * mx = mortality rate (deaths / person-years)
-#'   * qx = probability of death, conditional on survival to x-th birthay
+#'   * qx = probability of death, conditional on survival to x-th birthday
 #'   * ax = average years lived of those who died in the age interval
 #'   * dx = number (or proportion of cohort) who died in the age interval
 #'   * lx = number (or proportion of cohort) alive at the beginning of the age

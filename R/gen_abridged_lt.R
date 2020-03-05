@@ -1,7 +1,7 @@
 #' Generate abridged life table from full life table
 #'
 #' Convert full (single-year-age) life tables to abridged (5-year age group)
-#'   life tables using standard lifetable aggregation functions.
+#'   life tables using standard life table aggregation functions.
 #'
 #' @param dt data.table with full life table(s), and variables `age`, all vars
 #'   in `id_cols`, and at least two of `qx`, `ax`, and `mx`. `dx` is used but if

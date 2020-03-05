@@ -69,7 +69,7 @@ these functions:
 For an age interval x to x+n:
 \itemize{
 \item mx = mortality rate (deaths / person-years)
-\item qx = probability of death, conditional on survival to x-th birthay
+\item qx = probability of death, conditional on survival to x-th birthday
 \item ax = average years lived of those who died in the age interval
 \item dx = number (or proportion of cohort) who died in the age interval
 \item lx = number (or proportion of cohort) alive at the beginning of the age

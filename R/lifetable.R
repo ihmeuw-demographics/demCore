@@ -9,7 +9,7 @@
 #'   row of `dt`
 #' @param terminal_age numeric, the terminal age group for the data. Default: 110
 #' @param preserve_u5 logical, whether to preserve under-5 qx estimates rather
-#'   than reclaculating them based on mx and ax. Default: F.
+#'   than recalculating them based on mx and ax. Default: F.
 #' @param assert_na logical, whether to assert that there is no missingness.
 #'   Default T.
 #'

@@ -23,7 +23,7 @@ specified in \code{abridged_ages}
 }
 \description{
 Convert full (single-year-age) life tables to abridged (5-year age group)
-life tables using standard lifetable aggregation functions.
+life tables using standard life table aggregation functions.
 }
 \examples{
 dt <- data.table::data.table(
