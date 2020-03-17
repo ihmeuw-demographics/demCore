@@ -17,22 +17,22 @@ expected_dt <- data.table(
   ax = c(0.5, 1.7249, rep(2.06306, 21), 0.5)
 )
 
-test_that("check `gen_abridged_lt` basic functionality", {
-  output_dt <- gen_abridged_lt(dt, id_cols)
+test_that("check `full_to_abridged` basic functionality", {
+  output_dt <- full_to_abridged(dt, id_cols)
   testthat::expect_equivalent(expected_dt, output_dt, tolerance = 0.01)
 })
 
-test_that("check `gen_abridged_lt` works with odd ages", {
+test_that("check `full_to_abridged` works with odd ages", {
   # check error if abridged ages are bad
-  testthat::expect_error(gen_abridged_lt(dt, id_cols,
+  testthat::expect_error(full_to_abridged(dt, id_cols,
                                          abridged_ages = c(-20, 0, 500)))
 
   # check functionality with non-standard ages
-  output_dt <- gen_abridged_lt(dt, id_cols, abridged_ages = seq(0, 110, 10))
+  output_dt <- full_to_abridged(dt, id_cols, abridged_ages = seq(0, 110, 10))
   testthat::expect_equal(nrow(output_dt), 12)
 
   # check functionality with oddly ordered ages
-  output_dt <- gen_abridged_lt(dt, id_cols,
+  output_dt <- full_to_abridged(dt, id_cols,
                                abridged_ages = c(110, 100, seq(0, 90, 10)))
   testthat::expect_equal(nrow(output_dt), 12)
 })

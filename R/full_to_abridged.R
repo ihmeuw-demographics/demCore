@@ -1,7 +1,7 @@
-#' Generate abridged life table from full life table
+#' @title Generate abridged life table from full life table
 #'
-#' Convert full (single-year-age) life tables to abridged (5-year age group)
-#'   life tables using standard life table aggregation functions.
+#' @description Convert full (single-year-age) life tables to abridged (5-year
+#'   age group) life tables using standard life table aggregation functions.
 #'
 #' @param dt data.table with full life table(s), and variables `age`, all vars
 #'   in `id_cols`, and at least two of `qx`, `ax`, and `mx`. `dx` is used but if
@@ -22,10 +22,11 @@
 #'   ax = .5
 #' )
 #' id_cols = c("age", "location")
-#' dt <- gen_abridged_lt(dt, id_cols)
+#' dt <- full_to_abridged(dt, id_cols)
 #' @export
 
-gen_abridged_lt <- function(dt, id_cols, abridged_ages = c(0, 1, seq(5, 110, 5))) {
+full_to_abridged <- function(dt, id_cols,
+                             abridged_ages = c(0, 1, seq(5, 110, 5))) {
 
   # validate -------------------------------------------------------
 

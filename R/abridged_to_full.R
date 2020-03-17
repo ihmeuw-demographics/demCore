@@ -1,9 +1,29 @@
-#' Generate full life table from abridged life table
+#' @title Generate full life table from abridged life table
 #'
-#' Convert abridged (5-year age group) life tables to full (single-year-age)
-#'   life tables using specified regression parameters or lx spline
+#' @description Convert abridged (5-year age group) life tables to full
+#'   (single-year-age) life tables using specified regression parameters or
+#'   lx spline
 #'
-#' @description This function includes two different methods for expanding
+#' @param dt data.table with variables age, all `id_cols`, 'qx', 'ax'
+#' @param id_cols character vector, variables that uniquely identify rows,
+#'   must include 'age'
+#' @param regression_fits data.table with variables from `id_cols`, plus
+#'  'intercept', slope'
+#' @param regression_id_cols character vector, variables that uniquely identify
+#'   regression parameters. Must include 'age' and be contained by `id_cols`.
+#' @param terminal_age integer, max age that is being computed (default: 110)
+#' @param lx_spline_start_age integer, age (inclusive) to start using lx spline
+#'   rather than regression fits. Use 0 to use lx spline for all ages, or
+#'   integer > 110 or Inf to use regression results for all.
+#' @param lx_spline_end_age integer, age (non-inclusive) to end spline and
+#'   begin using regression fits.
+#' @param preserve_input_ax_ages integer, ages to preserve the input ax values
+#'   for. This is typically the first age group 0-1 and the terminal age group
+#'   110+.
+#'
+#' @return data.table with columns id_cols, age, qx, ax
+#'
+#' @details This function includes two different methods for expanding
 #'   abridged life tables to full life tables. The first method is a
 #'   **monotonic cubic spline** over lx. Because lx is always decreasing, the
 #'   monotonic spline fits the general curve and pattern well, basically
@@ -31,37 +51,18 @@
 #'   and full life table mx values that are calculated from these differing ax
 #'   values. Therefore, this is an area for future methods development.
 #'
-#' @param dt data.table with variables age, all `id_cols`, 'qx', 'ax'
-#' @param id_cols character vector, variables that uniquely identify rows,
-#'   must include 'age'
-#' @param regression_fits data.table with variables from `id_cols`, plus
-#'  'intercept', slope'
-#' @param regression_id_cols character vector, variables that uniquely identify
-#'   regression parameters. Must include 'age' and be contained by `id_cols`.
-#' @param terminal_age integer, max age that is being computed (default: 110)
-#' @param lx_spline_start_age integer, age (inclusive) to start using lx spline
-#'   rather than regression fits. Use 0 to use lx spline for all ages, or
-#'   integer > 110 or Inf to use regression results for all.
-#' @param lx_spline_end_age integer, age (non-inclusive) to end spline and
-#'   begin using regression fits.
-#' @param preserve_input_ax_ages integer, ages to preserve the input ax values
-#'   for. This is typically the first age group 0-1 and the terminal age group
-#'   110+.
-#'
-#' @return data.table with columns id_cols, age, qx, ax
-#'
 #' @examples
 #' \dontrun{
 #' data("fNOR2010")
 #' data("fullLTpars")
 #' id_cols <- c("location", "age")
-#' dt <- gen_full_lt(dt = fNOR2010, regression_fits = fullLTpars,
+#' dt <- abridged_to_full(dt = fNOR2010, regression_fits = fullLTpars,
 #'   id_cols = id_cols, regression_id_cols = c("age"), terminal_age = 95)
 #' }
 #' @import data.table
 #' @export
 
-gen_full_lt <- function(dt, id_cols, regression_fits, regression_id_cols,
+abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
                         terminal_age = 110, lx_spline_start_age = 15,
                         lx_spline_end_age = 100,
                         preserve_input_ax_ages = c(0, terminal_age)) {

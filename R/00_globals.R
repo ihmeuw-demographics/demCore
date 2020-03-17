@@ -11,4 +11,5 @@ utils::globalVariables(c("age_int", "age_group_years_start", "age_group_years_en
                          "age_length", "reg_qx", "slope", "intercept",
                          "pred_px", "pred_px_abridged", "adjustment_factor",
                          "pred_px_adjusted", "pred_qx_adjusted", "terminal_age",
-                         "value", "life_table_parameter"))
+                         "value", "life_table_parameter",
+                         "id_cols_no_age", "sex", "mx_inf"))
