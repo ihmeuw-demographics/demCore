@@ -23,7 +23,8 @@
 #' @param param_cols \[`character()`\] columns containing life table
 #'   parameters (qx, lx, etc.)
 #'
-#' @return dt with column added for new life table parameter.
+#' @return dt with column added for new life table parameter. Modifies
+#'   data.tables in place.
 #'
 #' @details
 #' **Parameter definitions:**
@@ -80,12 +81,12 @@
 #'   ax = c(2.5, 2.5, 2.5, 2.5)
 #' )
 #' dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-#' dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
-#' dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-#' dt <- gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-#' dt <- gen_Tx(dt, id_cols = c("sex", "age"))
-#' dt <- gen_ex(dt)
-#' dt <- lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' qx_to_lx(dt, id_cols = c("sex", "age"))
+#' lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' gen_Tx(dt, id_cols = c("sex", "age"))
+#' gen_ex(dt)
+#' lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 #'
 #' @name gen_lifetable_parameters
 NULL
@@ -200,7 +201,7 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
   assertable::assert_values(dt, c("lx"), test = "lte", test_val = 1, quiet = T)
 
   setkeyv(dt, original_keys)
-  return(dt)
+
 }
 
 
@@ -236,7 +237,7 @@ lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   assertable::assert_values(dt, c("qx"), test = "lte", test_val = 1, quiet = T)
 
   setkeyv(dt, original_keys)
-  return(dt)
+
 }
 
 
@@ -270,7 +271,7 @@ lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
     assertable::assert_values(dt, "dx", "not_na", quiet = T)
   }
   setkeyv(dt, original_keys)
-  return(dt)
+
 }
 
 
@@ -312,7 +313,7 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
                               quiet = T)
   }
   setkeyv(dt, original_keys)
-  return(dt)
+
 }
 
 
@@ -346,7 +347,7 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
   # check outputs ------------------------------------------------------------
   if (assert_na == T) assertable::assert_values(dt, "Tx", "not_na", quiet = T)
   setkeyv(dt, original_keys)
-  return(dt)
+
 }
 
 
@@ -366,5 +367,5 @@ gen_ex <- function(dt, assert_na = T) {
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) assertable::assert_values(dt, "ex", "not_na", quiet = T)
-  return(dt)
+
 }

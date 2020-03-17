@@ -80,19 +80,19 @@ lifetable <- function(dt, id_cols, terminal_age = 110, preserve_u5 = F,
   dt[, px := 1 - qx]
 
   # lx
-  dt <- qx_to_lx(dt, id_cols, assert_na)
+  qx_to_lx(dt, id_cols, assert_na)
 
   # dx
-  dt <- lx_to_dx(dt, id_cols, terminal_age, assert_na)
+  lx_to_dx(dt, id_cols, terminal_age, assert_na)
 
   # nLx
-  dt <- gen_nLx(dt, id_cols, terminal_age, assert_na)
+  gen_nLx(dt, id_cols, terminal_age, assert_na)
 
   # Tx
-  dt <- gen_Tx(dt, id_cols, assert_na)
+  gen_Tx(dt, id_cols, assert_na)
 
   # ex
-  dt <- gen_ex(dt, assert_na)
+  gen_ex(dt, assert_na)
 
   # return
   setkeyv(dt, original_keys)

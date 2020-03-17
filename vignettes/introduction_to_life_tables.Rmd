@@ -242,7 +242,7 @@ age $x+n$.
 Our `qx_to_lx` function can perform this calculation:
 
 ```{r lx_calc}
-dt <- qx_to_lx(dt, id_cols = c("age"))
+qx_to_lx(dt, id_cols = c("age"))
 ```
 
 ### dx
@@ -254,7 +254,7 @@ to age $x$ and proportion surviving to age $x+n$).
 To calculate dx, use `lx_to_dx`:
 
 ```{r dx_calc}
-dt <- lx_to_dx(dt, id_cols = c("age"), terminal_age = 95)
+lx_to_dx(dt, id_cols = c("age"), terminal_age = 95)
 ```
 
 ### nLx
@@ -278,7 +278,7 @@ $${_{\infty}L_x} = \text{person-years lived above age } x =
 Use the `gen_nLx` function to calculate with this method:
 
 ```{r nLx_calc}
-dt <- gen_nLx(dt, id_cols = c("age"), terminal_age = 95)
+gen_nLx(dt, id_cols = c("age"), terminal_age = 95)
 ```
 
 ### Tx
@@ -288,7 +288,7 @@ Next, use $_nL_x$ to get $T_x$:
 $$T_x = \sum_{x}^{\infty} {_nL_x}.$$
 
 ```{r Tx_calc}
-dt <- gen_Tx(dt, id_cols = c("age"))
+gen_Tx(dt, id_cols = c("age"))
 ```
 
 ### ex
@@ -305,7 +305,7 @@ interval dies in the interval.
 Calculate $e_x$ with `gen_ex`:
 
 ```{r ex_calc}
-dt <- gen_ex(dt)
+gen_ex(dt)
 ```
 
 ### Summary

@@ -47,7 +47,8 @@ Default: 110.}
 generated nLx variable.}
 }
 \value{
-dt with column added for new life table parameter.
+dt with column added for new life table parameter. Modifies
+data.tables in place.
 }
 \description{
 These functions perform life table calculations, to add selected life table
@@ -119,12 +120,12 @@ dt <- data.table::data.table(
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-dt <- qx_to_lx(dt, id_cols = c("sex", "age"))
-dt <- lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-dt <- gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-dt <- gen_Tx(dt, id_cols = c("sex", "age"))
-dt <- gen_ex(dt)
-dt <- lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+qx_to_lx(dt, id_cols = c("sex", "age"))
+lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+gen_Tx(dt, id_cols = c("sex", "age"))
+gen_ex(dt)
+lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 
 }
 \seealso{
