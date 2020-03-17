@@ -1,20 +1,23 @@
-#' Summarize life table draws
+#' @title Summarize life table draws
 #'
+#' @description
 #' Create mean and confidence intervals for summary-level life tables based off
-#'   of draws. First draws are collapsed to mean, lower (2.5th percentile),
-#'   and upper (97.5th percentile). Then, we make sure mean-level life table
-#'   parameters are consistent with one another by re-calculating every
-#'   requested parameter other than mx and ax, using standard methods documented
-#'   elsewhere.
+#' of draws. First draws are collapsed to mean, lower (2.5th percentile),
+#' and upper (97.5th percentile). Then, we make sure mean-level life table
+#' parameters are consistent with one another by re-calculating every
+#' requested parameter other than mx and ax, using standard methods documented
+#' elsewhere.
 #'
-#' @param dt data.table, columns are all `id_cols` and all `lt_params`
-#' @param id_cols character vector of column names in dt that uniquely identify
+#' @param dt \[`data.table()`\] draw-level life tables, columns include all
+#'  `id_cols`, all `lt_params`, and 'draw'.
+#' @param id_cols \[`character()`\] column names in 'dt' that uniquely identify
 #'   all rows. Must include 'draw'.
-#' @param lt_params character vector of life table parameters included in `dt`.
+#' @param lt_params \[`character()`\] life table parameters included in `dt`.
 #'   Example: c("mx", "ax", "dx"). Must include 'mx' and 'ax'.
 #'
 #' @return data.table with `id_cols`, 'life_table_parameter', 'mean', 'lower',
 #'   and 'upper'
+#'
 #' @examples
 #' library(data.table)
 #' data("fNOR2010")

@@ -16,29 +16,30 @@ abridged_to_full(
 )
 }
 \arguments{
-\item{dt}{data.table with variables age, all \code{id_cols}, 'qx', 'ax'}
+\item{dt}{[\code{data.table()}] with variables age, all \code{id_cols}, 'qx', 'ax'}
 
-\item{id_cols}{character vector, variables that uniquely identify rows,
+\item{id_cols}{[\code{character()}] variables that uniquely identify rows,
 must include 'age'}
 
-\item{regression_fits}{data.table with variables from \code{id_cols}, plus
+\item{regression_fits}{[\code{data.table()}] with variables from \code{id_cols}, plus
 'intercept', slope'}
 
-\item{regression_id_cols}{character vector, variables that uniquely identify
+\item{regression_id_cols}{[\code{character()}] variables that uniquely identify
 regression parameters. Must include 'age' and be contained by \code{id_cols}.}
 
-\item{terminal_age}{integer, max age that is being computed (default: 110)}
+\item{terminal_age}{[\code{integer(1)}] max age that is being computed
+(default: 110)}
 
-\item{lx_spline_start_age}{integer, age (inclusive) to start using lx spline
-rather than regression fits. Use 0 to use lx spline for all ages, or
+\item{lx_spline_start_age}{[\code{integer(1)}] age (inclusive) to start using lx
+spline rather than regression fits. Use 0 to use lx spline for all ages, or
 integer > 110 or Inf to use regression results for all.}
 
-\item{lx_spline_end_age}{integer, age (non-inclusive) to end spline and
-begin using regression fits.}
+\item{lx_spline_end_age}{[\code{integer(1)}] age (non-inclusive) to end spline
+and begin using regression fits.}
 
-\item{preserve_input_ax_ages}{integer, ages to preserve the input ax values
-for. This is typically the first age group 0-1 and the terminal age group
-110+.}
+\item{preserve_input_ax_ages}{[\code{integer()}] ages to preserve the input ax
+values for. This is typically the first age group 0-1 and the terminal age
+group 110+.}
 }
 \value{
 data.table with columns id_cols, age, qx, ax

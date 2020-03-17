@@ -1,22 +1,21 @@
-#' Generate a full life-table, given mx, ax, and qx
+#' @title Generate a full life-table, given mx, ax, and qx
 #'
-#' Given a data.table with at least two of variables mx, ax, and qx, compute a
-#'   full life table.
+#' @description Given a data.table with at least two of variables mx, ax, and
+#'   qx, compute a full life table.
 #'
-#' @param dt data.table with variables: 'qx', 'mx', 'ax', 'age', 'age_length',
-#'   and all `id_cols`
-#' @param id_cols character vector of id columns that uniquely identify each
+#' @param dt \[`data.table()`\] input life tables, variables: 'qx', 'mx', 'ax',
+#'   'age', 'age_length', and all `id_cols`
+#' @param id_cols \[`character()`\] columns that uniquely identify each
 #'   row of `dt`
-#' @param terminal_age numeric, the terminal age group for the data. Default: 110
-#' @param preserve_u5 logical, whether to preserve under-5 qx estimates rather
-#'   than recalculating them based on mx and ax. Default: F.
-#' @param assert_na logical, whether to assert that there is no missingness.
+#' @param terminal_age \[`integer(1)`\] terminal age for the data. Default: 110
+#' @param preserve_u5 \[`logical()`\] whether to preserve under-5 qx estimates
+#'   rather than recalculating them based on mx and ax. Default: F.
+#' @param assert_na \[`logical()`\] whether to assert that there is no missingness.
 #'   Default T.
 #'
 #' @return data.frame or data.table with additional variables px, lx, dx, Tx,
 #'   nLx, ex
 #'
-#' @export
 #' @examples
 #' dt <- data.table::data.table(
 #'   sex = rep("both", 4),
@@ -27,6 +26,8 @@
 #' )
 #' dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
 #' dt <- lifetable(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#'
+#' @export
 
 lifetable <- function(dt, id_cols, terminal_age = 110, preserve_u5 = F,
                       assert_na = T) {

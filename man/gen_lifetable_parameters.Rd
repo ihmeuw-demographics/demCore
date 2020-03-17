@@ -32,19 +32,19 @@ gen_Tx(dt, id_cols, assert_na = T)
 gen_ex(dt, assert_na = T)
 }
 \arguments{
-\item{dt}{data.table with lx, ax, dx, mx, age, and age_length variables.}
+\item{dt}{[\code{data.table()}] variables lx, ax, dx, mx, age, and age_length.}
 
-\item{id_cols}{character vector of id columns that uniquely identify each row
+\item{id_cols}{[\code{character()}] columns that uniquely identify each row
 of \code{dt}.}
 
-\item{param_cols}{character vector of columns containing life table
-parameters (qx, lx, etc.)
--- \code{param_cols} used only for 'validate_param_conversion_input' function}
+\item{param_cols}{[\code{character()}] columns containing life table
+parameters (qx, lx, etc.)}
 
-\item{terminal_age}{numeric, the terminal age group for the data. Default: 110.}
+\item{terminal_age}{[\code{integer(1)}] the terminal age group for the data.
+Default: 110.}
 
-\item{assert_na}{logical, whether to check for NA values in the generated nLx
-variable.}
+\item{assert_na}{[\code{logical()}] whether to check for NA values in the
+generated nLx variable.}
 }
 \value{
 dt with column added for new life table parameter.

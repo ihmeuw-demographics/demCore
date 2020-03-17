@@ -13,15 +13,15 @@
 #'   * Tx requires nLx
 #'   * nLx requires lx, ax, and dx
 #'
-#' @param dt data.table with lx, ax, dx, mx, age, and age_length variables.
-#' @param id_cols character vector of id columns that uniquely identify each row
+#' @param dt \[`data.table()`\] variables lx, ax, dx, mx, age, and age_length.
+#' @param id_cols \[`character()`\] columns that uniquely identify each row
 #'   of `dt`.
-#' @param terminal_age numeric, the terminal age group for the data. Default: 110.
-#' @param assert_na logical, whether to check for NA values in the generated nLx
-#'   variable.
-#' @param param_cols character vector of columns containing life table
+#' @param terminal_age \[`integer(1)`\] the terminal age group for the data.
+#'   Default: 110.
+#' @param assert_na \[`logical()`\] whether to check for NA values in the
+#'   generated nLx variable.
+#' @param param_cols \[`character()`\] columns containing life table
 #'   parameters (qx, lx, etc.)
-#'   -- `param_cols` used only for 'validate_param_conversion_input' function
 #'
 #' @return dt with column added for new life table parameter.
 #'

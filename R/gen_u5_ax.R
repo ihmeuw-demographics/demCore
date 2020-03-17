@@ -55,6 +55,8 @@ gen_u5_ax <- function(dt, id_cols) {
   assertive::assert_is_data.table(dt)
   assertable::assert_colnames(dt, c(id_cols, "mx"), only_colnames = F,
                               quiet = T)
+  assertive::assert_is_numeric(dt[["mx"]])
+  assertable::assert_values(dt, "mx", test = "gte", test_val = 0, quiet = T)
 
   # check age
   assertive::assert_is_numeric(dt[["age"]])

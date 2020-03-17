@@ -7,14 +7,14 @@
 full_to_abridged(dt, id_cols, abridged_ages = c(0, 1, seq(5, 110, 5)))
 }
 \arguments{
-\item{dt}{data.table with full life table(s), and variables \code{age}, all vars
+\item{dt}{[\code{data.table()}] full life table(s), variables \code{age}, all vars
 in \code{id_cols}, and at least two of \code{qx}, \code{ax}, and \code{mx}. \code{dx} is used but if
 it is not provided it is calculated within.}
 
-\item{id_cols}{character vector with variables that uniquely identify
+\item{id_cols}{[\code{character()}] variables that uniquely identify
 observations}
 
-\item{abridged_ages}{integer vector, ages to break the single-year ages into.
+\item{abridged_ages}{[\code{integer()}] ages to break the single-year ages into.
 Default = c(0, 1, seq(5, 110, 5)).}
 }
 \value{

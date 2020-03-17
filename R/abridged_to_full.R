@@ -4,22 +4,23 @@
 #'   (single-year-age) life tables using specified regression parameters or
 #'   lx spline
 #'
-#' @param dt data.table with variables age, all `id_cols`, 'qx', 'ax'
-#' @param id_cols character vector, variables that uniquely identify rows,
+#' @param dt \[`data.table()`\] with variables age, all `id_cols`, 'qx', 'ax'
+#' @param id_cols \[`character()`\] variables that uniquely identify rows,
 #'   must include 'age'
-#' @param regression_fits data.table with variables from `id_cols`, plus
+#' @param regression_fits \[`data.table()`\] with variables from `id_cols`, plus
 #'  'intercept', slope'
-#' @param regression_id_cols character vector, variables that uniquely identify
+#' @param regression_id_cols \[`character()`\] variables that uniquely identify
 #'   regression parameters. Must include 'age' and be contained by `id_cols`.
-#' @param terminal_age integer, max age that is being computed (default: 110)
-#' @param lx_spline_start_age integer, age (inclusive) to start using lx spline
-#'   rather than regression fits. Use 0 to use lx spline for all ages, or
+#' @param terminal_age \[`integer(1)`\] max age that is being computed
+#'   (default: 110)
+#' @param lx_spline_start_age \[`integer(1)`\] age (inclusive) to start using lx
+#'   spline rather than regression fits. Use 0 to use lx spline for all ages, or
 #'   integer > 110 or Inf to use regression results for all.
-#' @param lx_spline_end_age integer, age (non-inclusive) to end spline and
-#'   begin using regression fits.
-#' @param preserve_input_ax_ages integer, ages to preserve the input ax values
-#'   for. This is typically the first age group 0-1 and the terminal age group
-#'   110+.
+#' @param lx_spline_end_age \[`integer(1)`\] age (non-inclusive) to end spline
+#'   and begin using regression fits.
+#' @param preserve_input_ax_ages \[`integer()`\] ages to preserve the input ax
+#'   values for. This is typically the first age group 0-1 and the terminal age
+#'   group 110+.
 #'
 #' @return data.table with columns id_cols, age, qx, ax
 #'
