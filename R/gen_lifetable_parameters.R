@@ -1,4 +1,4 @@
-#' Generate life table parameters
+#' @title Generate life table parameters
 #'
 #' @description
 #' These functions perform life table calculations, to add selected life table
@@ -19,7 +19,7 @@
 #' @param terminal_age \[`integer(1)`\] the terminal age group for the data.
 #'   Default: 110.
 #' @param assert_na \[`logical()`\] whether to check for NA values in the
-#'   generated nLx variable.
+#'   generated variable.
 #' @param param_cols \[`character()`\] columns containing life table
 #'   parameters (qx, lx, etc.)
 #'
@@ -70,7 +70,7 @@
 #'   age group (lx).
 #'   \deqn{ex = Tx / lx}
 #'
-#' @seealso lifetableUtils::mx_qx_ax_conversions
+#' @seealso lifetableUtils::mx_qx_ax_conversions, lifetableUtils::lifetable
 #'
 #' @examples
 #' dt <- data.table::data.table(
@@ -154,7 +154,7 @@ validate_param_conversion_input <- function(dt, id_cols = c(), param_cols = c(),
 
   if(!is.na(terminal_age)) {
     # numeric
-    assertive::assert_is_numeric(terminal_age)
+    assertthat::is.number(terminal_age)
     # all age values are less than terminal age
     assertable::assert_values(dt, c("age"), test = "lte",
                               test_val = terminal_age, quiet = T)
@@ -185,7 +185,7 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # set key
+  # set key with 'age' as last variable
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols_no_age, "age"))
 
@@ -221,7 +221,7 @@ lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # set key
+  # set key with 'age' as last variable
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols_no_age, "age"))
 
@@ -258,7 +258,7 @@ lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # set key
+  # set key with 'age' as last variable
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols_no_age, "age"))
 
@@ -292,7 +292,7 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # set key
+  # set key with 'age' as last variable
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols_no_age, "age"))
 
@@ -333,7 +333,7 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # set key
+  # set key with 'age' as last variable
   original_keys <- key(dt)
   setkeyv(dt, c(id_cols_no_age, "age"))
 

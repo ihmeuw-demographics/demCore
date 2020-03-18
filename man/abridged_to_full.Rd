@@ -56,7 +56,8 @@ abridged life tables to full life tables. The first method is a
 monotonic spline fits the general curve and pattern well, basically
 splining between the knots at each abridged-year increment. However, the
 spline can become wild and unreasonable in age groups with dramatic changes
-in mortality rate over age.
+in mortality rate over age. Internally, this function calls the \code{spline}
+function from the \code{stats} package.
 
 The second method is a \strong{regression method} to predict log full qx from
 log abridged qx:
@@ -64,7 +65,7 @@ log abridged qx:
 Where the parameters \eqn{B0} and \eqn{B1} are fit using high
 quality single-year life tables (like those from Human Mortality Database),
 and passed into this function. The regression-based method has its own
-challenges, where scalloping qx patterns may arise because we do not take
+challenges, where jagged qx patterns may arise because we do not take
 consecutive abridged qx values into account simultaneously.
 
 The function also allows for a combination of the methods to be used, with
@@ -79,11 +80,13 @@ and full life table mx values that are calculated from these differing ax
 values. Therefore, this is an area for future methods development.
 }
 \examples{
-\dontrun{
 data("fNOR2010")
 data("fullLTpars")
+regression_fits <- fullLTpars[sex == "female"]
 id_cols <- c("location", "age")
-dt <- abridged_to_full(dt = fNOR2010, regression_fits = fullLTpars,
-  id_cols = id_cols, regression_id_cols = c("age"), terminal_age = 95)
-}
+dt <- abridged_to_full(
+  dt = fNOR2010, regression_fits = regression_fits, id_cols = id_cols,
+  regression_id_cols = c("age"), terminal_age = 95
+)
+
 }

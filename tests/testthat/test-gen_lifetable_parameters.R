@@ -20,12 +20,12 @@ expected_dt <- data.table(
          1, 0.8, 0.64, 0.512, 0.40960, 0.32768)
 )
 
-test_that("check `qx_to_lx()` basic functionality works", {
+test_that("test that `qx_to_lx` basic functionality works", {
   output_dt <- qx_to_lx(input_dt, id_cols)
   testthat::expect_equal(output_dt, expected_dt)
 })
 
-test_that("check `qx_to_lx()` errors are thrown for different cases", {
+test_that("test that `qx_to_lx` errors are thrown for different cases", {
   # Check error thrown when wrong argument types are given
   testthat::expect_error(qx_to_lx(input_dt, "hello", T))
   testthat::expect_error(qx_to_lx(input_dt, T, id_cols))
@@ -35,7 +35,7 @@ test_that("check `qx_to_lx()` errors are thrown for different cases", {
   testthat::expect_error(qx_to_lx(non_unique_input_dt, id_cols = id_cols))
 })
 
-test_that("check resulting lx is monotonic by age", {
+test_that("test that resulting lx is monotonic by age", {
   output_dt <- qx_to_lx(input_dt, id_cols)
   output_females <- output_dt[sex == "female"]$lx
   testthat::expect_equal(T, all(output_females == cummin(output_females)))
@@ -55,12 +55,12 @@ id_cols <- c("sex", "age")
 # set up expected output table
 expected_dx <- c(0.1, 0.2, 0.5, 0.2)
 
-test_that("check `lx_to_dx()` basic functionality works", {
+test_that("test that `lx_to_dx` basic functionality works", {
   output_dt <- lx_to_dx(input_dt, terminal_age = 15, id_cols)
   testthat::expect_equal(output_dt$dx, expected_dx)
 })
 
-test_that("check `qx_to_lx()` errors are thrown for different cases", {
+test_that("test that `qx_to_lx` errors are thrown for different cases", {
   # check error thrown when wrong argument types are given
   testthat::expect_error(lx_to_dx(as.data.frame(input_dt), id_cols, 15, T))
   testthat::expect_error(lx_to_dx(input_dt, "hello", 15, T))
@@ -99,13 +99,13 @@ id_cols <- c("sex", "age")
 # set up expected output (rounded)
 expected_nLx <- c(4.00, 2.00, 0.57, 0.07)
 
-test_that("check `gen_nLx()` basic functionality works", {
+test_that("test that `gen_nLx` basic functionality works", {
   output_dt <- gen_nLx(dt, id_cols, terminal_age = 15)
   output_nLx <- round(output_dt$nLx, 2)
   testthat::expect_equal(output_nLx, expected_nLx)
 })
 
-test_that("check `gen_nLx()` errors are thrown for different cases", {
+test_that("test that `gen_nLx` errors are thrown for different cases", {
   # check error thrown when wrong argument types are given
   testthat::expect_error(gen_nLx(dt, "hello", 15))
   testthat::expect_error(gen_nLx(dt, id_cols, T))
@@ -137,12 +137,12 @@ expected_dt <- data.table(
   Tx = c(1.5, 0.9, 0.4)
 )
 
-test_that("check `gen_Tx` basic functionality works", {
+test_that("test that `gen_Tx` basic functionality works", {
   gen_Tx(dt, id_cols = c("age", "sex")) # modifies dt in place
   testthat::expect_equal(dt, expected_dt)
 })
 
-test_that("check `gen_Tx` errors are thrown for different cases", {
+test_that("test that `gen_Tx` errors are thrown for different cases", {
   # not data.table
   testthat::expect_error(gen_Tx(as.data.frame(dt)))
   # missing nLx
@@ -168,12 +168,12 @@ expected_dt <- data.table(
   ex = c(50, 40, 25)
 )
 
-test_that("check `gen_ex` basic functionality works", {
+test_that("test that `gen_ex` basic functionality works", {
   gen_ex(dt) # modifies dt in place
   testthat::expect_equal(dt, expected_dt)
 })
 
-test_that("check `gen_ex` errors are thrown for different cases", {
+test_that("test that `gen_ex` errors are thrown for different cases", {
   # not data.table
   testthat::expect_error(gen_ex(as.data.frame(dt)))
   # missing lx or Tx

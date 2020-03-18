@@ -1,4 +1,3 @@
-
 library(data.table)
 
 # load test data
@@ -14,6 +13,6 @@ dt <- abridged_to_full(dt = fNOR2010,
             regression_id_cols = c("age"),
             terminal_age = 95)
 
-test_that("check `abridged_to_full` gives us expected ages", {
+test_that("test that `abridged_to_full` gives us expected ages", {
   testthat::expect_equal(dt$age, 0:95)
 })

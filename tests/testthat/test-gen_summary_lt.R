@@ -16,19 +16,23 @@ dt <- dt[, .SD, .SDcols = c("age", "draw", "age_length", "location", "mx", "ax",
                             "qx")]
 dt <- lifetable(dt, id_cols = c("age", "location", "draw"), terminal_age = 95)
 
-test_that("check `gen_summary_lt` basic functionality", {
-  # run function
-  output_dt <- gen_summary_lt(dt, id_cols = c("age", "draw", "location"),
-                             lt_params = c("mx", "ax", "qx", "lx", "dx",
-                                           "ex", "nLx", "Tx"))
-  # check columns in output
+# run function
+output_dt <- gen_summary_lt(dt, id_cols = c("age", "draw", "location"),
+                            lt_params = c("mx", "ax", "qx", "lx", "dx",
+                                          "ex", "nLx", "Tx"))
+
+test_that("test that `gen_summary_lt` gives expected columns", {
   testthat::expect_equivalent(names(output_dt), c("age", "location",
                                            "life_table_parameter", "mean",
                                            "lower", "upper"))
-  # check lower <= mean <= upper
+})
+
+test_that("test that `gen_sumamry_lt` gives lower <= mean <= upper", {
   testthat::expect_equal(nrow(output_dt[lower > mean]), 0)
   testthat::expect_equal(nrow(output_dt[mean > upper]), 0)
+})
 
+test_that("test that `gen_summary_lt` gives expected output vals", {
   # check that mean doesn't deviate substantially from expectation
   output_wide <- copy(output_dt)
   output_wide <- dcast(output_wide, age ~ life_table_parameter,
@@ -36,6 +40,5 @@ test_that("check `gen_summary_lt` basic functionality", {
   output_wide <- merge(output_wide, fNOR2010, by = c("age"))
   testthat::expect_equal(output_wide$mx.x, output_wide$mx.y, tolerance = 0.01)
   testthat::expect_equal(output_wide$ax.x, output_wide$ax.y, tolerance = 0.01)
-
 })
 

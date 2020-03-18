@@ -20,12 +20,12 @@ expected_dt <- data.table(
   qx = c(0.40951, 0.67232)
 )
 
-# test_that("check `agg_qx` basic functionality works", {
+# test_that("test that `agg_qx` basic functionality works", {
 #   output_dt <- agg_qx(input_dt, age_start = 15, age_end = 40, id_cols = id_cols)
 #   testthat::expect_equal(output_dt, expected_dt)
 # })
 #
-# test_that("check `agg_qx` errors are thrown for different cases", {
+# test_that("test that `agg_qx` errors are thrown for different cases", {
 #   # Check error thrown when wrong argument types are given
 #   testthat::expect_error(agg_qx(input_dt, "hello", "hi", id_cols))
 #   testthat::expect_error(agg_qx(input_dt, 15, 40, "hola"))

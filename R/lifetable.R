@@ -1,7 +1,9 @@
-#' @title Generate a full life-table, given mx, ax, and qx
+#' @title Generate a life table with all parameters
 #'
 #' @description Given a data.table with at least two of variables mx, ax, and
-#'   qx, compute a full life table.
+#'   qx, compute a full life table. This is a helper function that combines
+#'   many other functions in this package to calculate px, lx, dx, Tx, nLx,
+#'   and ex.
 #'
 #' @param dt \[`data.table()`\] input life tables, variables: 'qx', 'mx', 'ax',
 #'   'age', 'age_length', and all `id_cols`
@@ -55,17 +57,14 @@ lifetable <- function(dt, id_cols, terminal_age = 110, preserve_u5 = F,
   # calculate life table ----------------------------------------------------
 
   # qx, mx, ax if missing
-  if(!"qx" %in% names(dt)) dt[, qx := as.numeric(NA)]
-  if(!"mx" %in% names(dt)) dt[, mx := as.numeric(NA)]
-  if(!"ax" %in% names(dt)) dt[, ax := as.numeric(NA)]
-  dt[is.na(qx), qx := mx_ax_to_qx(mx, ax, age_length)]
-  dt[is.na(mx), mx := qx_ax_to_mx(qx, ax, age_length)]
-  dt[is.na(ax), ax := mx_qx_to_ax(mx, qx, age_length)]
+  if(!"qx" %in% names(dt)) dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
+  if(!"mx" %in% names(dt)) dt[, mx := qx_ax_to_mx(qx, ax, age_length)]
+  if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, age_length)]
 
   # recalculate qx to confirm consistency with ax and mx
   # mostly relevant if input contains all three parameters
   if (preserve_u5) {
-    dt[age > 1, qx := mx_ax_to_qx(mx, ax, age_length)]
+    dt[age >= 1, qx := mx_ax_to_qx(mx, ax, age_length)]
   } else {
     dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
   }

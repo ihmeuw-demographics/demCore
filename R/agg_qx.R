@@ -1,12 +1,12 @@
 #' Aggregate qx values over age
 #'
-#' Given a data.table with a qx variable and ID variables that uniquely
-#'   identify the data, compile granular ages and aggregate into combined qx
-#'   values. Using probability rules, we convert qx to px (conditional survival
-#'   probability), multiply these px values within a specified age range together
-#'   to get the conditional probability of survival through all granular age
-#'   groups, and subtract from one to get the aggregated conditional probability
-#'   of death (qx).
+#' @description Given a data.table with a qx variable and ID variables that
+#'   uniquely identify the data, compile granular ages and aggregate into
+#'   combined qx values. Using probability rules, we convert qx to px
+#'   (conditional survival probability), multiply these px values within a
+#'   specified age range together to get the conditional probability of survival
+#'   through all granular age groups, and subtract from one to get the
+#'   aggregated conditional probability of death (qx).
 #'
 #' @param dt data.table with data to be aggregated.
 #'   * must only include columns 'qx' and those specified in `id_cols`
@@ -32,6 +32,7 @@
 #' #     target_ages_dt = target_dt)
 #'
 #' @export
+
 agg_qx <- function(dt, id_cols, target_ages_dt) {
 
   # Validate -------------------------------------------------------------

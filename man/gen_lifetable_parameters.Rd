@@ -44,7 +44,7 @@ parameters (qx, lx, etc.)}
 Default: 110.}
 
 \item{assert_na}{[\code{logical()}] whether to check for NA values in the
-generated nLx variable.}
+generated variable.}
 }
 \value{
 dt with column added for new life table parameter. Modifies
@@ -129,5 +129,5 @@ lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
 
 }
 \seealso{
-lifetableUtils::mx_qx_ax_conversions
+lifetableUtils::mx_qx_ax_conversions, lifetableUtils::lifetable
 }

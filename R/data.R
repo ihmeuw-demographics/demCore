@@ -1,4 +1,4 @@
-#' Example life table (Norway 2010 females, from GBD 2019)
+#' @title Example life table (Norway 2010 females, from GBD 2019)
 #'
 #' @description GBD 2019 death count and population estimates, for females in
 #'   Norway in 2010, made using Norway vital registration and census data. Also

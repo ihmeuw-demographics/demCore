@@ -26,13 +26,13 @@ row of \code{dt}}
 data.table with \code{id_cols} and \code{qx} columns for aggregate age groups.
 }
 \description{
-Given a data.table with a qx variable and ID variables that uniquely
-identify the data, compile granular ages and aggregate into combined qx
-values. Using probability rules, we convert qx to px (conditional survival
-probability), multiply these px values within a specified age range together
-to get the conditional probability of survival through all granular age
-groups, and subtract from one to get the aggregated conditional probability
-of death (qx).
+Given a data.table with a qx variable and ID variables that
+uniquely identify the data, compile granular ages and aggregate into
+combined qx values. Using probability rules, we convert qx to px
+(conditional survival probability), multiply these px values within a
+specified age range together to get the conditional probability of survival
+through all granular age groups, and subtract from one to get the
+aggregated conditional probability of death (qx).
 }
 \details{
 This function is a wrapper for demUtils::aggregate_age

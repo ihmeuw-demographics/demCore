@@ -30,15 +30,15 @@ full_to_abridged <- function(dt, id_cols,
 
   # validate -------------------------------------------------------
 
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, colnames = c(id_cols),
-                              only_colnames = F, quiet = T)
-
   # check `dt` for 2/3 of mx, ax, qx
+  assertive::assert_is_data.table(dt)
   assertthat::assert_that(length(intersect(c("mx", "ax", "qx"),
                                            names(dt))) >= 2,
-                          msg = "Need at least two of mx, ax, qx.")
+                          msg = "Need at least two of mx, ax, qx in 'dt'.")
+
+  # check `dt` and `id_cols`
+  param_cols <- intersect(names(dt), c("mx", "ax", "qx"))
+  validate_param_conversion_input(dt, id_cols, param_cols)
 
   # check and sort `abridged_ages`
   assertive::assert_is_numeric(abridged_ages)
@@ -51,9 +51,8 @@ full_to_abridged <- function(dt, id_cols,
   expected_ages <- seq(min(abridged_ages), max(abridged_ages), 1)
   provided_ages <- unique(dt$age)
   if(!setequal(expected_ages, provided_ages)) {
-    stop("dt must include all single-year ages
-        between min(abridged_ages) and max(abridged_ages)
-        and no extra ages.")
+    stop("dt must include all single-year ages between min(abridged_ages) and
+         max(abridged_ages) and no extra ages.")
   }
 
   # check that data is square on age

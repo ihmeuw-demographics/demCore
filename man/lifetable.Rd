@@ -2,7 +2,7 @@
 % Please edit documentation in R/lifetable.R
 \name{lifetable}
 \alias{lifetable}
-\title{Generate a full life-table, given mx, ax, and qx}
+\title{Generate a life table with all parameters}
 \usage{
 lifetable(dt, id_cols, terminal_age = 110, preserve_u5 = F, assert_na = T)
 }
@@ -27,7 +27,9 @@ nLx, ex
 }
 \description{
 Given a data.table with at least two of variables mx, ax, and
-qx, compute a full life table.
+qx, compute a full life table. This is a helper function that combines
+many other functions in this package to calculate px, lx, dx, Tx, nLx,
+and ex.
 }
 \examples{
 dt <- data.table::data.table(

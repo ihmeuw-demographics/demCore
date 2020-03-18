@@ -17,12 +17,12 @@ expected_dt <- data.table(
   ax = c(0.5, 1.7249, rep(2.06306, 21), 0.5)
 )
 
-test_that("check `full_to_abridged` basic functionality", {
+test_that("test that `full_to_abridged` gives expected output", {
   output_dt <- full_to_abridged(dt, id_cols)
   testthat::expect_equivalent(expected_dt, output_dt, tolerance = 0.01)
 })
 
-test_that("check `full_to_abridged` works with odd ages", {
+test_that("test that `full_to_abridged` works with odd ages", {
   # check error if abridged ages are bad
   testthat::expect_error(full_to_abridged(dt, id_cols,
                                          abridged_ages = c(-20, 0, 500)))

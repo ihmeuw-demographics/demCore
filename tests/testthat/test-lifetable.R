@@ -14,7 +14,7 @@ param_cols <- c("mx", "ax", "qx", "px",
                 "lx", "dx", "nLx",
                 "Tx", "ex")
 
-test_that("check `lifetable` basic functionality", {
+test_that("test that `lifetable` gives expected output", {
   dt <- lifetable(dt, id_cols = c("age", "sex"), terminal_age = 15)
   testthat::expect_equal(T, setequal(names(dt),
                                      c("sex", "age", "age_length",
@@ -22,7 +22,7 @@ test_that("check `lifetable` basic functionality", {
   assertable::assert_values(dt, param_cols, "not_na", quiet = T)
 })
 
-test_that("check `lifetable` works when missing ax", {
+test_that("test tthat `lifetable` works when missing ax", {
   dt_no_ax <- dt[, .(sex, age, age_length, mx, qx)]
   dt <- lifetable(dt_no_ax, id_cols = c("age", "sex"), terminal_age = 15)
   testthat::expect_equal(T, setequal(names(dt),
@@ -31,7 +31,7 @@ test_that("check `lifetable` works when missing ax", {
   assertable::assert_values(dt, param_cols, "not_na", quiet = T)
 })
 
-test_that("check `lifetable` works when missing mx", {
+test_that("test that `lifetable` works when missing mx", {
   dt_no_mx <- dt[, .(sex, age, age_length, ax, qx)]
   dt <- lifetable(dt_no_mx, id_cols = c("age", "sex"), terminal_age = 15)
   testthat::expect_equal(T, setequal(names(dt),
@@ -40,7 +40,7 @@ test_that("check `lifetable` works when missing mx", {
   assertable::assert_values(dt, param_cols, "not_na", quiet = T)
 })
 
-test_that("check `lifetable` works when missing qx", {
+test_that("test that `lifetable` works when missing qx", {
   dt_no_qx <- dt[, .(sex, age, age_length, mx, ax)]
   dt <- lifetable(dt_no_qx, id_cols = c("age", "sex"), terminal_age = 15)
   testthat::expect_equal(T, setequal(names(dt),
