@@ -38,7 +38,7 @@ full_to_abridged <- function(dt, id_cols,
 
   # check `dt` and `id_cols`
   param_cols <- intersect(names(dt), c("mx", "ax", "qx"))
-  validate_param_conversion_input(dt, id_cols, param_cols)
+  validate_lifetable(dt, id_cols, param_cols)
 
   # check and sort `abridged_ages`
   assertive::assert_is_numeric(abridged_ages)

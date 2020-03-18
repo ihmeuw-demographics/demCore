@@ -2,7 +2,6 @@
 % Please edit documentation in R/gen_lifetable_parameters.R
 \name{gen_lifetable_parameters}
 \alias{gen_lifetable_parameters}
-\alias{validate_param_conversion_input}
 \alias{qx_to_lx}
 \alias{lx_to_qx}
 \alias{lx_to_dx}
@@ -11,14 +10,6 @@
 \alias{gen_ex}
 \title{Generate life table parameters}
 \usage{
-validate_param_conversion_input(
-  dt,
-  id_cols = c(),
-  param_cols = c(),
-  terminal_age = NA,
-  assert_na = NA
-)
-
 qx_to_lx(dt, id_cols, assert_na = T)
 
 lx_to_qx(dt, id_cols, terminal_age = 110, assert_na = T)
@@ -37,14 +28,11 @@ gen_ex(dt, assert_na = T)
 \item{id_cols}{[\code{character()}] columns that uniquely identify each row
 of \code{dt}.}
 
-\item{param_cols}{[\code{character()}] columns containing life table
-parameters (qx, lx, etc.)}
+\item{assert_na}{[\code{logical()}] whether to check for NA values in the
+generated variable.}
 
 \item{terminal_age}{[\code{integer(1)}] the terminal age group for the data.
 Default: 110.}
-
-\item{assert_na}{[\code{logical()}] whether to check for NA values in the
-generated variable.}
 }
 \value{
 dt with column added for new life table parameter. Modifies

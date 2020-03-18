@@ -49,7 +49,7 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
                           msg = "`lt_params` must include 'mx' and 'ax'")
 
   # check `dt`
-  validate_param_conversion_input(dt, id_cols, param_cols = lt_params)
+  validate_lifetable(dt, id_cols, param_cols = lt_params)
 
   # prep --------------------------------------------------------------------
 

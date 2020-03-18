@@ -73,9 +73,7 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
   # validate ----------------------------------------------------------------
 
   # check standard inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("qx", "ax"))
+  validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("qx", "ax"))
 
   # check `regression_id_cols`
   assertive::is_character(regression_id_cols)

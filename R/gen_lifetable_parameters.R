@@ -20,8 +20,6 @@
 #'   Default: 110.
 #' @param assert_na \[`logical()`\] whether to check for NA values in the
 #'   generated variable.
-#' @param param_cols \[`character()`\] columns containing life table
-#'   parameters (qx, lx, etc.)
 #'
 #' @return dt with column added for new life table parameter. Modifies
 #'   data.tables in place.
@@ -93,94 +91,14 @@ NULL
 
 # ============================================================================
 #' @rdname gen_lifetable_parameters
-validate_param_conversion_input <- function(dt, id_cols = c(), param_cols = c(),
-                                            terminal_age = NA, assert_na = NA) {
-
-  # check `id_cols` argument -------------------------------------------------
-
-  if(length(id_cols) > 0) {
-
-    # character
-    assertive::assert_is_character(id_cols)
-
-    # includes "age"
-    assertthat::assert_that("age" %in% id_cols,
-                            msg = "`id_cols` must include 'age'.")
-
-    # shouldn't include other age variables
-    if("age_start" %in% id_cols) stop("'age_start' cannot be in id_cols.")
-    if("age_end" %in% id_cols) stop("'age_end' cannot be in id_cols.")
-    if("age_length" %in% id_cols) stop("'age_length' cannot be in id_cols.")
-    if("age_group" %in% id_cols) stop("'age_group' cannot be in id_cols.")
-    if("age_group_id" %in% id_cols) stop("'age_group_id' cannot be in id_cols.")
-    id_cols_no_age <- id_cols[id_cols != "age"]
-    if(any(tolower(id_cols_no_age) %like% "age")) {
-      warning("Confirm that no age vars other than 'age' are in 'id_cols'.")
-    }
-  }
-
-  # check `dt` ---------------------------------------------------------------
-
-  # data.table
-  assertive::assert_is_data.table(dt)
-
-  # unique
-  if(length(id_cols) > 0) {
-    demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
-  }
-
-  # has correct columns
-  assertable::assert_colnames(dt, c(param_cols, id_cols),
-                              only_colnames = F, quiet = T)
-
-  # age and parameter columns numeric
-  if("age" %in% names(dt)) assertive::assert_is_numeric(dt[["age"]])
-  for(param in param_cols) {
-    assertive::assert_is_numeric(dt[[param]])
-  }
-
-  # all life table params > 0
-  assertable::assert_values(dt, param_cols, test = "gte",
-                            test_val = 0, quiet = T)
-
-  # qx, lx, dx < 1
-  params_lte_1 <- intersect(param_cols, c("qx", "lx", "dx"))
-  if(length(params_lte_1) > 0) {
-    assertable::assert_values(dt, params_lte_1, test = "lte",
-                              test_val = 1, quiet = T)
-  }
-
-  # check `terminal_age` -----------------------------------------------------
-
-  if(!is.na(terminal_age)) {
-    # numeric
-    assertthat::is.number(terminal_age)
-    # all age values are less than terminal age
-    assertable::assert_values(dt, c("age"), test = "lte",
-                              test_val = terminal_age, quiet = T)
-  }
-
-  # check `assert_na` --------------------------------------------------------
-
-  if(!is.na(assert_na)) {
-    assertive::assert_is_logical(assert_na)
-  }
-
-}
-
-
-# ============================================================================
-#' @rdname gen_lifetable_parameters
 #' @export
 qx_to_lx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
   # validate inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("qx"),
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("qx"),
+                     assert_na = assert_na)
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
@@ -213,10 +131,8 @@ lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # prep ---------------------------------------------------------------------
 
   # validate inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("lx"),
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("lx"),
+                      assert_na = assert_na)
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
@@ -249,11 +165,8 @@ lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # prep ---------------------------------------------------------------------
 
   # validate inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("lx"),
-                                  terminal_age = terminal_age,
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("lx"),
+                     terminal_age = terminal_age, assert_na = assert_na)
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
@@ -283,11 +196,9 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
   # prep -------------------------------------------------------------------
 
   # validate inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("lx", "ax", "dx", "mx"),
-                                  terminal_age = terminal_age,
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, id_cols = id_cols,
+                     param_cols = c("lx", "ax", "dx", "mx"),
+                     terminal_age = terminal_age, assert_na = assert_na)
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
@@ -298,9 +209,15 @@ gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 
   # calculate nLx -----------------------------------------------------------
 
-  # add age_length -- TODO: switch to demUtils function
-  dt[, age_length := shift(age, 1, type = "lead") - age, by = id_cols_no_age]
-  dt[age == terminal_age, age_length := 100]
+  # add 'age_length' if not in input
+  if(!"age_length" %in% names(dt)) {
+    setnames(dt, "age", "age_start")
+    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
+                            col_stem = "age")
+    dt <- demUtils::gen_length(dt, col_stem = "age")
+    setnames(dt, "age_start", "age")
+    dt[, age_end := NULL]
+  }
 
   # calculte nLx
   dt[, nLx := age_length * shift(lx, 1, type = "lead") + ax * dx,
@@ -325,10 +242,8 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
   # prep ---------------------------------------------------------------------
 
   # validate inputs
-  validate_param_conversion_input(dt = dt,
-                                  id_cols = id_cols,
-                                  param_cols = c("nLx"),
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("nLx"),
+                      assert_na = assert_na)
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[id_cols != "age"]
@@ -358,9 +273,7 @@ gen_ex <- function(dt, assert_na = T) {
 
   # validate ----------------------------------------------------------------
 
-  validate_param_conversion_input(dt = dt,
-                                  param_cols = c("Tx", "lx"),
-                                  assert_na = assert_na)
+  validate_lifetable(dt = dt, param_cols = c("Tx", "lx"), assert_na = assert_na)
 
   # calculate ex -------------------------------------------------------------
   dt[, ex := Tx / lx]
