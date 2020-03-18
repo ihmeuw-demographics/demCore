@@ -4,10 +4,10 @@
 \alias{agg_qx}
 \title{Aggregate qx values over age}
 \usage{
-agg_qx(dt, id_cols, target_ages_dt)
+agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
 }
 \arguments{
-\item{dt}{data.table with data to be aggregated.
+\item{dt}{[\code{data.table()}] data to be aggregated.
 \itemize{
 \item must only include columns 'qx' and those specified in \code{id_cols}
 \item must include 'age_start' and 'age_end' columns
@@ -17,10 +17,13 @@ agg_qx(dt, id_cols, target_ages_dt)
 \item{id_cols}{character vector of column names that uniquely identify each
 row of \code{dt}}
 
-\item{target_ages_dt}{data.table defining age groups to aggregate to.
-\itemize{
-\item must include 'age_start' and 'age_end' columns.
-}}
+\item{age_mapping}{[\code{data.table()}] specification of intervals to aggregate
+to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
+for terminal age group.}
+
+\item{drop_present_aggs}{[\code{logical()}] whether to drop aggregates (or
+overlapping intervals) that are already present in dt before aggregating.
+Default is "False" and the function errors out.}
 }
 \value{
 data.table with \code{id_cols} and \code{qx} columns for aggregate age groups.

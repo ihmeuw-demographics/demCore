@@ -10,7 +10,7 @@
 #' @param qx \[`numeric()`\] qx (probability of death)
 #' @param ax \[`numeric()`\] ax (average number of years lived in the age
 #'   interval of those who died)
-#' @param length \[`numeric()`\] the length of the age interval (e.g. 5 for
+#' @param age_length \[`numeric()`\] the length of the age interval (e.g. 5 for
 #'   age 5-9)
 #'
 #' @return Numeric value representing the converted mx, qx, or ax value.
@@ -27,42 +27,42 @@ NULL
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_to_qx <- function(mx, length) {
-  result <- 1 - exp((-1 * length) * mx)
+mx_to_qx <- function(mx, age_length) {
+  result <- 1 - exp((-1 * age_length) * mx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_ax_to_qx <- function(mx, ax, length) {
-  result <- (length * mx) / (1 + (length - ax) * mx)
+mx_ax_to_qx <- function(mx, ax, age_length) {
+  result <- (age_length * mx) / (1 + (age_length - ax) * mx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-qx_to_mx <- function(qx, length) {
-  result <- log(1 - qx) / (-1 * length)
+qx_to_mx <- function(qx, age_length) {
+  result <- log(1 - qx) / (-1 * age_length)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_qx_to_ax <- function(mx, qx, length) {
-  result <- (qx + (mx * length * (qx - 1))) / (mx * qx)
+mx_qx_to_ax <- function(mx, qx, age_length) {
+  result <- (qx + (mx * age_length * (qx - 1))) / (mx * qx)
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-qx_ax_to_mx <- function(qx, ax, length) {
-  result <- qx / (length - (length * qx) + (ax * qx))
+qx_ax_to_mx <- function(qx, ax, age_length) {
+  result <- qx / (age_length - (age_length * qx) + (ax * qx))
   return(result)
 }
 
 #' @rdname mx_qx_ax_conversions
 #' @export
-mx_to_ax <- function(mx, length) {
-  result <- length + 1 / mx - length / (1 - exp(-length * mx))
+mx_to_ax <- function(mx, age_length) {
+  result <- age_length + 1 / mx - age_length / (1 - exp(- age_length * mx))
   return(result)
 }

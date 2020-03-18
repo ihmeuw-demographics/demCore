@@ -10,22 +10,22 @@
 \alias{mx_to_ax}
 \title{Convert between mx, qx, and ax values}
 \usage{
-mx_to_qx(mx, length)
+mx_to_qx(mx, age_length)
 
-mx_ax_to_qx(mx, ax, length)
+mx_ax_to_qx(mx, ax, age_length)
 
-qx_to_mx(qx, length)
+qx_to_mx(qx, age_length)
 
-mx_qx_to_ax(mx, qx, length)
+mx_qx_to_ax(mx, qx, age_length)
 
-qx_ax_to_mx(qx, ax, length)
+qx_ax_to_mx(qx, ax, age_length)
 
-mx_to_ax(mx, length)
+mx_to_ax(mx, age_length)
 }
 \arguments{
 \item{mx}{[\code{numeric()}] mx (mortality death rate)}
 
-\item{length}{[\code{numeric()}] the length of the age interval (e.g. 5 for
+\item{age_length}{[\code{numeric()}] the length of the age interval (e.g. 5 for
 age 5-9)}
 
 \item{ax}{[\code{numeric()}] ax (average number of years lived in the age

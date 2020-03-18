@@ -164,7 +164,7 @@ The function `mx_to_ax` implements this assumption.
 Using our example data, we get:
 
 ```{r ax_calc}
-dt[, ax := mx_to_ax(mx = mx, length = age_length)]
+dt[, ax := mx_to_ax(mx = mx, age_length = age_length)]
 ```
 
 
@@ -207,11 +207,11 @@ For the terminal age group, qx should be 1 because all individuals surviving to
 the terminal age group will die in that age group (probability of death = 1).
 
 ```{r qx_calc1}
-dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, length = age_length)]
+dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
 
 # set qx = 1 and recalculate ax for terminal age group
 dt[age == max(dt$age), qx := 1]
-dt[age == max(dt$age), ax := mx_qx_to_ax(mx = mx, qx = 1, length = 30)]
+dt[age == max(dt$age), ax := mx_qx_to_ax(mx = mx, qx = 1, age_length = 30)]
 ```
 
 Other functions that utilize this relationship but solve for different metrics
@@ -222,7 +222,7 @@ an interval, which removes ax from the relationship:
 
 $$_nq_x = 1 - e^{-n \cdot {_nm_x}}.$$
 ```{r qx_calc2, eval = F}
-dt[, qx_compare := mx_to_qx(mx = mx, length = age_length)]
+dt[, qx_compare := mx_to_qx(mx = mx, age_length = age_length)]
 ```
 
 These two qx values are the same, because the implied ax in `mx_to_qx` is

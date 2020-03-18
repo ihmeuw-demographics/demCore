@@ -42,15 +42,29 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
 
   # check `id_cols`
   assertthat::assert_that("draw" %in% id_cols,
-                          msg = "`id_cols` must include 'draw'")
+                          msg = "`id_cols` must include 'draw'.")
 
-  # checl `lt_params`
+  # check `lt_params`
   assertthat::assert_that(length(setdiff(c("mx", "ax"), lt_params)) == 0,
                           msg = "`lt_params` must include 'mx' and 'ax'")
 
   # check `dt`
-  assertable::assert_colnames(dt, c(id_cols, lt_params),
-                              only_colnames = F, quiet = T)
+  validate_param_conversion_input(dt, id_cols, param_cols = lt_params)
+
+  # prep --------------------------------------------------------------------
+
+  # add 'age_length' if not in input
+  if(!"age_length" %in% names(dt)) {
+    setnames(dt, "age", "age_start")
+    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
+                            col_stem = "age")
+    dt <- demUtils::gen_length(dt, col_stem = "age")
+    setnames(dt, "age_start", "age")
+    dt[, age_end := NULL]
+  }
+
+  # get `id_cols` without 'draw'
+  id_cols_no_draw <- id_cols[id_cols != "draw"]
 
   # summarize ---------------------------------------------------------------
 
@@ -58,17 +72,14 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
   lower <- function(x) stats::quantile(x, probs = 0.025, na.rm = T)
   upper <- function(x) stats::quantile(x, probs = 0.975, na.rm = T)
 
-  # get `id_cols` without 'draw'
-  id_cols_no_draw <- id_cols[id_cols != "draw"]
-
   # melt life table parameters long
-  dt <- melt(dt, id.vars = id_cols, measure.vars = lt_params,
+  dt <- melt(dt, id.vars = c(id_cols, "age_length"), measure.vars = lt_params,
              variable.name = "life_table_parameter", value.name = "value")
 
   # collapse
   dt <- dt[, list(mean = mean(value), lower = lower(value),
                   upper = upper(value)),
-            by = c(id_cols_no_draw, "life_table_parameter")]
+            by = c(id_cols_no_draw, "life_table_parameter", "age_length")]
 
   # recalculate mean --------------------------------------------------------
 
@@ -81,16 +92,6 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
     dt_mean[, c("lower", "upper") := NULL]
     dt_mean <- dt_mean[life_table_parameter %in% c("mx", "ax")]
     dt_mean <- dcast(dt_mean, ... ~ life_table_parameter, value.var = c("mean"))
-
-    # check `age` variable and add `age_length`
-    assertthat::assert_that("age" %in% id_cols,
-                            msg = "`id_cols` must include 'age'.")
-    assertive::assert_is_numeric(dt_mean[["age"]])
-    id_cols_no_draw_no_age <- id_cols_no_draw[id_cols_no_draw != "age"]
-    setkeyv(dt_mean, c(id_cols_no_draw_no_age, "age"))
-    dt_mean[, age_length := shift(age, 1, type = "lead") - age,
-            by = id_cols_no_draw_no_age]
-    dt_mean[age == max(dt_mean$age), age_length := 20]
 
     # re-calculate qx
     dt_mean[, qx := mx_ax_to_qx(mx, ax, age_length)]

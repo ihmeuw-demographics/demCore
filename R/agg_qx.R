@@ -1,4 +1,4 @@
-#' Aggregate qx values over age
+#' @title Aggregate qx values over age
 #'
 #' @description Given a data.table with a qx variable and ID variables that
 #'   uniquely identify the data, compile granular ages and aggregate into
@@ -8,16 +8,21 @@
 #'   through all granular age groups, and subtract from one to get the
 #'   aggregated conditional probability of death (qx).
 #'
-#' @param dt data.table with data to be aggregated.
+#' @param dt \[`data.table()`\] data to be aggregated.
 #'   * must only include columns 'qx' and those specified in `id_cols`
 #'   * must include 'age_start' and 'age_end' columns
 #'   * `id_cols` must uniquely identify each row
 #' @param id_cols character vector of column names that uniquely identify each
 #'   row of `dt`
-#' @param target_ages_dt data.table defining age groups to aggregate to.
-#'   * must include 'age_start' and 'age_end' columns.
+#' @param age_mapping \[`data.table()`\] specification of intervals to aggregate
+#'   to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
+#'   for terminal age group.
+#' @param drop_present_aggs \[`logical()`\] whether to drop aggregates (or
+#'   overlapping intervals) that are already present in dt before aggregating.
+#'   Default is "False" and the function errors out.
 #'
 #' @return data.table with `id_cols` and `qx` columns for aggregate age groups.
+#'
 #' @details This function is a wrapper for demUtils::aggregate_age
 #'
 #' @examples
@@ -33,7 +38,7 @@
 #'
 #' @export
 
-agg_qx <- function(dt, id_cols, target_ages_dt) {
+agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
 
   # Validate -------------------------------------------------------------
 
@@ -53,17 +58,26 @@ agg_qx <- function(dt, id_cols, target_ages_dt) {
 
   # other assertions completed within demUtils::aggregate_age
 
-  # Calculate survival probability (px) ----------------------------------
+  # Aggregate ------------------------------------------------------------
+
+  # copy
+  dt <- copy(dt)
+
+  # Calculate survival probability (px)
   dt[, px := 1 - qx]
   dt[, qx := NULL]
 
   # Aggregate over age using multiplicative aggregation
-  # TODO
-  # dt <- demUtils::aggregate_age(dt,
-  #                               id_cols,
-  #                               value_cols = c("px"),
-  #                               target_ages_dt = target_ages_dt,
-  #                               value_type = "probability")
+  dt <- demUtils::agg(
+    dt,
+    id_cols = id_cols,
+    value_cols = c("px"),
+    col_stem = "age",
+    col_type = "interval",
+    mapping = age_mapping,
+    agg_function = prod,
+    drop_present_aggs = drop_present_aggs
+  )
 
   # Convert px back to qx
   dt[, qx := 1 - px]

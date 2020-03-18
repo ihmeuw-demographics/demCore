@@ -105,11 +105,15 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
   # get `id_cols` without 'age'
   id_cols_no_age <- id_cols[id_cols != "age"]
 
-  # add age length
-  # for now assume standard abridged ages. TODO: use demUtils function
-  dt[age == 0, age_length := 1]
-  dt[age == 1, age_length := 4]
-  dt[is.na(age_length), age_length := 5]
+  # add 'age_length' if not in input
+  if(!"age_length" %in% names(dt)) {
+    setnames(dt, "age", "age_start")
+    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
+                            col_stem = "age")
+    dt <- demUtils::gen_length(dt, col_stem = "age")
+    setnames(dt, "age_start", "age")
+    dt[, age_end := NULL]
+  }
 
   # lx spline ---------------------------------------------------------------
 

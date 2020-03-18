@@ -45,7 +45,7 @@ test_that("test that inverse functionality works for mx ax qx functions", {
   expected <- 0.02
   testthat::expect_equal(output, expected)
 
-  output <- mx_qx_to_ax(mx = 0.02, qx = mx_ax_to_qx(0.02, 2.4, 5), length = 5)
+  output <- mx_qx_to_ax(mx = 0.02, qx = mx_ax_to_qx(0.02, 2.4, 5), 5)
   expected <- 2.4
   testthat::expect_equal(output, expected)
 })
