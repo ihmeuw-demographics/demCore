@@ -4,6 +4,11 @@
 ## (1) Prep Human Mortality Database lx series
 ## (2) Generate regression fit to expand abridged to full life tables
 
+## Requires 1x1 (1 year in time x 1 year in age) HMD life tables:
+## Human Mortality Database. University of California, Berkeley (USA), and Max
+## Planck Institute for Demographic Research (Germany). Available at
+## www.mortality.org or www.humanmortality.de (data downloaded on [Jan 2018]).
+
 # setup -------------------------------------------------------------------
 
 library(data.table)
