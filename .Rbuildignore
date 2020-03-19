@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^docs$
+^data-raw$
 ^pkgdown$
 ^LICENSE\.md$
 ^\.travis\.yml$

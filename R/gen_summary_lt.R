@@ -31,7 +31,7 @@
 #'  dt <- rbind(dt, dt_new, fill = TRUE)
 #' }
 #' dt <- dt[!is.na(age)]
-#' dt <- gen_summary_lt(dt, id_cols = c("age", "draw", "location"),
+#' dt <- gen_summary_lt(dt, id_cols = c("age", "draw"),
 #'   lt_params = c("mx", "ax"))
 #'
 #' @export

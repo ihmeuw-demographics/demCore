@@ -28,8 +28,10 @@ algorithm based on under-1 mx.
 }
 \details{
 Takes a data.table with age, sex, and infant mortality rate and
-adds a column 'ax'. Values from: Demography. Preston, Heuveline,
-Guillot (2001).\tabular{lllll}{
+adds a column 'ax'. Values from:
+
+Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+population processes. MA: Blackwell Publishing. 2001.\tabular{lllll}{
     \tab  \tab Males \tab  \tab Females \cr
    1a0: \tab  \tab  \tab  \tab  \cr
    If 1m0 >= 0.107 \tab  \tab 0.330 \tab  \tab 0.350 \cr

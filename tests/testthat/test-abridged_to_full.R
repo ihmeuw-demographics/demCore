@@ -4,7 +4,7 @@ library(data.table)
 data("exampleLT")
 data("fullLTpars")
 fullLTpars <- fullLTpars[sex == "female", .(age, intercept, slope)]
-id_cols <- c("location", "age")
+id_cols <- c("age")
 
 # run function
 dt1 <- abridged_to_full(dt = exampleLT,

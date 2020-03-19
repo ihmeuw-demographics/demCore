@@ -57,7 +57,7 @@
 #' data("exampleLT")
 #' data("fullLTpars")
 #' regression_fits <- fullLTpars[sex == "female"]
-#' id_cols <- c("location", "age")
+#' id_cols <- c("age")
 #' dt <- abridged_to_full(
 #'   dt = exampleLT, regression_fits = regression_fits, id_cols = id_cols,
 #'   regression_id_cols = c("age"), terminal_age = 95

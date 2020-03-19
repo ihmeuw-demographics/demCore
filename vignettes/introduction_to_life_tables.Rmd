@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{Title of your vignette}
   %\usepackage[UTF-8]{inputenc}
+  %\VignetteDepends{lifetableUtils}
+  %\VignetteDepends{demUtils}
 ---
 
 ```{r setup, include=FALSE}
@@ -37,12 +39,11 @@ $x+n$ where $n$ indicates the length of the interval, typically in years. We
 often shorthand by removing the "n" from the notation, with interval length
 implied.
 
-Here's an example of a life table for Norweigian females in 2010 (from GBD 2019
-results):
+Here's an example of a life table:
 
 ```{r example_lt, echo = F}
-data("fNOR2010")
-dt <- lifetable(fNOR2010, id_cols = c("age", "location"), terminal_age = 95)
+data("exampleLT")
+dt <- lifetable(exampleLT, id_cols = c("age"), terminal_age = 95)
 dt <- dt[, .SD, .SDcols = c("age", "age_length", "deaths", "population",
                             "mx", "ax", "qx", "px", "lx", "dx", "nLx",
                             "Tx", "ex")]
@@ -52,8 +53,9 @@ setnames(dt_rounded, "age_length", "n")
 kable(dt_rounded, format = "markdown")
 ```
 
-We also often reduce life tables to age patterns of log probability of death ($\text{log}(q_x)$) or to survival curves ($l_x$ over age), which can be
-easily displayed and vetted in plots.
+We also often reduce life tables to age patterns of log probability of death
+($\text{log}(q_x)$) or to survival curves ($l_x$ over age), which can be easily
+displayed and vetted in plots.
 
 ```{r plot_qx, echo = F}
 ggplot(data = dt,
@@ -63,7 +65,8 @@ ggplot(data = dt,
        geom_point() +
        scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
        theme_bw() +
-       ggtitle("NOR 2010 female life table: log-qx over age")
+       theme(axis.text.x = element_text(size = 6)) +
+       ggtitle("log-qx over age")
 
 ggplot(data = dt,
        aes(x = age,
@@ -72,7 +75,8 @@ ggplot(data = dt,
        geom_point() +
        scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
        theme_bw() +
-       ggtitle("NOR 2010 female life table: lx over age (survival curve)")
+       theme(axis.text.x = element_text(size = 6)) +
+       ggtitle("lx over age (survival curve)")
 ```
 
 ## Life table metrics
@@ -118,26 +122,27 @@ The `lifetableUtils` package includes many utility functions for calculations
 that leverage the mathematical relationships between life table metrics to
 build out a complete life table. This section will provide details and examples
 regarding the use of these functions and their underlying methods. We will
-accomplish this by following along the example of building the Norweigian
+accomplish this by following along the example of building the example
 life table above from death counts and population.
 
 Note that this document and this package do not conatain an exhaustive list of
 relationships between metrics. Additionally, some equations presented rely on
 assumptions and others are true relationships that are always valid. For more
 details, see the Preston Demography textbook, from which many of these details
-were drawn (cite here).
+were drawn.
 
 ### mx
 
 From raw death count and population data, the place to start with a life table
 is mx.
 
-$$m_x = \frac{\text{deaths}}{\text{person-years}} \approx \frac{\text{observed deaths}}{\text{mid-interval population}}$$
-Let's load in our example Norweigian data and calculate mx:
+$$m_x = \frac{\text{deaths}}{\text{person-years}} \approx
+\frac{\text{observed deaths}}{\text{mid-interval population}}$$
+Let's load in our example data and calculate mx:
 
 ```{r mx_calc}
-data("fNOR2010")
-dt <- fNOR2010[, c("age", "age_length", "deaths", "population")]
+data("exampleLT")
+dt <- exampleLT[, c("age", "age_length", "deaths", "population")]
 dt[, mx := deaths / population]
 ```
 
@@ -168,10 +173,12 @@ dt[, ax := mx_to_ax(mx = mx, age_length = age_length)]
 ```
 
 
-__1a0 and 4q1:__
+__1a0 and 4a1:__
 
-Coale and Demeny (1983) produced empirically derived values for $_1a_0$ and
-$_4a_1$:
+Preston et al adapted an analysis first completed by Coale and Demeny (1983)
+to derive a relationship between infant mortality rate (1m0) and under-5 ax
+values (1a0 and 4a1). In the absence of reliable data to produce ax, these
+relationships can be used to predict ax from infant mx:
 
 |                     | Males       | Females  |
 | ------------------- |-------------| ---------|
@@ -183,6 +190,13 @@ $_4a_1$:
 | If 1m0 >= 0.107     | 1.352       | 1.361    |
 | If 1m0 < 0.107      | 1.651 - 2.816 * 1m0 | 1.522 - 1.518 * 1m0 |
 
+Use the `gen_u5_ax` function to implement this method:
+
+```{r ax_u5_calc, eval = F}
+dt[, sex := "female"]
+dt <- gen_u5_ax(dt, id_cols = c("age", "sex"))
+```
+
 __Graduation method:__ One strategy for selecting ax values is based on the
 level and slope of the $_nm_x$ function. Comparing two populations with the
 same 5m60, the population with more rapidly rising mortality rate with respect
@@ -193,7 +207,8 @@ interval (lower ax).
 
 To utilize this theory, we can implement iteration as described in the
 Preston book, and originally proposed by Keyfitz (1966):
-$$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} + \frac{n}{24} {_nd_{x+n}}}{_nd_x}$$
+$$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
+\frac{n}{24} {_nd_{x+n}}}{_nd_x}$$
 Where dx is derived from the conversion from mx to qx. However, since the
 mx --> qx conversion requires ax, this requires us to pick a starting place for
 ax (like n/2), solve for dx, solve for ax, and so on until convergence.
@@ -316,3 +331,17 @@ $q_x$, but solves out the remaining life table metrics following the methods
 and functions described here.
 
 The resulting life table is the life table at the top of this document.
+
+### References
+
+Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+population processes. MA: Blackwell Publishing. 2001.
+
+Coale AJ, Demeny P, Vaughan B. Regional model life tables and stable
+populations: studies in population. Elsevier; 2013 Oct 22.
+
+Keyfitz N. A life table that agrees with the data. Journal of the American
+Statistical Association. 1966 Jun 1;61(314):305-12.
+
+
+

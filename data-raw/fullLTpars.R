@@ -7,7 +7,7 @@
 ## Requires 1x1 (1 year in time x 1 year in age) HMD life tables:
 ## Human Mortality Database. University of California, Berkeley (USA), and Max
 ## Planck Institute for Demographic Research (Germany). Available at
-## www.mortality.org or www.humanmortality.de (data downloaded on [Jan 2018]).
+## www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).
 
 # setup -------------------------------------------------------------------
 

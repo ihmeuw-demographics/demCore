@@ -30,6 +30,6 @@ fullLTpars
 \references{
 Human Mortality Database. University of California, Berkeley (USA), and Max
 Planck Institute for Demographic Research (Germany). Available at
-www.mortality.org or www.humanmortality.de (data downloaded on \link{Jan 2019}).
+www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).
 }
 \keyword{datasets}

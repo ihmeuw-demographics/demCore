@@ -32,7 +32,7 @@
 #' @references
 #' Human Mortality Database. University of California, Berkeley (USA), and Max
 #' Planck Institute for Demographic Research (Germany). Available at
-#' www.mortality.org or www.humanmortality.de (data downloaded on [Jan 2018]).
+#' www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).
 #'
 #' @format A data.table with columns:
 #' \describe{
