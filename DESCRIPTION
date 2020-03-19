@@ -30,7 +30,9 @@ Imports:
     assertive,
     assertthat,
     testthat,
-    ggplot2
+    ggplot2,
+    Rdpack
 Remotes:
     ihmeuw/demUtils
 Depends: R (>= 2.10)
+RdMacros: Rdpack

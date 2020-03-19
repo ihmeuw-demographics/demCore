@@ -1,3 +1,6 @@
+# For references:
+#' @importFrom Rdpack reprompt
+
 # this is needed for non-standard evaluation in data.table (and some other
 # packages). multiple links suggest using `utils::globalVariables` to remove
 # notes when checking the package.

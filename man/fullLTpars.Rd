@@ -15,10 +15,6 @@ model fit.}
 \item{slope}{Numeric, slope for the age- and sex-specific regression model
 fit.}
 }}
-\source{
-GBD 2019 methods (cite here).
-Regression fit to Human Mortality Database life tables (cite here).
-}
 \usage{
 fullLTpars
 }
@@ -30,5 +26,10 @@ abridged qx values:
 }
 \examples{
 fullLTpars
+}
+\references{
+Human Mortality Database. University of California, Berkeley (USA), and Max
+Planck Institute for Demographic Research (Germany). Available at
+www.mortality.org or www.humanmortality.de (data downloaded on \link{Jan 2019}).
 }
 \keyword{datasets}

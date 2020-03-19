@@ -20,10 +20,10 @@
 #'
 #' @examples
 #' library(data.table)
-#' data("fNOR2010")
+#' data("exampleLT")
 #' dt <- data.table::data.table()
 #' for(d in 1:100){
-#'  dt_new <- copy(fNOR2010)
+#'  dt_new <- copy(exampleLT)
 #'  dt_new[, draw := d]
 #'  dt_new[, mx := mx * rnorm(1, mean = 1, sd = 0.05)]
 #'  dt_new[, ax := ax * rnorm(1, mean = 1, sd = 0.05)]

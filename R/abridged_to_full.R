@@ -54,12 +54,12 @@
 #'   values. Therefore, this is an area for future methods development.
 #'
 #' @examples
-#' data("fNOR2010")
+#' data("exampleLT")
 #' data("fullLTpars")
 #' regression_fits <- fullLTpars[sex == "female"]
 #' id_cols <- c("location", "age")
 #' dt <- abridged_to_full(
-#'   dt = fNOR2010, regression_fits = regression_fits, id_cols = id_cols,
+#'   dt = exampleLT, regression_fits = regression_fits, id_cols = id_cols,
 #'   regression_id_cols = c("age"), terminal_age = 95
 #' )
 #'

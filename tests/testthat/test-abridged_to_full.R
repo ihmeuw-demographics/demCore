@@ -1,13 +1,13 @@
 library(data.table)
 
 # load test data
-data("fNOR2010")
+data("exampleLT")
 data("fullLTpars")
 fullLTpars <- fullLTpars[sex == "female", .(age, intercept, slope)]
 id_cols <- c("location", "age")
 
 # run function
-dt1 <- abridged_to_full(dt = fNOR2010,
+dt1 <- abridged_to_full(dt = exampleLT,
             regression_fits = fullLTpars,
             id_cols = id_cols,
             regression_id_cols = c("age"),
@@ -18,7 +18,7 @@ test_that("test that `abridged_to_full` gives us expected ages", {
 })
 
 test_that("test that `abridged_to_full` works without input 'age_length'", {
-  input_dt2 <- copy(fNOR2010)
+  input_dt2 <- copy(exampleLT)
   input_dt2[, age_length := NULL]
   dt2 <- abridged_to_full(dt = input_dt2,
                             regression_fits = fullLTpars,

@@ -15,8 +15,10 @@
 #' @return data.table with "ax" column added on.
 #'
 #' @details Takes a data.table with age, sex, and infant mortality rate and
-#'   adds a column 'ax'. Values from: Demography. Preston, Heuveline,
-#'   Guillot (2001).
+#'   adds a column 'ax'. Values from:
+#'
+#'   Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+#'   population processes. MA: Blackwell Publishing. 2001.
 #'
 #'  |                     || Males               || Females             |
 #'  | ------------------- |-|--------------------|-| -------------------|

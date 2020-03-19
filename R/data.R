@@ -1,22 +1,15 @@
-#' @title Example life table (Norway 2010 females, from GBD 2019)
+#' @title Example life table
 #'
-#' @description GBD 2019 death count and population estimates, for females in
-#'   Norway in 2010, made using Norway vital registration and census data. Also
+#' @description Example death count and population values. Also
 #'   includes mx (deaths / population), and ax and qx calculated using functions
 #'   from this package.
-#'
-#' @source Vital registration data obtained from: ADD SOURCE HERE.
-#'  Census data obtained from: ADD SOURCE HERE.
-#'  See GBD methods as described in GBD 2019 Lancet paper and methods appendix
-#'   (cite GBD paper here).
 #'
 #' @format A data.table with columns:
 #' \describe{
 #'  \item{age}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
-#'  \item{location}{Character, "Norway"}
-#'  \item{deaths}{GBD 2019 death count estimate for Norway 2010 females}
-#'  \item{population}{GBD 2019 population estimate for Norway 2010 females}
 #'  \item{age_length}{Integer, length in years of an age group}
+#'  \item{deaths}{Death counts}
+#'  \item{population}{Population counts}
 #'  \item{mx}{mortality rate (deaths / population)}
 #'  \item{ax}{mean person-years lived by those who die in interval. Obtained
 #'    using `mx_to_ax` function.}
@@ -24,8 +17,8 @@
 #'    birthday. Obtained using `mx_ax_to_qx` function.}
 #' }
 #' @examples
-#' fNOR2010
-"fNOR2010"
+#' exampleLT
+"exampleLT"
 
 
 
@@ -36,8 +29,10 @@
 #'   abridged qx values:
 #'   \deqn{log(q_x) = intercept + slope*log(q_x,abridged)}
 #'
-#' @source GBD 2019 methods (cite here).
-#'   Regression fit to Human Mortality Database life tables (cite here).
+#' @references
+#' Human Mortality Database. University of California, Berkeley (USA), and Max
+#' Planck Institute for Demographic Research (Germany). Available at
+#' www.mortality.org or www.humanmortality.de (data downloaded on [Jan 2018]).
 #'
 #' @format A data.table with columns:
 #' \describe{
