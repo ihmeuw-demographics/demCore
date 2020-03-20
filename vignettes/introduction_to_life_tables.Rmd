@@ -39,7 +39,7 @@ $x+n$ where $n$ indicates the length of the interval, typically in years. We
 often shorthand by removing the "n" from the notation, with interval length
 implied.
 
-Here's an example of a life table:
+Here's an example of a life table, which is saved in the package as `exampleLT`:
 
 ```{r example_lt, echo = F}
 data("exampleLT")
@@ -51,32 +51,6 @@ dt_rounded <- round(dt, 2)
 setnames(dt_rounded, "age", "x")
 setnames(dt_rounded, "age_length", "n")
 kable(dt_rounded, format = "markdown")
-```
-
-We also often reduce life tables to age patterns of log probability of death
-($\text{log}(q_x)$) or to survival curves ($l_x$ over age), which can be easily
-displayed and vetted in plots.
-
-```{r plot_qx, echo = F}
-ggplot(data = dt,
-       aes(x = age,
-           y = log(qx))) +
-       geom_line(color = "magenta") +
-       geom_point() +
-       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
-       theme_bw() +
-       theme(axis.text.x = element_text(size = 6)) +
-       ggtitle("log-qx over age")
-
-ggplot(data = dt,
-       aes(x = age,
-           y = lx)) +
-       geom_line(color = "magenta") +
-       geom_point() +
-       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
-       theme_bw() +
-       theme(axis.text.x = element_text(size = 6)) +
-       ggtitle("lx over age (survival curve)")
 ```
 
 ## Life table metrics
@@ -114,7 +88,36 @@ __$\mathbf{_nd_x}$:__ proportion of the cohort dying between ages $x$ and $x+n$.
 Shorthand to "dx."  
 
 __$\mathbf{_np_x}$:__ probability of survival between ages $x$ and $x+n$
-conditional on survival to age $x$. Inverse of $qx$.  
+conditional on survival to age $x$. Inverse of $qx$.
+
+## Representing life tables graphically
+
+We often reduce life tables to age patterns of log probability of death
+($\text{log}(q_x)$) or to survival curves ($l_x$ over age), which can be easily
+displayed and vetted in plots.
+
+```{r plot_qx, echo = F}
+ggplot(data = dt,
+       aes(x = age,
+           y = log(qx))) +
+       geom_line(color = "magenta") +
+       geom_point() +
+       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
+       theme_bw() +
+       theme(axis.text.x = element_text(size = 6)) +
+       ggtitle("log-qx over age")
+
+ggplot(data = dt,
+       aes(x = age,
+           y = lx)) +
+       geom_line(color = "magenta") +
+       geom_point() +
+       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
+       theme_bw() +
+       theme(axis.text.x = element_text(size = 6)) +
+       ggtitle("lx over age (survival curve)")
+```
+
 
 ## Calculations and relationships between life table metrics
 
@@ -194,7 +197,7 @@ Use the `gen_u5_ax` function to implement this method:
 
 ```{r ax_u5_calc, eval = F}
 dt[, sex := "female"]
-dt <- gen_u5_ax(dt, id_cols = c("age", "sex"))
+gen_u5_ax(dt, id_cols = c("age", "sex"))
 ```
 
 __Graduation method:__ One strategy for selecting ax values is based on the

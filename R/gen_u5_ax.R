@@ -12,7 +12,7 @@
 #' @param id_cols \[`character()`\] columns that uniquely identify
 #'   observations in `dt`. Must include 'age' and 'sex'.
 #'
-#' @return data.table with "ax" column added on.
+#' @return modifies `dt` in place with "ax" column added on.
 #'
 #' @details Takes a data.table with age, sex, and infant mortality rate and
 #'   adds a column 'ax'. Values from:
@@ -103,6 +103,5 @@ gen_u5_ax <- function(dt, id_cols) {
   # clean up and return -----------------------------------------------------
 
   dt[, c("mx_inf") := NULL]
-  return(dt)
 
 }
