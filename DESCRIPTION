@@ -19,7 +19,8 @@ Suggests:
     kableExtra,
     spelling,
     covr,
-    devtools
+    devtools,
+    ggplot2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
@@ -30,7 +31,6 @@ Imports:
     assertive,
     assertthat,
     testthat,
-    ggplot2,
     Rdpack,
     demUtils
 Remotes:
