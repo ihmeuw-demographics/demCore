@@ -27,15 +27,14 @@
 #'
 #' @examples
 #' dt <- data.table::data.table(
-#'   id = c(rep(1, 5), rep(2, 5)), qx = c(rep(.1, 5), rep(.2, 5)),
+#'   id = c(rep(1, 5), rep(2, 5)),
+#'   qx = c(rep(.1, 5), rep(.2, 5)),
 #'   age_start = rep(seq(15, 35, 5), 2),
 #'   age_end = rep(seq(20, 40, 5), 2)
 #' )
-#' target_dt <- data.table::data.table(age_start = c(15),
-#'                                     age_end = c(40))
-#' # agg_qx(dt, id_cols = c("id", "age_start", "age_end"),
-#' #     target_ages_dt = target_dt)
-#'
+#' age_mapping <- data.table::data.table(age_start = c(15), age_end = c(40))
+#' agg_qx(dt, id_cols = c("id", "age_start", "age_end"),
+#'         age_mapping = age_mapping)
 #' @export
 
 agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
