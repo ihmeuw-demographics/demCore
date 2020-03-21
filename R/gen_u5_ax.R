@@ -37,7 +37,6 @@
 #'   sex = c("male", "male")
 #' )
 #' dt <- gen_u5_ax(dt, id_cols = c("age", "sex"))
-#'
 #' @export
 
 gen_u5_ax <- function(dt, id_cols) {

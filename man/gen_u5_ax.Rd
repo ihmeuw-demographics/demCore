@@ -20,7 +20,7 @@ but will result in NA output for ax or unchanged ax if ax in input \code{dt}
 observations in \code{dt}. Must include 'age' and 'sex'.}
 }
 \value{
-data.table with "ax" column added on.
+modifies \code{dt} in place with "ax" column added on.
 }
 \description{
 Add ax onto a data.table for ages <1 and 1-4 years, with
@@ -49,5 +49,4 @@ dt <- data.table::data.table(
   sex = c("male", "male")
 )
 dt <- gen_u5_ax(dt, id_cols = c("age", "sex"))
-
 }

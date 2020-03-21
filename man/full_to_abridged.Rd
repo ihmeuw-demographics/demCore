@@ -15,7 +15,8 @@ it is not provided it is calculated within.}
 observations}
 
 \item{abridged_ages}{[\code{integer()}] ages to break the single-year ages into.
-Default = c(0, 1, seq(5, 110, 5)).}
+These are the starting ages of each age interval.
+Default: c(0, 1, seq(5, 110, 5)).}
 }
 \value{
 data.table with \code{id_cols}, \code{qx}, and \code{ax}, for abridged ages

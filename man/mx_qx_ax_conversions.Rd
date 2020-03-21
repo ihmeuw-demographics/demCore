@@ -37,7 +37,7 @@ interval of those who died)}
 Numeric value representing the converted mx, qx, or ax value.
 }
 \description{
-Convert between mx and qx values given a time for an age
+Convert between mx and qx values given the length of an age
 interval. If ax (the average number of years lived in the x to x + n age
 interval by those dying in the interval) exists, use the \emph{\emph{ax_to}}
 functions. The mx_to_qx and qx_to_mx functions assume smooth mortality

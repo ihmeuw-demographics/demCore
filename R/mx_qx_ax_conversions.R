@@ -1,6 +1,6 @@
 #' @title Convert between mx, qx, and ax values
 #'
-#' @description Convert between mx and qx values given a time for an age
+#' @description Convert between mx and qx values given the length of an age
 #'   interval. If ax (the average number of years lived in the x to x + n age
 #'   interval by those dying in the interval) exists, use the *_ax_to_*
 #'   functions. The mx_to_qx and qx_to_mx functions assume smooth mortality
