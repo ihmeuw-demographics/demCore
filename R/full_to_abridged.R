@@ -9,7 +9,8 @@
 #' @param id_cols \[`character()`\] variables that uniquely identify
 #'   observations
 #' @param abridged_ages \[`integer()`\] ages to break the single-year ages into.
-#'   Default = c(0, 1, seq(5, 110, 5)).
+#'   These are the starting ages of each age interval.
+#'   Default: c(0, 1, seq(5, 110, 5)).
 #'
 #' @return data.table with `id_cols`, `qx`, and `ax`, for abridged ages
 #'   specified in `abridged_ages`

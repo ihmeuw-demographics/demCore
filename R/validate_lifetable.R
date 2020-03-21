@@ -27,8 +27,6 @@
 #'    are <= terminal age.
 #'
 #'   **assert_na** check `assert_na` is a logical.
-#'
-#' @export
 
 validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
                                 terminal_age = NA, assert_na = NA) {
