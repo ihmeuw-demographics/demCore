@@ -224,12 +224,11 @@ $$_nq_x = \frac{n \cdot {_nm_x}}{1 + (n - {_na_x}) \cdot {_nm_x}}$$
 For the terminal age group, qx should be 1 because all individuals surviving to
 the terminal age group will die in that age group (probability of death = 1).
 
+The `mx_ax_to_qx` combines the equation for qx and the requirement of terminal
+qx equalling one by setting $qx = 1$ if `age_length = Inf`.
+
 ```{r qx_calc1}
 dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
-
-# set qx = 1 and recalculate ax for terminal age group
-dt[age == max(dt$age), qx := 1]
-dt[age == max(dt$age), ax := mx_qx_to_ax(mx = mx, qx = 1, age_length = 30)]
 ```
 
 Other functions that utilize this relationship but solve for different metrics

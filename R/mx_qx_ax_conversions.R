@@ -29,6 +29,7 @@ NULL
 #' @export
 mx_to_qx <- function(mx, age_length) {
   result <- 1 - exp((-1 * age_length) * mx)
+  if(age_length == Inf) result <- 1
   return(result)
 }
 
@@ -36,6 +37,7 @@ mx_to_qx <- function(mx, age_length) {
 #' @export
 mx_ax_to_qx <- function(mx, ax, age_length) {
   result <- (age_length * mx) / (1 + (age_length - ax) * mx)
+  if(age_length == Inf) result <- 1
   return(result)
 }
 
