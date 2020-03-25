@@ -100,6 +100,6 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
   if(!is.na(assert_na)) {
     assertive::assert_is_logical(assert_na)
   }
-  return(dt)
+  return(invisible(dt))
 }
 
