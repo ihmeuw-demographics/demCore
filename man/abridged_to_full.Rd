@@ -21,8 +21,8 @@ abridged_to_full(
 \item{id_cols}{[\code{character()}] variables that uniquely identify rows,
 must include 'age'}
 
-\item{regression_fits}{[\code{data.table()}] with variables from \code{id_cols}, plus
-'intercept', slope'}
+\item{regression_fits}{[\code{data.table()}] with variables from
+\code{regression_id_cols}, plus 'intercept' and 'slope'}
 
 \item{regression_id_cols}{[\code{character()}] variables that uniquely identify
 regression parameters. Must include 'age' and be contained by \code{id_cols}.}
@@ -56,22 +56,27 @@ abridged life tables to full life tables. The first method is a
 monotonic spline fits the general curve and pattern well, basically
 splining between the knots at each abridged-year increment. However, the
 spline can become wild and unreasonable in age groups with dramatic changes
-in mortality rate over age. Internally, this function calls the \code{spline}
-function from the \code{stats} package.
+in mortality rate over age. Internally, this function calls the function
+\code{\link[stats:spline]{stats::spline()}}.
 
 The second method is a \strong{regression method} to predict log full qx from
 log abridged qx:
 \deqn{log(qx) = B0 + B1 log(qx,abridged)}
 Where the parameters \eqn{B0} and \eqn{B1} are fit using high
 quality single-year life tables (like those from Human Mortality Database),
-and passed into this function. The regression-based method has its own
-challenges, where jagged qx patterns may arise because we do not take
-consecutive abridged qx values into account simultaneously.
+and passed into this function. The regression must be fit separately by
+single-year age, but it may be also stratified by secondary identifying
+variables like 'sex'. These regression id variables must be present in the
+input abridged life tables you are trying to expand. The regression-based
+method has its own challenges, where jagged qx patterns may arise because
+we do not take consecutive abridged qx values into account simultaneously.
 
 The function also allows for a combination of the methods to be used, with
 separation on age. The default age cutoffs reflect the values we found to
 work best: regression method for ages <15 and >100 and spline method for
 ages between 15 and 100.
+}
+\section{Default ax}{
 
 Values of ax are assumed to be 0.5 for all single-year ages, except those
 passed into \code{preserve_input_ax_ages} argument. HMD also assumes 0.5 for
@@ -79,6 +84,7 @@ single-years, but we may be introducing an inconsistency between abridged
 and full life table mx values that are calculated from these differing ax
 values. Therefore, this is an area for future methods development.
 }
+
 \examples{
 data("exampleLT")
 data("fullLTpars")

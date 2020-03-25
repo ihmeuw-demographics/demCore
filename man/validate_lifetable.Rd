@@ -27,7 +27,7 @@ parameters (qx, lx, etc.)}
 generated variable.}
 }
 \value{
-silent. Fails if any assertion fails.
+Invisibly returns input \code{dt}. Fails if any assertion fails.
 }
 \description{
 Check life table, id columns, life table parameter columns,

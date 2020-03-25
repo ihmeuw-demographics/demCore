@@ -41,7 +41,7 @@
 
 gen_u5_ax <- function(dt, id_cols) {
 
-  # high/low infant mx threshold
+  # high/low infant mx threshold from Preston book
   threshold <- 0.107
 
   # validate ---------------------------------------------------------------

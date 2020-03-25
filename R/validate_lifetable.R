@@ -12,7 +12,7 @@
 #' @param assert_na \[`logical()`\] whether to check for NA values in the
 #'   generated variable.
 #'
-#' @return silent. Fails if any assertion fails.
+#' @return Invisibly returns input `dt`. Fails if any assertion fails.
 #'
 #' @details This function performs the following checks:
 #'
@@ -100,6 +100,6 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
   if(!is.na(assert_na)) {
     assertive::assert_is_logical(assert_na)
   }
-
+  return(invisible(dt))
 }
 

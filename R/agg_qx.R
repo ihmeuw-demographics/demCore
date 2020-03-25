@@ -12,14 +12,10 @@
 #'   * must only include columns 'qx' and those specified in `id_cols`
 #'   * must include 'age_start' and 'age_end' columns
 #'   * `id_cols` must uniquely identify each row
-#' @param id_cols character vector of column names that uniquely identify each
-#'   row of `dt`
 #' @param age_mapping \[`data.table()`\] specification of intervals to aggregate
 #'   to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
 #'   for terminal age group.
-#' @param drop_present_aggs \[`logical()`\] whether to drop aggregates (or
-#'   overlapping intervals) that are already present in dt before aggregating.
-#'   Default is "False" and the function errors out.
+#' @inheritParams demUtils::agg
 #'
 #' @return data.table with `id_cols` and `qx` columns for aggregate age groups.
 #'

@@ -1,12 +1,13 @@
 #' @title Summarize life table draws
 #'
-#' @description
-#' Create mean and confidence intervals for summary-level life tables based off
-#' of draws. First draws are collapsed to mean, lower (2.5th percentile),
-#' and upper (97.5th percentile). Then, we make sure mean-level life table
-#' parameters are consistent with one another by re-calculating every
-#' requested parameter other than mx and ax, using standard methods documented
-#' elsewhere.
+#' @description Create mean and confidence intervals for summary-level life
+#'   tables based off of draws. One draw is one independent simulation or
+#'   calculation -- we typically use 100 or 1000 to bootstrap uncertainty
+#'   and propagate error through multiple steps. First draws are collapsed to
+#'   mean, lower (2.5th percentile), and upper (97.5th percentile). Then, we
+#'   make sure mean-level life table parameters are consistent with one another
+#'   by re-calculating every requested parameter other than mx and ax, using
+#'   standard methods documented elsewhere.
 #'
 #' @param dt \[`data.table()`\] draw-level life tables, columns include all
 #'  `id_cols`, all `lt_params`, and 'draw'.

@@ -15,8 +15,7 @@
 #' @param assert_na \[`logical()`\] whether to assert that there is no missingness.
 #'   Default T.
 #'
-#' @return data.frame or data.table with additional variables px, lx, dx, Tx,
-#'   nLx, ex
+#' @return data.table with additional variables px, lx, dx, Tx, nLx, ex
 #'
 #' @examples
 #' dt <- data.table::data.table(
