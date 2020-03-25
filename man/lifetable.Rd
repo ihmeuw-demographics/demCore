@@ -22,8 +22,7 @@ rather than recalculating them based on mx and ax. Default: F.}
 Default T.}
 }
 \value{
-data.frame or data.table with additional variables px, lx, dx, Tx,
-nLx, ex
+data.table with additional variables px, lx, dx, Tx, nLx, ex
 }
 \description{
 Given a data.table with at least two of variables mx, ax, and

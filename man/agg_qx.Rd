@@ -14,16 +14,17 @@ agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
 \item \code{id_cols} must uniquely identify each row
 }}
 
-\item{id_cols}{character vector of column names that uniquely identify each
-row of \code{dt}}
+\item{id_cols}{[\code{character()}]\cr
+ID columns that uniquely identify each row of \code{dt}.}
 
 \item{age_mapping}{[\code{data.table()}] specification of intervals to aggregate
 to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
 for terminal age group.}
 
-\item{drop_present_aggs}{[\code{logical()}] whether to drop aggregates (or
-overlapping intervals) that are already present in dt before aggregating.
-Default is "False" and the function errors out.}
+\item{drop_present_aggs}{[\code{logical(1)}]\cr
+Whether to drop aggregates (or overlapping intervals) that are already
+present in \code{dt} before aggregating. Default is "False" and the function
+errors out.}
 }
 \value{
 data.table with \code{id_cols} and \code{qx} columns for aggregate age groups.
