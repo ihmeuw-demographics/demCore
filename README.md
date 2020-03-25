@@ -16,6 +16,7 @@ All of the following authors of this package are at the [Institute for Health
 Metrics and Evaluation](http://www.healthdata.org/) at the University of
 Washington.
 
+|                    |                 |
 |--------------------|-----------------|
 | Katie Paulson      | krpaul@uw.edu   |
 | Charlton Callender | chacalle@uw.edu |
