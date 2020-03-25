@@ -16,28 +16,16 @@ All of the following authors of this package are at the [Institute for Health
 Metrics and Evaluation](http://www.healthdata.org/) at the University of
 Washington.
 
-<table>
-  <tr>
-    <td> Katie Paulson </td>
-    <td> krpaul@uw.edu </td>
-  </tr>
-  <tr>
-    <td> Charlton Callender </td>
-    <td> chacalle@uw.edu </td>
-  </tr>
-  <tr>
-    <td> Spencer Pease </td>
-    <td> spease@uw.edu </td>
-  </tr>
-</table>
+|--------------------|-----------------|
+| Katie Paulson      | krpaul@uw.edu   |
+| Charlton Callender | chacalle@uw.edu |
+| Spencer Pease      | spease@uw.edu   |
 
 ### Installation
 
 This package has not yet been published on CRAN, but can be installed from
-GitHub using the <a href="https://github.com/r-lib/remotes" target="_blank">remotes
-package</a> package. Installation of the
-<a href="https://github.com/ihmeuw/demUtils" target="_blank">demUtils package</a>
-from GitHub is also required.
+GitHub using the [remotes](https://remotes.r-lib.org/) package. Installation of
+the [demUtils](https://github.com/ihmeuw/demUtils) package is also required.
 
 ```r
 remotes::install_github("ihmeuw/demUtils")
