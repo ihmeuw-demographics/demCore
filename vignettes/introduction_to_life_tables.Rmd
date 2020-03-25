@@ -17,7 +17,7 @@ library(knitr)
 library(kableExtra)
 library(ggplot2)
 devtools::load_all()
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
 ## What is a life table?
@@ -227,7 +227,7 @@ the terminal age group will die in that age group (probability of death = 1).
 The `mx_ax_to_qx` combines the equation for qx and the requirement of terminal
 qx equalling one by setting $qx = 1$ if `age_length = Inf`.
 
-```{r qx_calc1}
+```{r qx_calc1, echo = T, results = "hide"}
 dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
 ```
 
