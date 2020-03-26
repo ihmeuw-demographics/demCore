@@ -41,13 +41,17 @@ test_that("test that `agg_qx` errors are thrown for different cases", {
                                 age_mapping = age_ma))
 
   # Check that error thrown when data not square
-  testthat::expect_error(agg_qx(input_dt[1:8], age_start = 15, age_end = 40, id_cols = id_cols))
+  testthat::expect_error(agg_qx(input_dt[1:8], age_start = 15, age_end = 40,
+                                id_cols = id_cols))
 
   # Check that error thrown if age_start or age_end are not in data
-  testthat::expect_error(agg_qx(input_dt, age_start = 16, age_end = 40, id_cols = id_cols))
-  testthat::expect_error(agg_qx(input_dt, age_start = 15, age_end = 39, id_cols = id_cols))
+  testthat::expect_error(agg_qx(input_dt, age_start = 16, age_end = 40,
+                                id_cols = id_cols))
+  testthat::expect_error(agg_qx(input_dt, age_start = 15, age_end = 39,
+                                id_cols = id_cols))
 
   # check error thrown when rows of input dt are not unique
   non_unique_input_dt <- rbind(input_dt, input_dt)
-  testthat::expect_error(agg_qx(non_unique_input_dt, age_start = 15, age_end = 40, id_cols = id_cols))
+  testthat::expect_error(agg_qx(non_unique_input_dt, age_start = 15,
+                                age_end = 40, id_cols = id_cols))
 })

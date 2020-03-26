@@ -43,13 +43,13 @@ Here's an example of a life table, which is saved in the package as `exampleLT`:
 
 ```{r example_lt, echo = F}
 data("exampleLT")
-dt <- lifetable(exampleLT, id_cols = c("age"), terminal_age = 95)
-dt <- dt[, .SD, .SDcols = c("age", "age_length", "deaths", "population",
+dt <- lifetable(exampleLT, id_cols = c("age_start", "age_end"))
+dt <- dt[, .SD, .SDcols = c("age_start", "age_end", "deaths", "population",
                             "mx", "ax", "qx", "px", "lx", "dx", "nLx",
                             "Tx", "ex")]
 dt_rounded <- round(dt, 2)
-setnames(dt_rounded, "age", "x")
-setnames(dt_rounded, "age_length", "n")
+setnames(dt_rounded, "age_start", "x")
+setnames(dt_rounded, "age_end", "x+n")
 kable(dt_rounded, format = "markdown")
 ```
 
@@ -98,21 +98,21 @@ displayed and vetted in plots.
 
 ```{r plot_qx, echo = F}
 ggplot(data = dt,
-       aes(x = age,
+       aes(x = age_start,
            y = log(qx))) +
        geom_line(color = "magenta") +
        geom_point() +
-       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
+       scale_x_continuous(breaks = c(0, 1, seq(5, 95, 5))) +
        theme_bw() +
        theme(axis.text.x = element_text(size = 6)) +
        ggtitle("log-qx over age")
 
 ggplot(data = dt,
-       aes(x = age,
+       aes(x = age_start,
            y = lx)) +
        geom_line(color = "magenta") +
        geom_point() +
-       scale_x_continuous(breaks = c(0,1,seq(5,95,5))) +
+       scale_x_continuous(breaks = c(0, 1, seq(5, 95, 5))) +
        theme_bw() +
        theme(axis.text.x = element_text(size = 6)) +
        ggtitle("lx over age (survival curve)")
@@ -145,7 +145,7 @@ Let's load in our example data and calculate mx:
 
 ```{r mx_calc}
 data("exampleLT")
-dt <- exampleLT[, c("age", "age_length", "deaths", "population")]
+dt <- exampleLT[, c("age_start", "age_end", "deaths", "population")]
 dt[, mx := deaths / population]
 ```
 
@@ -172,9 +172,12 @@ The function `mx_to_ax` implements this assumption.
 Using our example data, we get:
 
 ```{r ax_calc}
+dt <- demUtils::gen_length(dt, col_stem = "age")
 dt[, ax := mx_to_ax(mx = mx, age_length = age_length)]
 ```
 
+Note that we can use `demUtils::gen_length` to add the `age_length` column
+given `age_start` and `age_end`.
 
 __1a0 and 4a1:__
 
@@ -197,7 +200,7 @@ Use the `gen_u5_ax` function to implement this method:
 
 ```{r ax_u5_calc, eval = F}
 dt[, sex := "female"]
-gen_u5_ax(dt, id_cols = c("age", "sex"))
+gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 ```
 
 __Graduation method:__ One strategy for selecting ax values is based on the
@@ -259,7 +262,7 @@ age $x+n$.
 Our `qx_to_lx` function can perform this calculation:
 
 ```{r lx_calc}
-qx_to_lx(dt, id_cols = c("age"))
+qx_to_lx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### dx
@@ -271,7 +274,7 @@ to age $x$ and proportion surviving to age $x+n$).
 To calculate dx, use `lx_to_dx`:
 
 ```{r dx_calc}
-lx_to_dx(dt, id_cols = c("age"), terminal_age = 95)
+lx_to_dx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### nLx
@@ -295,7 +298,7 @@ $${_{\infty}L_x} = \text{person-years lived above age } x =
 Use the `gen_nLx` function to calculate with this method:
 
 ```{r nLx_calc}
-gen_nLx(dt, id_cols = c("age"), terminal_age = 95)
+gen_nLx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### Tx
@@ -305,7 +308,7 @@ Next, use $_nL_x$ to get $T_x$:
 $$T_x = \sum_{x}^{\infty} {_nL_x}.$$
 
 ```{r Tx_calc}
-gen_Tx(dt, id_cols = c("age"))
+gen_Tx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### ex

@@ -49,3 +49,4 @@ test_that("test that inverse functionality works for mx ax qx functions", {
   expected <- 2.4
   testthat::expect_equal(output, expected)
 })
+

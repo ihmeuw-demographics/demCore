@@ -12,27 +12,24 @@
 \usage{
 qx_to_lx(dt, id_cols, assert_na = T)
 
-lx_to_qx(dt, id_cols, terminal_age = 110, assert_na = T)
+lx_to_qx(dt, id_cols, assert_na = T)
 
-lx_to_dx(dt, id_cols, terminal_age = 110, assert_na = T)
+lx_to_dx(dt, id_cols, assert_na = T)
 
-gen_nLx(dt, id_cols, terminal_age = 110, assert_na = T)
+gen_nLx(dt, id_cols, assert_na = T)
 
 gen_Tx(dt, id_cols, assert_na = T)
 
 gen_ex(dt, assert_na = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] variables lx, ax, dx, mx, age, and age_length.}
+\item{dt}{[\code{data.table()}] variables lx, ax, dx, mx, age_start, age_end}
 
 \item{id_cols}{[\code{character()}] columns that uniquely identify each row
-of \code{dt}.}
+of \code{dt}. Must include 'age_start' and 'age_end'.}
 
 \item{assert_na}{[\code{logical()}] whether to check for NA values in the
 generated variable.}
-
-\item{terminal_age}{[\code{integer(1)}] the terminal age group for the data.
-Default: 110.}
 }
 \value{
 dt with column added for new life table parameter. Modifies
@@ -102,18 +99,19 @@ age group (lx).
 \examples{
 dt <- data.table::data.table(
   sex = rep("both", 4),
-  age = c(0, 5, 10, 15),
-  age_length = c(5, 5, 5, 120),
+  age_start = c(0, 5, 10, 15),
+  age_end = c(5, 10, 15, Inf),
+  age_length = c(5, 5, 5, Inf),
   mx = c(0.1, 0.2, 0.3, 0.4),
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-qx_to_lx(dt, id_cols = c("sex", "age"))
-lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-gen_Tx(dt, id_cols = c("sex", "age"))
+qx_to_lx(dt, id_cols = c("sex", "age_start", "age_end"))
+lx_to_dx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_nLx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_Tx(dt, id_cols = c("sex", "age_start", "age_end"))
 gen_ex(dt)
-lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+lx_to_qx(dt, id_cols = c("sex", "age_start", "age_end"))
 
 }
 \seealso{

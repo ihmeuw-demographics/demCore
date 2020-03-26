@@ -9,26 +9,28 @@ gen_u5_ax(dt, id_cols)
 \arguments{
 \item{dt}{[\code{data.table()}] with columns:
 \itemize{
-\item 'age' with values 0 (for under-1) and 1 (for 1-4). Other ages permitted
-but will result in NA output for ax or unchanged ax if ax in input \code{dt}
+\item 'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
+permitted but will result in NA output for ax or unchanged ax if ax in
+input \code{dt}.
+\item 'age_end' with values 1 (for under-1) and 5 (for 1-4).
 \item 'sex' where values must be 'male', 'female', or 'both'
 \item 'mx' for mortality rate
 \item All additional columns from 'id_cols'
 }}
 
 \item{id_cols}{[\code{character()}] columns that uniquely identify
-observations in \code{dt}. Must include 'age' and 'sex'.}
+observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 }
 \value{
-modifies \code{dt} in place with "ax" column added on.
+modifies \code{dt} in place with 'ax' column added on.
 }
 \description{
 Add ax onto a data.table for ages <1 and 1-4 years, with
 algorithm based on under-1 mx.
 }
 \details{
-Takes a data.table with age, sex, and infant mortality rate and
-adds a column 'ax'. Values from:
+Takes a data.table with age_start, age_end, sex, and infant
+mortality rate and adds a column 'ax'. Values from:
 
 Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
 population processes. MA: Blackwell Publishing. 2001.\tabular{lllll}{
@@ -44,9 +46,10 @@ population processes. MA: Blackwell Publishing. 2001.\tabular{lllll}{
 }
 \examples{
 dt <- data.table::data.table(
-  age = c(0, 1),
+  age_start = c(0, 1),
+  age_end = c(1, 5),
   mx = c(0.09, 0.12),
   sex = c("male", "male")
 )
-dt <- gen_u5_ax(dt, id_cols = c("age", "sex"))
+dt <- gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 }

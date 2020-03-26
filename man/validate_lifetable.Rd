@@ -4,13 +4,7 @@
 \alias{validate_lifetable}
 \title{Validate life table}
 \usage{
-validate_lifetable(
-  dt,
-  id_cols = c(),
-  param_cols = c(),
-  terminal_age = NA,
-  assert_na = NA
-)
+validate_lifetable(dt, id_cols = c(), param_cols = c(), assert_na = NA)
 }
 \arguments{
 \item{dt}{[\code{data.table()}] input life tables}
@@ -20,8 +14,6 @@ of \code{dt}.}
 
 \item{param_cols}{[\code{character()}] columns containing life table
 parameters (qx, lx, etc.)}
-
-\item{terminal_age}{[\code{integer(1)}] the terminal age group for the data.}
 
 \item{assert_na}{[\code{logical()}] whether to check for NA values in the
 generated variable.}
@@ -36,15 +28,12 @@ and other inputs to functions in this package.
 \details{
 This function performs the following checks:
 
-\strong{id_cols} is a character vector, 'age' is included, and no other age
-variables are included.
+\strong{id_cols} is a character vector, 'age_start' and 'age_end' are included,
+and no other age variables are included.
 
 \strong{dt} is data.table, is unique by \code{id_cols}, has all \code{id_cols} and
-\code{param_cols}, 'age' and parameter columns are numeric, all life table
-parameters >= 0, parameters qx, lx, dx <= 1.
-
-\strong{terminal_age} check is a single number, check all age values in \code{dt}
-are <= terminal age.
+\code{param_cols}, 'age_start', 'age_end', and parameter columns are numeric,
+all life table parameters >= 0, parameters qx, lx, dx <= 1.
 
 \strong{assert_na} check \code{assert_na} is a logical.
 }

@@ -6,8 +6,8 @@
 \title{Example life table}
 \format{A data.table with columns:
 \describe{
-\item{age}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
-\item{age_length}{Integer, length in years of an age group}
+\item{age_start}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
+\item{age_end}{Integer, end of age group inclusive, 1, 5, 10, ... , 95, Inf}
 \item{deaths}{Death counts}
 \item{population}{Population counts}
 \item{mx}{mortality rate (deaths / population)}

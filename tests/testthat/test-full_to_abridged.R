@@ -3,16 +3,18 @@ library(data.table)
 # test input data
 dt <- data.table(
   location = "Canada",
-  age = c(0:110),
+  age_start = c(0:110),
+  age_end = c(1:110, Inf),
   qx = .2,
   ax = .5
 )
-id_cols = c("age", "location")
+id_cols = c("age_start", "age_end", "location")
 
 # expected output
 expected_dt <- data.table(
   location = "Canada",
-  age = c(0, 1, seq(5, 110, 5)),
+  age_start = c(0, 1, seq(5, 110, 5)),
+  age_end = c(1, seq(5, 110, 5), Inf),
   qx = c(0.2, 0.5904, rep(0.67232, 21), 1),
   ax = c(0.5, 1.7249, rep(2.06306, 21), 0.5)
 )
