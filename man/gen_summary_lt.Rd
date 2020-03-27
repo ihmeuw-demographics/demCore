@@ -42,8 +42,8 @@ for(d in 1:100){
  dt_new[, qx := NULL]
  dt <- rbind(dt, dt_new, fill = TRUE)
 }
-dt <- dt[!is.na(age)]
-dt <- gen_summary_lt(dt, id_cols = c("age", "draw"),
+dt <- dt[!is.na(age_start)]
+dt <- gen_summary_lt(dt, id_cols = c("age_start", "age_end", "draw"),
   lt_params = c("mx", "ax"))
 
 }

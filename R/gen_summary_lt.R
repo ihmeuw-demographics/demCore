@@ -31,8 +31,8 @@
 #'  dt_new[, qx := NULL]
 #'  dt <- rbind(dt, dt_new, fill = TRUE)
 #' }
-#' dt <- dt[!is.na(age)]
-#' dt <- gen_summary_lt(dt, id_cols = c("age", "draw"),
+#' dt <- dt[!is.na(age_start)]
+#' dt <- gen_summary_lt(dt, id_cols = c("age_start", "age_end", "draw"),
 #'   lt_params = c("mx", "ax"))
 #'
 #' @export
@@ -41,10 +41,6 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
 
   # validate ----------------------------------------------------------------
 
-  # check `id_cols`
-  assertthat::assert_that("draw" %in% id_cols,
-                          msg = "`id_cols` must include 'draw'.")
-
   # check `lt_params`
   assertthat::assert_that(length(setdiff(c("mx", "ax"), lt_params)) == 0,
                           msg = "`lt_params` must include 'mx' and 'ax'")
@@ -52,16 +48,15 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
   # check `dt`
   validate_lifetable(dt, id_cols, param_cols = lt_params)
 
+  # additional `id_cols` check
+  assertthat::assert_that("draw" %in% id_cols,
+                          msg = "`id_cols` must include 'draw'.")
+
   # prep --------------------------------------------------------------------
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    setnames(dt, "age", "age_start")
-    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
-                            col_stem = "age")
     dt <- demUtils::gen_length(dt, col_stem = "age")
-    setnames(dt, "age_start", "age")
-    dt[, age_end := NULL]
   }
 
   # get `id_cols` without 'draw'
@@ -101,7 +96,7 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
     if(length(setdiff(lt_params, c("mx", "ax", "qx"))) > 0) {
 
       # recalculate all other life table parameters
-      dt_mean <- lifetable(dt_mean, id_cols_no_draw, terminal_age = max(dt$age))
+      dt_mean <- lifetable(dt_mean, id_cols_no_draw)
 
     }
 
@@ -109,8 +104,13 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
     dt_mean <- dt_mean[, .SD, .SDcols = c(id_cols_no_draw, lt_params)]
 
     # melt life table parameters long
-    dt_mean <- melt(dt_mean, id.vars = id_cols_no_draw, measure.vars = lt_params,
-                    variable.name = "life_table_parameter", value.name = "mean")
+    dt_mean <- melt(
+      dt_mean,
+      id.vars = id_cols_no_draw,
+      measure.vars = lt_params,
+      variable.name = "life_table_parameter",
+      value.name = "mean"
+    )
 
     # replace mean in `dt`
     dt[, mean := NULL]

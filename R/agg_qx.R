@@ -37,19 +37,8 @@ agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
 
   # Validate -------------------------------------------------------------
 
-  # check `id_cols`
-  assertive::assert_is_character(id_cols)
-  assertthat::assert_that("age_start" %in% id_cols,
-                          msg = "`id_cols` must include 'age_start'.")
-  assertthat::assert_that("age_end" %in% id_cols,
-                          msg = "`id_cols` must include 'age_end'.")
-
-  # check `dt`
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("qx", id_cols), quiet = T)
-  assertive::assert_is_numeric(dt[["qx"]])
-  assertable::assert_values(dt, c("qx"), test = "gte", test_val = 0, quiet = T)
-  assertable::assert_values(dt, c("qx"), test = "lte", test_val = 1, quiet = T)
+  # check `id_cols` and `dt`
+  validate_lifetable(dt, id_cols, param_cols = c("qx"))
 
   # other assertions completed within demUtils::aggregate_age
 

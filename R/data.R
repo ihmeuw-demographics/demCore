@@ -6,8 +6,8 @@
 #'
 #' @format A data.table with columns:
 #' \describe{
-#'  \item{age}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
-#'  \item{age_length}{Integer, length in years of an age group}
+#'  \item{age_start}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
+#'  \item{age_end}{Integer, end of age group inclusive, 1, 5, 10, ... , 95, Inf}
 #'  \item{deaths}{Death counts}
 #'  \item{population}{Population counts}
 #'  \item{mx}{mortality rate (deaths / population)}
@@ -38,8 +38,9 @@
 #' \describe{
 #'  \item{sex}{Character, "male" or "female" for the sex the parameters
 #'    correspond to.}
-#'  \item{age}{Integer, single-year ages 1-109 representing the age the
+#'  \item{age_start}{Integer, single-year ages 1-109 representing the age the
 #'    parameters correspond to.}
+#'  \item{age_end}{Integer, 1 + age_start}
 #'  \item{intercept}{Numeric, intercept for the age- and sex-specific regression
 #'    model fit.}
 #'  \item{slope}{Numeric, slope for the age- and sex-specific regression model

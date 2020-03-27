@@ -8,8 +8,9 @@
 \describe{
 \item{sex}{Character, "male" or "female" for the sex the parameters
 correspond to.}
-\item{age}{Integer, single-year ages 1-109 representing the age the
+\item{age_start}{Integer, single-year ages 1-109 representing the age the
 parameters correspond to.}
+\item{age_end}{Integer, 1 + age_start}
 \item{intercept}{Numeric, intercept for the age- and sex-specific regression
 model fit.}
 \item{slope}{Numeric, slope for the age- and sex-specific regression model

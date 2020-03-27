@@ -8,7 +8,6 @@
 #'   of `dt`.
 #' @param param_cols \[`character()`\] columns containing life table
 #'   parameters (qx, lx, etc.)
-#' @param terminal_age \[`integer(1)`\] the terminal age group for the data.
 #' @param assert_na \[`logical()`\] whether to check for NA values in the
 #'   generated variable.
 #'
@@ -16,20 +15,17 @@
 #'
 #' @details This function performs the following checks:
 #'
-#'   **id_cols** is a character vector, 'age' is included, and no other age
-#'     variables are included.
+#'   **id_cols** is a character vector, 'age_start' and 'age_end' are included,
+#'     and no other age variables are included.
 #'
 #'   **dt** is data.table, is unique by `id_cols`, has all `id_cols` and
-#'     `param_cols`, 'age' and parameter columns are numeric, all life table
-#'     parameters >= 0, parameters qx, lx, dx <= 1.
-#'
-#'   **terminal_age** check is a single number, check all age values in `dt`
-#'    are <= terminal age.
+#'     `param_cols`, 'age_start', 'age_end', and parameter columns are numeric,
+#'     all life table parameters >= 0, parameters qx, lx, dx <= 1.
 #'
 #'   **assert_na** check `assert_na` is a logical.
 
 validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
-                                terminal_age = NA, assert_na = NA) {
+                                assert_na = NA) {
 
   # check `id_cols` argument -------------------------------------------------
 
@@ -38,19 +34,20 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
     # character
     assertive::assert_is_character(id_cols)
 
-    # includes "age"
-    assertthat::assert_that("age" %in% id_cols,
-                            msg = "`id_cols` must include 'age'.")
+    # includes "age_start" and "age_end"
+    assertthat::assert_that("age_start" %in% id_cols & "age_end" %in% id_cols,
+                            msg = "`id_cols` must include 'age_start' and
+                            'age_end'.")
 
     # shouldn't include other age variables
-    if("age_start" %in% id_cols) stop("'age_start' cannot be in id_cols.")
-    if("age_end" %in% id_cols) stop("'age_end' cannot be in id_cols.")
+    if("age" %in% id_cols) stop("'age' cannot be in id_cols.")
     if("age_length" %in% id_cols) stop("'age_length' cannot be in id_cols.")
     if("age_group" %in% id_cols) stop("'age_group' cannot be in id_cols.")
     if("age_group_id" %in% id_cols) stop("'age_group_id' cannot be in id_cols.")
-    id_cols_no_age <- id_cols[id_cols != "age"]
+    id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
     if(any(tolower(id_cols_no_age) %like% "age")) {
-      warning("Confirm that no age vars other than 'age' are in 'id_cols'.")
+      warning("Confirm that no age vars other than 'age_start' and 'age_end'
+              are in 'id_cols'.")
     }
   }
 
@@ -69,7 +66,8 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
                               only_colnames = F, quiet = T)
 
   # age and parameter columns numeric
-  if("age" %in% names(dt)) assertive::assert_is_numeric(dt[["age"]])
+  if("age_start" %in% names(dt)) assertive::assert_is_numeric(dt[["age_start"]])
+  if("age_end" %in% names(dt)) assertive::assert_is_numeric(dt[["age_end"]])
   for(param in param_cols) {
     assertive::assert_is_numeric(dt[[param]])
   }
@@ -83,16 +81,6 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
   if(length(params_lte_1) > 0) {
     assertable::assert_values(dt, params_lte_1, test = "lte",
                               test_val = 1, quiet = T)
-  }
-
-  # check `terminal_age` -----------------------------------------------------
-
-  if(!is.na(terminal_age)) {
-    # numeric
-    assertthat::is.number(terminal_age)
-    # all age values are less than terminal age
-    assertable::assert_values(dt, c("age"), test = "lte",
-                              test_val = terminal_age, quiet = T)
   }
 
   # check `assert_na` --------------------------------------------------------

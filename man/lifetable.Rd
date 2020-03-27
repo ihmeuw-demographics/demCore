@@ -4,22 +4,20 @@
 \alias{lifetable}
 \title{Generate a life table with all parameters}
 \usage{
-lifetable(dt, id_cols, terminal_age = 110, preserve_u5 = F, assert_na = T)
+lifetable(dt, id_cols, preserve_u5 = F, assert_na = T)
 }
 \arguments{
 \item{dt}{[\code{data.table()}] input life tables, variables: 'qx', 'mx', 'ax',
-'age', 'age_length', and all \code{id_cols}}
+'age_start', 'age_end', and all \code{id_cols}}
 
 \item{id_cols}{[\code{character()}] columns that uniquely identify each
 row of \code{dt}}
 
-\item{terminal_age}{[\code{integer(1)}] terminal age for the data. Default: 110}
-
 \item{preserve_u5}{[\code{logical()}] whether to preserve under-5 qx estimates
 rather than recalculating them based on mx and ax. Default: F.}
 
-\item{assert_na}{[\code{logical()}] whether to assert that there is no missingness.
-Default T.}
+\item{assert_na}{[\code{logical()}] whether to assert that there is no
+missingness. Default T.}
 }
 \value{
 data.table with additional variables px, lx, dx, Tx, nLx, ex
@@ -33,12 +31,11 @@ and ex.
 \examples{
 dt <- data.table::data.table(
   sex = rep("both", 4),
-  age = c(0, 5, 10, 15),
-  age_length = c(5, 5, 5, 120),
+  age_start = c(0, 5, 10, 15),
+  age_end = c(5, 10, 15, Inf),
   mx = c(0.1, 0.2, 0.3, 0.4),
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
-dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-dt <- lifetable(dt, id_cols = c("sex", "age"), terminal_age = 15)
+dt <- lifetable(dt, id_cols = c("sex", "age_start", "age_end"))
 
 }

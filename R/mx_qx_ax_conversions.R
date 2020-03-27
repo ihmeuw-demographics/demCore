@@ -25,46 +25,103 @@
 #' @name mx_qx_ax_conversions
 NULL
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 mx_to_qx <- function(mx, age_length) {
+
+  # main result qx
   result <- 1 - exp((-1 * age_length) * mx)
-  if(age_length == Inf) result <- 1
+
+  # terminal age qx
+  terminal <- grep(Inf, age_length)
+  result[terminal] <- 1
+
   return(result)
 }
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 mx_ax_to_qx <- function(mx, ax, age_length) {
+
+  # main result qx
   result <- (age_length * mx) / (1 + (age_length - ax) * mx)
-  if(age_length == Inf) result <- 1
+
+  # terminal age qx
+  terminal <- grep(Inf, age_length)
+  result[terminal] <- 1
+
   return(result)
 }
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 qx_to_mx <- function(qx, age_length) {
+
+  # terminal age:
+  # set arbitrary non-infinite length
+  # check qx = 1
+  terminal <- grep(Inf, age_length)
+  age_length[terminal] <- 200
+  if(any(qx[terminal] != 1)) stop("terminal qx should be 1")
+
+  # main result mx
   result <- log(1 - qx) / (-1 * age_length)
+
   return(result)
 }
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 mx_qx_to_ax <- function(mx, qx, age_length) {
+
+  # terminal age:
+  # set arbitrary non-infinite length
+  # check qx = 1
+  terminal <- grep(Inf, age_length)
+  age_length[terminal] <- 200
+  if(any(qx[terminal] != 1)) stop("terminal qx should be 1")
+
+  # main result ax
   result <- (qx + (mx * age_length * (qx - 1))) / (mx * qx)
+
   return(result)
 }
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 qx_ax_to_mx <- function(qx, ax, age_length) {
+
+  # terminal age:
+  # set arbitrary non-infinite length
+  # check qx = 1
+  terminal <- grep(Inf, age_length)
+  age_length[terminal] <- 200
+  if(any(qx[terminal] != 1)) stop("terminal qx should be 1")
+
+  # main result mx
   result <- qx / (age_length - (age_length * qx) + (ax * qx))
+
   return(result)
 }
 
+# ========================================
 #' @rdname mx_qx_ax_conversions
 #' @export
 mx_to_ax <- function(mx, age_length) {
-  result <- age_length + 1 / mx - age_length / (1 - exp(- age_length * mx))
+
+  # terminal age:
+  # set arbitrary non-infinite length
+  terminal <- grep(Inf, age_length)
+  age_length[terminal] <- 200
+
+  # main result ax
+  result <- age_length + (1 / mx) -
+            age_length / (1 - exp(- age_length * mx))
+
   return(result)
 }

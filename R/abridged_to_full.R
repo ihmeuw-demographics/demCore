@@ -4,23 +4,24 @@
 #'   (single-year-age) life tables using specified regression parameters or
 #'   lx spline
 #'
-#' @param dt \[`data.table()`\] with variables age, all `id_cols`, 'qx', 'ax'
+#' @param dt \[`data.table()`\] with variables 'age_start', 'age_end', all
+#'   `id_cols`, 'qx', 'ax'
 #' @param id_cols \[`character()`\] variables that uniquely identify rows,
-#'   must include 'age'
+#'   must include 'age_start' and 'age_end'.
 #' @param regression_fits \[`data.table()`\] with variables from
 #'   `regression_id_cols`, plus 'intercept' and 'slope'
 #' @param regression_id_cols \[`character()`\] variables that uniquely identify
-#'   regression parameters. Must include 'age' and be contained by `id_cols`.
-#' @param terminal_age \[`integer(1)`\] max age that is being computed
-#'   (default: 110)
+#'   regression parameters. Must include 'age_start' and 'age_end' and be
+#'   contained by `id_cols`.
 #' @param lx_spline_start_age \[`integer(1)`\] age (inclusive) to start using lx
 #'   spline rather than regression fits. Use 0 to use lx spline for all ages, or
-#'   integer > 110 or Inf to use regression results for all.
+#'   integer > 110 or Inf to use regression results for all. Corresponds to
+#'   'age_start' column.
 #' @param lx_spline_end_age \[`integer(1)`\] age (non-inclusive) to end spline
-#'   and begin using regression fits.
+#'   and begin using regression fits. Corresponds to 'age_start' column.
 #' @param preserve_input_ax_ages \[`integer()`\] ages to preserve the input ax
 #'   values for. This is typically the first age group 0-1 and the terminal age
-#'   group 110+.
+#'   group 110+. Corresponds to 'age_start' column.
 #'
 #' @return data.table with columns id_cols, age, qx, ax
 #'
@@ -46,9 +47,10 @@
 #'   we do not take consecutive abridged qx values into account simultaneously.
 #'
 #'   The function also allows for a combination of the methods to be used, with
-#'   separation on age. The default age cutoffs reflect the values we found to
-#'   work best: regression method for ages <15 and >100 and spline method for
-#'   ages between 15 and 100.
+#'   separation on age. The age cutoffs we found to work best are: regression
+#'   method for ages <15 and >100 and spline method for ages between 15 and 100.
+#'   This corresponds to `lx_spline_start_age = 15` and
+#'   `lx_spline_end_age = 100`.
 #'
 #' @section Default ax:
 #'   Values of ax are assumed to be 0.5 for all single-year ages, except those
@@ -61,18 +63,19 @@
 #' data("exampleLT")
 #' data("fullLTpars")
 #' regression_fits <- fullLTpars[sex == "female"]
-#' id_cols <- c("age")
+#' id_cols <- c("age_start", "age_end")
 #' dt <- abridged_to_full(
 #'   dt = exampleLT, regression_fits = regression_fits, id_cols = id_cols,
-#'   regression_id_cols = c("age"), terminal_age = 95
+#'   lx_spline_start_age = 15, lx_spline_end_age = 100,
+#'   regression_id_cols = c("age_start", "age_end")
 #' )
 #'
 #' @export
 
 abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
-                             terminal_age = 110, lx_spline_start_age = 15,
-                             lx_spline_end_age = 100,
-                             preserve_input_ax_ages = c(0, terminal_age)) {
+                             lx_spline_start_age,
+                             lx_spline_end_age,
+                             preserve_input_ax_ages = c(0, max(dt$age_start))) {
 
   # validate ----------------------------------------------------------------
 
@@ -81,9 +84,12 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
 
   # check `regression_id_cols`
   assertive::is_character(regression_id_cols)
-  assertthat::assert_that("age" %in% regression_id_cols,
-                          msg = "`regression_id_cols` must include 'age'.")
-  regression_id_cols_no_age <- regression_id_cols[regression_id_cols != "age"]
+  assertthat::assert_that("age_start" %in% regression_id_cols &
+                          "age_end" %in% regression_id_cols,
+                          msg = "`regression_id_cols` must include
+                          'age_start' and 'age_end'.")
+  regression_id_cols_no_age <-
+    regression_id_cols[!regression_id_cols %in% c("age_start", "age_end")]
   if(length(setdiff(regression_id_cols, id_cols)) > 0) {
     stop("`regression_id_cols` must be contained within `id_cols`")
   }
@@ -101,21 +107,19 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
   dt <- copy(dt)
 
   # take out ages where we want to keep ax unchanged
-  preserve_ax_dt <- dt[age %in% preserve_input_ax_ages]
+  preserve_ax_dt <- dt[age_start %in% preserve_input_ax_ages]
   preserve_ax_dt <- preserve_ax_dt[, .SD, .SDcols = c(id_cols, "qx", "ax")]
 
-  # get `id_cols` without 'age'
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  # get `id_cols` without age
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    setnames(dt, "age", "age_start")
-    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
-                            col_stem = "age")
     dt <- demUtils::gen_length(dt, col_stem = "age")
-    setnames(dt, "age_start", "age")
-    dt[, age_end := NULL]
   }
+
+  # capture terminal age for reference later
+  terminal_age <- max(dt$age_start)
 
   # lx spline ---------------------------------------------------------------
 
@@ -124,15 +128,15 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
 
   # compute spline
   if (lx_spline_start_age < terminal_age) {
-    full_lt_spline <- dt[age >= (lx_spline_start_age - 5),
+    full_lt_spline <- dt[age_start >= (lx_spline_start_age - 5),
       list(
-        lx = stats::spline(age, lx, method = "hyman",
-                           xout = min(age):terminal_age)$y,
-        age = (min(age):terminal_age),
+        lx = stats::spline(age_start, lx, method = "hyman",
+                           xout = min(age_start):terminal_age)$y,
+        age_start = (min(age_start):terminal_age),
         abridged_age = c(
           rep(
-            age[age != terminal_age],
-            age_length[age != terminal_age]
+            age_start[age_start != terminal_age],
+            age_length[age_start != terminal_age]
           ),
           terminal_age
         )
@@ -140,29 +144,38 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
       by = id_cols_no_age
     ]
 
+    # add `age_end`
+    full_lt_spline <- demUtils::gen_end(
+      full_lt_spline,
+      id_cols = c(id_cols_no_age, "age_start"),
+      col_stem = "age"
+    )
+
     # convert back to qx
-    lx_to_qx(full_lt_spline, id_cols, terminal_age)
+    lx_to_qx(full_lt_spline, id_cols)
     full_lt_spline[, c("lx") := NULL]
-    full_lt_spline <- full_lt_spline[!age %in% preserve_input_ax_ages]
+    full_lt_spline <- full_lt_spline[!age_start %in% preserve_input_ax_ages]
 
   } else {
-    full_lt_spline <- data.table(age = NA, qx = NA, ax = NA)
+    full_lt_spline <- data.table(age_start = NA, qx = NA, ax = NA)
     full_lt_spline[, (id_cols_no_age) := NA]
   }
 
   # expand dataset on age ---------------------------------------------------
 
-  setnames(dt, "age", "abridged_age")
+  setnames(dt, "age_start", "abridged_age")
   setkeyv(dt, c(id_cols_no_age, "abridged_age"))
 
   dt_full <- dt[!abridged_age %in% preserve_input_ax_ages,
                 list(full_age = abridged_age:(abridged_age + age_length - 1),
-                  age_length, qx, px = (1 - qx)),
+                     age_length,
+                     qx,
+                     px = (1 - qx)),
                 by = c(id_cols_no_age, "abridged_age")]
 
   dt_full <- merge(dt_full, regression_fits,
                    by.x = c(regression_id_cols_no_age, "full_age"),
-                   by.y = c(regression_id_cols_no_age, "age"))
+                   by.y = c(regression_id_cols_no_age, "age_start"))
 
   # calculate single-year qx with regression params -------------------------
 
@@ -187,16 +200,18 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
 
   dt_full[, c("reg_qx", "px", "pred_px", "pred_px_adjusted",
               "adjustment_factor") := NULL]
-  setnames(dt_full, "full_age", "age")
+  setnames(dt_full, "full_age", "age_start")
   setnames(dt_full, "pred_qx_adjusted", "qx")
 
   # combine regression and spline -------------------------------------------
 
   dt_full <- rbindlist(list(
-    dt_full[age < lx_spline_start_age | age >= lx_spline_end_age, .SD,
-            .SDcols = c(id_cols, "qx")],
-    full_lt_spline[age >= lx_spline_start_age & age < lx_spline_end_age, .SD,
-                   .SDcols = c(id_cols, "qx")]
+    dt_full[age_start < lx_spline_start_age |
+              age_start >= lx_spline_end_age,
+            .SD, .SDcols = c(id_cols, "qx")],
+    full_lt_spline[age_start >= lx_spline_start_age &
+                     age_start < lx_spline_end_age,
+                   .SD, .SDcols = c(id_cols, "qx")]
   ), use.names = T)
 
   dt_full <- dt_full[, .SD, .SDcols = c(id_cols, "qx")]
@@ -207,14 +222,14 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
   dt_full[, ax := .5]
 
   # add back in preserved vals and sort on age
-  dt_full <- rbindlist(list(dt_full[!age %in% preserve_input_ax_ages],
+  dt_full <- rbindlist(list(dt_full[!age_start %in% preserve_input_ax_ages],
                             preserve_ax_dt), use.names = T)
-  setkeyv(dt_full, c(id_cols_no_age, "age"))
+  setkeyv(dt_full, c(id_cols_no_age, "age_start"))
 
   # check and return --------------------------------------------------------
 
   # fix terminal qx at 1 in combined full life table
-  dt_full[age == terminal_age, qx := 1]
+  dt_full[age_start == terminal_age, qx := 1]
 
   # validate outputs
   assertable::assert_values(dt_full, "qx", "gte", 0, quiet = T)

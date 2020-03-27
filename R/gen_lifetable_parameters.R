@@ -13,11 +13,9 @@
 #'   * Tx requires nLx
 #'   * nLx requires lx, ax, and dx
 #'
-#' @param dt \[`data.table()`\] variables lx, ax, dx, mx, age, and age_length.
+#' @param dt \[`data.table()`\] variables lx, ax, dx, mx, age_start, age_end
 #' @param id_cols \[`character()`\] columns that uniquely identify each row
-#'   of `dt`.
-#' @param terminal_age \[`integer(1)`\] the terminal age group for the data.
-#'   Default: 110.
+#'   of `dt`. Must include 'age_start' and 'age_end'.
 #' @param assert_na \[`logical()`\] whether to check for NA values in the
 #'   generated variable.
 #'
@@ -73,18 +71,19 @@
 #' @examples
 #' dt <- data.table::data.table(
 #'   sex = rep("both", 4),
-#'   age = c(0, 5, 10, 15),
-#'   age_length = c(5, 5, 5, 120),
+#'   age_start = c(0, 5, 10, 15),
+#'   age_end = c(5, 10, 15, Inf),
+#'   age_length = c(5, 5, 5, Inf),
 #'   mx = c(0.1, 0.2, 0.3, 0.4),
 #'   ax = c(2.5, 2.5, 2.5, 2.5)
 #' )
 #' dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-#' qx_to_lx(dt, id_cols = c("sex", "age"))
-#' lx_to_dx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-#' gen_nLx(dt, id_cols = c("sex", "age"), terminal_age = 15)
-#' gen_Tx(dt, id_cols = c("sex", "age"))
+#' qx_to_lx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' lx_to_dx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' gen_nLx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' gen_Tx(dt, id_cols = c("sex", "age_start", "age_end"))
 #' gen_ex(dt)
-#' lx_to_qx(dt, id_cols = c("sex", "age"), terminal_age = 15)
+#' lx_to_qx(dt, id_cols = c("sex", "age_start", "age_end"))
 #'
 #' @name gen_lifetable_parameters
 NULL
@@ -101,11 +100,11 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
                      assert_na = assert_na)
 
   # create `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # set key with 'age' as last variable
+  # set key with 'age_start' as last variable
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols_no_age, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age_start"))
 
   # calculate lx -------------------------------------------------------------
 
@@ -126,7 +125,7 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
+lx_to_qx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
@@ -135,16 +134,16 @@ lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
                       assert_na = assert_na)
 
   # create `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # set key with 'age' as last variable
+  # set key with 'age_start' as last variable
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols_no_age, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age_start"))
 
   # calculate qx -------------------------------------------------------------
 
   dt[, qx := 1 - (shift(lx, 1, type = "lead") / lx), by = id_cols_no_age]
-  dt[age == terminal_age, qx := 1]
+  dt[age_end == Inf, qx := 1]
 
   # check and return ---------------------------------------------------------
 
@@ -160,24 +159,24 @@ lx_to_qx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
+lx_to_dx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
   # validate inputs
   validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("lx"),
-                     terminal_age = terminal_age, assert_na = assert_na)
+                     assert_na = assert_na)
 
   # create `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # set key with 'age' as last variable
+  # set key with 'age_start' as last variable
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols_no_age, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age_start"))
 
   # calculate dx -------------------------------------------------------------
   dt[, dx := lx - shift(lx, 1, type = "lead"), by = c(id_cols_no_age)]
-  dt[age == terminal_age, dx := lx]
+  dt[age_end == Inf, dx := lx]
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) {
@@ -191,44 +190,47 @@ lx_to_dx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-gen_nLx <- function(dt, id_cols, terminal_age = 110, assert_na = T) {
+gen_nLx <- function(dt, id_cols, assert_na = T) {
 
   # prep -------------------------------------------------------------------
 
   # validate inputs
-  validate_lifetable(dt = dt, id_cols = id_cols,
+  validate_lifetable(dt = dt,
+                     id_cols = id_cols,
                      param_cols = c("lx", "ax", "dx", "mx"),
-                     terminal_age = terminal_age, assert_na = assert_na)
+                     assert_na = assert_na)
 
   # create `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # set key with 'age' as last variable
+  # set key with 'age_start' as last variable
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols_no_age, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age_start"))
 
-  # calculate nLx -----------------------------------------------------------
+  # require terminal age group
+  if(nrow(dt[age_end == Inf]) == 0) {
+    stop("You do not have a terminal age group, but need one to calculate nLx.
+           Designate terminal age with 'age_end' = Inf.")
+  }
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    setnames(dt, "age", "age_start")
-    dt <- demUtils::gen_end(dt, c(id_cols_no_age, "age_start"),
-                            col_stem = "age")
     dt <- demUtils::gen_length(dt, col_stem = "age")
-    setnames(dt, "age_start", "age")
-    dt[, age_end := NULL]
   }
+
+  # calculate nLx -----------------------------------------------------------
 
   # calculte nLx
   dt[, nLx := age_length * shift(lx, 1, type = "lead") + ax * dx,
        by = id_cols_no_age]
-  dt[age == terminal_age, nLx := lx / mx]
+  dt[age_end == Inf, nLx := lx / mx]
 
   # check outputs ------------------------------------------------------------
+
   if (assert_na == T) {
-    assertable::assert_values(dt[age != terminal_age], "nLx", "not_na",
-                              quiet = T)
+    assertable::assert_values(dt[age_end != Inf], "nLx", "not_na", quiet = T)
   }
+
   setkeyv(dt, original_keys)
 
 }
@@ -246,11 +248,17 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
                       assert_na = assert_na)
 
   # create `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # set key with 'age' as last variable
+  # set key with 'age_start' as last variable
   original_keys <- key(dt)
-  setkeyv(dt, c(id_cols_no_age, "age"))
+  setkeyv(dt, c(id_cols_no_age, "age_start"))
+
+  # require terminal age group
+  if(nrow(dt[age_end == Inf]) == 0) {
+    stop("You do not have a terminal age group, but need one to calculate Tx.
+           Designate terminal age with 'age_end' = Inf.")
+  }
 
   # calculate Tx -------------------------------------------------------------
 

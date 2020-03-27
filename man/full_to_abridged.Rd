@@ -7,20 +7,20 @@
 full_to_abridged(dt, id_cols, abridged_ages = c(0, 1, seq(5, 110, 5)))
 }
 \arguments{
-\item{dt}{[\code{data.table()}] full life table(s), variables \code{age}, all vars
-in \code{id_cols}, and at least two of \code{qx}, \code{ax}, and \code{mx}. \code{dx} is used but if
-it is not provided it is calculated within.}
+\item{dt}{[\code{data.table()}] full life table(s), variables 'age_start',
+'age_end', all vars in \code{id_cols}, and at least two of 'qx', 'ax', and 'mx'.
+'dx' is used but if it is not provided it is calculated within.}
 
 \item{id_cols}{[\code{character()}] variables that uniquely identify
-observations}
+observations. Must include 'age_start' and 'age_end'.}
 
 \item{abridged_ages}{[\code{integer()}] ages to break the single-year ages into.
 These are the starting ages of each age interval.
 Default: c(0, 1, seq(5, 110, 5)).}
 }
 \value{
-data.table with \code{id_cols}, \code{qx}, and \code{ax}, for abridged ages
-specified in \code{abridged_ages}
+data.table with \code{id_cols}, 'qx', and 'ax', for abridged ages
+specified in \code{abridged_ages}.
 }
 \description{
 Convert full (single-year-age) life tables to abridged (5-year
@@ -28,11 +28,12 @@ age group) life tables using standard life table aggregation functions.
 }
 \examples{
 dt <- data.table::data.table(
-  age = c(0:110),
+  age_start = c(0:110),
+  age_end = c(1:110, Inf),
   location = "Canada",
   qx = .2,
   ax = .5
 )
-id_cols = c("age", "location")
+id_cols = c("age_start", "age_end", "location")
 dt <- full_to_abridged(dt, id_cols)
 }

@@ -3,26 +3,27 @@
 #' @description Convert full (single-year-age) life tables to abridged (5-year
 #'   age group) life tables using standard life table aggregation functions.
 #'
-#' @param dt \[`data.table()`\] full life table(s), variables `age`, all vars
-#'   in `id_cols`, and at least two of `qx`, `ax`, and `mx`. `dx` is used but if
-#'   it is not provided it is calculated within.
+#' @param dt \[`data.table()`\] full life table(s), variables 'age_start',
+#'   'age_end', all vars in `id_cols`, and at least two of 'qx', 'ax', and 'mx'.
+#'    'dx' is used but if it is not provided it is calculated within.
 #' @param id_cols \[`character()`\] variables that uniquely identify
-#'   observations
+#'   observations. Must include 'age_start' and 'age_end'.
 #' @param abridged_ages \[`integer()`\] ages to break the single-year ages into.
 #'   These are the starting ages of each age interval.
 #'   Default: c(0, 1, seq(5, 110, 5)).
 #'
-#' @return data.table with `id_cols`, `qx`, and `ax`, for abridged ages
-#'   specified in `abridged_ages`
+#' @return data.table with `id_cols`, 'qx', and 'ax', for abridged ages
+#'   specified in `abridged_ages`.
 #'
 #' @examples
 #' dt <- data.table::data.table(
-#'   age = c(0:110),
+#'   age_start = c(0:110),
+#'   age_end = c(1:110, Inf),
 #'   location = "Canada",
 #'   qx = .2,
 #'   ax = .5
 #' )
-#' id_cols = c("age", "location")
+#' id_cols = c("age_start", "age_end", "location")
 #' dt <- full_to_abridged(dt, id_cols)
 #' @export
 
@@ -50,10 +51,15 @@ full_to_abridged <- function(dt, id_cols,
 
   # check that we have all single year ages within `abridged_ages`
   expected_ages <- seq(min(abridged_ages), max(abridged_ages), 1)
-  provided_ages <- unique(dt$age)
+  provided_ages <- unique(dt$age_start)
   if(!setequal(expected_ages, provided_ages)) {
     stop("dt must include all single-year ages between min(abridged_ages) and
          max(abridged_ages) and no extra ages.")
+  }
+
+  # check that all age groups are 1 year in width
+  if(nrow(dt[((age_end - age_start) == 1) | age_end == Inf]) != nrow(dt)) {
+    stop("Not all age groups are length 1 year or Inf (for terminal age).")
   }
 
   # check that data is square on age
@@ -65,19 +71,19 @@ full_to_abridged <- function(dt, id_cols,
   # prep ------------------------------------------------------------
 
   # get `id_cols` without age
-  id_cols_no_age <- id_cols[id_cols != "age"]
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
   # fill in such that we have qx, ax, and dx
   if(!"qx" %in% names(dt)) dt[, qx := mx_ax_to_qx(mx, ax, 1)]
   if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, 1)]
   if(!"dx" %in% names(dt)) {
     dt <- qx_to_lx(dt, id_cols, assert_na = T)
-    dt <- lx_to_dx(dt, id_cols, terminal_age = max(dt$age), assert_na = T)
+    dt <- lx_to_dx(dt, id_cols, assert_na = T)
   }
   dt <- dt[, .SD, .SDcols = c(id_cols, "qx", "ax", "dx")]
 
   # assign single year ages to abridged ages
-  dt[, abridged_age := cut(age,
+  dt[, abridged_age := cut(age_start,
                            breaks = c(abridged_ages, Inf),
                            labels = abridged_ages,
                            right = F)]
@@ -87,16 +93,23 @@ full_to_abridged <- function(dt, id_cols,
 
   # aggregate qx and ax
   dt[, px := 1 - qx]
-  dt[, axdx_full_years := age - abridged_age]
+  dt[, axdx_full_years := age_start - abridged_age]
   agg_lt <- dt[, list(qx = (1 - prod(px)),
                    ax = (sum((ax + axdx_full_years) * dx) / sum(dx))),
                 by = c(id_cols_no_age, "abridged_age")]
-  setnames(agg_lt, "abridged_age", "age")
+  setnames(agg_lt, "abridged_age", "age_start")
 
   # terminal age qx = 1
-  agg_lt[age == max(abridged_ages), qx := 1]
+  agg_lt[age_start == max(abridged_ages), qx := 1]
 
   # check output -----------------------------------------------------
+
+  # add `age_end` back onto dataset
+  agg_lt <- demUtils::gen_end(
+    agg_lt,
+    c(id_cols_no_age, "age_start"),
+    col_stem = "age"
+  )
 
   assertable::assert_values(agg_lt, "ax", "gte", 0, quiet = T)
   assertable::assert_values(agg_lt, "qx", "gte", 0, quiet = T)
