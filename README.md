@@ -1,7 +1,7 @@
 # lifetableUtils
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/ihmeuw/lifetableUtils.svg?branch=master)](https://travis-ci.com/ihmeuw/lifetableUtils)
+[![R build status](https://github.com/ihmeuw/lifetableUtils/workflows/R-CMD-check/badge.svg)](https://github.com/ihmeuw/lifetableUtils/actions)
 [![Codecov test coverage](https://codecov.io/gh/ihmeuw/lifetableUtils/branch/master/graph/badge.svg)](https://codecov.io/gh/ihmeuw/lifetableUtils?branch=master)
 <!-- badges: end -->
 
@@ -9,6 +9,9 @@ Utility functions for calculating life table parameters and performing common
 manipulations of life tables. Life table parameters include mx, qx, ax, lx, dx,
 Tx, nLx, and ex. Additional convenience functions include aggregation, scaling,
 moving between abridged and full life tables, and others.
+
+Go [here](https://ihme.github.io/lifetableUtils) for more documentation and
+examples.
 
 ### Authors
 
@@ -32,6 +35,10 @@ the [demUtils](https://github.com/ihmeuw/demUtils) package is also required.
 remotes::install_github("ihmeuw/demUtils")
 remotes::install_github("ihmeuw/lifetableUtils")
 ```
+
+### Getting help
+
+If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/ihmeuw/lifetableUtils/issues).
 
 ### Additional resources
 
