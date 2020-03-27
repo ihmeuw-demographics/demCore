@@ -5,5 +5,4 @@
 ^data-raw$
 ^pkgdown$
 ^LICENSE\.md$
-^\.travis\.yml$
 ^codecov\.yml$
