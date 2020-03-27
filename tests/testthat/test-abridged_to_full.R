@@ -12,7 +12,9 @@ dt1 <- abridged_to_full(
   dt = exampleLT,
   regression_fits = fullLTpars,
   id_cols = id_cols,
-  regression_id_cols = c("age_start", "age_end")
+  regression_id_cols = c("age_start", "age_end"),
+  lx_spline_start_age = 15,
+  lx_spline_end_age = 100
 )
 
 test_that("test that `abridged_to_full` gives us expected ages", {

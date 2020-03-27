@@ -13,6 +13,6 @@ utils::globalVariables(c("age_int", "age_group_years_start", "age_group_years_en
                          "age_count", "abridged_age", "axdx_full_years",
                          "age_length", "reg_qx", "slope", "intercept",
                          "pred_px", "pred_px_abridged", "adjustment_factor",
-                         "pred_px_adjusted", "pred_qx_adjusted", "terminal_age",
+                         "pred_px_adjusted", "pred_qx_adjusted",
                          "value", "life_table_parameter",
                          "id_cols_no_age", "sex", "mx_inf", "has_1m0"))

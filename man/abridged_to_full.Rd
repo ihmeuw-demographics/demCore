@@ -9,8 +9,8 @@ abridged_to_full(
   id_cols,
   regression_fits,
   regression_id_cols,
-  lx_spline_start_age = 15,
-  lx_spline_end_age = 100,
+  lx_spline_start_age,
+  lx_spline_end_age,
   preserve_input_ax_ages = c(0, max(dt$age_start))
 )
 }
@@ -30,14 +30,15 @@ contained by \code{id_cols}.}
 
 \item{lx_spline_start_age}{[\code{integer(1)}] age (inclusive) to start using lx
 spline rather than regression fits. Use 0 to use lx spline for all ages, or
-integer > 110 or Inf to use regression results for all.}
+integer > 110 or Inf to use regression results for all. Corresponds to
+'age_start' column.}
 
 \item{lx_spline_end_age}{[\code{integer(1)}] age (non-inclusive) to end spline
-and begin using regression fits.}
+and begin using regression fits. Corresponds to 'age_start' column.}
 
 \item{preserve_input_ax_ages}{[\code{integer()}] ages to preserve the input ax
 values for. This is typically the first age group 0-1 and the terminal age
-group 110+.}
+group 110+. Corresponds to 'age_start' column.}
 }
 \value{
 data.table with columns id_cols, age, qx, ax
@@ -70,9 +71,10 @@ method has its own challenges, where jagged qx patterns may arise because
 we do not take consecutive abridged qx values into account simultaneously.
 
 The function also allows for a combination of the methods to be used, with
-separation on age. The default age cutoffs reflect the values we found to
-work best: regression method for ages <15 and >100 and spline method for
-ages between 15 and 100.
+separation on age. The age cutoffs we found to work best are: regression
+method for ages <15 and >100 and spline method for ages between 15 and 100.
+This corresponds to \code{lx_spline_start_age = 15} and
+\code{lx_spline_end_age = 100}.
 }
 \section{Default ax}{
 
@@ -90,6 +92,7 @@ regression_fits <- fullLTpars[sex == "female"]
 id_cols <- c("age_start", "age_end")
 dt <- abridged_to_full(
   dt = exampleLT, regression_fits = regression_fits, id_cols = id_cols,
+  lx_spline_start_age = 15, lx_spline_end_age = 100,
   regression_id_cols = c("age_start", "age_end")
 )
 
