@@ -3,16 +3,16 @@
 #' @description Convert full (single-year-age) life tables to abridged (5-year
 #'   age group) life tables using standard life table aggregation functions.
 #'
-#' @param dt \[`data.table()`\]\cr full life table(s), variables 'age_start',
+#' @param dt \[`data.table()`\]\cr Full life table(s), variables 'age_start',
 #'   'age_end', all vars in `id_cols`, and at least two of 'qx', 'ax', and 'mx'.
 #'    'dx' is used but if it is not provided it is calculated within.
-#' @param id_cols \[`character()`\]\cr variables that uniquely identify
+#' @param id_cols \[`character()`\]\cr Variables that uniquely identify
 #'   observations. Must include 'age_start' and 'age_end'.
-#' @param abridged_ages \[`integer()`\]\cr ages to break the single-year ages
+#' @param abridged_ages \[`integer()`\]\cr Ages to break the single-year ages
 #'   into. These are the starting ages of each age interval.
 #'   Default: c(0, 1, seq(5, 110, 5)).
 #'
-#' @return \[`data.table()`\]\cr abridged life table(s) with `id_cols`, 'qx',
+#' @return \[`data.table()`\]\cr Abridged life table(s) with `id_cols`, 'qx',
 #'   and 'ax', for abridged ages specified in `abridged_ages` argument.
 #'
 #' @examples

@@ -22,7 +22,7 @@ exampleLT
 }
 \description{
 Example death count and population values. Also
-includes mx (deaths / population), and ax and qx calculated using functions
+includes mx (deaths / population), ax, and qx calculated using functions
 from this package.
 }
 \examples{

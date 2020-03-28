@@ -23,13 +23,21 @@ gen_Tx(dt, id_cols, assert_na = T)
 gen_ex(dt, assert_na = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}]\cr variables 'lx', 'ax', 'dx', 'mx',
-'age_start', 'age_end'}
+\item{dt}{[\code{data.table()}]\cr Life table(s). Includes columns 'age_start',
+'age_end', and all \code{id_cols}. Additionally:
+\itemize{
+\item{\code{qx_to_lx} requires 'qx'}
+\item{\code{lx_to_qx} requires 'lx'}
+\item{\code{lx_to_dx} requires 'lx'}
+\item{\code{gen_nLx} requires 'lx', 'ax', 'dx'}
+\item{\code{gen_Tx} requires 'nLx'}
+\item{\code{gen_ex} requires 'lx', 'Tx'}
+}}
 
-\item{id_cols}{[\code{character()}]\cr columns that uniquely identify each row
+\item{id_cols}{[\code{character()}]\cr Columns that uniquely identify each row
 of \code{dt}. Must include 'age_start' and 'age_end'.}
 
-\item{assert_na}{[\code{logical()}]\cr whether to check for NA values in the
+\item{assert_na}{[\code{logical()}]\cr Whether to check for NA values in the
 generated variable.}
 }
 \value{
@@ -39,20 +47,9 @@ data.tables in place.
 \description{
 These functions perform life table calculations, to add selected life table
 parameters from others, using established demographic relationships.
-
-The following are required inputs for given parameters, as written in
-these functions:
-\itemize{
-\item dx requires lx
-\item lx requires qx
-\item qx requires lx
-\item ex requires lx and Tx
-\item Tx requires nLx
-\item nLx requires lx, ax, and dx
-}
 }
 \details{
-\strong{Parameter definitions:}
+\strong{Parameter definitions:} \cr
 For an age interval x to x+n:
 \itemize{
 \item mx = mortality rate (deaths / person-years)
@@ -66,36 +63,34 @@ interval
 \item nLx = total person-years lived in interval
 }
 
-\strong{qx_to_lx:} We can use probability of death (qx) to get the proportion of
-survivors in the beginning of an age group (lx).
-\deqn{At age = 0: lx = 1}
-\deqn{At age > 0: lx = lx_previous * (1-qx_previous)}
+\strong{qx_to_lx:} Use probability of death (qx) to get the proportion of
+survivors in the beginning of an age group (lx). l0 = 1; lx for ages > 0
+is lx for previous age group times the probability of surviving the
+previous age group.
 
-\strong{lx_to_qx:} We can use survival proportion (lx) and survival proportion at
-next age group (l{x+n}) to get probability of death (qx).
-\deqn{qx = 1 - (l{x+n}/lx)}
-\deqn{For terminal age group: qx = 1}
+\strong{lx_to_qx:} Use survival proportion (lx) at age x and x+n to get
+probability of death between x and x+n (qx). This relationship is an
+algebraic equivalent to the \code{qx_to_lx} relationship as described. Terminal
+age qx is set to 1.
 
-\strong{lx_to_dx:} Given the proportion surviving to each age group (lx), we can
-calculate the proportion dying in the age interval (dx).
-\deqn{dx = lx - l{x+n}}
-\deqn{For terminal age group: dx = lx}
+\strong{lx_to_dx:} Calculate the proportion dying between age x and x+n (dx) as
+the difference between the proportion surviving (lx) at age x and the
+proportion surviving at age x+n. In the terminal age group all survivors
+die in the age group, so dx = lx.
 
-\strong{gen_nLx:} To get \eqn{nLx} we calculate years lived by survivors plus years
-lived by those who died. For terminal ages, assume that average person years
-lived equals number at the start of the age group divided by the death rate.
-\deqn{nLx = n * l{x+n} + ax * d_x}
-\deqn{For terminal age group: infinityLx = lx / mx}
+\strong{gen_nLx:} nLx is calculated as the sum of years lived by survivors and
+years lived by those who die between ages x and x+n. The first component is
+n times l(x+n). The second component is ax * dx. For terminal ages, assume
+that average person years lived equals number at the start of the age group
+divided by the mortality rate.
 
-\strong{gen_Tx:} Person-years lived above age x (Tx) is based on person-years
-lived by people in each age interval above age x (nLx).
-\deqn{For terminal age group: Tx = nLx}
-\deqn{Otherwise: Tx = cumulative sum of nLx beyond age x}
+\strong{gen_Tx:} Person-years lived above age x (Tx) is the cumulative sum of
+person-years lived by people in each age interval above age x (nLx).
+For the terminal age group, Tx = nLx.
 
 \strong{gen_ex:} Life expectancy (ex) at age x is based on person-years lived
 above the age group (Tx) and proportion of people alive at the start of
-age group (lx).
-\deqn{ex = Tx / lx}
+age group (lx): ex = Tx / lx.
 }
 \examples{
 dt <- data.table::data.table(
@@ -116,5 +111,9 @@ lx_to_qx(dt, id_cols = c("sex", "age_start", "age_end"))
 
 }
 \seealso{
-lifetableUtils::mx_qx_ax_conversions, lifetableUtils::lifetable
+\itemize{
+\item{\link[lifetableUtils:mx_qx_ax_conversions]{lifetableUtils::mx_qx_ax_conversions}}
+\item{\link[lifetableUtils:lifetable]{lifetableUtils::lifetable}}
+\item{\href{https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html}{Introduction to lifetables vignette}}
+}
 }

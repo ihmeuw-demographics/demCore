@@ -7,14 +7,14 @@
 \format{[\code{data.table()}] columns:
 \describe{
 \item{sex}{[\code{character()}]\cr Sex the parameters correspond to: "male" or
-"female".}
+"female"}
 \item{age_start}{[\code{integer()}]\cr Single-year ages 1-109 representing the
-age the parameters correspond to.}
+age the parameters correspond to}
 \item{age_end}{[\code{integer()}]\cr 1 + age_start}
-\item{intercept}{[\code{numeric()}]\cr intercept for the age- and sex-specific
-regression model fit.}
-\item{slope}{[\code{numeric()}]\cr slope for the age- and sex-specific
-regression model fit.}
+\item{intercept}{[\code{numeric()}]\cr Intercept for the age- and sex-specific
+regression model fit}
+\item{slope}{[\code{numeric()}]\cr Slope for the age- and sex-specific
+regression model fit}
 }}
 \usage{
 fullLTpars

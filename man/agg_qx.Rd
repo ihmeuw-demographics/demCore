@@ -7,19 +7,18 @@
 agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
 }
 \arguments{
-\item{dt}{[\code{data.table()}]\cr data to be aggregated.
+\item{dt}{[\code{data.table()}]\cr Data to be aggregated.
 \itemize{
-\item must only include columns 'qx' and those specified in \code{id_cols}
-\item must include 'age_start' and 'age_end' columns
-\item \code{id_cols} must uniquely identify each row
+\item Must only include columns 'qx' and those specified in \code{id_cols}
+\item Must include 'age_start' and 'age_end' columns
 }}
 
 \item{id_cols}{[\code{character()}]\cr
 ID columns that uniquely identify each row of \code{dt}.}
 
-\item{age_mapping}{[\code{data.table()}]\cr specification of intervals to aggregate
-to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
-for terminal age group.}
+\item{age_mapping}{[\code{data.table()}]\cr Specification of intervals to
+aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
+'age_end' for terminal age group.}
 
 \item{drop_present_aggs}{[\code{logical(1)}]\cr
 Whether to drop aggregates (or overlapping intervals) that are already
@@ -27,7 +26,7 @@ present in \code{dt} before aggregating. Default is "False" and the function
 errors out.}
 }
 \value{
-[\code{data.table()}]\cr aggregated qx values, has \code{id_cols} and 'qx'
+[\code{data.table()}]\cr Aggregated qx values, has \code{id_cols} and 'qx'
 columns for aggregate age groups.
 }
 \description{
@@ -40,7 +39,7 @@ through all granular age groups, and subtract from one to get the
 aggregated conditional probability of death (qx).
 }
 \details{
-This function is a wrapper for demUtils::aggregate_age
+This function is a wrapper for \code{\link[demUtils:agg]{demUtils::agg()}}.
 }
 \examples{
 dt <- data.table::data.table(

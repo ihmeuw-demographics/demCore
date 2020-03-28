@@ -1,20 +1,20 @@
 #' @title Generate a life table with all parameters
 #'
-#' @description Given a data.table with at least two of variables mx, ax, and
-#'   qx, compute a full life table. This is a helper function that combines
+#' @description Given a `data.table` with at least two of variables mx, ax, and
+#'   qx, compute a complete life table. This is a helper function that combines
 #'   many other functions in this package to calculate px, lx, dx, Tx, nLx,
 #'   and ex.
 #'
-#' @param dt \[`data.table()`\]\cr input life tables, variables: 'qx', 'mx',
+#' @param dt \[`data.table()`\]\cr Input life tables, variables: 'qx', 'mx',
 #'   'ax', 'age_start', 'age_end', and all `id_cols`
-#' @param id_cols \[`character()`\]\cr columns that uniquely identify each
+#' @param id_cols \[`character()`\]\cr Columns that uniquely identify each
 #'   row of `dt`
-#' @param preserve_u5 \[`logical()`\]\cr whether to preserve under-5 qx
+#' @param preserve_u5 \[`logical()`\]\cr Whether to preserve under-5 qx
 #'   estimates rather than recalculating them based on mx and ax. Default: F.
-#' @param assert_na \[`logical()`\]\cr whether to assert that there is no
+#' @param assert_na \[`logical()`\]\cr Whether to assert that there is no
 #'   missingness. Default T.
 #'
-#' @return \[`data.table()`\]\cr life table with additional columns: px, lx,
+#' @return \[`data.table()`\]\cr Life table(s) with additional columns: px, lx,
 #'   dx, Tx, nLx, ex
 #'
 #' @examples

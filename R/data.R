@@ -1,7 +1,7 @@
 #' @title Example life table
 #'
 #' @description Example death count and population values. Also
-#'   includes mx (deaths / population), and ax and qx calculated using functions
+#'   includes mx (deaths / population), ax, and qx calculated using functions
 #'   from this package.
 #'
 #' @format \[`data.table()`\] columns:
@@ -38,14 +38,14 @@
 #' @format \[`data.table()`\] columns:
 #' \describe{
 #'  \item{sex}{\[`character()`\]\cr Sex the parameters correspond to: "male" or
-#'    "female".}
+#'    "female"}
 #'  \item{age_start}{\[`integer()`\]\cr Single-year ages 1-109 representing the
-#'    age the parameters correspond to.}
+#'    age the parameters correspond to}
 #'  \item{age_end}{\[`integer()`\]\cr 1 + age_start}
-#'  \item{intercept}{\[`numeric()`\]\cr intercept for the age- and sex-specific
-#'    regression model fit.}
-#'  \item{slope}{\[`numeric()`\]\cr slope for the age- and sex-specific
-#'    regression model fit.}
+#'  \item{intercept}{\[`numeric()`\]\cr Intercept for the age- and sex-specific
+#'    regression model fit}
+#'  \item{slope}{\[`numeric()`\]\cr Slope for the age- and sex-specific
+#'    regression model fit}
 #' }
 #' @examples
 #' fullLTpars
