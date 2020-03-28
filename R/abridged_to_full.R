@@ -4,26 +4,26 @@
 #'   (single-year-age) life tables using specified regression parameters or
 #'   lx spline
 #'
-#' @param dt \[`data.table()`\] with variables 'age_start', 'age_end', all
-#'   `id_cols`, 'qx', 'ax'
-#' @param id_cols \[`character()`\] variables that uniquely identify rows,
+#' @param dt \[`data.table()`\]\cr Abridged life tables with variables
+#'   'age_start', 'age_end', all `id_cols`, 'qx', 'ax'
+#' @param id_cols \[`character()`\]\cr Variables that uniquely identify rows,
 #'   must include 'age_start' and 'age_end'.
-#' @param regression_fits \[`data.table()`\] with variables from
-#'   `regression_id_cols`, plus 'intercept' and 'slope'
-#' @param regression_id_cols \[`character()`\] variables that uniquely identify
-#'   regression parameters. Must include 'age_start' and 'age_end' and be
-#'   contained by `id_cols`.
-#' @param lx_spline_start_age \[`integer(1)`\] age (inclusive) to start using lx
-#'   spline rather than regression fits. Use 0 to use lx spline for all ages, or
-#'   integer > 110 or Inf to use regression results for all. Corresponds to
-#'   'age_start' column.
-#' @param lx_spline_end_age \[`integer(1)`\] age (non-inclusive) to end spline
+#' @param regression_fits \[`data.table()`\]\cr Abridged to full regression
+#'   parameters. Columns include all `regression_id_cols`, 'intercept', 'slope'.
+#' @param regression_id_cols \[`character()`\]\cr Variables that uniquely
+#'   identify regression parameters. Must include 'age_start' and 'age_end' and
+#'   be contained by `id_cols`.
+#' @param lx_spline_start_age \[`integer(1)`\]\cr Age (inclusive) to start using
+#'   lx spline rather than regression fits. Use 0 to use lx spline for all ages,
+#'   or Inf to use regression results for all. Corresponds to 'age_start' column.
+#' @param lx_spline_end_age \[`integer(1)`\]\cr Age (non-inclusive) to end spline
 #'   and begin using regression fits. Corresponds to 'age_start' column.
-#' @param preserve_input_ax_ages \[`integer()`\] ages to preserve the input ax
-#'   values for. This is typically the first age group 0-1 and the terminal age
-#'   group 110+. Corresponds to 'age_start' column.
+#' @param preserve_input_ax_ages \[`integer()`\]\cr Ages to preserve the input
+#'   ax values for. This is typically the first age group 0-1 and the terminal
+#'   age group. Corresponds to 'age_start' column.
 #'
-#' @return data.table with columns id_cols, age, qx, ax
+#' @return \[`data.table()`\]\cr Full (single-year) life tables with columns
+#'   `id_cols`, 'age', 'qx', 'ax'.
 #'
 #' @details This function includes two different methods for expanding
 #'   abridged life tables to full life tables. The first method is a

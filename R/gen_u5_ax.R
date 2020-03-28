@@ -3,7 +3,7 @@
 #' @description Add ax onto a data.table for ages <1 and 1-4 years, with
 #'   algorithm based on under-1 mx.
 #'
-#' @param dt \[`data.table()`\] with columns:
+#' @param dt \[`data.table()`\]\cr Columns:
 #'   * 'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
 #'      permitted but will result in NA output for ax or unchanged ax if ax in
 #'      input `dt`.
@@ -11,16 +11,20 @@
 #'   * 'sex' where values must be 'male', 'female', or 'both'
 #'   * 'mx' for mortality rate
 #'   * All additional columns from 'id_cols'
-#' @param id_cols \[`character()`\] columns that uniquely identify
+#' @param id_cols \[`character()`\]\cr Columns that uniquely identify
 #'   observations in `dt`. Must include 'age_start', 'age_end', and 'sex'.
 #'
-#' @return modifies `dt` in place with 'ax' column added on.
+#' @return Modifies `dt` in place with 'ax' column added on.
 #'
-#' @details Takes a data.table with age_start, age_end, sex, and infant
-#'   mortality rate and adds a column 'ax'. Values from:
+#' @details Takes a `data.table` with 'age_start', 'age_end', 'sex', and
+#'   infant mortality rate ('mx') and adds a column 'ax'. Values from:
 #'
 #'   Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
 #'   population processes. MA: Blackwell Publishing. 2001.
+#'
+#'   The following table shows the conversions from 1m0 to 1a0 and 4a1. Note
+#'   that when sex is "both" the relationship is a mean of the male and female
+#'   relationships.
 #'
 #'  |                     || Males               || Females             |
 #'  | ------------------- |-|--------------------|-| -------------------|

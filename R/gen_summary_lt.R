@@ -1,23 +1,25 @@
-#' @title Summarize life table draws
+#' @title Summarize life tables
 #'
-#' @description Create mean and confidence intervals for summary-level life
-#'   tables based off of draws. One draw is one independent simulation or
-#'   calculation -- we typically use 100 or 1000 to bootstrap uncertainty
-#'   and propagate error through multiple steps. First draws are collapsed to
-#'   mean, lower (2.5th percentile), and upper (97.5th percentile). Then, we
-#'   make sure mean-level life table parameters are consistent with one another
-#'   by re-calculating every requested parameter other than mx and ax, using
-#'   standard methods documented elsewhere.
+#' @description Create mean and uncertainty intervals for summary-level life
+#'   tables based off of draws.
 #'
-#' @param dt \[`data.table()`\] draw-level life tables, columns include all
+#' @param dt \[`data.table()`\]\cr Draw-level life tables, columns include all
 #'  `id_cols`, all `lt_params`, and 'draw'.
-#' @param id_cols \[`character()`\] column names in 'dt' that uniquely identify
-#'   all rows. Must include 'draw'.
-#' @param lt_params \[`character()`\] life table parameters included in `dt`.
+#' @param id_cols \[`character()`\]\cr Column names in 'dt' that uniquely
+#'   identify all rows. Must include 'draw'.
+#' @param lt_params \[`character()`\]\cr Life table parameters included in `dt`.
 #'   Example: c("mx", "ax", "dx"). Must include 'mx' and 'ax'.
 #'
-#' @return data.table with `id_cols`, 'life_table_parameter', 'mean', 'lower',
-#'   and 'upper'
+#' @return \[`data.table()`\]\cr Summarized life table with `id_cols`,
+#'   'life_table_parameter', 'mean', 'lower', and 'upper'
+#'
+#' @details  One draw is one independent simulation or calculation -- we
+#'   typically use 100 or 1000 to bootstrap uncertainty and propagate error
+#'   through multiple steps. First draws are collapsed to mean, lower
+#'   (2.5th percentile), and upper (97.5th percentile). Then, we make sure
+#'   mean-level life table parameters are consistent with one another by
+#'   re-calculating every requested parameter other than mx and ax, using
+#'   standard methods documented elsewhere.
 #'
 #' @examples
 #' library(data.table)

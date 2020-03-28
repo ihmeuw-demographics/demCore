@@ -7,7 +7,7 @@
 gen_u5_ax(dt, id_cols)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] with columns:
+\item{dt}{[\code{data.table()}]\cr Columns:
 \itemize{
 \item 'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
 permitted but will result in NA output for ax or unchanged ax if ax in
@@ -18,22 +18,26 @@ input \code{dt}.
 \item All additional columns from 'id_cols'
 }}
 
-\item{id_cols}{[\code{character()}] columns that uniquely identify
+\item{id_cols}{[\code{character()}]\cr Columns that uniquely identify
 observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 }
 \value{
-modifies \code{dt} in place with 'ax' column added on.
+Modifies \code{dt} in place with 'ax' column added on.
 }
 \description{
 Add ax onto a data.table for ages <1 and 1-4 years, with
 algorithm based on under-1 mx.
 }
 \details{
-Takes a data.table with age_start, age_end, sex, and infant
-mortality rate and adds a column 'ax'. Values from:
+Takes a \code{data.table} with 'age_start', 'age_end', 'sex', and
+infant mortality rate ('mx') and adds a column 'ax'. Values from:
 
 Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
-population processes. MA: Blackwell Publishing. 2001.\tabular{lllll}{
+population processes. MA: Blackwell Publishing. 2001.
+
+The following table shows the conversions from 1m0 to 1a0 and 4a1. Note
+that when sex is "both" the relationship is a mean of the male and female
+relationships.\tabular{lllll}{
     \tab  \tab Males \tab  \tab Females \cr
    1a0: \tab  \tab  \tab  \tab  \cr
    If 1m0 >= 0.107 \tab  \tab 0.330 \tab  \tab 0.350 \cr

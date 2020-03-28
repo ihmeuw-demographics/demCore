@@ -7,24 +7,25 @@
 lifetable(dt, id_cols, preserve_u5 = F, assert_na = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] input life tables, variables: 'qx', 'mx', 'ax',
-'age_start', 'age_end', and all \code{id_cols}}
+\item{dt}{[\code{data.table()}]\cr Input life tables, variables: 'qx', 'mx',
+'ax', 'age_start', 'age_end', and all \code{id_cols}}
 
-\item{id_cols}{[\code{character()}] columns that uniquely identify each
+\item{id_cols}{[\code{character()}]\cr Columns that uniquely identify each
 row of \code{dt}}
 
-\item{preserve_u5}{[\code{logical()}] whether to preserve under-5 qx estimates
-rather than recalculating them based on mx and ax. Default: F.}
+\item{preserve_u5}{[\code{logical()}]\cr Whether to preserve under-5 qx
+estimates rather than recalculating them based on mx and ax. Default: F.}
 
-\item{assert_na}{[\code{logical()}] whether to assert that there is no
+\item{assert_na}{[\code{logical()}]\cr Whether to assert that there is no
 missingness. Default T.}
 }
 \value{
-data.table with additional variables px, lx, dx, Tx, nLx, ex
+[\code{data.table()}]\cr Life table(s) with additional columns: px, lx,
+dx, Tx, nLx, ex
 }
 \description{
-Given a data.table with at least two of variables mx, ax, and
-qx, compute a full life table. This is a helper function that combines
+Given a \code{data.table} with at least two of variables mx, ax, and
+qx, compute a complete life table. This is a helper function that combines
 many other functions in this package to calculate px, lx, dx, Tx, nLx,
 and ex.
 }

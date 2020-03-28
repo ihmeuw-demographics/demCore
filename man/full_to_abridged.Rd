@@ -7,20 +7,20 @@
 full_to_abridged(dt, id_cols, abridged_ages = c(0, 1, seq(5, 110, 5)))
 }
 \arguments{
-\item{dt}{[\code{data.table()}] full life table(s), variables 'age_start',
+\item{dt}{[\code{data.table()}]\cr Full life table(s), variables 'age_start',
 'age_end', all vars in \code{id_cols}, and at least two of 'qx', 'ax', and 'mx'.
 'dx' is used but if it is not provided it is calculated within.}
 
-\item{id_cols}{[\code{character()}] variables that uniquely identify
+\item{id_cols}{[\code{character()}]\cr Variables that uniquely identify
 observations. Must include 'age_start' and 'age_end'.}
 
-\item{abridged_ages}{[\code{integer()}] ages to break the single-year ages into.
-These are the starting ages of each age interval.
+\item{abridged_ages}{[\code{integer()}]\cr Ages to break the single-year ages
+into. These are the starting ages of each age interval.
 Default: c(0, 1, seq(5, 110, 5)).}
 }
 \value{
-data.table with \code{id_cols}, 'qx', and 'ax', for abridged ages
-specified in \code{abridged_ages}.
+[\code{data.table()}]\cr Abridged life table(s) with \code{id_cols}, 'qx',
+and 'ax', for abridged ages specified in \code{abridged_ages} argument.
 }
 \description{
 Convert full (single-year-age) life tables to abridged (5-year

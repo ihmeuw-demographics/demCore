@@ -1,7 +1,7 @@
 ---
 title: "Introduction to life tables"
 author: "Katie Paulson"
-date: "3/6/2020"
+date: "March 2020"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::knitr}
@@ -59,25 +59,25 @@ For reference, the following is a list of life table metrics and their
 definitions.
 
 __$\mathbf{_nm_x}$:__ mortality rate between ages $x$ and $x+n$. Shorthand to
-"mx" with implied interval width (n). Equals deaths divided by person-years
+$m_x$ with implied interval width ($n$). Equals deaths divided by person-years
 lived in the interval. Mid-year population is commonly used as an adequate
 approximation of the person-years denominator.
 
 __$\mathbf{_na_x}$:__ mean person-years lived between ages $x$ and $x+n$ for
-those who die within the interval. Shorthand to "ax" with implied interval
-width (n).  
+those who die within the interval. Shorthand to $a_x$ with implied interval
+width ($n$).  
 
 __$\mathbf{_nq_x}$:__ probability of death between ages $x$ and $x+n$,
-conditional on survival to age $x$. Shorthand to "qx" with implied interval
-width (n). Equals deaths in the interval divided by survivors to x-th birthday.
-Examples: 5q0 = probability of death between birth and age 5;
-45q15 = probability of death between age 15 and age 60 conditional on survival
-to age 15.  
+conditional on survival to age $x$. Shorthand to $q_x$ with implied interval
+width ($n$). Equals deaths in the interval divided by survivors to $x$-th
+birthday. Examples: $_5q_0$ = probability of death between birth and age $5$;
+$_{45}q_{15}$ = probability of death between age $15$ and age $60$ conditional
+on survival to age $15$.  
 
 __$\mathbf{l_x}$:__ proportion of the cohort surviving to age $x$.  
 
 __$\mathbf{e_x}$:__ life expectancy at age $x$ -- mean number of years lived
-after x-th birthday by those surviving to age $x$. Life expectancy at birth
+after $x$-th birthday by those surviving to age $x$. Life expectancy at birth
 is $e_0$.  
 
 __$\mathbf{_nL_x}$:__ total person-years lived between age $x$ and $x+n$.  
@@ -85,7 +85,7 @@ __$\mathbf{_nL_x}$:__ total person-years lived between age $x$ and $x+n$.
 __$\mathbf{T_x}$:__ total person-years lived above age $x$.  
 
 __$\mathbf{_nd_x}$:__ proportion of the cohort dying between ages $x$ and $x+n$.
-Shorthand to "dx."  
+Shorthand to $d_x$.  
 
 __$\mathbf{_np_x}$:__ probability of survival between ages $x$ and $x+n$
 conditional on survival to age $x$. Inverse of $qx$.
@@ -137,11 +137,12 @@ were drawn.
 ### mx
 
 From raw death count and population data, the place to start with a life table
-is mx.
+is $m_x$.
 
 $$m_x = \frac{\text{deaths}}{\text{person-years}} \approx
 \frac{\text{observed deaths}}{\text{mid-interval population}}$$
-Let's load in our example data and calculate mx:
+
+Let's load in our example data and calculate $m_x$:
 
 ```{r mx_calc}
 data("exampleLT")
@@ -151,16 +152,16 @@ dt[, mx := deaths / population]
 
 ### ax
 
-If we have mx and qx we can directly calculate ax. However, we often use mx
-and ax to get qx in the first place, and so have to make some assumptions to
-get ax. Empirical calculations of ax would require detailed and accurate data
-on age of death in days (such as paired date of birth and date of death), which
-is typically unavailable.
+If we have $m_x$ and $q_x$ we can directly calculate $a_x$. However, we often
+use $m_x$ and $a_x$ to get $q_x$ in the first place, and so have to make some
+assumptions to get $a_x$. Empirical calculations of $a_x$ would require detailed
+and accurate data on age of death in days (such as paired date of birth and date
+of death), which is typically unavailable.
 
 __Rule of thumb:__
 
 One option is to assume all deaths occur in the middle of the interval, so
-$ax \approx n/2$. This assumption works well for most ages, but it doesn't work
+$a_x \approx n/2$. This assumption works well for most ages, but it doesn't work
 as well for very young or very old where mortality can change rapidly over the
 interval.
 
@@ -182,9 +183,9 @@ given `age_start` and `age_end`.
 __1a0 and 4a1:__
 
 Preston et al adapted an analysis first completed by Coale and Demeny (1983)
-to derive a relationship between infant mortality rate (1m0) and under-5 ax
-values (1a0 and 4a1). In the absence of reliable data to produce ax, these
-relationships can be used to predict ax from infant mx:
+to derive a relationship between infant mortality rate ($_1m_0$) and under-5
+$a_x$ values ($_1a_0$ and $_4a_1$). In the absence of reliable data to produce
+$a_x$, these relationships can be used to predict $a_x$ from infant $m_x$:
 
 |                     | Males       | Females  |
 | ------------------- |-------------| ---------|
@@ -203,32 +204,34 @@ dt[, sex := "female"]
 gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 ```
 
-__Graduation method:__ One strategy for selecting ax values is based on the
+__Graduation method:__ One strategy for selecting $a_x$ values is based on the
 level and slope of the $_nm_x$ function. Comparing two populations with the
-same 5m60, the population with more rapidly rising mortality rate with respect
-to age will have deaths that are more concentrated in the later part of the
-interval (higher ax). Comparing two populations with the same slope in mx, the
-one with higher mortality rate will have more deaths at the beginning of the
-interval (lower ax).
+same $_5m_60$, the population with more rapidly rising mortality rate with
+respect to age will have deaths that are more concentrated in the later part of
+the interval (higher $a_x$). Comparing two populations with the same slope in
+$m_x$, the one with higher mortality rate will have more deaths at the beginning
+of the interval (lower $a_x$).
 
 To utilize this theory, we can implement iteration as described in the
 Preston book, and originally proposed by Keyfitz (1966):
 $$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 \frac{n}{24} {_nd_{x+n}}}{_nd_x}$$
-Where dx is derived from the conversion from mx to qx. However, since the
-mx --> qx conversion requires ax, this requires us to pick a starting place for
-ax (like n/2), solve for dx, solve for ax, and so on until convergence.
+Where $d_x$ is derived from the conversion from $m_x$ to $q_x$. However, since
+the $m_x$ to $q_x$ conversion requires $a_x$, this requires us to pick a
+starting place for $a_x$ (like $n/2$), solve for $d_x$, solve for $a_x$, and so
+on until convergence.
 
 ### qx
 
-From mx and ax, we can solve directly for qx:
+From $m_x$ and $a_x$, we can solve directly for $q_x$:
 
 $$_nq_x = \frac{n \cdot {_nm_x}}{1 + (n - {_na_x}) \cdot {_nm_x}}$$
-For the terminal age group, qx should be 1 because all individuals surviving to
-the terminal age group will die in that age group (probability of death = 1).
+For the terminal age group, $q_x$ should be $1$ because all individuals
+surviving to the terminal age group will die in that age group (probability of
+death = $1$).
 
-The `mx_ax_to_qx` combines the equation for qx and the requirement of terminal
-qx equalling one by setting $qx = 1$ if `age_length = Inf`.
+The `mx_ax_to_qx` combines the equation for $q_x$ and the requirement of
+terminal $q_x$ equalling one by setting $q_x = 1$ if `age_length = Inf`.
 
 ```{r qx_calc1, echo = T, results = "hide"}
 dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
@@ -237,20 +240,20 @@ dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
 Other functions that utilize this relationship but solve for different metrics
 are `mx_qx_to_ax` and `qx_ax_to_mx`.
 
-You can also solve for qx under the assumption of contant mortality rate within
-an interval, which removes ax from the relationship:
+You can also solve for $q_x$ under the assumption of contant mortality rate
+within an interval, which removes $a_x$ from the relationship:
 
 $$_nq_x = 1 - e^{-n \cdot {_nm_x}}.$$
 ```{r qx_calc2, eval = F}
 dt[, qx_compare := mx_to_qx(mx = mx, age_length = age_length)]
 ```
 
-These two qx values are the same, because the implied ax in `mx_to_qx` is
-equivalent to the ax we generate under the assumption in `mx_to_ax`.
+These two $q_x$ values are the same, because the implied $a_x$ in `mx_to_qx` is
+equivalent to the $a_x$ we generate under the assumption in `mx_to_ax`.
 
 ### lx
 
-To calculate the proportion of a cohort surviving to age $x$ (lx), we set
+To calculate the proportion of a cohort surviving to age $x$ ($l_x$), we set
 $l_0 = 1$ (100% survive to birth), and recursively calculate:
 
 $$l_{x+n} = l_x \cdot (1 - _nq_x)$$
@@ -267,11 +270,11 @@ qx_to_lx(dt, id_cols = c("age_start", "age_end"))
 
 ### dx
 
-Proportion of cohort dying between ages $x$ and $x+n$ (dx) is $_nq_0$ to start,
-then $_nd_x = l_x - l_{x+n}$ thereafter (difference between proportion surviving
-to age $x$ and proportion surviving to age $x+n$).
+Proportion of cohort dying between ages $x$ and $x+n$ ($d_x$) is $_nq_0$ to
+start, then $_nd_x = l_x - l_{x+n}$ thereafter (difference between proportion
+surviving to age $x$ and proportion surviving to age $x+n$).
 
-To calculate dx, use `lx_to_dx`:
+To calculate $d_x$, use `lx_to_dx`:
 
 ```{r dx_calc}
 lx_to_dx(dt, id_cols = c("age_start", "age_end"))

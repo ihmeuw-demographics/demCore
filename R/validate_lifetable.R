@@ -3,12 +3,12 @@
 #' @description Check life table, id columns, life table parameter columns,
 #'   and other inputs to functions in this package.
 #'
-#' @param dt \[`data.table()`\] input life tables
-#' @param id_cols \[`character()`\] columns that uniquely identify each row
+#' @param dt \[`data.table()`\]\cr Input life tables
+#' @param id_cols \[`character()`\]\cr Columns that uniquely identify each row
 #'   of `dt`.
-#' @param param_cols \[`character()`\] columns containing life table
+#' @param param_cols \[`character()`\]\cr Columns containing life table
 #'   parameters (qx, lx, etc.)
-#' @param assert_na \[`logical()`\] whether to check for NA values in the
+#' @param assert_na \[`logical()`\]\cr Whether to check for NA values in the
 #'   generated variable.
 #'
 #' @return Invisibly returns input `dt`. Fails if any assertion fails.

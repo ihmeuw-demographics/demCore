@@ -10,7 +10,7 @@ manipulations of life tables. Life table parameters include mx, qx, ax, lx, dx,
 Tx, nLx, and ex. Additional convenience functions include aggregation, scaling,
 moving between abridged and full life tables, and others.
 
-Go [here](https://ihme.github.io/lifetableUtils) for more documentation and
+Go [here](https://ihmeuw.github.io/lifetableUtils) for more documentation and
 examples.
 
 ### Authors

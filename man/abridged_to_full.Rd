@@ -15,33 +15,33 @@ abridged_to_full(
 )
 }
 \arguments{
-\item{dt}{[\code{data.table()}] with variables 'age_start', 'age_end', all
-\code{id_cols}, 'qx', 'ax'}
+\item{dt}{[\code{data.table()}]\cr Abridged life tables with variables
+'age_start', 'age_end', all \code{id_cols}, 'qx', 'ax'}
 
-\item{id_cols}{[\code{character()}] variables that uniquely identify rows,
+\item{id_cols}{[\code{character()}]\cr Variables that uniquely identify rows,
 must include 'age_start' and 'age_end'.}
 
-\item{regression_fits}{[\code{data.table()}] with variables from
-\code{regression_id_cols}, plus 'intercept' and 'slope'}
+\item{regression_fits}{[\code{data.table()}]\cr Abridged to full regression
+parameters. Columns include all \code{regression_id_cols}, 'intercept', 'slope'.}
 
-\item{regression_id_cols}{[\code{character()}] variables that uniquely identify
-regression parameters. Must include 'age_start' and 'age_end' and be
-contained by \code{id_cols}.}
+\item{regression_id_cols}{[\code{character()}]\cr Variables that uniquely
+identify regression parameters. Must include 'age_start' and 'age_end' and
+be contained by \code{id_cols}.}
 
-\item{lx_spline_start_age}{[\code{integer(1)}] age (inclusive) to start using lx
-spline rather than regression fits. Use 0 to use lx spline for all ages, or
-integer > 110 or Inf to use regression results for all. Corresponds to
-'age_start' column.}
+\item{lx_spline_start_age}{[\code{integer(1)}]\cr Age (inclusive) to start using
+lx spline rather than regression fits. Use 0 to use lx spline for all ages,
+or Inf to use regression results for all. Corresponds to 'age_start' column.}
 
-\item{lx_spline_end_age}{[\code{integer(1)}] age (non-inclusive) to end spline
+\item{lx_spline_end_age}{[\code{integer(1)}]\cr Age (non-inclusive) to end spline
 and begin using regression fits. Corresponds to 'age_start' column.}
 
-\item{preserve_input_ax_ages}{[\code{integer()}] ages to preserve the input ax
-values for. This is typically the first age group 0-1 and the terminal age
-group 110+. Corresponds to 'age_start' column.}
+\item{preserve_input_ax_ages}{[\code{integer()}]\cr Ages to preserve the input
+ax values for. This is typically the first age group 0-1 and the terminal
+age group. Corresponds to 'age_start' column.}
 }
 \value{
-data.table with columns id_cols, age, qx, ax
+[\code{data.table()}]\cr Full (single-year) life tables with columns
+\code{id_cols}, 'age', 'qx', 'ax'.
 }
 \description{
 Convert abridged (5-year age group) life tables to full

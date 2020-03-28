@@ -2,32 +2,35 @@
 % Please edit documentation in R/gen_summary_lt.R
 \name{gen_summary_lt}
 \alias{gen_summary_lt}
-\title{Summarize life table draws}
+\title{Summarize life tables}
 \usage{
 gen_summary_lt(dt, id_cols, lt_params)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] draw-level life tables, columns include all
+\item{dt}{[\code{data.table()}]\cr Draw-level life tables, columns include all
 \code{id_cols}, all \code{lt_params}, and 'draw'.}
 
-\item{id_cols}{[\code{character()}] column names in 'dt' that uniquely identify
-all rows. Must include 'draw'.}
+\item{id_cols}{[\code{character()}]\cr Column names in 'dt' that uniquely
+identify all rows. Must include 'draw'.}
 
-\item{lt_params}{[\code{character()}] life table parameters included in \code{dt}.
+\item{lt_params}{[\code{character()}]\cr Life table parameters included in \code{dt}.
 Example: c("mx", "ax", "dx"). Must include 'mx' and 'ax'.}
 }
 \value{
-data.table with \code{id_cols}, 'life_table_parameter', 'mean', 'lower',
-and 'upper'
+[\code{data.table()}]\cr Summarized life table with \code{id_cols},
+'life_table_parameter', 'mean', 'lower', and 'upper'
 }
 \description{
-Create mean and confidence intervals for summary-level life
-tables based off of draws. One draw is one independent simulation or
-calculation -- we typically use 100 or 1000 to bootstrap uncertainty
-and propagate error through multiple steps. First draws are collapsed to
-mean, lower (2.5th percentile), and upper (97.5th percentile). Then, we
-make sure mean-level life table parameters are consistent with one another
-by re-calculating every requested parameter other than mx and ax, using
+Create mean and uncertainty intervals for summary-level life
+tables based off of draws.
+}
+\details{
+One draw is one independent simulation or calculation -- we
+typically use 100 or 1000 to bootstrap uncertainty and propagate error
+through multiple steps. First draws are collapsed to mean, lower
+(2.5th percentile), and upper (97.5th percentile). Then, we make sure
+mean-level life table parameters are consistent with one another by
+re-calculating every requested parameter other than mx and ax, using
 standard methods documented elsewhere.
 }
 \examples{
