@@ -23,18 +23,18 @@ qx_ax_to_mx(qx, ax, age_length)
 mx_to_ax(mx, age_length)
 }
 \arguments{
-\item{mx}{[\code{numeric()}] mx (mortality death rate)}
+\item{mx}{[\code{numeric()}]\cr mx (mortality death rate)}
 
-\item{age_length}{[\code{numeric()}] the length of the age interval (e.g. 5 for
-age 5-9)}
+\item{age_length}{[\code{numeric()}]\cr the length of the age interval (e.g. 5
+for age 5-9)}
 
-\item{ax}{[\code{numeric()}] ax (average number of years lived in the age
+\item{ax}{[\code{numeric()}]\cr ax (average number of years lived in the age
 interval of those who died)}
 
-\item{qx}{[\code{numeric()}] qx (probability of death)}
+\item{qx}{[\code{numeric()}]\cr qx (probability of death)}
 }
 \value{
-Numeric value representing the converted mx, qx, or ax value.
+[\code{numeric()}]\cr the converted mx, qx, or ax value.
 }
 \description{
 Convert between mx and qx values given the length of an age

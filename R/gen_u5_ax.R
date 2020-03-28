@@ -3,7 +3,7 @@
 #' @description Add ax onto a data.table for ages <1 and 1-4 years, with
 #'   algorithm based on under-1 mx.
 #'
-#' @param dt \[`data.table()`\] with columns:
+#' @param dt \[`data.table()`\]\cr columns:
 #'   * 'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
 #'      permitted but will result in NA output for ax or unchanged ax if ax in
 #'      input `dt`.
@@ -11,7 +11,7 @@
 #'   * 'sex' where values must be 'male', 'female', or 'both'
 #'   * 'mx' for mortality rate
 #'   * All additional columns from 'id_cols'
-#' @param id_cols \[`character()`\] columns that uniquely identify
+#' @param id_cols \[`character()`\]\cr columns that uniquely identify
 #'   observations in `dt`. Must include 'age_start', 'age_end', and 'sex'.
 #'
 #' @return modifies `dt` in place with 'ax' column added on.

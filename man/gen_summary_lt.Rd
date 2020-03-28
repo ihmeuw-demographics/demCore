@@ -7,18 +7,18 @@
 gen_summary_lt(dt, id_cols, lt_params)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] draw-level life tables, columns include all
+\item{dt}{[\code{data.table()}]\cr draw-level life tables, columns include all
 \code{id_cols}, all \code{lt_params}, and 'draw'.}
 
-\item{id_cols}{[\code{character()}] column names in 'dt' that uniquely identify
-all rows. Must include 'draw'.}
+\item{id_cols}{[\code{character()}]\cr column names in 'dt' that uniquely
+identify all rows. Must include 'draw'.}
 
-\item{lt_params}{[\code{character()}] life table parameters included in \code{dt}.
+\item{lt_params}{[\code{character()}]\cr life table parameters included in \code{dt}.
 Example: c("mx", "ax", "dx"). Must include 'mx' and 'ax'.}
 }
 \value{
-data.table with \code{id_cols}, 'life_table_parameter', 'mean', 'lower',
-and 'upper'
+[\code{data.table()}]\cr summarized life table with \code{id_cols},
+'life_table_parameter', 'mean', 'lower', and 'upper'
 }
 \description{
 Create mean and confidence intervals for summary-level life

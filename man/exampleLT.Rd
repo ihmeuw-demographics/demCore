@@ -4,17 +4,18 @@
 \name{exampleLT}
 \alias{exampleLT}
 \title{Example life table}
-\format{A data.table with columns:
+\format{[\code{data.table()}] columns:
 \describe{
-\item{age_start}{Integer, abridged ages 0, 1, 5, 10, ..., 95}
-\item{age_end}{Integer, end of age group inclusive, 1, 5, 10, ... , 95, Inf}
-\item{deaths}{Death counts}
-\item{population}{Population counts}
-\item{mx}{mortality rate (deaths / population)}
-\item{ax}{mean person-years lived by those who die in interval. Obtained
-using \code{mx_to_ax} function.}
-\item{qx}{probability of death in interval conditional on survival to xth
-birthday. Obtained using \code{mx_ax_to_qx} function.}
+\item{age_start}{[\code{integer()}]\cr Abridged ages 0, 1, 5, 10, ..., 95}
+\item{age_end}{[\code{integer()}]\cr End of age group inclusive, 1, 5, 10,
+... , 95, Inf}
+\item{deaths}{[\code{numeric()}]\cr Death counts}
+\item{population}{[\code{numeric()}]\cr Population counts}
+\item{mx}{[\code{numeric()}]\cr Mortality rate (deaths / population)}
+\item{ax}{[\code{numeric()}]\cr Mean person-years lived by those who die in
+interval. Obtained using \code{mx_to_ax} function.}
+\item{qx}{[\code{numeric()}]\cr Probability of death in interval conditional
+on survival to xth birthday. Obtained using \code{mx_ax_to_qx} function.}
 }}
 \usage{
 exampleLT

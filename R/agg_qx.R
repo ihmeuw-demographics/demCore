@@ -8,16 +8,17 @@
 #'   through all granular age groups, and subtract from one to get the
 #'   aggregated conditional probability of death (qx).
 #'
-#' @param dt \[`data.table()`\] data to be aggregated.
+#' @param dt \[`data.table()`\]\cr data to be aggregated.
 #'   * must only include columns 'qx' and those specified in `id_cols`
 #'   * must include 'age_start' and 'age_end' columns
 #'   * `id_cols` must uniquely identify each row
-#' @param age_mapping \[`data.table()`\] specification of intervals to aggregate
+#' @param age_mapping \[`data.table()`\]\cr specification of intervals to aggregate
 #'   to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
 #'   for terminal age group.
 #' @inheritParams demUtils::agg
 #'
-#' @return data.table with `id_cols` and `qx` columns for aggregate age groups.
+#' @return \[`data.table()`\]\cr aggregated qx values, has `id_cols` and 'qx'
+#'   columns for aggregate age groups.
 #'
 #' @details This function is a wrapper for demUtils::aggregate_age
 #'

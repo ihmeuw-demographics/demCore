@@ -7,15 +7,15 @@
 validate_lifetable(dt, id_cols = c(), param_cols = c(), assert_na = NA)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] input life tables}
+\item{dt}{[\code{data.table()}]\cr input life tables}
 
-\item{id_cols}{[\code{character()}] columns that uniquely identify each row
+\item{id_cols}{[\code{character()}]\cr columns that uniquely identify each row
 of \code{dt}.}
 
-\item{param_cols}{[\code{character()}] columns containing life table
+\item{param_cols}{[\code{character()}]\cr columns containing life table
 parameters (qx, lx, etc.)}
 
-\item{assert_na}{[\code{logical()}] whether to check for NA values in the
+\item{assert_na}{[\code{logical()}]\cr whether to check for NA values in the
 generated variable.}
 }
 \value{

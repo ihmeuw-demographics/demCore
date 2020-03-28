@@ -6,14 +6,14 @@
 #'   functions. The mx_to_qx and qx_to_mx functions assume smooth mortality
 #'   across the interval.
 #'
-#' @param mx \[`numeric()`\] mx (mortality death rate)
-#' @param qx \[`numeric()`\] qx (probability of death)
-#' @param ax \[`numeric()`\] ax (average number of years lived in the age
+#' @param mx \[`numeric()`\]\cr mx (mortality death rate)
+#' @param qx \[`numeric()`\]\cr qx (probability of death)
+#' @param ax \[`numeric()`\]\cr ax (average number of years lived in the age
 #'   interval of those who died)
-#' @param age_length \[`numeric()`\] the length of the age interval (e.g. 5 for
-#'   age 5-9)
+#' @param age_length \[`numeric()`\]\cr the length of the age interval (e.g. 5
+#'   for age 5-9)
 #'
-#' @return Numeric value representing the converted mx, qx, or ax value.
+#' @return \[`numeric()`\]\cr the converted mx, qx, or ax value.
 #'
 #' @examples
 #' mx_to_qx(0.25, 45)

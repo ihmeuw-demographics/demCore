@@ -5,16 +5,17 @@
 #'   many other functions in this package to calculate px, lx, dx, Tx, nLx,
 #'   and ex.
 #'
-#' @param dt \[`data.table()`\] input life tables, variables: 'qx', 'mx', 'ax',
-#'   'age_start', 'age_end', and all `id_cols`
-#' @param id_cols \[`character()`\] columns that uniquely identify each
+#' @param dt \[`data.table()`\]\cr input life tables, variables: 'qx', 'mx',
+#'   'ax', 'age_start', 'age_end', and all `id_cols`
+#' @param id_cols \[`character()`\]\cr columns that uniquely identify each
 #'   row of `dt`
-#' @param preserve_u5 \[`logical()`\] whether to preserve under-5 qx estimates
-#'   rather than recalculating them based on mx and ax. Default: F.
-#' @param assert_na \[`logical()`\] whether to assert that there is no
+#' @param preserve_u5 \[`logical()`\]\cr whether to preserve under-5 qx
+#'   estimates rather than recalculating them based on mx and ax. Default: F.
+#' @param assert_na \[`logical()`\]\cr whether to assert that there is no
 #'   missingness. Default T.
 #'
-#' @return data.table with additional variables px, lx, dx, Tx, nLx, ex
+#' @return \[`data.table()`\]\cr life table with additional columns: px, lx,
+#'   dx, Tx, nLx, ex
 #'
 #' @examples
 #' dt <- data.table::data.table(

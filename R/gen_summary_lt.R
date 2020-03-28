@@ -9,15 +9,15 @@
 #'   by re-calculating every requested parameter other than mx and ax, using
 #'   standard methods documented elsewhere.
 #'
-#' @param dt \[`data.table()`\] draw-level life tables, columns include all
+#' @param dt \[`data.table()`\]\cr draw-level life tables, columns include all
 #'  `id_cols`, all `lt_params`, and 'draw'.
-#' @param id_cols \[`character()`\] column names in 'dt' that uniquely identify
-#'   all rows. Must include 'draw'.
-#' @param lt_params \[`character()`\] life table parameters included in `dt`.
+#' @param id_cols \[`character()`\]\cr column names in 'dt' that uniquely
+#'   identify all rows. Must include 'draw'.
+#' @param lt_params \[`character()`\]\cr life table parameters included in `dt`.
 #'   Example: c("mx", "ax", "dx"). Must include 'mx' and 'ax'.
 #'
-#' @return data.table with `id_cols`, 'life_table_parameter', 'mean', 'lower',
-#'   and 'upper'
+#' @return \[`data.table()`\]\cr summarized life table with `id_cols`,
+#'   'life_table_parameter', 'mean', 'lower', and 'upper'
 #'
 #' @examples
 #' library(data.table)

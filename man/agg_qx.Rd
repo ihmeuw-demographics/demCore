@@ -7,7 +7,7 @@
 agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] data to be aggregated.
+\item{dt}{[\code{data.table()}]\cr data to be aggregated.
 \itemize{
 \item must only include columns 'qx' and those specified in \code{id_cols}
 \item must include 'age_start' and 'age_end' columns
@@ -17,7 +17,7 @@ agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
 \item{id_cols}{[\code{character()}]\cr
 ID columns that uniquely identify each row of \code{dt}.}
 
-\item{age_mapping}{[\code{data.table()}] specification of intervals to aggregate
+\item{age_mapping}{[\code{data.table()}]\cr specification of intervals to aggregate
 to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
 for terminal age group.}
 
@@ -27,7 +27,8 @@ present in \code{dt} before aggregating. Default is "False" and the function
 errors out.}
 }
 \value{
-data.table with \code{id_cols} and \code{qx} columns for aggregate age groups.
+[\code{data.table()}]\cr aggregated qx values, has \code{id_cols} and 'qx'
+columns for aggregate age groups.
 }
 \description{
 Given a data.table with a qx variable and ID variables that

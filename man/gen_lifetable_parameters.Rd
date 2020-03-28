@@ -23,16 +23,17 @@ gen_Tx(dt, id_cols, assert_na = T)
 gen_ex(dt, assert_na = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] variables lx, ax, dx, mx, age_start, age_end}
+\item{dt}{[\code{data.table()}]\cr variables 'lx', 'ax', 'dx', 'mx',
+'age_start', 'age_end'}
 
-\item{id_cols}{[\code{character()}] columns that uniquely identify each row
+\item{id_cols}{[\code{character()}]\cr columns that uniquely identify each row
 of \code{dt}. Must include 'age_start' and 'age_end'.}
 
-\item{assert_na}{[\code{logical()}] whether to check for NA values in the
+\item{assert_na}{[\code{logical()}]\cr whether to check for NA values in the
 generated variable.}
 }
 \value{
-dt with column added for new life table parameter. Modifies
+\code{dt} with column added for new life table parameter. Modifies
 data.tables in place.
 }
 \description{

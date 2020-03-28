@@ -7,7 +7,7 @@
 gen_u5_ax(dt, id_cols)
 }
 \arguments{
-\item{dt}{[\code{data.table()}] with columns:
+\item{dt}{[\code{data.table()}]\cr columns:
 \itemize{
 \item 'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
 permitted but will result in NA output for ax or unchanged ax if ax in
@@ -18,7 +18,7 @@ input \code{dt}.
 \item All additional columns from 'id_cols'
 }}
 
-\item{id_cols}{[\code{character()}] columns that uniquely identify
+\item{id_cols}{[\code{character()}]\cr columns that uniquely identify
 observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 }
 \value{

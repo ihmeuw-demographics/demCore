@@ -13,13 +13,14 @@
 #'   * Tx requires nLx
 #'   * nLx requires lx, ax, and dx
 #'
-#' @param dt \[`data.table()`\] variables lx, ax, dx, mx, age_start, age_end
-#' @param id_cols \[`character()`\] columns that uniquely identify each row
+#' @param dt \[`data.table()`\]\cr variables 'lx', 'ax', 'dx', 'mx',
+#'   'age_start', 'age_end'
+#' @param id_cols \[`character()`\]\cr columns that uniquely identify each row
 #'   of `dt`. Must include 'age_start' and 'age_end'.
-#' @param assert_na \[`logical()`\] whether to check for NA values in the
+#' @param assert_na \[`logical()`\]\cr whether to check for NA values in the
 #'   generated variable.
 #'
-#' @return dt with column added for new life table parameter. Modifies
+#' @return `dt` with column added for new life table parameter. Modifies
 #'   data.tables in place.
 #'
 #' @details
