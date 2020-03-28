@@ -143,10 +143,9 @@ aggregated conditional probability of death (qx).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] data to be aggregated.</p><ul>
-<li><p>must only include columns 'qx' and those specified in <code>id_cols</code></p></li>
-<li><p>must include 'age_start' and 'age_end' columns</p></li>
-<li><p><code>id_cols</code> must uniquely identify each row</p></li>
+      <td><p>[<code>data.table()</code>]<br /> Data to be aggregated.</p><ul>
+<li><p>Must only include columns 'qx' and those specified in <code>id_cols</code></p></li>
+<li><p>Must include 'age_start' and 'age_end' columns</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -156,9 +155,9 @@ ID columns that uniquely identify each row of <code>dt</code>.</p></td>
     </tr>
     <tr>
       <th>age_mapping</th>
-      <td><p>[<code>data.table()</code>] specification of intervals to aggregate
-to. Required columns are 'age_start' and 'age_end'. Use "Inf" as 'age_end'
-for terminal age group.</p></td>
+      <td><p>[<code>data.table()</code>]<br /> Specification of intervals to
+aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
+'age_end' for terminal age group.</p></td>
     </tr>
     <tr>
       <th>drop_present_aggs</th>
@@ -171,10 +170,11 @@ errors out.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.table with <code>id_cols</code> and <code>qx</code> columns for aggregate age groups.</p>
+    <p>[<code>data.table()</code>]<br /> Aggregated qx values, has <code>id_cols</code> and 'qx'
+columns for aggregate age groups.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is a wrapper for demUtils::aggregate_age</p>
+    <p>This function is a wrapper for <code><a href='https://rdrr.io/pkg/demUtils/man/agg_scale.html'>demUtils::agg()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(

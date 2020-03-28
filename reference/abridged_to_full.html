@@ -143,48 +143,48 @@ lx spline</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] with variables 'age_start', 'age_end', all
-<code>id_cols</code>, 'qx', 'ax'</p></td>
+      <td><p>[<code>data.table()</code>]<br /> Abridged life tables with variables
+'age_start', 'age_end', all <code>id_cols</code>, 'qx', 'ax'</p></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] variables that uniquely identify rows,
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Variables that uniquely identify rows,
 must include 'age_start' and 'age_end'.</p></td>
     </tr>
     <tr>
       <th>regression_fits</th>
-      <td><p>[<code>data.table()</code>] with variables from
-<code>regression_id_cols</code>, plus 'intercept' and 'slope'</p></td>
+      <td><p>[<code>data.table()</code>]<br /> Abridged to full regression
+parameters. Columns include all <code>regression_id_cols</code>, 'intercept', 'slope'.</p></td>
     </tr>
     <tr>
       <th>regression_id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] variables that uniquely identify
-regression parameters. Must include 'age_start' and 'age_end' and be
-contained by <code>id_cols</code>.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Variables that uniquely
+identify regression parameters. Must include 'age_start' and 'age_end' and
+be contained by <code>id_cols</code>.</p></td>
     </tr>
     <tr>
       <th>lx_spline_start_age</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>] age (inclusive) to start using lx
-spline rather than regression fits. Use 0 to use lx spline for all ages, or
-integer &gt; 110 or Inf to use regression results for all. Corresponds to
-'age_start' column.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>]<br /> Age (inclusive) to start using
+lx spline rather than regression fits. Use 0 to use lx spline for all ages,
+or Inf to use regression results for all. Corresponds to 'age_start' column.</p></td>
     </tr>
     <tr>
       <th>lx_spline_end_age</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>] age (non-inclusive) to end spline
+      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>]<br /> Age (non-inclusive) to end spline
 and begin using regression fits. Corresponds to 'age_start' column.</p></td>
     </tr>
     <tr>
       <th>preserve_input_ax_ages</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] ages to preserve the input ax
-values for. This is typically the first age group 0-1 and the terminal age
-group 110+. Corresponds to 'age_start' column.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Ages to preserve the input
+ax values for. This is typically the first age group 0-1 and the terminal
+age group. Corresponds to 'age_start' column.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.table with columns id_cols, age, qx, ax</p>
+    <p>[<code>data.table()</code>]<br /> Full (single-year) life tables with columns
+<code>id_cols</code>, 'age', 'qx', 'ax'.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function includes two different methods for expanding

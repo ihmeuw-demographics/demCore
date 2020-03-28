@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Generate a life table with all parameters — lifetable" />
 <meta property="og:description" content="Given a data.table with at least two of variables mx, ax, and
-qx, compute a full life table. This is a helper function that combines
+qx, compute a complete life table. This is a helper function that combines
 many other functions in this package to calculate px, lx, dx, Tx, nLx,
 and ex." />
 
@@ -124,8 +124,8 @@ and ex." />
     </div>
 
     <div class="ref-description">
-    <p>Given a data.table with at least two of variables mx, ax, and
-qx, compute a full life table. This is a helper function that combines
+    <p>Given a <code>data.table</code> with at least two of variables mx, ax, and
+qx, compute a complete life table. This is a helper function that combines
 many other functions in this package to calculate px, lx, dx, Tx, nLx,
 and ex.</p>
     </div>
@@ -137,29 +137,30 @@ and ex.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] input life tables, variables: 'qx', 'mx', 'ax',
-'age_start', 'age_end', and all <code>id_cols</code></p></td>
+      <td><p>[<code>data.table()</code>]<br /> Input life tables, variables: 'qx', 'mx',
+'ax', 'age_start', 'age_end', and all <code>id_cols</code></p></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] columns that uniquely identify each
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Columns that uniquely identify each
 row of <code>dt</code></p></td>
     </tr>
     <tr>
       <th>preserve_u5</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>] whether to preserve under-5 qx estimates
-rather than recalculating them based on mx and ax. Default: F.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>]<br /> Whether to preserve under-5 qx
+estimates rather than recalculating them based on mx and ax. Default: F.</p></td>
     </tr>
     <tr>
       <th>assert_na</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>] whether to assert that there is no
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>]<br /> Whether to assert that there is no
 missingness. Default T.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.table with additional variables px, lx, dx, Tx, nLx, ex</p>
+    <p>[<code>data.table()</code>]<br /> Life table(s) with additional columns: px, lx,
+dx, Tx, nLx, ex</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(

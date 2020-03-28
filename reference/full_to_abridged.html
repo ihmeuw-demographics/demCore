@@ -133,27 +133,27 @@ age group) life tables using standard life table aggregation functions.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] full life table(s), variables 'age_start',
+      <td><p>[<code>data.table()</code>]<br /> Full life table(s), variables 'age_start',
 'age_end', all vars in <code>id_cols</code>, and at least two of 'qx', 'ax', and 'mx'.
 'dx' is used but if it is not provided it is calculated within.</p></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] variables that uniquely identify
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Variables that uniquely identify
 observations. Must include 'age_start' and 'age_end'.</p></td>
     </tr>
     <tr>
       <th>abridged_ages</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] ages to break the single-year ages into.
-These are the starting ages of each age interval.
+      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Ages to break the single-year ages
+into. These are the starting ages of each age interval.
 Default: c(0, 1, seq(5, 110, 5)).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data.table with <code>id_cols</code>, 'qx', and 'ax', for abridged ages
-specified in <code>abridged_ages</code>.</p>
+    <p>[<code>data.table()</code>]<br /> Abridged life table(s) with <code>id_cols</code>, 'qx',
+and 'ax', for abridged ages specified in <code>abridged_ages</code> argument.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(

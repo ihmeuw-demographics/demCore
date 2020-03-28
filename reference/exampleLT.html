@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Example life table — exampleLT" />
 <meta property="og:description" content="Example death count and population values. Also
-includes mx (deaths / population), and ax and qx calculated using functions
+includes mx (deaths / population), ax, and qx calculated using functions
 from this package." />
 
 
@@ -124,7 +124,7 @@ from this package." />
 
     <div class="ref-description">
     <p>Example death count and population values. Also
-includes mx (deaths / population), and ax and qx calculated using functions
+includes mx (deaths / population), ax, and qx calculated using functions
 from this package.</p>
     </div>
 
@@ -133,16 +133,17 @@ from this package.</p>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data.table with columns:</p><dl'>
-<dt>age_start</dt><dd><p>Integer, abridged ages 0, 1, 5, 10, ..., 95</p></dd>
-<dt>age_end</dt><dd><p>Integer, end of age group inclusive, 1, 5, 10, ... , 95, Inf</p></dd>
-<dt>deaths</dt><dd><p>Death counts</p></dd>
-<dt>population</dt><dd><p>Population counts</p></dd>
-<dt>mx</dt><dd><p>mortality rate (deaths / population)</p></dd>
-<dt>ax</dt><dd><p>mean person-years lived by those who die in interval. Obtained
-using <code>mx_to_ax</code> function.</p></dd>
-<dt>qx</dt><dd><p>probability of death in interval conditional on survival to xth
-birthday. Obtained using <code>mx_ax_to_qx</code> function.</p></dd>
+    <p>[<code>data.table()</code>] columns:</p><dl'>
+<dt>age_start</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Abridged ages 0, 1, 5, 10, ..., 95</p></dd>
+<dt>age_end</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> End of age group inclusive, 1, 5, 10,
+... , 95, Inf</p></dd>
+<dt>deaths</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Death counts</p></dd>
+<dt>population</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Population counts</p></dd>
+<dt>mx</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Mortality rate (deaths / population)</p></dd>
+<dt>ax</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Mean person-years lived by those who die in
+interval. Obtained using <code>mx_to_ax</code> function.</p></dd>
+<dt>qx</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Probability of death in interval conditional
+on survival to xth birthday. Obtained using <code>mx_ax_to_qx</code> function.</p></dd>
 
 </dl>
 

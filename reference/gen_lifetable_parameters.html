@@ -41,17 +41,7 @@
 
 <meta property="og:title" content="Generate life table parameters — gen_lifetable_parameters" />
 <meta property="og:description" content="These functions perform life table calculations, to add selected life table
-parameters from others, using established demographic relationships.
-The following are required inputs for given parameters, as written in
-these functions:
-dx requires lx
-lx requires qx
-qx requires lx
-ex requires lx and Tx
-Tx requires nLx
-nLx requires lx, ax, and dx
-
-" />
+parameters from others, using established demographic relationships." />
 
 
 
@@ -134,16 +124,6 @@ nLx requires lx, ax, and dx
     <div class="ref-description">
     <p>These functions perform life table calculations, to add selected life table
 parameters from others, using established demographic relationships.</p>
-<p>The following are required inputs for given parameters, as written in
-these functions:</p><ul>
-<li><p>dx requires lx</p></li>
-<li><p>lx requires qx</p></li>
-<li><p>qx requires lx</p></li>
-<li><p>ex requires lx and Tx</p></li>
-<li><p>Tx requires nLx</p></li>
-<li><p>nLx requires lx, ax, and dx</p></li>
-</ul>
-
     </div>
 
     <pre class="usage"><span class='fu'>qx_to_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
@@ -163,27 +143,35 @@ these functions:</p><ul>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] variables lx, ax, dx, mx, age_start, age_end</p></td>
+      <td><p>[<code>data.table()</code>]<br /> Life table(s). Includes columns 'age_start',
+'age_end', and all <code>id_cols</code>. Additionally:</p><ul>
+<li><p><code>qx_to_lx</code> requires 'qx'</p></li>
+<li><p><code>lx_to_qx</code> requires 'lx'</p></li>
+<li><p><code>lx_to_dx</code> requires 'lx'</p></li>
+<li><p><code>gen_nLx</code> requires 'lx', 'ax', 'dx'</p></li>
+<li><p><code>gen_Tx</code> requires 'nLx'</p></li>
+<li><p><code>gen_ex</code> requires 'lx', 'Tx'</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] columns that uniquely identify each row
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Columns that uniquely identify each row
 of <code>dt</code>. Must include 'age_start' and 'age_end'.</p></td>
     </tr>
     <tr>
       <th>assert_na</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>] whether to check for NA values in the
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>]<br /> Whether to check for NA values in the
 generated variable.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>dt with column added for new life table parameter. Modifies
+    <p><code>dt</code> with column added for new life table parameter. Modifies
 data.tables in place.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><strong>Parameter definitions:</strong>
+    <p><strong>Parameter definitions:</strong> <br />
 For an age interval x to x+n:</p><ul>
 <li><p>mx = mortality rate (deaths / person-years)</p></li>
 <li><p>qx = probability of death, conditional on survival to x-th birthday</p></li>
@@ -196,34 +184,38 @@ interval</p></li>
 <li><p>nLx = total person-years lived in interval</p></li>
 </ul>
 
-<p><strong>qx_to_lx:</strong> We can use probability of death (qx) to get the proportion of
-survivors in the beginning of an age group (lx).
-$$At age = 0: lx = 1$$
-$$At age &gt; 0: lx = lx_previous * (1-qx_previous)$$</p>
-<p><strong>lx_to_qx:</strong> We can use survival proportion (lx) and survival proportion at
-next age group (lx+n) to get probability of death (qx).
-$$qx = 1 - (l{x+n}/lx)$$
-$$For terminal age group: qx = 1$$</p>
-<p><strong>lx_to_dx:</strong> Given the proportion surviving to each age group (lx), we can
-calculate the proportion dying in the age interval (dx).
-$$dx = lx - l{x+n}$$
-$$For terminal age group: dx = lx$$</p>
-<p><strong>gen_nLx:</strong> To get \(nLx\) we calculate years lived by survivors plus years
-lived by those who died. For terminal ages, assume that average person years
-lived equals number at the start of the age group divided by the death rate.
-$$nLx = n * l{x+n} + ax * d_x$$
-$$For terminal age group: infinityLx = lx / mx$$</p>
-<p><strong>gen_Tx:</strong> Person-years lived above age x (Tx) is based on person-years
-lived by people in each age interval above age x (nLx).
-$$For terminal age group: Tx = nLx$$
-$$Otherwise: Tx = cumulative sum of nLx beyond age x$$</p>
+<p><strong>qx_to_lx:</strong> Use probability of death (qx) to get the proportion of
+survivors in the beginning of an age group (lx). l0 = 1; lx for ages &gt; 0
+is lx for previous age group times the probability of surviving the
+previous age group.</p>
+<p><strong>lx_to_qx:</strong> Use survival proportion (lx) at age x and x+n to get
+probability of death between x and x+n (qx). This relationship is an
+algebraic equivalent to the <code>qx_to_lx</code> relationship as described. Terminal
+age qx is set to 1.</p>
+<p><strong>lx_to_dx:</strong> Calculate the proportion dying between age x and x+n (dx) as
+the difference between the proportion surviving (lx) at age x and the
+proportion surviving at age x+n. In the terminal age group all survivors
+die in the age group, so dx = lx.</p>
+<p><strong>gen_nLx:</strong> nLx is calculated as the sum of years lived by survivors and
+years lived by those who die between ages x and x+n. The first component is
+n times l(x+n). The second component is ax * dx. For terminal ages, assume
+that average person years lived equals number at the start of the age group
+divided by the mortality rate.</p>
+<p><strong>gen_Tx:</strong> Person-years lived above age x (Tx) is the cumulative sum of
+person-years lived by people in each age interval above age x (nLx).
+For the terminal age group, Tx = nLx.</p>
 <p><strong>gen_ex:</strong> Life expectancy (ex) at age x is based on person-years lived
 above the age group (Tx) and proportion of people alive at the start of
-age group (lx).
-$$ex = Tx / lx$$</p>
+age group (lx): ex = Tx / lx.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>lifetableUtils::mx_qx_ax_conversions, lifetableUtils::lifetable</p></div>
+    <div class='dont-index'>
+<ul>
+<li><p><a href='mx_qx_ax_conversions.html'>lifetableUtils::mx_qx_ax_conversions</a></p></li>
+<li><p><a href='lifetable.html'>lifetableUtils::lifetable</a></p></li>
+<li><p><a href='https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html'>Introduction to lifetables vignette</a></p></li>
+</ul>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(

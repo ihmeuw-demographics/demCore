@@ -133,7 +133,7 @@ algorithm based on under-1 mx.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>] with columns:</p><ul>
+      <td><p>[<code>data.table()</code>]<br /> Columns:</p><ul>
 <li><p>'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
 permitted but will result in NA output for ax or unchanged ax if ax in
 input <code>dt</code>.</p></li>
@@ -145,20 +145,23 @@ input <code>dt</code>.</p></li>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] columns that uniquely identify
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Columns that uniquely identify
 observations in <code>dt</code>. Must include 'age_start', 'age_end', and 'sex'.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>modifies <code>dt</code> in place with 'ax' column added on.</p>
+    <p>Modifies <code>dt</code> in place with 'ax' column added on.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Takes a data.table with age_start, age_end, sex, and infant
-mortality rate and adds a column 'ax'. Values from:</p>
+    <p>Takes a <code>data.table</code> with 'age_start', 'age_end', 'sex', and
+infant mortality rate ('mx') and adds a column 'ax'. Values from:</p>
 <p>Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
-population processes. MA: Blackwell Publishing. 2001.</p><table class='table'>
+population processes. MA: Blackwell Publishing. 2001.</p>
+<p>The following table shows the conversions from 1m0 to 1a0 and 4a1. Note
+that when sex is "both" the relationship is a mean of the male and female
+relationships.</p><table class='table'>
 <tr><td></td><td></td><td>Males</td><td></td><td>Females</td></tr>
 <tr><td>1a0:</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>If 1m0 &gt;= 0.107</td><td></td><td>0.330</td><td></td><td>0.350</td></tr>

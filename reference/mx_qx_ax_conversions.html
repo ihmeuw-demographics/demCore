@@ -149,30 +149,44 @@ across the interval.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mx</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] mx (mortality death rate)</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> mx (mortality death rate)</p></td>
     </tr>
     <tr>
       <th>age_length</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] the length of the age interval (e.g. 5 for
-age 5-9)</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> The length of the age interval (e.g. 5
+for age 5-9)</p></td>
     </tr>
     <tr>
       <th>ax</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] ax (average number of years lived in the age
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> ax (average number of years lived in the age
 interval of those who died)</p></td>
     </tr>
     <tr>
       <th>qx</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] qx (probability of death)</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> qx (probability of death)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Numeric value representing the converted mx, qx, or ax value.</p>
+    <p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> The converted mx, qx, or ax value(s).</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><strong>mx_to_qx:</strong> qx = 1 - exp((-1 * age_length) * mx)</p>
+<p><strong>mx_ax_to_qx:</strong> qx = (age_length * mx) / (1 + (age_length - ax) * mx)</p>
+<p><strong>qx_to_mx:</strong> mx = log(1 - qx) / (-1 * age_length)</p>
+<p><strong>mx_qx_to_ax:</strong> ax = (qx + (mx * age_length * (qx - 1))) / (mx * qx)</p>
+<p><strong>qx_ax_to_mx:</strong> mx = qx / (age_length - (age_length * qx) + (ax * qx))</p>
+<p><strong>mx_to_ax:</strong> ax = age_length + (1 / mx) - age_length / (1 - exp(- age_length * mx))</p>
+<p>For all functions calculating qx, if age_length = Inf return qx = 1.
+For all functions computing mx or ax, if age_length = Inf modify age_length
+to arbitrarily large value (200) to get real number result.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Preston Demography book, <a href='https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html'>life table introduction vignette</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>mx_to_qx</span>(<span class='fl'>0.25</span>, <span class='fl'>45</span>)</div><div class='output co'>#&gt; [1] 0.999987</div><div class='input'><span class='fu'>mx_ax_to_qx</span>(<span class='fl'>.2</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.7142857</div><div class='input'><span class='fu'>qx_to_mx</span>(<span class='fl'>.5</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.1386294</div><div class='input'><span class='fu'>mx_qx_to_ax</span>(<span class='fl'>.5</span>, <span class='fl'>.25</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] -13</div><div class='input'><span class='fu'>qx_ax_to_mx</span>(<span class='fl'>.1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.02083333</div><div class='input'><span class='fu'>mx_to_ax</span>(<span class='fl'>0.2</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 2.090116</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>mx_to_qx</span>(<span class='fl'>0.25</span>, <span class='fl'>45</span>)</div><div class='output co'>#&gt; [1] 0.999987</div><div class='input'><span class='fu'>mx_ax_to_qx</span>(<span class='fl'>0.2</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.7142857</div><div class='input'><span class='fu'>qx_to_mx</span>(<span class='fl'>0.5</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.1386294</div><div class='input'><span class='fu'>mx_qx_to_ax</span>(<span class='fl'>0.005</span>, <span class='fl'>0.0247</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 2.57085</div><div class='input'><span class='fu'>qx_ax_to_mx</span>(<span class='fl'>0.1</span>, <span class='fl'>3</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 0.02083333</div><div class='input'><span class='fu'>mx_to_ax</span>(<span class='fl'>0.2</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; [1] 2.090116</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
