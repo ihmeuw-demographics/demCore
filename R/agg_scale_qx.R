@@ -118,7 +118,7 @@ scale_qx <- function(dt, id_cols) {
   dt[, px := 1 - qx]
   dt[, qx := NULL]
 
-  # Aggregate over age using multiplicative aggregation
+  # Scale over age using multiplicative aggregation
   dt <- demUtils::scale(
     dt,
     id_cols = id_cols,
