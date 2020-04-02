@@ -28,7 +28,7 @@
 #'
 #' **Scaling:** Convert to px-space, scale up age-hierarchy so that granular px
 #'   values multiply to aggregate px values, convert back to qx-space.
-#'   **scale_qx** is a wrapper for [demUtils::scale()].
+#'   `scale_qx` is a wrapper for [demUtils::scale()].
 #'
 #' @seealso Vignette on scaling multiplicative aggregates in `demUtils`.
 #'
