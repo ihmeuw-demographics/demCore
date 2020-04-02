@@ -1,38 +1,64 @@
-#' @title Aggregate qx values over age
+#' @title Aggregate or scale qx values over age
 #'
-#' @description Given a data.table with a qx variable and ID variables that
-#'   uniquely identify the data, compile granular ages and aggregate into
-#'   combined qx values. Using probability rules, we convert qx to px
-#'   (conditional survival probability), multiply these px values within a
-#'   specified age range together to get the conditional probability of survival
-#'   through all granular age groups, and subtract from one to get the
-#'   aggregated conditional probability of death (qx).
+#' @description Given a data.table with granular age interval qx values, either
+#'   aggregate qx to get wider age interval qx values or scale granular qx
+#'   values to be consistent with aggregate age interval qx values already
+#'   present in the data.
 #'
 #' @param dt \[`data.table()`\]\cr Data to be aggregated.
 #'   * Must only include columns 'qx' and those specified in `id_cols`
 #'   * Must include 'age_start' and 'age_end' columns
 #' @param age_mapping \[`data.table()`\]\cr Specification of intervals to
 #'   aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
-#'   'age_end' for terminal age group.
+#'   'age_end' for terminal age group. If scaling, this mapping is inferred
+#'   from the ages included.
 #' @inheritParams demUtils::agg
 #'
-#' @return \[`data.table()`\]\cr Aggregated qx values, has `id_cols` and 'qx'
-#'   columns for aggregate age groups.
+#' @return \[`data.table()`\]\cr Aggregated or scaled qx values, has `id_cols`
+#'   and 'qx' columns for aggregate age groups if aggregating or all age
+#'   groups if scaling.
 #'
-#' @details This function is a wrapper for [demUtils::agg()].
+#' @details
+#' **Aggregation:** Using probability rules, we convert qx to px
+#'   (conditional survival probability), multiply these px values within a
+#'   specified age range together to get the conditional probability of survival
+#'   through all granular age groups, and subtract from one to get the
+#'   aggregated conditional probability of death (qx). `agg_qx` is a wrapper
+#'   for [demUtils::agg()].
+#'
+#' **Scaling:** Convert to px-space, scale up age-hierarchy so that granular px
+#'   values multiply to aggregate px values, convert back to qx-space.
+#'   **scale_qx** is a wrapper for [demUtils::scale()].
+#'
+#' @seealso Vignette on scaling multiplicative aggregates in `demUtils`.
 #'
 #' @examples
+#' # Example 1: aggregate qx
 #' dt <- data.table::data.table(
 #'   id = c(rep(1, 5), rep(2, 5)),
-#'   qx = c(rep(.1, 5), rep(.2, 5)),
+#'   qx = c(rep(0.1, 5), rep(0.2, 5)),
 #'   age_start = rep(seq(15, 35, 5), 2),
 #'   age_end = rep(seq(20, 40, 5), 2)
 #' )
 #' age_mapping <- data.table::data.table(age_start = c(15), age_end = c(40))
-#' agg_qx(dt, id_cols = c("id", "age_start", "age_end"),
+#' dt <- agg_qx(dt, id_cols = c("id", "age_start", "age_end"),
 #'         age_mapping = age_mapping)
-#' @export
+#'
+#' # Example 2: scale qx up single-year to abridged u5 hierarchy
+#' dt <- data.table::data.table(
+#'   sex = "male",
+#'   qx = c(0.03, 0.015, 0.005, 0.004, 0.001, 0.03, 0.05),
+#'   age_start = c(0, 1, 2, 3, 4, 1, 0),
+#'   age_end = c(1, 2, 3, 4, 5, 5, 5)
+#' )
+#' dt <- scale_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+#'
+#' @name agg_scale_qx
+NULL
 
+# ============================================================================
+#' @rdname agg_scale_qx
+#' @export
 agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
 
   # Validate -------------------------------------------------------------
@@ -40,7 +66,7 @@ agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
   # check `id_cols` and `dt`
   validate_lifetable(dt, id_cols, param_cols = c("qx"))
 
-  # other assertions completed within demUtils::aggregate_age
+  # other assertions completed within demUtils::agg
 
   # Aggregate ------------------------------------------------------------
 
@@ -69,3 +95,43 @@ agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
 
   return(dt)
 }
+
+
+# ============================================================================
+#' @rdname agg_scale_qx
+#' @export
+scale_qx <- function(dt, id_cols) {
+
+  # Validate -------------------------------------------------------------
+
+  # check `id_cols` and `dt`
+  validate_lifetable(dt, id_cols, param_cols = c("qx"))
+
+  # other assertions completed within demUtils::scale
+
+  # Scale ------------------------------------------------------------
+
+  # copy
+  dt <- copy(dt)
+
+  # Calculate survival probability (px)
+  dt[, px := 1 - qx]
+  dt[, qx := NULL]
+
+  # Aggregate over age using multiplicative aggregation
+  dt <- demUtils::scale(
+    dt,
+    id_cols = id_cols,
+    value_cols = c("px"),
+    col_stem = "age",
+    col_type = "interval",
+    agg_function = prod
+  )
+
+  # Convert px back to qx
+  dt[, qx := 1 - px]
+  dt[, px := NULL]
+
+  return(dt)
+}
+
