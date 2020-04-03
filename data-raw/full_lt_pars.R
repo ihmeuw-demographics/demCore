@@ -138,16 +138,16 @@ log_fits <- lapply(unique(lt_full$age), function(a) {
   return(fits)
 })
 
-fullLTpars <- rbindlist(log_fits)
+full_lt_pars <- rbindlist(log_fits)
 
 # format and save ---------------------------------------------------------
 
 # age to age_start and age_end
-setnames(fullLTpars, "age", "age_start")
-fullLTpars[, age_end := age_start + 1]
+setnames(full_lt_pars, "age", "age_start")
+full_lt_pars[, age_end := age_start + 1]
 
 # reorder columns
-fullLTpars <- fullLTpars[, .SD, .SDcols = c("sex", "age_start", "age_end",
+full_lt_pars <- full_lt_pars[, .SD, .SDcols = c("sex", "age_start", "age_end",
                                             "intercept", "slope")]
 
-usethis::use_data(fullLTpars, overwrite = TRUE)
+usethis::use_data(full_lt_pars, overwrite = TRUE)

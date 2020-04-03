@@ -1,28 +1,4 @@
-#' @title Example life table
-#'
-#' @description Example death count and population values. Also
-#'   includes mx (deaths / population), ax, and qx calculated using functions
-#'   from this package.
-#'
-#' @format \[`data.table()`\] columns:
-#' \describe{
-#'  \item{age_start}{\[`integer()`\]\cr Abridged ages 0, 1, 5, 10, ..., 95}
-#'  \item{age_end}{\[`integer()`\]\cr End of age group inclusive, 1, 5, 10,
-#'     ... , 95, Inf}
-#'  \item{deaths}{\[`numeric()`\]\cr Death counts}
-#'  \item{population}{\[`numeric()`\]\cr Population counts}
-#'  \item{mx}{\[`numeric()`\]\cr Mortality rate (deaths / population)}
-#'  \item{ax}{\[`numeric()`\]\cr Mean person-years lived by those who die in
-#'    interval. Obtained using `mx_to_ax` function.}
-#'  \item{qx}{\[`numeric()`\]\cr Probability of death in interval conditional
-#'    on survival to xth birthday. Obtained using `mx_ax_to_qx` function.}
-#' }
-#' @examples
-#' exampleLT
-"exampleLT"
-
-
-#' @title Example life table 2
+#' @title Example life table: Austria, 1992, males
 #'
 #' @description Example life table from Preston text book page 49. Post-hoc
 #'   adjustment has been made to use radix (l0) of 1 instead of 100,000, as
@@ -57,8 +33,8 @@
 #'  \item{ex}{\[`numeric()`\]\cr Life expectancy.}
 #' }
 #' @examples
-#' exampleLT2
-"exampleLT2"
+#' austria_1992_lt
+"austria_1992_lt"
 
 
 #' Regression parameters for abridged to full life table conversion
@@ -86,5 +62,5 @@
 #'    regression model fit}
 #' }
 #' @examples
-#' fullLTpars
-"fullLTpars"
+#' full_lt_pars
+"full_lt_pars"

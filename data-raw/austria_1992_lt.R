@@ -55,13 +55,13 @@ Tx <- rev(cumsum(rev(nLx)))
 ex <- Tx / lx
 
 # combine
-exampleLT2 <- data.table::data.table(
+austria_1992_lt <- data.table::data.table(
   age_start, age_end, age_length, deaths, pop, mx, ax, qx, px, lx, dx, nLx, Tx, ex
 )
 
 # use radix (l0) 1 instead of 100,000
 cols <- c("lx", "dx", "nLx", "Tx")
-exampleLT2[ , (cols) := lapply(.SD, function(x) x / 100000), .SDcols = cols]
+austria_1992_lt[ , (cols) := lapply(.SD, function(x) x / 100000), .SDcols = cols]
 
 # save
-usethis::use_data(exampleLT2, overwrite = TRUE)
+usethis::use_data(austria_1992_lt, overwrite = TRUE)

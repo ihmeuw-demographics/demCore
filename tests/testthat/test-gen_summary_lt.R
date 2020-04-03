@@ -1,9 +1,8 @@
 library(data.table)
 
 # setup sample input data
-data("exampleLT")
-base <- copy(exampleLT)
-base <- demUtils::gen_length(base, col_stem = "age")
+data("austria_1992_lt")
+base <- copy(austria_1992_lt)
 input_dt <- data.table::data.table()
 for(d in 1:1000){
   dt_new <- copy(base)
@@ -41,7 +40,7 @@ test_that("test that `gen_summary_lt` gives expected output vals", {
   output_wide <- copy(output_dt)
   output_wide <- dcast(output_wide, age_start ~ life_table_parameter,
                        value.var = "mean")
-  output_wide <- merge(output_wide, exampleLT, by = c("age_start"))
+  output_wide <- merge(output_wide, austria_1992_lt, by = c("age_start"))
   testthat::expect_equal(output_wide$mx.x, output_wide$mx.y, tolerance = 0.01)
   testthat::expect_equal(output_wide$ax.x, output_wide$ax.y, tolerance = 0.01)
 })

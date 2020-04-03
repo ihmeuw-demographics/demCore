@@ -35,10 +35,10 @@ standard methods documented elsewhere.
 }
 \examples{
 library(data.table)
-data("exampleLT")
+data("austria_1992_lt")
 dt <- data.table::data.table()
 for(d in 1:100){
- dt_new <- copy(exampleLT)
+ dt_new <- copy(austria_1992_lt)
  dt_new[, draw := d]
  dt_new[, mx := mx * rnorm(1, mean = 1, sd = 0.05)]
  dt_new[, ax := ax * rnorm(1, mean = 1, sd = 0.05)]
@@ -46,6 +46,7 @@ for(d in 1:100){
  dt <- rbind(dt, dt_new, fill = TRUE)
 }
 dt <- dt[!is.na(age_start)]
+dt <- dt[, .(age_start, age_end, draw, mx, ax)]
 dt <- gen_summary_lt(dt, id_cols = c("age_start", "age_end", "draw"),
   lt_params = c("mx", "ax"))
 

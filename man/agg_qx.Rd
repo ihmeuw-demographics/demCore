@@ -22,7 +22,7 @@ aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
 
 \item{drop_present_aggs}{[\code{logical(1)}]\cr
 Whether to drop aggregates (or overlapping intervals) that are already
-present in \code{dt} before aggregating. Default is "False" and the function
+present in \code{dt} before aggregating. Default is 'False' and the function
 errors out.}
 }
 \value{
