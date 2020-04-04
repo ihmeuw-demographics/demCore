@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • lifetableUtils</title>
+<title>Regression parameters for abridged to full life table conversion — full_lt_pars • lifetableUtils</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Regression parameters for abridged to full life table conversion — full_lt_pars" />
+<meta property="og:description" content="Parameters for age- and sex-specific regression model fit to
+Human Mortality Database data, to predict single-year qx values from
+abridged qx values:
+$$log(q_x) = intercept + slope*log(q_x,abridged)$$" />
 
 
 
@@ -58,7 +62,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -112,122 +116,57 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Regression parameters for abridged to full life table conversion</h1>
+    
+    <div class="hidden name"><code>full_lt_pars.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Parameters for age- and sex-specific regression model fit to
+Human Mortality Database data, to predict single-year qx values from
+abridged qx values:
+$$log(q_x) = intercept + slope*log(q_x,abridged)$$</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='no'>full_lt_pars</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-calculating-life-table-parameters" class="hasAnchor"><a href="#section-calculating-life-table-parameters" class="anchor"></a>Calculating life table parameters</h2>
-          <p class="section-desc"><p>Functions to calculate mx, ax, qx, etc. using standard demographic methods.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="mx_qx_ax_conversions.html">mx_to_qx()</a></code> <code><a href="mx_qx_ax_conversions.html">mx_ax_to_qx()</a></code> <code><a href="mx_qx_ax_conversions.html">qx_to_mx()</a></code> <code><a href="mx_qx_ax_conversions.html">mx_qx_to_ax()</a></code> <code><a href="mx_qx_ax_conversions.html">qx_ax_to_mx()</a></code> <code><a href="mx_qx_ax_conversions.html">mx_to_ax()</a></code> </p>
-        </td>
-        <td><p>Convert between mx, qx, and ax values</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gen_u5_ax.html">gen_u5_ax()</a></code> </p>
-        </td>
-        <td><p>Generate ax for ages under 5 years</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gen_lifetable_parameters.html">qx_to_lx()</a></code> <code><a href="gen_lifetable_parameters.html">lx_to_qx()</a></code> <code><a href="gen_lifetable_parameters.html">lx_to_dx()</a></code> <code><a href="gen_lifetable_parameters.html">gen_nLx()</a></code> <code><a href="gen_lifetable_parameters.html">gen_Tx()</a></code> <code><a href="gen_lifetable_parameters.html">gen_ex()</a></code> </p>
-        </td>
-        <td><p>Generate life table parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="lifetable.html">lifetable()</a></code> </p>
-        </td>
-        <td><p>Generate a life table with all parameters</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-aggregation-and-scaling" class="hasAnchor"><a href="#section-aggregation-and-scaling" class="anchor"></a>Aggregation and scaling</h2>
-          <p class="section-desc"><p>Functions for aggregating and scaling life tables. Includes conversions between single-year and abridged life tables.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="agg_qx.html">agg_qx()</a></code> </p>
-        </td>
-        <td><p>Aggregate qx values over age</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gen_summary_lt.html">gen_summary_lt()</a></code> </p>
-        </td>
-        <td><p>Summarize life tables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="abridged_to_full.html">abridged_to_full()</a></code> </p>
-        </td>
-        <td><p>Generate full life table from abridged life table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="full_to_abridged.html">full_to_abridged()</a></code> </p>
-        </td>
-        <td><p>Generate abridged life table from full life table</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-example-data" class="hasAnchor"><a href="#section-example-data" class="anchor"></a>Example data</h2>
-          <p class="section-desc"><p>Data included for testing or running <code>lifetableUtils</code> functions.</p></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="austria_1992_lt.html">austria_1992_lt</a></code> </p>
-        </td>
-        <td><p>Example life table: Austria, 1992, males</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="full_lt_pars.html">full_lt_pars</a></code> </p>
-        </td>
-        <td><p>Regression parameters for abridged to full life table conversion</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>[<code>data.table()</code>] columns:</p><dl'>
+<dt>sex</dt><dd><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Sex the parameters correspond to: "male" or
+"female"</p></dd>
+<dt>age_start</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Single-year ages 1-109 representing the
+age the parameters correspond to</p></dd>
+<dt>age_end</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> 1 + age_start</p></dd>
+<dt>intercept</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Intercept for the age- and sex-specific
+regression model fit</p></dd>
+<dt>slope</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Slope for the age- and sex-specific
+regression model fit</p></dd>
+
+</dl>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Human Mortality Database. University of California, Berkeley (USA), and Max
+Planck Institute for Demographic Research (Germany). Available at
+www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>full_lt_pars</span></div><div class='output co'>#&gt;         sex age_start age_end  intercept     slope
+#&gt;   1:   male         1       2 -0.5176810 1.0584153
+#&gt;   2: female         1       2 -0.5909254 1.0341440
+#&gt;   3:   male         2       3 -1.5681676 0.9753858
+#&gt;   4: female         2       3 -1.5817470 0.9749719
+#&gt;   5:   male         3       4 -2.1365209 0.9249339
+#&gt;  ---                                              
+#&gt; 214: female       107     108 -0.6030596 2.5503541
+#&gt; 215:   male       108     109 -0.5668620 2.6699057
+#&gt; 216: female       108     109 -0.5757869 2.5567061
+#&gt; 217:   male       109     110 -0.5452189 2.6738654
+#&gt; 218: female       109     110 -0.5510617 2.5584597</div></pre>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

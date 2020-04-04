@@ -90,13 +90,13 @@
 <p>A <strong>life table</strong> is a table that includes information to describe the dying out of a birth cohort. This can also be a synthetic birth cohort, in which case we refer to it as a <strong>period life table</strong>.</p>
 <p>Life tables are one of the most important devices in demography – they have been used since the 1600s! They can also be useful for other fields, because they are generalizable to other discrete “time to event” data.</p>
 <p>Typically, life tables have one row per age group, with columns representing life table <strong>metrics</strong>, also known as <strong>parameters</strong>. The life table parameters used in this package are <span class="math inline">\(_nm_x\)</span>, <span class="math inline">\(_na_x\)</span>, <span class="math inline">\(_nq_x\)</span>, <span class="math inline">\(_np_x\)</span>, <span class="math inline">\(l_x\)</span>, <span class="math inline">\(_nd_x\)</span>, <span class="math inline">\(e_x\)</span>, <span class="math inline">\(_nL_x\)</span>, and <span class="math inline">\(T_x\)</span>. In this notation, <span class="math inline">\(x\)</span> refers to age, and the metrics apply to either the age <span class="math inline">\(x\)</span> directly or to the interval between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span> where <span class="math inline">\(n\)</span> indicates the length of the interval, typically in years. We often shorthand by removing the “n” from the notation, with interval length implied.</p>
-<p>Here’s an example of a life table, which is saved in the package as <code>exampleLT</code>:</p>
+<p>Here’s an example of a period life table, for males in Austria in 1992, which is saved in the package as <code>austria_1992_lt</code> (source: Preston 2001):</p>
 <table class="table">
 <thead><tr class="header">
 <th align="right">x</th>
 <th align="right">x+n</th>
 <th align="right">deaths</th>
-<th align="right">population</th>
+<th align="right">pop</th>
 <th align="right">mx</th>
 <th align="right">ax</th>
 <th align="right">qx</th>
@@ -111,128 +111,38 @@
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">1</td>
-<td align="right">72</td>
-<td align="right">29931</td>
-<td align="right">0.00</td>
-<td align="right">0.50</td>
-<td align="right">0.00</td>
+<td align="right">419</td>
+<td align="right">47925</td>
+<td align="right">0.01</td>
+<td align="right">0.07</td>
+<td align="right">0.01</td>
+<td align="right">0.99</td>
 <td align="right">1.00</td>
-<td align="right">1.00</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">83.37</td>
-<td align="right">83.37</td>
+<td align="right">0.01</td>
+<td align="right">0.99</td>
+<td align="right">72.89</td>
+<td align="right">72.89</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
 <td align="right">5</td>
-<td align="right">17</td>
-<td align="right">118479</td>
+<td align="right">70</td>
+<td align="right">189127</td>
 <td align="right">0.00</td>
-<td align="right">2.00</td>
+<td align="right">1.63</td>
 <td align="right">0.00</td>
 <td align="right">1.00</td>
-<td align="right">1.00</td>
+<td align="right">0.99</td>
 <td align="right">0.00</td>
-<td align="right">3.99</td>
-<td align="right">82.37</td>
-<td align="right">82.56</td>
+<td align="right">3.96</td>
+<td align="right">71.90</td>
+<td align="right">72.53</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
 <td align="right">10</td>
-<td align="right">12</td>
-<td align="right">145941</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">1.00</td>
-<td align="right">0.00</td>
-<td align="right">4.98</td>
-<td align="right">78.38</td>
-<td align="right">78.61</td>
-</tr>
-<tr class="even">
-<td align="right">10</td>
-<td align="right">15</td>
-<td align="right">14</td>
-<td align="right">153298</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">1.00</td>
-<td align="right">0.00</td>
-<td align="right">4.98</td>
-<td align="right">73.39</td>
-<td align="right">73.64</td>
-</tr>
-<tr class="odd">
-<td align="right">15</td>
-<td align="right">20</td>
-<td align="right">31</td>
-<td align="right">156399</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">1.00</td>
-<td align="right">0.00</td>
-<td align="right">4.98</td>
-<td align="right">68.41</td>
-<td align="right">68.67</td>
-</tr>
-<tr class="even">
-<td align="right">20</td>
-<td align="right">25</td>
 <td align="right">36</td>
-<td align="right">150368</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">1.00</td>
-<td align="right">0.00</td>
-<td align="right">4.97</td>
-<td align="right">63.43</td>
-<td align="right">63.74</td>
-</tr>
-<tr class="odd">
-<td align="right">25</td>
-<td align="right">30</td>
-<td align="right">42</td>
-<td align="right">151322</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">0.99</td>
-<td align="right">0.00</td>
-<td align="right">4.97</td>
-<td align="right">58.46</td>
-<td align="right">58.81</td>
-</tr>
-<tr class="even">
-<td align="right">30</td>
-<td align="right">35</td>
-<td align="right">59</td>
-<td align="right">156045</td>
-<td align="right">0.00</td>
-<td align="right">2.50</td>
-<td align="right">0.00</td>
-<td align="right">1.00</td>
-<td align="right">0.99</td>
-<td align="right">0.00</td>
-<td align="right">4.96</td>
-<td align="right">53.49</td>
-<td align="right">53.89</td>
-</tr>
-<tr class="odd">
-<td align="right">35</td>
-<td align="right">40</td>
-<td align="right">101</td>
-<td align="right">175432</td>
+<td align="right">234793</td>
 <td align="right">0.00</td>
 <td align="right">2.50</td>
 <td align="right">0.00</td>
@@ -240,188 +150,248 @@
 <td align="right">0.99</td>
 <td align="right">0.00</td>
 <td align="right">4.95</td>
-<td align="right">48.54</td>
-<td align="right">48.99</td>
+<td align="right">67.94</td>
+<td align="right">68.63</td>
 </tr>
 <tr class="even">
-<td align="right">40</td>
-<td align="right">45</td>
-<td align="right">157</td>
-<td align="right">177788</td>
+<td align="right">10</td>
+<td align="right">15</td>
+<td align="right">46</td>
+<td align="right">238790</td>
 <td align="right">0.00</td>
-<td align="right">2.50</td>
+<td align="right">3.14</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">0.99</td>
+<td align="right">0.00</td>
+<td align="right">4.94</td>
+<td align="right">62.99</td>
+<td align="right">63.68</td>
+</tr>
+<tr class="odd">
+<td align="right">15</td>
+<td align="right">20</td>
+<td align="right">249</td>
+<td align="right">254996</td>
+<td align="right">0.00</td>
+<td align="right">2.72</td>
 <td align="right">0.00</td>
 <td align="right">1.00</td>
 <td align="right">0.99</td>
 <td align="right">0.00</td>
 <td align="right">4.93</td>
-<td align="right">43.59</td>
-<td align="right">44.12</td>
+<td align="right">58.04</td>
+<td align="right">58.74</td>
 </tr>
-<tr class="odd">
-<td align="right">45</td>
-<td align="right">50</td>
-<td align="right">240</td>
-<td align="right">162723</td>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">25</td>
+<td align="right">420</td>
+<td align="right">326831</td>
 <td align="right">0.00</td>
-<td align="right">2.50</td>
+<td align="right">2.52</td>
 <td align="right">0.01</td>
 <td align="right">0.99</td>
 <td align="right">0.98</td>
 <td align="right">0.01</td>
 <td align="right">4.90</td>
-<td align="right">38.66</td>
-<td align="right">39.31</td>
+<td align="right">53.11</td>
+<td align="right">54.01</td>
 </tr>
-<tr class="even">
-<td align="right">50</td>
-<td align="right">55</td>
-<td align="right">368</td>
-<td align="right">156276</td>
+<tr class="odd">
+<td align="right">25</td>
+<td align="right">30</td>
+<td align="right">403</td>
+<td align="right">355086</td>
 <td align="right">0.00</td>
-<td align="right">2.50</td>
+<td align="right">2.48</td>
 <td align="right">0.01</td>
 <td align="right">0.99</td>
 <td align="right">0.98</td>
 <td align="right">0.01</td>
-<td align="right">4.85</td>
-<td align="right">33.76</td>
-<td align="right">34.58</td>
+<td align="right">4.87</td>
+<td align="right">48.21</td>
+<td align="right">49.35</td>
+</tr>
+<tr class="even">
+<td align="right">30</td>
+<td align="right">35</td>
+<td align="right">441</td>
+<td align="right">324222</td>
+<td align="right">0.00</td>
+<td align="right">2.60</td>
+<td align="right">0.01</td>
+<td align="right">0.99</td>
+<td align="right">0.97</td>
+<td align="right">0.01</td>
+<td align="right">4.84</td>
+<td align="right">43.34</td>
+<td align="right">44.61</td>
+</tr>
+<tr class="odd">
+<td align="right">35</td>
+<td align="right">40</td>
+<td align="right">508</td>
+<td align="right">269963</td>
+<td align="right">0.00</td>
+<td align="right">2.70</td>
+<td align="right">0.01</td>
+<td align="right">0.99</td>
+<td align="right">0.96</td>
+<td align="right">0.01</td>
+<td align="right">4.80</td>
+<td align="right">38.50</td>
+<td align="right">39.90</td>
+</tr>
+<tr class="even">
+<td align="right">40</td>
+<td align="right">45</td>
+<td align="right">769</td>
+<td align="right">261971</td>
+<td align="right">0.00</td>
+<td align="right">2.66</td>
+<td align="right">0.01</td>
+<td align="right">0.99</td>
+<td align="right">0.96</td>
+<td align="right">0.01</td>
+<td align="right">4.75</td>
+<td align="right">33.70</td>
+<td align="right">35.25</td>
+</tr>
+<tr class="odd">
+<td align="right">45</td>
+<td align="right">50</td>
+<td align="right">1154</td>
+<td align="right">238011</td>
+<td align="right">0.00</td>
+<td align="right">2.70</td>
+<td align="right">0.02</td>
+<td align="right">0.98</td>
+<td align="right">0.94</td>
+<td align="right">0.02</td>
+<td align="right">4.66</td>
+<td align="right">28.95</td>
+<td align="right">30.73</td>
+</tr>
+<tr class="even">
+<td align="right">50</td>
+<td align="right">55</td>
+<td align="right">1866</td>
+<td align="right">261612</td>
+<td align="right">0.01</td>
+<td align="right">2.68</td>
+<td align="right">0.04</td>
+<td align="right">0.96</td>
+<td align="right">0.92</td>
+<td align="right">0.03</td>
+<td align="right">4.52</td>
+<td align="right">24.29</td>
+<td align="right">26.42</td>
 </tr>
 <tr class="odd">
 <td align="right">55</td>
 <td align="right">60</td>
-<td align="right">525</td>
-<td align="right">145485</td>
-<td align="right">0.00</td>
-<td align="right">2.49</td>
-<td align="right">0.02</td>
-<td align="right">0.98</td>
-<td align="right">0.96</td>
-<td align="right">0.02</td>
-<td align="right">4.78</td>
-<td align="right">28.91</td>
-<td align="right">29.96</td>
+<td align="right">2043</td>
+<td align="right">181385</td>
+<td align="right">0.01</td>
+<td align="right">2.64</td>
+<td align="right">0.05</td>
+<td align="right">0.95</td>
+<td align="right">0.89</td>
+<td align="right">0.05</td>
+<td align="right">4.32</td>
+<td align="right">19.77</td>
+<td align="right">22.29</td>
 </tr>
 <tr class="even">
 <td align="right">60</td>
 <td align="right">65</td>
-<td align="right">861</td>
-<td align="right">144338</td>
-<td align="right">0.01</td>
-<td align="right">2.49</td>
-<td align="right">0.03</td>
-<td align="right">0.97</td>
-<td align="right">0.95</td>
-<td align="right">0.03</td>
-<td align="right">4.67</td>
-<td align="right">24.13</td>
-<td align="right">25.46</td>
+<td align="right">3496</td>
+<td align="right">187962</td>
+<td align="right">0.02</td>
+<td align="right">2.62</td>
+<td align="right">0.09</td>
+<td align="right">0.91</td>
+<td align="right">0.84</td>
+<td align="right">0.07</td>
+<td align="right">4.01</td>
+<td align="right">15.45</td>
+<td align="right">18.43</td>
 </tr>
 <tr class="odd">
 <td align="right">65</td>
 <td align="right">70</td>
-<td align="right">1019</td>
-<td align="right">107574</td>
-<td align="right">0.01</td>
-<td align="right">2.48</td>
-<td align="right">0.05</td>
-<td align="right">0.95</td>
-<td align="right">0.92</td>
-<td align="right">0.04</td>
-<td align="right">4.49</td>
-<td align="right">19.46</td>
-<td align="right">21.16</td>
+<td align="right">4366</td>
+<td align="right">153832</td>
+<td align="right">0.03</td>
+<td align="right">2.62</td>
+<td align="right">0.13</td>
+<td align="right">0.87</td>
+<td align="right">0.76</td>
+<td align="right">0.10</td>
+<td align="right">3.58</td>
+<td align="right">11.43</td>
+<td align="right">14.97</td>
 </tr>
 <tr class="even">
 <td align="right">70</td>
 <td align="right">75</td>
-<td align="right">1252</td>
-<td align="right">83885</td>
-<td align="right">0.01</td>
-<td align="right">2.47</td>
-<td align="right">0.07</td>
-<td align="right">0.93</td>
-<td align="right">0.88</td>
-<td align="right">0.06</td>
-<td align="right">4.23</td>
-<td align="right">14.97</td>
-<td align="right">17.06</td>
+<td align="right">4337</td>
+<td align="right">105169</td>
+<td align="right">0.04</td>
+<td align="right">2.59</td>
+<td align="right">0.19</td>
+<td align="right">0.81</td>
+<td align="right">0.66</td>
+<td align="right">0.12</td>
+<td align="right">3.01</td>
+<td align="right">7.86</td>
+<td align="right">11.86</td>
 </tr>
 <tr class="odd">
 <td align="right">75</td>
 <td align="right">80</td>
-<td align="right">2004</td>
-<td align="right">74092</td>
-<td align="right">0.03</td>
-<td align="right">2.44</td>
-<td align="right">0.13</td>
-<td align="right">0.87</td>
-<td align="right">0.81</td>
-<td align="right">0.10</td>
-<td align="right">3.81</td>
-<td align="right">10.74</td>
-<td align="right">13.19</td>
+<td align="right">5279</td>
+<td align="right">73694</td>
+<td align="right">0.07</td>
+<td align="right">2.52</td>
+<td align="right">0.30</td>
+<td align="right">0.70</td>
+<td align="right">0.54</td>
+<td align="right">0.16</td>
+<td align="right">2.28</td>
+<td align="right">4.84</td>
+<td align="right">9.00</td>
 </tr>
 <tr class="even">
 <td align="right">80</td>
 <td align="right">85</td>
-<td align="right">3396</td>
-<td align="right">65481</td>
-<td align="right">0.05</td>
-<td align="right">2.39</td>
-<td align="right">0.23</td>
-<td align="right">0.77</td>
-<td align="right">0.71</td>
+<td align="right">6460</td>
+<td align="right">57512</td>
+<td align="right">0.11</td>
+<td align="right">2.42</td>
+<td align="right">0.44</td>
+<td align="right">0.56</td>
+<td align="right">0.37</td>
 <td align="right">0.16</td>
-<td align="right">3.13</td>
-<td align="right">6.93</td>
-<td align="right">9.75</td>
+<td align="right">1.45</td>
+<td align="right">2.56</td>
+<td align="right">6.84</td>
 </tr>
 <tr class="odd">
 <td align="right">85</td>
-<td align="right">90</td>
-<td align="right">4972</td>
-<td align="right">50605</td>
-<td align="right">0.10</td>
-<td align="right">2.30</td>
-<td align="right">0.39</td>
-<td align="right">0.61</td>
-<td align="right">0.55</td>
-<td align="right">0.21</td>
-<td align="right">2.17</td>
-<td align="right">3.80</td>
-<td align="right">6.93</td>
-</tr>
-<tr class="even">
-<td align="right">90</td>
-<td align="right">95</td>
-<td align="right">3848</td>
-<td align="right">22853</td>
-<td align="right">0.17</td>
-<td align="right">2.15</td>
-<td align="right">0.57</td>
-<td align="right">0.43</td>
-<td align="right">0.34</td>
-<td align="right">0.19</td>
-<td align="right">1.13</td>
-<td align="right">1.63</td>
-<td align="right">4.86</td>
-</tr>
-<tr class="odd">
-<td align="right">95</td>
 <td align="right">Inf</td>
-<td align="right">2245</td>
-<td align="right">7728</td>
-<td align="right">0.29</td>
-<td align="right">3.44</td>
+<td align="right">6146</td>
+<td align="right">32248</td>
+<td align="right">0.19</td>
+<td align="right">5.25</td>
 <td align="right">1.00</td>
 <td align="right">0.00</td>
-<td align="right">0.14</td>
-<td align="right">0.14</td>
-<td align="right">0.50</td>
-<td align="right">0.50</td>
-<td align="right">3.44</td>
+<td align="right">0.21</td>
+<td align="right">0.21</td>
+<td align="right">1.11</td>
+<td align="right">1.11</td>
+<td align="right">5.25</td>
 </tr>
 </tbody>
 </table>
@@ -458,9 +428,9 @@
 <p><span class="math display">\[m_x = \frac{\text{deaths}}{\text{person-years}} \approx
 \frac{\text{observed deaths}}{\text{mid-interval population}}\]</span></p>
 <p>Let’s load in our example data and calculate <span class="math inline">\(m_x\)</span>:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"exampleLT"</span>)
-<span class="no">dt</span> <span class="kw">&lt;-</span> <span class="no">exampleLT</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"deaths"</span>, <span class="st">"population"</span>)]
-<span class="no">dt</span>[, <span class="no">mx</span> <span class="kw">:=</span> <span class="no">deaths</span> / <span class="no">population</span>]</pre></body></html></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"austria_1992_lt"</span>)
+<span class="no">dt</span> <span class="kw">&lt;-</span> <span class="no">austria_1992_lt</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"deaths"</span>, <span class="st">"pop"</span>)]
+<span class="no">dt</span>[, <span class="no">mx</span> <span class="kw">:=</span> <span class="no">deaths</span> / <span class="no">pop</span>]</pre></body></html></div>
 </div>
 <div id="ax" class="section level3">
 <h3 class="hasAnchor">
@@ -520,7 +490,7 @@
 </tbody>
 </table>
 <p>Use the <code>gen_u5_ax</code> function to implement this method:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">dt</span>[, <span class="no">sex</span> <span class="kw">:=</span> <span class="st">"female"</span>]
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">dt</span>[, <span class="no">sex</span> <span class="kw">:=</span> <span class="st">"male"</span>]
 <span class="fu"><a href="../reference/gen_u5_ax.html">gen_u5_ax</a></span>(<span class="no">dt</span>, <span class="kw">id_cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"sex"</span>))</pre></body></html></div>
 <p><strong>Graduation method:</strong> One strategy for selecting <span class="math inline">\(a_x\)</span> values is based on the level and slope of the <span class="math inline">\(_nm_x\)</span> function. Comparing two populations with the same <span class="math inline">\(_5m_60\)</span>, the population with more rapidly rising mortality rate with respect to age will have deaths that are more concentrated in the later part of the interval (higher <span class="math inline">\(a_x\)</span>). Comparing two populations with the same slope in <span class="math inline">\(m_x\)</span>, the one with higher mortality rate will have more deaths at the beginning of the interval (lower <span class="math inline">\(a_x\)</span>).</p>
 <p>To utilize this theory, we can implement iteration as described in the Preston book, and originally proposed by Keyfitz (1966): <span class="math display">\[_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +

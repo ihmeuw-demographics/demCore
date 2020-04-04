@@ -222,13 +222,16 @@ and full life table mx values that are calculated from these differing ax
 values. Therefore, this is an area for future methods development.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"exampleLT"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"fullLTpars"</span>)
-<span class='no'>regression_fits</span> <span class='kw'>&lt;-</span> <span class='no'>fullLTpars</span>[<span class='no'>sex</span> <span class='kw'>==</span> <span class='st'>"female"</span>]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"austria_1992_lt"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"full_lt_pars"</span>)
+<span class='no'>regression_fits</span> <span class='kw'>&lt;-</span> <span class='no'>full_lt_pars</span>[<span class='no'>sex</span> <span class='kw'>==</span> <span class='st'>"male"</span>]
 <span class='no'>id_cols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>)
 <span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'>abridged_to_full</span>(
-  <span class='kw'>dt</span> <span class='kw'>=</span> <span class='no'>exampleLT</span>, <span class='kw'>regression_fits</span> <span class='kw'>=</span> <span class='no'>regression_fits</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='no'>id_cols</span>,
-  <span class='kw'>lx_spline_start_age</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>lx_spline_end_age</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>dt</span> <span class='kw'>=</span> <span class='no'>austria_1992_lt</span>,
+  <span class='kw'>regression_fits</span> <span class='kw'>=</span> <span class='no'>regression_fits</span>,
+  <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='no'>id_cols</span>,
+  <span class='kw'>lx_spline_start_age</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>lx_spline_end_age</span> <span class='kw'>=</span> <span class='fl'>100</span>,
   <span class='kw'>regression_id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>)
 )</div></pre>
   </div>
