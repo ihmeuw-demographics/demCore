@@ -86,13 +86,16 @@ values. Therefore, this is an area for future methods development.
 }
 
 \examples{
-data("exampleLT")
-data("fullLTpars")
-regression_fits <- fullLTpars[sex == "female"]
+data("austria_1992_lt")
+data("full_lt_pars")
+regression_fits <- full_lt_pars[sex == "male"]
 id_cols <- c("age_start", "age_end")
 dt <- abridged_to_full(
-  dt = exampleLT, regression_fits = regression_fits, id_cols = id_cols,
-  lx_spline_start_age = 15, lx_spline_end_age = 100,
+  dt = austria_1992_lt,
+  regression_fits = regression_fits,
+  id_cols = id_cols,
+  lx_spline_start_age = 15,
+  lx_spline_end_age = 100,
   regression_id_cols = c("age_start", "age_end")
 )
 
