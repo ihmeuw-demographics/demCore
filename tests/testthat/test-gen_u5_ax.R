@@ -17,15 +17,25 @@ expected$ax <- c(0.34000, 1.35650, NA,
                  0.28656, 1.39756, NA)
 
 test_that("test that `gen_u5_ax` gives expected output", {
-  output <- gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex", "location"))
-  setorderv(output, c("sex", "age_start"))
-  setcolorder(output, c("age_start", "age_end", "mx", "sex", "location", "ax"))
-  testthat::expect_equivalent(output, expected, tolerance = 0.001)
+  test_dt <- copy(dt)
+  gen_u5_ax(test_dt, id_cols = c("age_start", "age_end", "sex", "location"))
+  setorderv(test_dt, c("sex", "age_start"))
+  setcolorder(test_dt, c("age_start", "age_end", "mx", "sex", "location", "ax"))
+  testthat::expect_equivalent(test_dt, expected, tolerance = 0.001)
 })
 
 test_that("test that `gen_u5_ax` gives errors when it should", {
-  testthat::expect_error(gen_u5_ax(dt, id_cols = c("age_start", "age_end",
+  test_dt <- copy(dt)
+  testthat::expect_error(gen_u5_ax(test_dt, id_cols = c("age_start", "age_end",
                                                    "sex", "year")))
-  testthat::expect_error(gen_u5_ax(dt[age_start != 0],
+  testthat::expect_error(gen_u5_ax(test_dt[age_start != 0],
                                    id_cols = c("age_start", "age_end", "sex")))
+})
+
+test_that("test that `gen_u5_ax` modifies in place", {
+  test_dt <- copy(dt)
+  mem1 <- pryr::address(test_dt) # memory address before
+  gen_u5_ax(test_dt, id_cols = c("age_start", "age_end", "sex", "location"))
+  mem2 <- pryr::address(test_dt) # memory address after
+  testthat::expect_equal(mem1, mem2)
 })

@@ -43,7 +43,7 @@
 #'   mx = c(0.09, 0.12),
 #'   sex = c("male", "male")
 #' )
-#' dt <- gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
+#' gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 #' @export
 
 gen_u5_ax <- function(dt, id_cols) {
@@ -59,22 +59,19 @@ gen_u5_ax <- function(dt, id_cols) {
   # get `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
 
-  # check age
-  u1 <- dt[age_start == 0 & age_end == 1]
-  if(nrow(u1) == 0) {
+  # check age 0-1 is present in `dt`
+  if(nrow(dt[age_start == 0 & age_end == 1]) == 0) {
     stop("Age 0-1 years must be in `dt`.")
   }
-  u1 <- u1[, .SD, .SDcols = id_cols_no_age]
-  u1[, has_1m0 := 1]
-  dt <- merge(dt, u1, by = id_cols_no_age, all = T)
-  if(nrow(dt[is.na(has_1m0)]) > 0) {
-    stop("You do not have age 0-1 years for all `id_col` combinations.")
-  }
-  dt[, has_1m0 := NULL]
+
+  # check for age 1-4 years in `dt`. Not required but will usually be present
+  # and may be miscoded.
   if(nrow(dt[age_start == 1 & age_end == 5]) == 0) {
     warning("'dt' does not have any rows with 'age_start' 1 and 'age_end' 5
             (1-4 years). Make sure you expect this.")
   }
+
+  # add message for ages not <1 or 1-4 in `dt`
   if(length(setdiff(unique(dt$age_start), c(0,1)) > 0)) {
     message("Rows with age not 0-1 or 1-4 will not be assigned ax values.")
   }
@@ -87,11 +84,13 @@ gen_u5_ax <- function(dt, id_cols) {
 
   # merge on 1m0 -----------------------------------------------------------
 
-  u1_mx <- dt[age_start == 0 & age_end == 1]
-  u1_mx <- u1_mx[, .SD, .SDcols = c(id_cols, "mx")]
-  setnames(u1_mx, "mx", "mx_inf")
-  u1_mx[, c("age_start", "age_end") := NULL]
-  dt <- merge(dt, u1_mx, by = id_cols_no_age, all.x = T)
+  dt[, mx_inf := .SD[age_start == 0 & age_end == 1, mx],
+     by = id_cols_no_age]
+
+  # require 1m0 for all `id_col` combinations
+  if(nrow(dt[is.na(mx_inf)]) > 0) {
+    stop("You do not have age 0-1 years for all `id_col` combinations.")
+  }
 
   # calculate 1a0 ----------------------------------------------------------
 
