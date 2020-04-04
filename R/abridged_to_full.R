@@ -62,7 +62,7 @@
 #' @examples
 #' data("austria_1992_lt")
 #' data("full_lt_pars")
-#' regression_fits <- full_lt_pars[sex == "female"]
+#' regression_fits <- full_lt_pars[sex == "male"]
 #' id_cols <- c("age_start", "age_end")
 #' dt <- abridged_to_full(
 #'   dt = austria_1992_lt,
