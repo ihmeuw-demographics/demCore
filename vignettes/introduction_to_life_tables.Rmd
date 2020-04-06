@@ -39,14 +39,15 @@ $x+n$ where $n$ indicates the length of the interval, typically in years. We
 often shorthand by removing the "n" from the notation, with interval length
 implied.
 
-Here's an example of a life table, which is saved in the package as `exampleLT`:
+Here's an example of a period life table, for males in Austria in 1992,
+which is saved in the package as `austria_1992_lt` (source: Preston 2001):
 
 ```{r example_lt, echo = F}
-data("exampleLT")
-dt <- lifetable(exampleLT, id_cols = c("age_start", "age_end"))
-dt <- dt[, .SD, .SDcols = c("age_start", "age_end", "deaths", "population",
-                            "mx", "ax", "qx", "px", "lx", "dx", "nLx",
-                            "Tx", "ex")]
+data("austria_1992_lt")
+dt <- austria_1992_lt[
+  , .SD, .SDcols = c("age_start", "age_end", "deaths", "pop", "mx", "ax", "qx",
+                     "px", "lx", "dx", "nLx", "Tx", "ex")
+]
 dt_rounded <- round(dt, 2)
 setnames(dt_rounded, "age_start", "x")
 setnames(dt_rounded, "age_end", "x+n")
@@ -145,9 +146,9 @@ $$m_x = \frac{\text{deaths}}{\text{person-years}} \approx
 Let's load in our example data and calculate $m_x$:
 
 ```{r mx_calc}
-data("exampleLT")
-dt <- exampleLT[, c("age_start", "age_end", "deaths", "population")]
-dt[, mx := deaths / population]
+data("austria_1992_lt")
+dt <- austria_1992_lt[, c("age_start", "age_end", "deaths", "pop")]
+dt[, mx := deaths / pop]
 ```
 
 ### ax
@@ -200,7 +201,7 @@ $a_x$, these relationships can be used to predict $a_x$ from infant $m_x$:
 Use the `gen_u5_ax` function to implement this method:
 
 ```{r ax_u5_calc, eval = F}
-dt[, sex := "female"]
+dt[, sex := "male"]
 gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 ```
 

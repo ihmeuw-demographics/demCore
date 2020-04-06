@@ -55,5 +55,5 @@ dt <- data.table::data.table(
   mx = c(0.09, 0.12),
   sex = c("male", "male")
 )
-dt <- gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
+gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
 }
