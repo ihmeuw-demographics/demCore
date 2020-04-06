@@ -65,37 +65,24 @@ test_that("test that `agg_qx` errors are thrown for different cases", {
 
 input_dt <- data.table::data.table(
   sex = "male",
-  qx = c(0.03, 0.015, 0.005, 0.004, 0.001, 0.03, 0.05),
   age_start = c(0, 1, 2, 3, 4, 1, 0),
-  age_end = c(1, 2, 3, 4, 5, 5, 5)
+  age_end = c(1, 2, 3, 4, 5, 5, 5),
+  qx = c(0.03, 0.015, 0.005, 0.004, 0.001, 0.03, 0.05)
 )
 
-test_that("test that `scale_qx` gives correct age outputs", {
-  dt <- scale_qx(input_dt, id_cols = c("sex", "age_start", "age_end"))
-  testthat::expect_equal(nrow(dt), 7)
-  testthat::expect_equal(c(0,0,1,1:4), dt$age_start)
-  testthat::expect_equal(c(1,5,2,5,3,4,5), dt$age_end)
-})
+expected_dt <- data.table::data.table(
+  sex = "male",
+  age_start = c(0, 1, 2, 3, 4, 1, 0),
+  age_end = c(1, 2, 3, 4, 5, 5, 5),
+  qx = c(0.025320566, 0.015126059, 0.005127338, 0.004127466, 0.001127850,
+         0.025320566, 0.05)
+)
 
-test_that("test that `scale_qx` gives values that aggregate correctly", {
-
-  dt <- scale_qx(input_dt, id_cols = c("sex", "age_start", "age_end"))
-
-  # <1, 1-4, <5
-  val_1p0 <- 1 - dt[age_start == 0 & age_end == 1, qx]
-  val_4p1 <- 1 - dt[age_start == 1 & age_end == 5, qx]
-  val_5p0 <- 1 - dt[age_start == 0 & age_end == 5, qx]
-  testthat::expect_equal(val_5p0, 0.95)
-  testthat::expect_equal(val_5p0, val_1p0 * val_4p1)
-
-  # 1, 2, 3, 4, and 1-4
-  p1 <- 1 - dt[age_start == 1 & age_end == 2, qx]
-  p2 <- 1 - dt[age_start == 2 & age_end == 3, qx]
-  p3 <- 1 - dt[age_start == 3 & age_end == 4, qx]
-  p4 <- 1 - dt[age_start == 4 & age_end == 5, qx]
-  p1to4 <- 1 - dt[age_start == 1 & age_end == 5, qx]
-  testthat::expect_equal(p1to4, p1*p2*p3*p4)
-
+test_that("test that `scale_qx` gives expected output", {
+  output_dt <- scale_qx(input_dt, id_cols = c("sex", "age_start", "age_end"))
+  setorderv(output_dt, cols = c("age_end", "age_start"))
+  setorderv(expected_dt, cols = c("age_end", "age_start"))
+  testthat::expect_equivalent(output_dt, expected_dt, tolerance = 0.00001)
 })
 
 test_that("test that `scale_qx` works with non-integer age vals", {

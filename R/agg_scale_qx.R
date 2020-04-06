@@ -30,6 +30,13 @@
 #'   values multiply to aggregate px values, convert back to qx-space.
 #'   `scale_qx` is a wrapper for [demUtils::scale()].
 #'
+#' This function is unique to aggregating and scaling qx over age because of
+#' the dependence between age and the definition of qx. Aggregation of qx
+#' across sex, location, or other variables should be done by first aggregating
+#' ax and mx as population-weighted means (can use [demUtils::agg()] and
+#' [demUtils::scale()] directly), then recalculating qx from mx and ax
+#' (see [lifetableUtils::mx_ax_to_qx()]).
+#'
 #' @seealso Vignette on scaling multiplicative aggregates in `demUtils`.
 #'
 #' @examples
@@ -59,7 +66,8 @@ NULL
 # ============================================================================
 #' @rdname agg_scale_qx
 #' @export
-agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
+agg_qx <- function(dt, id_cols, age_mapping, missing_dt_severity = "stop",
+                   drop_present_aggs = F) {
 
   # Validate -------------------------------------------------------------
 
@@ -100,7 +108,7 @@ agg_qx <- function(dt, id_cols, age_mapping, drop_present_aggs = F) {
 # ============================================================================
 #' @rdname agg_scale_qx
 #' @export
-scale_qx <- function(dt, id_cols) {
+scale_qx <- function(dt, id_cols, missing_dt_severity = "stop") {
 
   # Validate -------------------------------------------------------------
 

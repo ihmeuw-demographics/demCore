@@ -6,9 +6,15 @@
 \alias{scale_qx}
 \title{Aggregate or scale qx values over age}
 \usage{
-agg_qx(dt, id_cols, age_mapping, drop_present_aggs = F)
+agg_qx(
+  dt,
+  id_cols,
+  age_mapping,
+  missing_dt_severity = "stop",
+  drop_present_aggs = F
+)
 
-scale_qx(dt, id_cols)
+scale_qx(dt, id_cols, missing_dt_severity = "stop")
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr Data to be aggregated.
@@ -24,6 +30,12 @@ ID columns that uniquely identify each row of \code{dt}.}
 aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
 'age_end' for terminal age group. If scaling, this mapping is inferred
 from the ages included.}
+
+\item{missing_dt_severity}{[\code{character(1)}]\cr
+How severe should the consequences of missing data that prevents
+aggregation or scaling from occurring be? Can be either 'stop', 'warning',
+'message', or 'none'. If not "stop", then only the possible aggregations or
+scaling is done using the available data.}
 
 \item{drop_present_aggs}{[\code{logical(1)}]\cr
 Whether to drop aggregates (or overlapping intervals) that are already
@@ -52,6 +64,13 @@ for \code{\link[demUtils:agg]{demUtils::agg()}}.
 \strong{Scaling:} Convert to px-space, scale up age-hierarchy so that granular px
 values multiply to aggregate px values, convert back to qx-space.
 \code{scale_qx} is a wrapper for \code{\link[demUtils:scale]{demUtils::scale()}}.
+
+This function is unique to aggregating and scaling qx over age because of
+the dependence between age and the definition of qx. Aggregation of qx
+across sex, location, or other variables should be done by first aggregating
+ax and mx as population-weighted means (can use \code{\link[demUtils:agg]{demUtils::agg()}} and
+\code{\link[demUtils:scale]{demUtils::scale()}} directly), then recalculating qx from mx and ax
+(see \code{\link[lifetableUtils:mx_ax_to_qx]{lifetableUtils::mx_ax_to_qx()}}).
 }
 \examples{
 # Example 1: aggregate qx
