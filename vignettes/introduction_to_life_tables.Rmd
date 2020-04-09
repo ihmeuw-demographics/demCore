@@ -220,7 +220,7 @@ $$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 Where $d_x$ is derived from the conversion from $m_x$ to $q_x$. However, since
 the $m_x$ to $q_x$ conversion requires $a_x$, this requires us to pick a
 starting place for $a_x$ (like $n/2$), solve for $d_x$, solve for $a_x$, and so
-on until convergence.
+on until convergence. Use `lifetableUtils::iterate_ax` to implement this method.
 
 ### qx
 
