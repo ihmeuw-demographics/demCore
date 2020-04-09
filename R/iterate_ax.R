@@ -1,7 +1,7 @@
 #' @title Ax iteration method
 #'
 #' @description Implement iteration method to minimize the difference across
-#'   itialized ax and its expected relationship with dx. This method can be
+#'   initialized ax and its expected relationship with dx. This method can be
 #'   used to start with naive values of ax (like age_length/2) and arrive
 #'   at more informed ax values based on an approximation that assumes a
 #'   relationship between ax and the age pattern of deaths (dx) in a cohort.
@@ -11,7 +11,7 @@
 #' @param dt \[`data.table()`\]\cr Life tables with columns: all `id_cols`,
 #'   'age_start', 'age_end', 'dx', 'ax', 'qx', 'mx'.
 #' @param n_iterations \[`integer(1)`\]\cr Maximum number of iterations to run.
-#' @inheritParams lifetableUtils::qx_to_lx
+#' @inheritParams qx_to_lx
 #'
 #' @return \[`data.table()`\]\cr Input life tables with ax, dx, qx modified.
 #'   Input mx is unchanged.
@@ -24,7 +24,7 @@
 #' [gen_u5_ax()].
 #'
 #' @seealso Preston Demography book pg 45. Also, see more details on this
-#'    method explaind here:
+#'    method explained here:
 #'   [Life table introduction vignette](https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html)
 #'
 #' @references
@@ -34,7 +34,7 @@
 #' @examples
 #' data("austria_1992_lt")
 #' dt <- austria_1992_lt[,.(age_start, age_end, age_length, mx, ax, qx, dx, lx)]
-#' new_dt <- iterate_qx(dt, id_cols = c("age_start", "age_end"))
+#' new_dt <- iterate_ax(dt, id_cols = c("age_start", "age_end"))
 #'
 #' \dontrun{
 #'   # plot change in qx, ax, lx, dx, mx
@@ -47,7 +47,6 @@
 #' }
 #'
 #' @export
-
 iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
 
   # validate ----------------------------------------------------------------
@@ -57,7 +56,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
 
   # check `n_iterations`
   assertthat::assert_that(is.integer(n_iterations) &
-                          length(n_iterations) == 1,
+                            length(n_iterations) == 1,
                           msg = "`n_iterations' must be of class integer
                                   and length 1.")
 
