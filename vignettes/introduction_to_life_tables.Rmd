@@ -263,10 +263,10 @@ or in words, the proportion surviving to age $x$ times the proportion of those
 survivors who do not die between $x$ and $x+n$ is the proportion surviving to
 age $x+n$.
 
-Our `qx_to_lx` function can perform this calculation:
+Our `gen_lx_from_qx` function can perform this calculation:
 
 ```{r lx_calc}
-qx_to_lx(dt, id_cols = c("age_start", "age_end"))
+gen_lx_from_qx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### dx
@@ -275,10 +275,10 @@ Proportion of cohort dying between ages $x$ and $x+n$ ($d_x$) is $_nq_0$ to
 start, then $_nd_x = l_x - l_{x+n}$ thereafter (difference between proportion
 surviving to age $x$ and proportion surviving to age $x+n$).
 
-To calculate $d_x$, use `lx_to_dx`:
+To calculate $d_x$, use `gen_dx_from_lx`:
 
 ```{r dx_calc}
-lx_to_dx(dt, id_cols = c("age_start", "age_end"))
+gen_dx_from_lx(dt, id_cols = c("age_start", "age_end"))
 ```
 
 ### nLx

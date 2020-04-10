@@ -127,7 +127,7 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
   # lx spline ---------------------------------------------------------------
 
   # get lx
-  qx_to_lx(dt, id_cols)
+  gen_lx_from_qx(dt, id_cols)
 
   # compute spline
   if (lx_spline_start_age < terminal_age) {
@@ -155,7 +155,7 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
     )
 
     # convert back to qx
-    lx_to_qx(full_lt_spline, id_cols)
+    gen_qx_from_lx(full_lt_spline, id_cols)
     full_lt_spline[, c("lx") := NULL]
     full_lt_spline <- full_lt_spline[!age_start %in% preserve_input_ax_ages]
 

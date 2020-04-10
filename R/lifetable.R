@@ -84,10 +84,10 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
   dt[, px := 1 - qx]
 
   # lx
-  qx_to_lx(dt, id_cols, assert_na)
+  gen_lx_from_qx(dt, id_cols, assert_na)
 
   # dx
-  lx_to_dx(dt, id_cols, assert_na)
+  gen_dx_from_lx(dt, id_cols, assert_na)
 
   # nLx
   gen_nLx(dt, id_cols, assert_na)
