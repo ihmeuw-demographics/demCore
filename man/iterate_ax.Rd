@@ -4,7 +4,7 @@
 \alias{iterate_ax}
 \title{Ax iteration method}
 \usage{
-iterate_ax(dt, id_cols, n_iterations = 30L)
+iterate_ax(dt, id_cols, n_iterations = 30L, threshold = 0.01, quiet = F)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr Life tables with columns: all \code{id_cols},
@@ -14,6 +14,12 @@ iterate_ax(dt, id_cols, n_iterations = 30L)
 of \code{dt}. Must include 'age_start' and 'age_end'.}
 
 \item{n_iterations}{[\code{integer(1)}]\cr Maximum number of iterations to run.}
+
+\item{threshold}{[\code{numeric(1)}]\cr How far apart should ax and the
+implied ax from dx be before removal from iteration. Default: 0.01.}
+
+\item{quiet}{[\code{logical(1)}]\cr Whether to omit messages about iteration
+progress. Default is F and progress messages are given.}
 }
 \value{
 [\code{data.table()}]\cr Input life tables with ax, dx, qx modified.

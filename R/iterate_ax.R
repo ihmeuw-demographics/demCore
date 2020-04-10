@@ -11,6 +11,10 @@
 #' @param dt \[`data.table()`\]\cr Life tables with columns: all `id_cols`,
 #'   'age_start', 'age_end', 'dx', 'ax', 'qx', 'mx'.
 #' @param n_iterations \[`integer(1)`\]\cr Maximum number of iterations to run.
+#' @param threshold \[`numeric(1)`\]\cr How far apart should ax and the
+#'   implied ax from dx be before removal from iteration. Default: 0.01.
+#' @param quiet \[`logical(1)`\]\cr Whether to omit messages about iteration
+#'   progress. Default is F and progress messages are given.
 #' @inheritParams qx_to_lx
 #'
 #' @return \[`data.table()`\]\cr Input life tables with ax, dx, qx modified.
@@ -47,7 +51,8 @@
 #' }
 #'
 #' @export
-iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
+iterate_ax <- function(dt, id_cols, n_iterations = 30L,
+                       threshold = 0.01, quiet = F) {
 
   # validate ----------------------------------------------------------------
 
@@ -65,7 +70,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
   dt <- copy(dt)
   setkeyv(dt, id_cols)
   id_cols_no_age <- setdiff(id_cols, c("age_start", "age_end"))
-  dt[, age_length := age_end - age_start]
+  if(!"age_length" %in% names(dt)) demUtils::gen_length(dt, "age")
 
   # initialize
   iter_num <- 1
@@ -75,7 +80,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
 
   while(nrow(dt) > 0 & iter_num < n_iterations) {
 
-    print(paste0("Iteration ", iter_num))
+    if(!quiet) message("Iteration ", iter_num)
     setorderv(dt, id_cols)
 
     # estimate ax from dx (Preston pg 45)
@@ -109,14 +114,16 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
     dt[, dx := lx * qx]
 
     # remove life tables where diff is satisfactorily small
-    holdouts <- rbindlist(list(holdouts, dt[max_ax_diff <= 0.01]),
+    holdouts <- rbindlist(list(holdouts, dt[max_ax_diff <= threshold]),
                           use.names = T, fill = T)
-    dt <- dt[max_ax_diff > 0.01]
+    dt <- dt[max_ax_diff > threshold]
 
     n_remaining <- ifelse(nrow(dt) == 0, 0,
                           round(nrow(dt) / length(unique(dt$age_start)), 0))
-    print(paste0("Number of remaining life tables: ", n_remaining))
-    print(summary(dt$max_ax_diff))
+    if(!quiet) {
+      message("Number of remaining life tables: ", n_remaining)
+      if(n_remaining > 0) print(summary(dt$max_ax_diff))
+    }
 
     iter_num <- iter_num + 1
 
@@ -133,7 +140,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L) {
 
   dt[, c("diff", "max_ax_diff") := NULL]
 
-  print("Iterations done")
+  if(!quiet) message("Iterations done")
   return(dt)
 
 }
