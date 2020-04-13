@@ -23,6 +23,8 @@
 #'     all life table parameters >= 0, parameters qx, lx, dx <= 1.
 #'
 #'   **assert_na** check `assert_na` is a logical.
+#'
+#' @export
 
 validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
                                 assert_na = NA) {
