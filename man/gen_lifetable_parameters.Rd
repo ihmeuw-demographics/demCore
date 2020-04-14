@@ -2,19 +2,19 @@
 % Please edit documentation in R/gen_lifetable_parameters.R
 \name{gen_lifetable_parameters}
 \alias{gen_lifetable_parameters}
-\alias{qx_to_lx}
-\alias{lx_to_qx}
-\alias{lx_to_dx}
+\alias{gen_lx_from_qx}
+\alias{gen_qx_from_lx}
+\alias{gen_dx_from_lx}
 \alias{gen_nLx}
 \alias{gen_Tx}
 \alias{gen_ex}
 \title{Generate life table parameters}
 \usage{
-qx_to_lx(dt, id_cols, assert_na = T)
+gen_lx_from_qx(dt, id_cols, assert_na = T)
 
-lx_to_qx(dt, id_cols, assert_na = T)
+gen_qx_from_lx(dt, id_cols, assert_na = T)
 
-lx_to_dx(dt, id_cols, assert_na = T)
+gen_dx_from_lx(dt, id_cols, assert_na = T)
 
 gen_nLx(dt, id_cols, assert_na = T)
 
@@ -26,9 +26,9 @@ gen_ex(dt, assert_na = T)
 \item{dt}{[\code{data.table()}]\cr Life table(s). Includes columns 'age_start',
 'age_end', and all \code{id_cols}. Additionally:
 \itemize{
-\item{\code{qx_to_lx} requires 'qx'}
-\item{\code{lx_to_qx} requires 'lx'}
-\item{\code{lx_to_dx} requires 'lx'}
+\item{\code{gen_lx_from_qx} requires 'qx'}
+\item{\code{gen_qx_from_lx} requires 'lx'}
+\item{\code{gen_dx_from_lx} requires 'lx'}
 \item{\code{gen_nLx} requires 'lx', 'ax', 'dx'}
 \item{\code{gen_Tx} requires 'nLx'}
 \item{\code{gen_ex} requires 'lx', 'Tx'}
@@ -63,18 +63,18 @@ interval
 \item nLx = total person-years lived in interval
 }
 
-\strong{qx_to_lx:} Use probability of death (qx) to get the proportion of
+\strong{gen_lx_from_qx:} Use probability of death (qx) to get the proportion of
 survivors in the beginning of an age group (lx). l0 = 1; lx for ages > 0
 is lx for previous age group times the probability of surviving the
 previous age group.
 
-\strong{lx_to_qx:} Use survival proportion (lx) at age x and x+n to get
+\strong{gen_qx_from_lx:} Use survival proportion (lx) at age x and x+n to get
 probability of death between x and x+n (qx). This relationship is an
-algebraic equivalent to the \code{qx_to_lx} relationship as described. Terminal
-age qx is set to 1.
+algebraic equivalent to the \code{gen_lx_from_qx} relationship as described.
+Terminal age qx is set to 1.
 
-\strong{lx_to_dx:} Calculate the proportion dying between age x and x+n (dx) as
-the difference between the proportion surviving (lx) at age x and the
+\strong{gen_dx_from_lx:} Calculate the proportion dying between age x and x+n (dx)
+as the difference between the proportion surviving (lx) at age x and the
 proportion surviving at age x+n. In the terminal age group all survivors
 die in the age group, so dx = lx.
 
@@ -102,12 +102,12 @@ dt <- data.table::data.table(
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-qx_to_lx(dt, id_cols = c("sex", "age_start", "age_end"))
-lx_to_dx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_lx_from_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_dx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 gen_nLx(dt, id_cols = c("sex", "age_start", "age_end"))
 gen_Tx(dt, id_cols = c("sex", "age_start", "age_end"))
 gen_ex(dt)
-lx_to_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_qx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 
 }
 \seealso{

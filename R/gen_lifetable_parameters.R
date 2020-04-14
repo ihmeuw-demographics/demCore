@@ -7,9 +7,9 @@
 #' @param dt \[`data.table()`\]\cr Life table(s). Includes columns 'age_start',
 #'  'age_end', and all `id_cols`. Additionally:
 #'   \itemize{
-#'     \item{`qx_to_lx` requires 'qx'}
-#'     \item{`lx_to_qx` requires 'lx'}
-#'     \item{`lx_to_dx` requires 'lx'}
+#'     \item{`gen_lx_from_qx` requires 'qx'}
+#'     \item{`gen_qx_from_lx` requires 'lx'}
+#'     \item{`gen_dx_from_lx` requires 'lx'}
 #'     \item{`gen_nLx` requires 'lx', 'ax', 'dx'}
 #'     \item{`gen_Tx` requires 'nLx'}
 #'     \item{`gen_ex` requires 'lx', 'Tx'}
@@ -35,18 +35,18 @@
 #'   * Tx =  total person-years lived beyond age x
 #'   * nLx = total person-years lived in interval
 #'
-#' **qx_to_lx:** Use probability of death (qx) to get the proportion of
+#' **gen_lx_from_qx:** Use probability of death (qx) to get the proportion of
 #'   survivors in the beginning of an age group (lx). l0 = 1; lx for ages > 0
 #'   is lx for previous age group times the probability of surviving the
 #'   previous age group.
 #'
-#' **lx_to_qx:** Use survival proportion (lx) at age x and x+n to get
+#' **gen_qx_from_lx:** Use survival proportion (lx) at age x and x+n to get
 #'   probability of death between x and x+n (qx). This relationship is an
-#'   algebraic equivalent to the `qx_to_lx` relationship as described. Terminal
-#'   age qx is set to 1.
+#'   algebraic equivalent to the `gen_lx_from_qx` relationship as described.
+#'   Terminal age qx is set to 1.
 #'
-#' **lx_to_dx:** Calculate the proportion dying between age x and x+n (dx) as
-#'   the difference between the proportion surviving (lx) at age x and the
+#' **gen_dx_from_lx:** Calculate the proportion dying between age x and x+n (dx)
+#'   as the difference between the proportion surviving (lx) at age x and the
 #'   proportion surviving at age x+n. In the terminal age group all survivors
 #'   die in the age group, so dx = lx.
 #'
@@ -83,12 +83,12 @@
 #'   ax = c(2.5, 2.5, 2.5, 2.5)
 #' )
 #' dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-#' qx_to_lx(dt, id_cols = c("sex", "age_start", "age_end"))
-#' lx_to_dx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' gen_lx_from_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' gen_dx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 #' gen_nLx(dt, id_cols = c("sex", "age_start", "age_end"))
 #' gen_Tx(dt, id_cols = c("sex", "age_start", "age_end"))
 #' gen_ex(dt)
-#' lx_to_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+#' gen_qx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 #'
 #' @name gen_lifetable_parameters
 NULL
@@ -96,7 +96,7 @@ NULL
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-qx_to_lx <- function(dt, id_cols, assert_na = T) {
+gen_lx_from_qx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
@@ -124,13 +124,15 @@ qx_to_lx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-lx_to_qx <- function(dt, id_cols, assert_na = T) {
+gen_qx_from_lx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
@@ -158,13 +160,15 @@ lx_to_qx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
 # ============================================================================
 #' @rdname gen_lifetable_parameters
 #' @export
-lx_to_dx <- function(dt, id_cols, assert_na = T) {
+gen_dx_from_lx <- function(dt, id_cols, assert_na = T) {
 
   # prep ---------------------------------------------------------------------
 
@@ -188,6 +192,8 @@ lx_to_dx <- function(dt, id_cols, assert_na = T) {
     assertable::assert_values(dt, "dx", "not_na", quiet = T)
   }
   setkeyv(dt, original_keys)
+
+  return(invisible(dt))
 
 }
 
@@ -238,6 +244,8 @@ gen_nLx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -276,6 +284,8 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
   if (assert_na == T) assertable::assert_values(dt, "Tx", "not_na", quiet = T)
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -293,5 +303,7 @@ gen_ex <- function(dt, assert_na = T) {
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) assertable::assert_values(dt, "ex", "not_na", quiet = T)
+
+  return(invisible(dt))
 
 }

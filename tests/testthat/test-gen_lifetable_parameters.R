@@ -1,7 +1,7 @@
 library(data.table)
 
 # ============================================================================
-# qx_to_lx
+# gen_lx_from_qx
 
 # set up standard input data.table
 input_dt <- data.table(
@@ -22,29 +22,31 @@ expected_dt <- data.table(
          1, 0.8, 0.64, 0.512, 0.40960, 0.32768)
 )
 
-test_that("test that `qx_to_lx` basic functionality works", {
-  output_dt <- qx_to_lx(input_dt, id_cols)
+test_that("test that `gen_lx_from_qx` basic functionality works", {
+  output_dt <- copy(input_dt)
+  gen_lx_from_qx(output_dt, id_cols)
   testthat::expect_equal(output_dt, expected_dt)
 })
 
-test_that("test that `qx_to_lx` errors are thrown for different cases", {
+test_that("test that `gen_lx_from_qx` errors are thrown for different cases", {
   # Check error thrown when wrong argument types are given
-  testthat::expect_error(qx_to_lx(input_dt, "hello", T))
-  testthat::expect_error(qx_to_lx(input_dt, T, id_cols))
+  testthat::expect_error(gen_lx_from_qx(input_dt, "hello", T))
+  testthat::expect_error(gen_lx_from_qx(input_dt, T, id_cols))
 
   # check error thrown when rows of input dt are not unique
   non_unique_input_dt <- rbind(input_dt, input_dt)
-  testthat::expect_error(qx_to_lx(non_unique_input_dt, id_cols = id_cols))
+  testthat::expect_error(gen_lx_from_qx(non_unique_input_dt, id_cols = id_cols))
 })
 
 test_that("test that resulting lx is monotonic by age", {
-  output_dt <- qx_to_lx(input_dt, id_cols)
+  output_dt <- copy(input_dt)
+  gen_lx_from_qx(output_dt, id_cols)
   output_females <- output_dt[sex == "female"]$lx
   testthat::expect_equal(T, all(output_females == cummin(output_females)))
 })
 
 # ============================================================================
-# lx_to_dx
+# gen_dx_from_lx
 
 # set up standard input data.table
 input_dt <- data.table(
@@ -58,28 +60,29 @@ id_cols <- c("sex", "age_start", "age_end")
 # set up expected output table
 expected_dx <- c(0.1, 0.2, 0.5, 0.2)
 
-test_that("test that `lx_to_dx` basic functionality works", {
-  output_dt <- lx_to_dx(input_dt, id_cols)
+test_that("test that `gen_dx_from_lx` basic functionality works", {
+  output_dt <- copy(input_dt)
+  gen_dx_from_lx(output_dt, id_cols)
   testthat::expect_equal(output_dt$dx, expected_dx)
 })
 
-test_that("test that `qx_to_lx` errors are thrown for different cases", {
+test_that("test that `gen_dx_from_lx` errors are thrown for different cases", {
   # check error thrown when wrong argument types are given
-  testthat::expect_error(lx_to_dx(as.data.frame(input_dt), id_cols, T))
-  testthat::expect_error(lx_to_dx(input_dt, "hello", T))
-  testthat::expect_error(lx_to_dx(input_dt, id_cols, 15))
+  testthat::expect_error(gen_dx_from_lx(as.data.frame(input_dt), id_cols, T))
+  testthat::expect_error(gen_dx_from_lx(input_dt, "hello", T))
+  testthat::expect_error(gen_dx_from_lx(input_dt, id_cols, 15))
 
   # check error thrown when missing cols
-  testthat::expect_error(lx_to_dx(input_dt[, c("sex", "lx")], id_cols, T))
-  testthat::expect_error(lx_to_dx(input_dt[, c("sex", "age_start", "age_end")],
+  testthat::expect_error(gen_dx_from_lx(input_dt[, c("sex", "lx")], id_cols, T))
+  testthat::expect_error(gen_dx_from_lx(input_dt[, c("sex", "age_start", "age_end")],
                                   id_cols, T))
 
   # check error thrown when rows of input dt are not unique
   non_unique_input_dt <- rbind(input_dt, input_dt)
-  testthat::expect_error(lx_to_dx(non_unique_input_dt, id_cols, T))
+  testthat::expect_error(gen_dx_from_lx(non_unique_input_dt, id_cols, T))
 
   # check error thrown if terminal_age < oldest age in data
-  testthat::expect_error(lx_to_dx(input_dt, id_cols, 5))
+  testthat::expect_error(gen_dx_from_lx(input_dt, id_cols, 5))
 })
 
 
@@ -96,15 +99,16 @@ dt <- data.table::data.table(
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-dt <- qx_to_lx(dt, id_cols = c("sex", "age_start", "age_end"))
-dt <- lx_to_dx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_lx_from_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_dx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 id_cols <- c("sex", "age_start", "age_end")
 
 # set up expected output (rounded)
 expected_nLx <- c(4.00, 2.00, 0.57, 0.07)
 
 test_that("test that `gen_nLx` basic functionality works", {
-  output_dt <- gen_nLx(dt, id_cols)
+  output_dt <- copy(dt)
+  gen_nLx(output_dt, id_cols)
   output_nLx <- round(output_dt$nLx, 2)
   testthat::expect_equal(output_nLx, expected_nLx)
 })

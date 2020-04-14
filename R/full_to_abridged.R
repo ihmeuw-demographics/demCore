@@ -77,8 +77,8 @@ full_to_abridged <- function(dt, id_cols,
   if(!"qx" %in% names(dt)) dt[, qx := mx_ax_to_qx(mx, ax, 1)]
   if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, 1)]
   if(!"dx" %in% names(dt)) {
-    dt <- qx_to_lx(dt, id_cols, assert_na = T)
-    dt <- lx_to_dx(dt, id_cols, assert_na = T)
+    gen_lx_from_qx(dt, id_cols, assert_na = T)
+    gen_dx_from_lx(dt, id_cols, assert_na = T)
   }
   dt <- dt[, .SD, .SDcols = c(id_cols, "qx", "ax", "dx")]
 
