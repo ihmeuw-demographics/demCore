@@ -122,7 +122,10 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
                           round(nrow(dt) / length(unique(dt$age_start)), 0))
     if(!quiet) {
       message("Number of remaining life tables: ", n_remaining)
-      if(n_remaining > 0) print(summary(dt$max_ax_diff))
+      if(n_remaining > 0) {
+        message(paste0("Min. | 1st Qu. | Median | Mean | 3rd Qu. | Max. \n ",
+                paste(round(summary(dt$max_ax_diff), 2), collapse = " | ")))
+      }
     }
 
     iter_num <- iter_num + 1
