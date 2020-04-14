@@ -23,7 +23,8 @@ expected_dt <- data.table(
 )
 
 test_that("test that `gen_lx_from_qx` basic functionality works", {
-  output_dt <- gen_lx_from_qx(input_dt, id_cols)
+  output_dt <- copy(input_dt)
+  gen_lx_from_qx(output_dt, id_cols)
   testthat::expect_equal(output_dt, expected_dt)
 })
 
@@ -38,7 +39,8 @@ test_that("test that `gen_lx_from_qx` errors are thrown for different cases", {
 })
 
 test_that("test that resulting lx is monotonic by age", {
-  output_dt <- gen_lx_from_qx(input_dt, id_cols)
+  output_dt <- copy(input_dt)
+  gen_lx_from_qx(output_dt, id_cols)
   output_females <- output_dt[sex == "female"]$lx
   testthat::expect_equal(T, all(output_females == cummin(output_females)))
 })
@@ -59,7 +61,8 @@ id_cols <- c("sex", "age_start", "age_end")
 expected_dx <- c(0.1, 0.2, 0.5, 0.2)
 
 test_that("test that `gen_dx_from_lx` basic functionality works", {
-  output_dt <- gen_dx_from_lx(input_dt, id_cols)
+  output_dt <- copy(input_dt)
+  gen_dx_from_lx(output_dt, id_cols)
   testthat::expect_equal(output_dt$dx, expected_dx)
 })
 
@@ -96,15 +99,16 @@ dt <- data.table::data.table(
   ax = c(2.5, 2.5, 2.5, 2.5)
 )
 dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-dt <- gen_lx_from_qx(dt, id_cols = c("sex", "age_start", "age_end"))
-dt <- gen_dx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_lx_from_qx(dt, id_cols = c("sex", "age_start", "age_end"))
+gen_dx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 id_cols <- c("sex", "age_start", "age_end")
 
 # set up expected output (rounded)
 expected_nLx <- c(4.00, 2.00, 0.57, 0.07)
 
 test_that("test that `gen_nLx` basic functionality works", {
-  output_dt <- gen_nLx(dt, id_cols)
+  output_dt <- copy(dt)
+  gen_nLx(output_dt, id_cols)
   output_nLx <- round(output_dt$nLx, 2)
   testthat::expect_equal(output_nLx, expected_nLx)
 })

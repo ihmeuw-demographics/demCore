@@ -124,6 +124,8 @@ gen_lx_from_qx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -158,6 +160,8 @@ gen_qx_from_lx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -188,6 +192,8 @@ gen_dx_from_lx <- function(dt, id_cols, assert_na = T) {
     assertable::assert_values(dt, "dx", "not_na", quiet = T)
   }
   setkeyv(dt, original_keys)
+
+  return(invisible(dt))
 
 }
 
@@ -238,6 +244,8 @@ gen_nLx <- function(dt, id_cols, assert_na = T) {
 
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -276,6 +284,8 @@ gen_Tx <- function(dt, id_cols, assert_na = T) {
   if (assert_na == T) assertable::assert_values(dt, "Tx", "not_na", quiet = T)
   setkeyv(dt, original_keys)
 
+  return(invisible(dt))
+
 }
 
 
@@ -293,5 +303,7 @@ gen_ex <- function(dt, assert_na = T) {
 
   # check outputs ------------------------------------------------------------
   if (assert_na == T) assertable::assert_values(dt, "ex", "not_na", quiet = T)
+
+  return(invisible(dt))
 
 }
