@@ -8,7 +8,7 @@ input_dt <- data.table(
   sex = c(rep("female", 6), rep("male", 6)),
   age_start = rep(c(0, 1, seq(5, 20, 5)), 2),
   age_end = rep(c(1, seq(5, 20, 5), Inf), 2),
-  qx = c(rep(.1, 6), rep(.2, 6))
+  qx = c(rep(.1, 5), 1, rep(.2, 5), 1)
 )
 id_cols <- c("sex", "age_start", "age_end")
 
@@ -17,7 +17,7 @@ expected_dt <- data.table(
   sex = c(rep("female", 6), rep("male", 6)),
   age_start = rep(c(0, 1, seq(5, 20, 5)), 2),
   age_end = rep(c(1, seq(5, 20, 5), Inf), 2),
-  qx = c(rep(.1, 6), rep(.2, 6)),
+  qx = c(rep(.1, 5), 1, rep(.2, 5), 1),
   lx = c(1, 0.9, 0.81, 0.729, 0.6561, 0.59049,
          1, 0.8, 0.64, 0.512, 0.40960, 0.32768)
 )
@@ -59,11 +59,13 @@ id_cols <- c("sex", "age_start", "age_end")
 
 # set up expected output table
 expected_dx <- c(0.1, 0.2, 0.5, 0.2)
+expected_dt <- copy(input_dt)
+expected_dt$dx <- expected_dx
 
 test_that("test that `gen_dx_from_lx` basic functionality works", {
   output_dt <- copy(input_dt)
   gen_dx_from_lx(output_dt, id_cols)
-  testthat::expect_equal(output_dt$dx, expected_dx)
+  testthat::expect_equal(output_dt, expected_dt)
 })
 
 test_that("test that `gen_dx_from_lx` errors are thrown for different cases", {
@@ -80,9 +82,42 @@ test_that("test that `gen_dx_from_lx` errors are thrown for different cases", {
   # check error thrown when rows of input dt are not unique
   non_unique_input_dt <- rbind(input_dt, input_dt)
   testthat::expect_error(gen_dx_from_lx(non_unique_input_dt, id_cols, T))
+})
 
-  # check error thrown if terminal_age < oldest age in data
-  testthat::expect_error(gen_dx_from_lx(input_dt, id_cols, 5))
+
+# ============================================================================
+# gen_qx_from_lx
+
+# set up standard input data.table
+input_dt <- data.table(
+  sex = c(rep("female", 6), rep("male", 6)),
+  age_start = rep(c(0, 1, seq(5, 20, 5)), 2),
+  age_end = rep(c(1, seq(5, 20, 5), Inf), 2),
+  lx = c(1, 0.9, 0.81, 0.729, 0.6561, 0.59049,
+         1, 0.8, 0.64, 0.512, 0.40960, 0.32768)
+)
+id_cols <- c("sex", "age_start", "age_end")
+
+# set up expected output table
+expected_dt <- data.table(
+  sex = c(rep("female", 6), rep("male", 6)),
+  age_start = rep(c(0, 1, seq(5, 20, 5)), 2),
+  age_end = rep(c(1, seq(5, 20, 5), Inf), 2),
+  lx = c(1, 0.9, 0.81, 0.729, 0.6561, 0.59049,
+         1, 0.8, 0.64, 0.512, 0.40960, 0.32768),
+  qx = c(rep(.1, 5), 1, rep(.2, 5), 1)
+)
+
+test_that("test that `gen_qx_from_lx` basic functionality works", {
+  output_dt <- copy(input_dt)
+  gen_qx_from_lx(output_dt, id_cols)
+  testthat::expect_equal(output_dt, expected_dt)
+})
+
+test_that("test that `gen_qx_from_lx` errors are thrown for duplicate data", {
+  # check error thrown when rows of input dt are not unique
+  non_unique_input_dt <- rbind(input_dt, input_dt)
+  testthat::expect_error(gen_qx_from_lx(non_unique_input_dt, id_cols, T))
 })
 
 

@@ -15,7 +15,7 @@
 #'   implied ax from dx be before removal from iteration. Default: 0.01.
 #' @param quiet \[`logical(1)`\]\cr Whether to omit messages about iteration
 #'   progress. Default is F and progress messages are given.
-#' @inheritParams qx_to_lx
+#' @inheritParams gen_lx_from_qx
 #'
 #' @return \[`data.table()`\]\cr Input life tables with ax, dx, qx modified.
 #'   Input mx is unchanged.
@@ -110,7 +110,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
     dt[, ax := mx_qx_to_ax(mx, qx, age_length)]
 
     # calculate lx and dx
-    qx_to_lx(dt, id_cols)
+    gen_lx_from_qx(dt, id_cols)
     dt[, dx := lx * qx]
 
     # remove life tables where diff is satisfactorily small
