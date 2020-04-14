@@ -30,10 +30,7 @@ algorithm based on under-1 mx.
 }
 \details{
 Takes a \code{data.table} with 'age_start', 'age_end', 'sex', and
-infant mortality rate ('mx') and adds a column 'ax'. Values from:
-
-Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
-population processes. MA: Blackwell Publishing. 2001.
+infant mortality rate ('mx') and adds a column 'ax'.
 
 The following table shows the conversions from 1m0 to 1a0 and 4a1. Note
 that when sex is "both" the relationship is a mean of the male and female
@@ -56,4 +53,8 @@ dt <- data.table::data.table(
   sex = c("male", "male")
 )
 gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
+}
+\references{
+Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+population processes. MA: Blackwell Publishing. 2001.
 }

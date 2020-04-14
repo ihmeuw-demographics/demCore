@@ -114,6 +114,6 @@ gen_qx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 \itemize{
 \item{\link[lifetableUtils:mx_qx_ax_conversions]{lifetableUtils::mx_qx_ax_conversions}}
 \item{\link[lifetableUtils:lifetable]{lifetableUtils::lifetable}}
-\item{\href{https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html}{Introduction to lifetables vignette}}
+\item{\href{https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html}{Introduction to life tables vignette}}
 }
 }

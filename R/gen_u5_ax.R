@@ -17,10 +17,7 @@
 #' @return Modifies `dt` in place with 'ax' column added on.
 #'
 #' @details Takes a `data.table` with 'age_start', 'age_end', 'sex', and
-#'   infant mortality rate ('mx') and adds a column 'ax'. Values from:
-#'
-#'   Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
-#'   population processes. MA: Blackwell Publishing. 2001.
+#'   infant mortality rate ('mx') and adds a column 'ax'.
 #'
 #'   The following table shows the conversions from 1m0 to 1a0 and 4a1. Note
 #'   that when sex is "both" the relationship is a mean of the male and female
@@ -35,6 +32,10 @@
 #'  | 4a1:                ||                     ||                     |
 #'  | If 1m0 >= 0.107     || 1.352               || 1.361               |
 #'  | If 1m0 < 0.107      || 1.651 - 2.816 * 1m0 || 1.522 - 1.518 * 1m0 |
+#'
+#' @references
+#' Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+#'   population processes. MA: Blackwell Publishing. 2001.
 #'
 #' @examples
 #' dt <- data.table::data.table(

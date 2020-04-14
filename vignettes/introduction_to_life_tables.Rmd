@@ -129,7 +129,7 @@ regarding the use of these functions and their underlying methods. We will
 accomplish this by following along the example of building the example
 life table above from death counts and population.
 
-Note that this document and this package do not conatain an exhaustive list of
+Note that this document and this package do not contain an exhaustive list of
 relationships between metrics. Additionally, some equations presented rely on
 assumptions and others are true relationships that are always valid. For more
 details, see the Preston Demography textbook, from which many of these details
@@ -220,7 +220,7 @@ $$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 Where $d_x$ is derived from the conversion from $m_x$ to $q_x$. However, since
 the $m_x$ to $q_x$ conversion requires $a_x$, this requires us to pick a
 starting place for $a_x$ (like $n/2$), solve for $d_x$, solve for $a_x$, and so
-on until convergence.
+on until convergence. Use `lifetableUtils::iterate_ax` to implement this method.
 
 ### qx
 
@@ -231,8 +231,8 @@ For the terminal age group, $q_x$ should be $1$ because all individuals
 surviving to the terminal age group will die in that age group (probability of
 death = $1$).
 
-The `mx_ax_to_qx` combines the equation for $q_x$ and the requirement of
-terminal $q_x$ equalling one by setting $q_x = 1$ if `age_length = Inf`.
+The `mx_ax_to_qx` combines the equation for $q_x$ and the requirement that
+terminal $q_x$ equal one by setting $q_x = 1$ if `age_length = Inf`.
 
 ```{r qx_calc1, echo = T, results = "hide"}
 dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
@@ -241,7 +241,7 @@ dt[, qx := mx_ax_to_qx(mx = mx, ax = ax, age_length = age_length)]
 Other functions that utilize this relationship but solve for different metrics
 are `mx_qx_to_ax` and `qx_ax_to_mx`.
 
-You can also solve for $q_x$ under the assumption of contant mortality rate
+You can also solve for $q_x$ under the assumption of constant mortality rate
 within an interval, which removes $a_x$ from the relationship:
 
 $$_nq_x = 1 - e^{-n \cdot {_nm_x}}.$$
