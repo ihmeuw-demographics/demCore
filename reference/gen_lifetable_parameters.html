@@ -126,11 +126,11 @@ parameters from others, using established demographic relationships." />
 parameters from others, using established demographic relationships.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>qx_to_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
+    <pre class="usage"><span class='fu'>gen_lx_from_qx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>lx_to_qx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
+<span class='fu'>gen_qx_from_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>lx_to_dx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
+<span class='fu'>gen_dx_from_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
 <span class='fu'>gen_nLx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
@@ -145,9 +145,9 @@ parameters from others, using established demographic relationships.</p>
       <th>dt</th>
       <td><p>[<code>data.table()</code>]<br /> Life table(s). Includes columns 'age_start',
 'age_end', and all <code>id_cols</code>. Additionally:</p><ul>
-<li><p><code>qx_to_lx</code> requires 'qx'</p></li>
-<li><p><code>lx_to_qx</code> requires 'lx'</p></li>
-<li><p><code>lx_to_dx</code> requires 'lx'</p></li>
+<li><p><code>gen_lx_from_qx</code> requires 'qx'</p></li>
+<li><p><code>gen_qx_from_lx</code> requires 'lx'</p></li>
+<li><p><code>gen_dx_from_lx</code> requires 'lx'</p></li>
 <li><p><code>gen_nLx</code> requires 'lx', 'ax', 'dx'</p></li>
 <li><p><code>gen_Tx</code> requires 'nLx'</p></li>
 <li><p><code>gen_ex</code> requires 'lx', 'Tx'</p></li>
@@ -184,16 +184,16 @@ interval</p></li>
 <li><p>nLx = total person-years lived in interval</p></li>
 </ul>
 
-<p><strong>qx_to_lx:</strong> Use probability of death (qx) to get the proportion of
+<p><strong>gen_lx_from_qx:</strong> Use probability of death (qx) to get the proportion of
 survivors in the beginning of an age group (lx). l0 = 1; lx for ages &gt; 0
 is lx for previous age group times the probability of surviving the
 previous age group.</p>
-<p><strong>lx_to_qx:</strong> Use survival proportion (lx) at age x and x+n to get
+<p><strong>gen_qx_from_lx:</strong> Use survival proportion (lx) at age x and x+n to get
 probability of death between x and x+n (qx). This relationship is an
-algebraic equivalent to the <code>qx_to_lx</code> relationship as described. Terminal
-age qx is set to 1.</p>
-<p><strong>lx_to_dx:</strong> Calculate the proportion dying between age x and x+n (dx) as
-the difference between the proportion surviving (lx) at age x and the
+algebraic equivalent to the <code>gen_lx_from_qx</code> relationship as described.
+Terminal age qx is set to 1.</p>
+<p><strong>gen_dx_from_lx:</strong> Calculate the proportion dying between age x and x+n (dx)
+as the difference between the proportion surviving (lx) at age x and the
 proportion surviving at age x+n. In the terminal age group all survivors
 die in the age group, so dx = lx.</p>
 <p><strong>gen_nLx:</strong> nLx is calculated as the sum of years lived by survivors and
@@ -230,12 +230,12 @@ age group (lx): ex = Tx / lx.</p>
 #&gt; 1: both         0       5          5 0.1 2.5 0.4000000
 #&gt; 2: both         5      10          5 0.2 2.5 0.6666667
 #&gt; 3: both        10      15          5 0.3 2.5 0.8571429
-#&gt; 4: both        15     Inf        Inf 0.4 2.5 1.0000000</div><div class='input'><span class='fu'>qx_to_lx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-<span class='fu'>lx_to_dx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+#&gt; 4: both        15     Inf        Inf 0.4 2.5 1.0000000</div><div class='input'><span class='fu'>gen_lx_from_qx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='fu'>gen_dx_from_lx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
 <span class='fu'>gen_nLx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
 <span class='fu'>gen_Tx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
 <span class='fu'>gen_ex</span>(<span class='no'>dt</span>)
-<span class='fu'>lx_to_qx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div></pre>
+<span class='fu'>gen_qx_from_lx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
