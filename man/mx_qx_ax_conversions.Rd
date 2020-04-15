@@ -69,5 +69,8 @@ qx_ax_to_mx(0.1, 3, 5)
 mx_to_ax(0.2, 5)
 }
 \seealso{
-Preston Demography book, \href{https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html}{life table introduction vignette}
+\itemize{
+\item{Preston Demography textbook}
+\item \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+}
 }

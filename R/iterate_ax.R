@@ -28,8 +28,8 @@
 #' [gen_u5_ax()].
 #'
 #' @seealso Preston Demography book pg 45. Also, see more details on this
-#'    method explained here:
-#'   [Life table introduction vignette](https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html)
+#'    method explained in the introduction to life tables vignette:
+#'    \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
 #'
 #' @references
 #' Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling

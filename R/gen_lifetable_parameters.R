@@ -68,10 +68,8 @@
 #' \itemize{
 #'   \item{[lifetableUtils::mx_qx_ax_conversions]}
 #'   \item{[lifetableUtils::lifetable]}
-#'   \item{[Introduction to life tables vignette](https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html)}
+#'   \item \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
 #' }
-#'
-#'
 #'
 #' @examples
 #' dt <- data.table::data.table(
