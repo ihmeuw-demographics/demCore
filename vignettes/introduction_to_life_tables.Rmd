@@ -5,7 +5,7 @@ date: "March 2020"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::knitr}
-  %\VignetteIndexEntry{Title of your vignette}
+  %\VignetteIndexEntry{introduction_to_life_tables}
   %\usepackage[UTF-8]{inputenc}
   %\VignetteDepends{lifetableUtils}
   %\VignetteDepends{demUtils}

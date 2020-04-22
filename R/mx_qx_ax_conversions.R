@@ -32,7 +32,11 @@
 #' For all functions computing mx or ax, if age_length = Inf modify age_length
 #' to arbitrarily large value (200) to get real number result.
 #'
-#' @seealso Preston Demography book, [life table introduction vignette](https://ihmeuw.github.io/lifetableUtils/articles/introduction_to_life_tables.html)
+#' @seealso
+#' \itemize{
+#'   \item{Preston Demography textbook}
+#'   \item \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+#' }
 #'
 #' @examples
 #' mx_to_qx(0.25, 45)
