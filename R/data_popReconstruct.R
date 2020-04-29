@@ -4,25 +4,39 @@
 #'   population in Burkina Faso from 1960 to 2005.
 #'
 #' @format
-#' `burkina_faso_data`: list containing sex-specific matrices of population
-#' count data.
-#'   * population: named list with female matrix of age-specific census
-#'   counts in years after the baseline year (1975, 1985, 1995, 2005). Rows
-#'   correspond to age groups while columns correspond to years.
+#' `burkina_faso_data`: \[`data.table()`\] with 'population' data.
+#'   * population: \[`data.table()`\] year-sex-age-specific census counts in
+#'   years after the baseline year (1975, 1985, 1995, 2005).
 #'
-#' `burkina_faso_initial_estimates`: list containing matrices of initial
+#' `burkina_faso_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input.
-#'   * srb: single row matrix of initial estimates of sex ratio at birth.
-#'   * asfr: matrix of initial estimates of average annual single-year
-#'   age-specific fertility rates.
-#'   * baseline: List with female single column matrix of age-specific
-#'   population counts in the baseline year (1960).
-#'   * survival: List with female matrix of initial estimates of age-specific
-#'   survivorship ratios
-#'   * net_migration: List with female matrix of initial estimates of
-#'   age-specific average annual net migration proportions.
+#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
+#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
+#'   age-specific fertility rate estimates.
+#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
+#'   (1960) population counts.
+#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
+#'   estimates.
+#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
+#'   net migration proportion estimates
 #'
-#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
+#' @details
+#' Possible \[`data.table()`\] columns for initial estimates and data:
+#'
+#' All contain:
+#'   * value: \[`numeric()`\] contains value for each group.
+#'
+#' If year-specific:
+#'   * year_start: \[`integer()`\] start of the calendar year interval
+#'   (inclusive).
+#'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
+#'
+#' If sex-specific:
+#'   * sex: \[`character()`\] either 'female' or 'male'.
+#'
+#' If age-specific:
+#'   * age_start: \[`integer()`\] start of the age group (inclusive).
+#'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -31,6 +45,8 @@
 #' [https://doi.org/10.1080/01621459.2012.737729](https://doi.org/10.1080/01621459.2012.737729).
 #'
 #' [popReconstruct R Package](https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf)
+#'
+#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
 #'
 #' @rdname burkina_faso
 "burkina_faso_data"
@@ -44,25 +60,23 @@
 #'   and male population in Thailand from 1960 to 2000.
 #'
 #' @format
-#' `thailand_data`: list containing sex-specific matrices of population
-#' count data.
-#'   * population: named list with female and male matrices of age-specific
-#'   census counts in years after the baseline year (1970, 1980, 1990, 2000).
-#'   Rows correspond to age groups while columns correspond to years.
+#' `thailand_data`: \[`data.table()`\] with 'population' data.
+#'   * population: \[`data.table()`\] year-sex-age-specific census counts in
+#'   years after the baseline year (1970, 1980, 1990, 2000).
 #'
-#' `thailand_initial_estimates`: list containing matrices of initial
+#' `thailand_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input.
-#'   * srb: single row matrix of initial estimates of sex ratio at birth.
-#'   * asfr: matrix of initial estimates of average annual single-year
-#'   age-specific fertility rates.
-#'   * baseline: List with female and male single column matrices of
-#'   age-specific population counts in the baseline year (1960).
-#'   * survival: List with female and male matrices of initial estimates of
-#'   age-specific survivorship ratios
-#'   * net_migration: List with female and male matrices of initial estimates of
-#'   age-specific average annual net migration proportions.
+#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
+#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
+#'   age-specific fertility rate estimates.
+#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
+#'   (1960) population counts.
+#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
+#'   estimates.
+#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
+#'   net migration proportion estimates
 #'
-#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
+#' @inherit burkina_faso_data details
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -72,6 +86,8 @@
 #' [https://doi.org/10.1111/rssa.12104](https://doi.org/10.1111/rssa.12104).
 #'
 #' [markalava/Bayesian-Reconstruction github repo](https://github.com/markalava/Bayesian-Reconstruction)
+#'
+#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
 #'
 #' @rdname thailand
 "thailand_data"

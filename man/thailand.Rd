@@ -5,26 +5,24 @@
 \alias{thailand_data}
 \alias{thailand_initial_estimates}
 \title{Thailand example population data and ccmpp initial estimates}
-\format{\code{thailand_data}: list containing sex-specific matrices of population
-count data.
+\format{\code{thailand_data}: [\code{data.table()}] with 'population' data.
 \itemize{
-\item population: named list with female and male matrices of age-specific
-census counts in years after the baseline year (1970, 1980, 1990, 2000).
-Rows correspond to age groups while columns correspond to years.
+\item population: [\code{data.table()}] year-sex-age-specific census counts in
+years after the baseline year (1970, 1980, 1990, 2000).
 }
 
-\code{thailand_initial_estimates}: list containing matrices of initial
+\code{thailand_initial_estimates}: list of [\code{data.table()}] of initial
 estimates for each \code{\link[=ccmpp]{ccmpp()}} input.
 \itemize{
-\item srb: single row matrix of initial estimates of sex ratio at birth.
-\item asfr: matrix of initial estimates of average annual single-year
-age-specific fertility rates.
-\item baseline: List with female and male single column matrices of
-age-specific population counts in the baseline year (1960).
-\item survival: List with female and male matrices of initial estimates of
-age-specific survivorship ratios
-\item net_migration: List with female and male matrices of initial estimates of
-age-specific average annual net migration proportions.
+\item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
+\item asfr: [\code{data.table()}] of year-age-specific average annual single-year
+age-specific fertility rate estimates.
+\item baseline: [\code{data.table()}] of year-sex-age specific baseline year
+(1960) population counts.
+\item survival: [\code{data.table()}] of year-sex-age-specific survivorship ratio
+estimates.
+\item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
+net migration proportion estimates
 }}
 \usage{
 thailand_data
@@ -34,6 +32,32 @@ thailand_initial_estimates
 \description{
 Example data and initial estimates for reconstructing the female
 and male population in Thailand from 1960 to 2000.
+}
+\details{
+Possible [\code{data.table()}] columns for initial estimates and data:
+
+All contain:
+\itemize{
+\item value: [\code{numeric()}] contains value for each group.
+}
+
+If year-specific:
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive).
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+}
+
+If sex-specific:
+\itemize{
+\item sex: [\code{character()}] either 'female' or 'male'.
+}
+
+If age-specific:
+\itemize{
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+}
 }
 \references{
 Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
