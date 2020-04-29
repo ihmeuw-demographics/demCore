@@ -11,9 +11,10 @@ reference:
   - qx_ax_to_mx
   - mx_to_ax
   - gen_u5_ax
-  - qx_to_lx
-  - lx_to_qx
-  - lx_to_dx
+  - iterate_ax
+  - gen_lx_from_qx
+  - gen_qx_from_lx
+  - gen_dx_from_lx
   - gen_nLx
   - gen_Tx
   - gen_ex
@@ -27,8 +28,16 @@ reference:
   - abridged_to_full
   - full_to_abridged
 
+- title: "Other"
+  desc: "Additional miscellaneous functions."
+- contents:
+  - validate_lifetable
+  - matrix_to_dt
+
 - title: "Example data"
   desc: "Data included for testing or running `lifetableUtils` functions."
 - contents:
   - austria_1992_lt
   - full_lt_pars
+  - burkina_faso_data
+  - thailand_data
