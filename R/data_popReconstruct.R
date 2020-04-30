@@ -6,10 +6,13 @@
 #' @format
 #' `burkina_faso_data`: \[`data.table()`\] with 'population' data.
 #'   * population: \[`data.table()`\] year-sex-age-specific census counts in
-#'   years after the baseline year (1975, 1985, 1995, 2005).
+#'   years after the baseline year (1975, 1985, 1995, 2005). Age groups are
+#'   five-year age groups from 0 to 80+.
 #'
 #' `burkina_faso_initial_estimates`: list of \[`data.table()`\] of initial
-#' estimates for each [ccmpp()] input.
+#' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
+#' intervals between 1960 and 2005. Age groups are five-year age groups from 0
+#' to 80+ (except 'survival' goes up to 85+).
 #'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
 #'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
 #'   age-specific fertility rate estimates.
@@ -46,10 +49,13 @@
 #' @format
 #' `thailand_data`: \[`data.table()`\] with 'population' data.
 #'   * population: \[`data.table()`\] year-sex-age-specific census counts in
-#'   years after the baseline year (1970, 1980, 1990, 2000).
+#'   years after the baseline year (1970, 1980, 1990, 2000). Age groups are
+#'   five-year age groups from 0 to 80+.
 #'
 #' `thailand_initial_estimates`: list of \[`data.table()`\] of initial
-#' estimates for each [ccmpp()] input.
+#' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
+#' intervals between 1960 and 2000. Age groups are five-year age groups from 0
+#' to 80+ (except 'survival' goes up to 85+).
 #'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
 #'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
 #'   age-specific fertility rate estimates.

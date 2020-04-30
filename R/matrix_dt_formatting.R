@@ -60,6 +60,7 @@ matrix_to_dt <- function(mdt,
     msg = "`mdt` must be a matrix or list of matrices"
   )
   sex_specific <- class(mdt) == "list"
+
   # standardize to list format to make other checks easier
   check_mdt <- copy(mdt)
   if (!sex_specific) check_mdt <- list("none" = mdt)
