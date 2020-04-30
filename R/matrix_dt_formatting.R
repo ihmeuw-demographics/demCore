@@ -65,9 +65,15 @@ matrix_to_dt <- function(mdt,
   check_mdt <- copy(mdt)
   if (!sex_specific) check_mdt <- list("none" = mdt)
   assertthat::assert_that(
+    all(assertive::is_not_null(unlist(mapply(rownames, check_mdt)))),
+    all(assertive::is_not_null(unlist(mapply(colnames, check_mdt)))),
+    msg = "rownames (age_start) and colnames (year_start) of `mdt` must exist"
+  )
+  assertthat::assert_that(
     all(assertive::is_numeric_string(unlist(mapply(rownames, check_mdt)))),
     all(assertive::is_numeric_string(unlist(mapply(colnames, check_mdt)))),
-    msg = "rownames and colnames of `mdt` must be numeric strings"
+    msg = "rownames (age_start) and colnames (year_start) of `mdt` must be
+    numeric strings"
   )
 
   ## check `year_right_most_endpoint` argument
