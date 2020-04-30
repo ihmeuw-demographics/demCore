@@ -8,11 +8,14 @@
 \format{\code{burkina_faso_data}: [\code{data.table()}] with 'population' data.
 \itemize{
 \item population: [\code{data.table()}] year-sex-age-specific census counts in
-years after the baseline year (1975, 1985, 1995, 2005).
+years after the baseline year (1975, 1985, 1995, 2005). Age groups are
+five-year age groups from 0 to 80+.
 }
 
 \code{burkina_faso_initial_estimates}: list of [\code{data.table()}] of initial
-estimates for each \code{\link[=ccmpp]{ccmpp()}} input.
+estimates for each \code{\link[=ccmpp]{ccmpp()}} input. Calendar year intervals are for five-year
+intervals between 1960 and 2005. Age groups are five-year age groups from 0
+to 80+ (except 'survival' goes up to 85+).
 \itemize{
 \item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
 \item asfr: [\code{data.table()}] of year-age-specific average annual single-year
