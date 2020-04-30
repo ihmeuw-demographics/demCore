@@ -55,11 +55,11 @@ matrix_to_dt <- function(mdt,
 
   ## check `mdt` argument
   assertthat::assert_that(
-    class(mdt) == "matrix" |
-      (class(mdt) == "list" & all(mapply(class, mdt) == "matrix")),
+    assertive::is_matrix(mdt) |
+      (assertive::is_list(mdt) & all(mapply(assertive::is_matrix, mdt))),
     msg = "`mdt` must be a matrix or list of matrices"
   )
-  sex_specific <- class(mdt) == "list"
+  sex_specific <- assertive::is_list(mdt)
 
   # standardize to list format to make other checks easier
   check_mdt <- copy(mdt)
