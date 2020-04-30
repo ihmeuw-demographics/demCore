@@ -409,19 +409,20 @@ validate_ccmpp_inputs <- function(inputs,
       id_vars = component_ids[[component]],
       quiet = T
     )
-    assertable::assert_values(inputs[[component]], colnames = value_col, test = "not_na")
+    assertable::assert_values(inputs[[component]], colnames = value_col,
+                              test = "not_na", quiet = T)
   }
 
   # check values of components
   assertable::assert_values(inputs[["srb"]], colnames = value_col,
-                            test = "gte", test_val = "0")
+                            test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["asfr"]], colnames = value_col,
-                            test = "gte", test_val = "0")
+                            test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["baseline"]], colnames = value_col,
-                            test = "gte", test_val = "0")
+                            test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["survival"]], colnames = value_col,
-                            test = "gte", test_val = "0")
+                            test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["survival"]], colnames = value_col,
-                            test = "lte", test_val = "1")
+                            test = "lte", test_val = "1", quiet = T)
   return(invisible(inputs))
 }
