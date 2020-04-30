@@ -190,9 +190,10 @@ ccmpp <- function(inputs,
   }
 
   # check population values
-  assertable::assert_values(population, colnames = value_col, test = "not_na")
+  assertable::assert_values(population, colnames = value_col, test = "not_na",
+                            quiet = T)
   assertable::assert_values(population, colnames = value_col, test = "gte",
-                            test_val = 0)
+                            test_val = 0, quiet = T)
 
   # format output
   data.table::setcolorder(population, all_cols)
