@@ -20,23 +20,7 @@
 #'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
 #'   net migration proportion estimates
 #'
-#' @details
-#' Possible \[`data.table()`\] columns for initial estimates and data:
-#'
-#' All contain:
-#'   * value: \[`numeric()`\] contains value for each group.
-#'
-#' If year-specific:
-#'   * year_start: \[`integer()`\] start of the calendar year interval
-#'   (inclusive).
-#'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
-#'
-#' If sex-specific:
-#'   * sex: \[`character()`\] either 'female' or 'male'.
-#'
-#' If age-specific:
-#'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   * age_end: \[`integer()`\] end of the age group (exclusive).
+#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -76,7 +60,7 @@
 #'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
 #'   net migration proportion estimates
 #'
-#' @inherit burkina_faso_data details
+#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.

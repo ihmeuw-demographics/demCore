@@ -33,12 +33,12 @@ thailand_initial_estimates
 Example data and initial estimates for reconstructing the female
 and male population in Thailand from 1960 to 2000.
 }
-\details{
-Possible [\code{data.table()}] columns for initial estimates and data:
+\section{Possible [\code{data.table()}] columns for inputs}{
+
 
 All contain:
 \itemize{
-\item value: [\code{numeric()}] contains value for each group.
+\item \code{value_col}: [\code{numeric()}] contains value of interest for each input.
 }
 
 If year-specific:
@@ -59,6 +59,7 @@ If age-specific:
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 }
 }
+
 \references{
 Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
 2015. “Bayesian Reconstruction of Two-Sex Populations by Age: Estimating Sex
