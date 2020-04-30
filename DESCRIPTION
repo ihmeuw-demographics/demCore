@@ -22,7 +22,7 @@ Suggests:
     devtools,
     ggplot2
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
 Language: en-US
 Imports: 

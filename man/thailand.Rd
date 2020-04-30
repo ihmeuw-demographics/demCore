@@ -5,7 +5,8 @@
 \alias{thailand_data}
 \alias{thailand_initial_estimates}
 \title{Thailand example population data and ccmpp initial estimates}
-\format{\code{thailand_data}: [\code{data.table()}] with 'population' data.
+\format{
+\code{thailand_data}: [\code{data.table()}] with 'population' data.
 \itemize{
 \item population: [\code{data.table()}] year-sex-age-specific census counts in
 years after the baseline year (1970, 1980, 1990, 2000). Age groups are
@@ -26,7 +27,10 @@ age-specific fertility rate estimates.
 estimates.
 \item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
 net migration proportion estimates
-}}
+}
+
+An object of class \code{list} of length 5.
+}
 \usage{
 thailand_data
 
