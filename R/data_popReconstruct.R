@@ -12,16 +12,11 @@
 #' `burkina_faso_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2005. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+).
-#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
-#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
-#'   age-specific fertility rate estimates.
-#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
-#'   (1960) population counts.
-#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
-#'   estimates.
-#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
-#'   net migration proportion estimates
+#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
+#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
+#' on each of the inputs.
+#'
+#' @inheritSection ccmpp CCMPP inputs
 #'
 #' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
 #'
@@ -55,16 +50,11 @@
 #' `thailand_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2000. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+).
-#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
-#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
-#'   age-specific fertility rate estimates.
-#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
-#'   (1960) population counts.
-#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
-#'   estimates.
-#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
-#'   net migration proportion estimates
+#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
+#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
+#' on each of the inputs.
+#'
+#' @inheritSection ccmpp CCMPP inputs
 #'
 #' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
 #'

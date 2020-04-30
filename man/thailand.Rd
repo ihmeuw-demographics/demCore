@@ -16,18 +16,9 @@ five-year age groups from 0 to 80+.
 \code{thailand_initial_estimates}: list of [\code{data.table()}] of initial
 estimates for each \code{\link[=ccmpp]{ccmpp()}} input. Calendar year intervals are for five-year
 intervals between 1960 and 2000. Age groups are five-year age groups from 0
-to 80+ (except 'survival' goes up to 85+).
-\itemize{
-\item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
-\item asfr: [\code{data.table()}] of year-age-specific average annual single-year
-age-specific fertility rate estimates.
-\item baseline: [\code{data.table()}] of year-sex-age specific baseline year
-(1960) population counts.
-\item survival: [\code{data.table()}] of year-sex-age-specific survivorship ratio
-estimates.
-\item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
-net migration proportion estimates
-}
+to 80+ (except 'survival' goes up to 85+). See \strong{Section: CCMPP inputs} and
+\strong{Section: Possible [\code{data.table()}] columns for inputs} for more information
+on each of the inputs.
 
 An object of class \code{list} of length 5.
 }
@@ -40,6 +31,22 @@ thailand_initial_estimates
 Example data and initial estimates for reconstructing the female
 and male population in Thailand from 1960 to 2000.
 }
+\section{CCMPP inputs}{
+
+\itemize{
+\item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
+\item asfr: [\code{data.table()}] of year-age-specific average annual single-year
+age-specific fertility rate estimates. Must include both maternal and
+non-maternal age groups that are zero.
+\item baseline: [\code{data.table()}] of year-sex-age specific baseline year
+population counts.
+\item survival: [\code{data.table()}] of year-sex-age-specific survivorship ratio
+estimates.
+\item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
+net migration proportion estimates
+}
+}
+
 \section{Possible [\code{data.table()}] columns for inputs}{
 
 

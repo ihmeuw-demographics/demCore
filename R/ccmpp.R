@@ -4,17 +4,9 @@
 #' method of population projection.
 #'
 #' @param inputs list of \[`data.table()`\]s of initial estimates for each ccmpp
-#' input.
-#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
-#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
-#'   age-specific fertility rate estimates. Must include both maternal and
-#'   non-maternal age groups that are zero.
-#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
-#'   population counts.
-#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
-#'   estimates.
-#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
-#'   net migration proportion estimates
+#'   input. See **Section: CCMPP inputs** and
+#'   **Section: Possible \[`data.table()`\] columns for inputs** for more
+#'   information on each of the inputs.
 #' @param input_years \[`numeric()`\]\cr
 #'   the unique 'year_start' column values in each of the `inputs`. The minimum
 #'   value must correspond to the only 'year_start' value in the baseline input.
@@ -42,6 +34,18 @@
 #' \deqn{Population(t + \delta) = Leslie[t, t + \delta] * Population(t)}
 #'
 #' See [vignette("ccmpp")] or linked references for more details on this method.
+#'
+#' @section CCMPP inputs:
+#'   * srb: \[`data.table()`\] of year-specific sex ratio at birth estimates.
+#'   * asfr: \[`data.table()`\] of year-age-specific average annual single-year
+#'   age-specific fertility rate estimates. Must include both maternal and
+#'   non-maternal age groups that are zero.
+#'   * baseline: \[`data.table()`\] of year-sex-age specific baseline year
+#'   population counts.
+#'   * survival: \[`data.table()`\] of year-sex-age-specific survivorship ratio
+#'   estimates.
+#'   * net_migration: \[`data.table()`\] of year-sex-age-specific average annual
+#'   net migration proportion estimates
 #'
 #' @section Possible \[`data.table()`\] columns for inputs:
 #'
