@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Regression parameters for abridged to full life table conversion — full_lt_pars • lifetableUtils</title>
+<title>Validate the ccmpp input arguments — validate_ccmpp_inputs • lifetableUtils</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,8 @@
 
 
 
-<meta property="og:title" content="Regression parameters for abridged to full life table conversion — full_lt_pars" />
-<meta property="og:description" content="Parameters for age- and sex-specific regression model fit to
-Human Mortality Database data, to predict single-year qx values from
-abridged qx values:
-$$log(q_x) = intercept + slope*log(q_x,abridged)$$" />
+<meta property="og:title" content="Validate the ccmpp input arguments — validate_ccmpp_inputs" />
+<meta property="og:description" content="Validate the ccmpp input arguments" />
 
 
 
@@ -118,55 +115,57 @@ $$log(q_x) = intercept + slope*log(q_x,abridged)$$" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Regression parameters for abridged to full life table conversion</h1>
+    <h1>Validate the ccmpp input arguments</h1>
     
-    <div class="hidden name"><code>full_lt_pars.Rd</code></div>
+    <div class="hidden name"><code>validate_ccmpp_inputs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parameters for age- and sex-specific regression model fit to
-Human Mortality Database data, to predict single-year qx values from
-abridged qx values:
-$$log(q_x) = intercept + slope*log(q_x,abridged)$$</p>
+    <p>Validate the ccmpp input arguments</p>
     </div>
 
-    <pre class="usage"><span class='no'>full_lt_pars</span></pre>
+    <pre class="usage"><span class='fu'>validate_ccmpp_inputs</span>(<span class='no'>inputs</span>, <span class='no'>input_years</span>, <span class='no'>input_sexes</span>, <span class='no'>input_ages</span>, <span class='no'>value_col</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>inputs</th>
+      <td><p>list of [<code>data.table()</code>]s of initial estimates for each ccmpp
+input. See <strong>Section: CCMPP inputs</strong> and
+<strong>Section: Possible [<code>data.table()</code>] columns for inputs</strong> for more
+information on each of the inputs.</p></td>
+    </tr>
+    <tr>
+      <th>input_years</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+the unique 'year_start' column values in each of the <code>inputs</code>. The minimum
+value must correspond to the only 'year_start' value in the baseline input.</p></td>
+    </tr>
+    <tr>
+      <th>input_sexes</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
+the unique 'sex' column values in each of the sex-specific <code>inputs</code>. Must
+be either just 'female', or 'female' and 'male'.</p></td>
+    </tr>
+    <tr>
+      <th>input_ages</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+the unique 'age_start' column values in each of the age-specific <code>inputs</code>.</p></td>
+    </tr>
+    <tr>
+      <th>value_col</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
+Name of the column containing the value of interest in each of the
+<code>inputs</code>. Default is 'value'.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>[<code>data.table()</code>] columns:</p><dl>
-<dt>sex</dt><dd><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Sex the parameters correspond to: "male" or
-"female"</p></dd>
-<dt>age_start</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Single-year ages 1-109 representing the
-age the parameters correspond to</p></dd>
-<dt>age_end</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> 1 + age_start</p></dd>
-<dt>intercept</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Intercept for the age- and sex-specific
-regression model fit</p></dd>
-<dt>slope</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Slope for the age- and sex-specific
-regression model fit</p></dd>
+    <p>Invisibly returns <code>inputs</code> but throws error if not formatted
+correctly.</p>
 
-</dl>
-
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Human Mortality Database. University of California, Berkeley (USA), and Max
-Planck Institute for Demographic Research (Germany). Available at
-www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>full_lt_pars</span></div><div class='output co'>#&gt;         sex age_start age_end  intercept     slope
-#&gt;   1:   male         1       2 -0.5176810 1.0584153
-#&gt;   2: female         1       2 -0.5909254 1.0341440
-#&gt;   3:   male         2       3 -1.5681676 0.9753858
-#&gt;   4: female         2       3 -1.5817470 0.9749719
-#&gt;   5:   male         3       4 -2.1365209 0.9249339
-#&gt;  ---                                              
-#&gt; 214: female       107     108 -0.6030596 2.5503541
-#&gt; 215:   male       108     109 -0.5668620 2.6699057
-#&gt; 216: female       108     109 -0.5757869 2.5567061
-#&gt; 217:   male       109     110 -0.5452189 2.6738654
-#&gt; 218: female       109     110 -0.5510617 2.5584597</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

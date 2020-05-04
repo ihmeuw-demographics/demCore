@@ -195,11 +195,11 @@ method explained in the introduction to life tables vignette:
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
   <span class='co'># plot change in qx, ax, lx, dx, mx</span>
   <span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>dt</span>, <span class='no'>new_dt</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>qx.y</span>/<span class='no'>qx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>ax.y</span>/<span class='no'>ax.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>lx.y</span>/<span class='no'>lx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>dx.y</span>/<span class='no'>dx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>mx.y</span>/<span class='no'>mx.x</span> ~ <span class='no'>age_start</span>) <span class='co'># expect no change in mx</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>qx.y</span>/<span class='no'>qx.x</span> ~ <span class='no'>age_start</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>ax.y</span>/<span class='no'>ax.x</span> ~ <span class='no'>age_start</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>lx.y</span>/<span class='no'>lx.x</span> ~ <span class='no'>age_start</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>dx.y</span>/<span class='no'>dx.x</span> ~ <span class='no'>age_start</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>mx.y</span>/<span class='no'>mx.x</span> ~ <span class='no'>age_start</span>) <span class='co'># expect no change in mx</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

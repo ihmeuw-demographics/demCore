@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Regression parameters for abridged to full life table conversion — full_lt_pars • lifetableUtils</title>
+<title>Burkina Faso example population data and ccmpp initial estimates — burkina_faso_data • lifetableUtils</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,9 @@
 
 
 
-<meta property="og:title" content="Regression parameters for abridged to full life table conversion — full_lt_pars" />
-<meta property="og:description" content="Parameters for age- and sex-specific regression model fit to
-Human Mortality Database data, to predict single-year qx values from
-abridged qx values:
-$$log(q_x) = intercept + slope*log(q_x,abridged)$$" />
+<meta property="og:title" content="Burkina Faso example population data and ccmpp initial estimates — burkina_faso_data" />
+<meta property="og:description" content="Example data and initial estimates for reconstructing the female
+population in Burkina Faso from 1960 to 2005." />
 
 
 
@@ -118,55 +116,88 @@ $$log(q_x) = intercept + slope*log(q_x,abridged)$$" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Regression parameters for abridged to full life table conversion</h1>
+    <h1>Burkina Faso example population data and ccmpp initial estimates</h1>
     
-    <div class="hidden name"><code>full_lt_pars.Rd</code></div>
+    <div class="hidden name"><code>burkina_faso.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Parameters for age- and sex-specific regression model fit to
-Human Mortality Database data, to predict single-year qx values from
-abridged qx values:
-$$log(q_x) = intercept + slope*log(q_x,abridged)$$</p>
+    <p>Example data and initial estimates for reconstructing the female
+population in Burkina Faso from 1960 to 2005.</p>
     </div>
 
-    <pre class="usage"><span class='no'>full_lt_pars</span></pre>
+    <pre class="usage"><span class='no'>burkina_faso_data</span>
+
+<span class='no'>burkina_faso_initial_estimates</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>[<code>data.table()</code>] columns:</p><dl>
-<dt>sex</dt><dd><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Sex the parameters correspond to: "male" or
-"female"</p></dd>
-<dt>age_start</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> Single-year ages 1-109 representing the
-age the parameters correspond to</p></dd>
-<dt>age_end</dt><dd><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>]<br /> 1 + age_start</p></dd>
-<dt>intercept</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Intercept for the age- and sex-specific
-regression model fit</p></dd>
-<dt>slope</dt><dd><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br /> Slope for the age- and sex-specific
-regression model fit</p></dd>
+    <p><code>burkina_faso_data</code>: [<code>data.table()</code>] with 'population' data.</p><ul>
+<li><p>population: [<code>data.table()</code>] year-sex-age-specific census counts in
+years after the baseline year (1975, 1985, 1995, 2005). Age groups are
+five-year age groups from 0 to 80+.</p></li>
+</ul>
 
-</dl>
+<p><code>burkina_faso_initial_estimates</code>: list of [<code>data.table()</code>] of initial
+estimates for each <code><a href='ccmpp.html'>ccmpp()</a></code> input. Calendar year intervals are for five-year
+intervals between 1960 and 2005. Age groups are five-year age groups from 0
+to 80+ (except 'survival' goes up to 85+). See <strong>Section: CCMPP inputs</strong> and
+<strong>Section: Possible [<code>data.table()</code>] columns for inputs</strong> for more information
+on each of the inputs.</p>
+<p>An object of class <code>list</code> of length 5.</p>
+    <h2 class="hasAnchor" id="ccmpp-inputs"><a class="anchor" href="#ccmpp-inputs"></a>CCMPP inputs</h2>
+
+    
+
+<ul>
+<li><p>srb: [<code>data.table()</code>] of year-specific sex ratio at birth estimates.</p></li>
+<li><p>asfr: [<code>data.table()</code>] of year-age-specific average annual single-year
+age-specific fertility rate estimates. Must include both maternal and
+non-maternal age groups that are zero.</p></li>
+<li><p>baseline: [<code>data.table()</code>] of year-sex-age specific baseline year
+population counts.</p></li>
+<li><p>survival: [<code>data.table()</code>] of year-sex-age-specific survivorship ratio
+estimates.</p></li>
+<li><p>net_migration: [<code>data.table()</code>] of year-sex-age-specific average annual
+net migration proportion estimates</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="possible-data-table-columns-for-inputs"><a class="anchor" href="#possible-data-table-columns-for-inputs"></a>Possible [<code>data.table()</code>] columns for inputs</h2>
+
+    
+
+
+<p>All contain:</p><ul>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] contains value of interest for each input.</p></li>
+</ul>
+
+<p>If year-specific:</p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive).</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+</ul>
+
+<p>If sex-specific:</p><ul>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'.</p></li>
+</ul>
+
+<p>If age-specific:</p><ul>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Human Mortality Database. University of California, Berkeley (USA), and Max
-Planck Institute for Demographic Research (Germany). Available at
-www.mortality.org or www.humanmortality.de (data downloaded on Jan 2018).</p>
+    <p>Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
+2013. “Reconstructing Past Populations With Uncertainty From Fragmentary
+Data.” Journal of the American Statistical Association 108 (501): 96–110.
+<a href='https://doi.org/10.1080/01621459.2012.737729'>https://doi.org/10.1080/01621459.2012.737729</a>.</p>
+<p><a href='https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf'>popReconstruct R Package</a></p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>full_lt_pars</span></div><div class='output co'>#&gt;         sex age_start age_end  intercept     slope
-#&gt;   1:   male         1       2 -0.5176810 1.0584153
-#&gt;   2: female         1       2 -0.5909254 1.0341440
-#&gt;   3:   male         2       3 -1.5681676 0.9753858
-#&gt;   4: female         2       3 -1.5817470 0.9749719
-#&gt;   5:   male         3       4 -2.1365209 0.9249339
-#&gt;  ---                                              
-#&gt; 214: female       107     108 -0.6030596 2.5503541
-#&gt; 215:   male       108     109 -0.5668620 2.6699057
-#&gt; 216: female       108     109 -0.5757869 2.5567061
-#&gt; 217:   male       109     110 -0.5452189 2.6738654
-#&gt; 218: female       109     110 -0.5510617 2.5584597</div></pre>
+    <div class='dont-index'><p><code><a href='ccmpp.html'>ccmpp()</a></code>, <code>populationMethods::popReconstruct()</code></p></div>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
