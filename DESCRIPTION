@@ -20,8 +20,7 @@ Suggests:
     spelling,
     covr,
     devtools,
-    ggplot2,
-    popMethods
+    ggplot2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
@@ -36,7 +35,6 @@ Imports:
     Rdpack,
     hierarchyUtils
 Remotes:
-    ihmeuw-demographics/hierarchyUtils,
-    ihmeuw-demographics/popMethods
+    ihmeuw-demographics/hierarchyUtils
 Depends: R (>= 2.10)
 RdMacros: Rdpack
