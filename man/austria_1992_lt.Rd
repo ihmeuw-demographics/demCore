@@ -4,7 +4,8 @@
 \name{austria_1992_lt}
 \alias{austria_1992_lt}
 \title{Example life table: Austria, 1992, males}
-\format{[\code{data.table()}] columns:
+\format{
+[\code{data.table()}] columns:
 \describe{
 \item{age_start}{[\code{integer()}]\cr Abridged ages 0, 1, 5, 10, ..., 85.
 This is the 'x' variable in life table notation.}
@@ -28,7 +29,8 @@ every one person in the cohort at birth.}
 \item{Tx}{[\code{numeric()}]\cr Person-years lived beyond age x per every one
 person in the cohort at birth.}
 \item{ex}{[\code{numeric()}]\cr Life expectancy.}
-}}
+}
+}
 \usage{
 austria_1992_lt
 }

@@ -4,7 +4,8 @@
 \name{full_lt_pars}
 \alias{full_lt_pars}
 \title{Regression parameters for abridged to full life table conversion}
-\format{[\code{data.table()}] columns:
+\format{
+[\code{data.table()}] columns:
 \describe{
 \item{sex}{[\code{character()}]\cr Sex the parameters correspond to: "male" or
 "female"}
@@ -15,7 +16,8 @@ age the parameters correspond to}
 regression model fit}
 \item{slope}{[\code{numeric()}]\cr Slope for the age- and sex-specific
 regression model fit}
-}}
+}
+}
 \usage{
 full_lt_pars
 }
