@@ -1,5 +1,5 @@
-Package: lifetableUtils
-Title: Life table utilities
+Package: demCore
+Title: Core Functions for Demography
 Version: 0.0.0.9000
 Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Grant", "Nguyen", email = "gngu@uw.edu", role = "aut"),
@@ -7,9 +7,9 @@ Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Spencer", "Pease", email = "spease@uw.edu", role = "aut"),
              person("Haidong", "Wang", email = "haidong@uw.edu", role = "cre"),
              person("Institute for Health Metrics and Evaluation", role = c("cph", "fnd")))
-Description: This package includes functions for conversion between life table
-  parameters mx, qx, ax, lx, dx, nLx, Tx, and ex. It also includes convenience
-  functions for common life table manipulations.
+URL: https://github.com/ihmeuw-demographics/demCore/
+Description: Basic demography calculations including life table conversions,
+  ccmpp, calculating tfr, nrr, leslie matrices etc.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -20,7 +20,8 @@ Suggests:
     spelling,
     covr,
     devtools,
-    ggplot2
+    ggplot2,
+    popMethods
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
@@ -33,8 +34,9 @@ Imports:
     testthat,
     pryr,
     Rdpack,
-    demUtils
+    hierarchyUtils
 Remotes:
-    ihmeuw/demUtils
+    ihmeuw-demographics/hierarchyUtils,
+    ihmeuw-demographics/popMethods
 Depends: R (>= 2.10)
 RdMacros: Rdpack

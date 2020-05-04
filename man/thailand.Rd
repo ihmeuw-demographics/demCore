@@ -84,6 +84,6 @@ Statistical Society. Series A: Statistics in Society 178 (4): 977–1007.
 \href{https://github.com/markalava/Bayesian-Reconstruction}{markalava/Bayesian-Reconstruction github repo}
 }
 \seealso{
-\code{\link[=ccmpp]{ccmpp()}}, \code{\link[populationMethods:popReconstruct]{populationMethods::popReconstruct()}}
+\code{\link[=ccmpp]{ccmpp()}}, \code{\link[popMethods:popReconstruct]{popMethods::popReconstruct()}}
 }
 \keyword{datasets}

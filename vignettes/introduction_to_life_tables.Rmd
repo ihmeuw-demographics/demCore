@@ -7,8 +7,8 @@ vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{introduction_to_life_tables}
   %\usepackage[UTF-8]{inputenc}
-  %\VignetteDepends{lifetableUtils}
-  %\VignetteDepends{demUtils}
+  %\VignetteDepends{demCore}
+  %\VignetteDepends{hierarchyUtils}
 ---
 
 ```{r setup, include=FALSE}
@@ -122,7 +122,7 @@ ggplot(data = dt,
 
 ## Calculations and relationships between life table metrics
 
-The `lifetableUtils` package includes many utility functions for calculations
+The `demCore` package includes many utility functions for calculations
 that leverage the mathematical relationships between life table metrics to
 build out a complete life table. This section will provide details and examples
 regarding the use of these functions and their underlying methods. We will
@@ -174,11 +174,11 @@ The function `mx_to_ax` implements this assumption.
 Using our example data, we get:
 
 ```{r ax_calc}
-dt <- demUtils::gen_length(dt, col_stem = "age")
+dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
 dt[, ax := mx_to_ax(mx = mx, age_length = age_length)]
 ```
 
-Note that we can use `demUtils::gen_length` to add the `age_length` column
+Note that we can use `hierarchyUtils::gen_length` to add the `age_length` column
 given `age_start` and `age_end`.
 
 __1a0 and 4a1:__
@@ -220,7 +220,7 @@ $$_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 Where $d_x$ is derived from the conversion from $m_x$ to $q_x$. However, since
 the $m_x$ to $q_x$ conversion requires $a_x$, this requires us to pick a
 starting place for $a_x$ (like $n/2$), solve for $d_x$, solve for $a_x$, and so
-on until convergence. Use `lifetableUtils::iterate_ax` to implement this method.
+on until convergence. Use `demCore::iterate_ax` to implement this method.
 
 ### qx
 

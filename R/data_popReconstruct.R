@@ -28,7 +28,7 @@
 #'
 #' [popReconstruct R Package](https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf)
 #'
-#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
+#' @seealso [ccmpp()], [popMethods::popReconstruct()]
 #'
 #' @rdname burkina_faso
 "burkina_faso_data"
@@ -67,7 +67,7 @@
 #'
 #' [markalava/Bayesian-Reconstruction github repo](https://github.com/markalava/Bayesian-Reconstruction)
 #'
-#' @seealso [ccmpp()], [populationMethods::popReconstruct()]
+#' @seealso [ccmpp()], [popMethods::popReconstruct()]
 #'
 #' @rdname thailand
 "thailand_data"

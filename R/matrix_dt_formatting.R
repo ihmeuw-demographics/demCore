@@ -42,8 +42,8 @@
 #' matrices as described in the details section.
 #'
 #' @examples
-#' output_matrix <- lifetableUtils:::dt_to_matrix(thailand_initial_estimates$survival)
-#' output_dt <- lifetableUtils:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
+#' output_matrix <- demCore:::dt_to_matrix(thailand_initial_estimates$survival)
+#' output_dt <- demCore:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
 #'
 #' @rdname dt_matrix_format
 matrix_to_dt <- function(mdt,
@@ -117,7 +117,7 @@ matrix_to_dt <- function(mdt,
 
     # add on the year_end column
     if (!is.null(year_right_most_endpoint)) {
-      demUtils::gen_end(
+      hierarchyUtils::gen_end(
         dt = d,
         id_cols = c("year_start", "age_start"),
         col_stem = "year",
@@ -128,7 +128,7 @@ matrix_to_dt <- function(mdt,
     }
 
     # add on the age_end column
-    demUtils::gen_end(
+    hierarchyUtils::gen_end(
       dt = d,
       id_cols = c("year_start", "age_start"),
       col_stem = "age",
@@ -177,7 +177,7 @@ dt_to_matrix <- function(dt,
   # check `dt` argument
   assertive::assert_is_data.table(dt)
   assertable::assert_colnames(dt, c(id_cols, value_col), quiet = T)
-  demUtils::assert_is_unique_dt(dt, id_cols)
+  hierarchyUtils::assert_is_unique_dt(dt, id_cols)
 
 # Convert to matrix -------------------------------------------------------
 

@@ -1,0 +1,23 @@
+---
+title: "ccmpp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ccmpp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(demCore)
+```
+
+CCMPP vignette placeholder
+
+For now see vignette in popMethods package.

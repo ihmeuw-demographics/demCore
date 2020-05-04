@@ -1,4 +1,4 @@
 library(testthat)
-library(lifetableUtils)
+library(demCore)
 
-test_check("lifetableUtils")
+test_check("demCore")
