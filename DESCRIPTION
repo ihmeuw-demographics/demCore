@@ -1,5 +1,5 @@
-Package: lifetableUtils
-Title: Life table utilities
+Package: demCore
+Title: Core functions for demography
 Version: 0.0.0.9000
 Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Grant", "Nguyen", email = "gngu@uw.edu", role = "aut"),
@@ -7,9 +7,8 @@ Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Spencer", "Pease", email = "spease@uw.edu", role = "aut"),
              person("Haidong", "Wang", email = "haidong@uw.edu", role = "cre"),
              person("Institute for Health Metrics and Evaluation", role = c("cph", "fnd")))
-Description: This package includes functions for conversion between life table
-  parameters mx, qx, ax, lx, dx, nLx, Tx, and ex. It also includes convenience
-  functions for common life table manipulations.
+Description: This package is for basic demography calculations. This includes
+  life table conversions, ccmpp, calculating tfr, nrr, leslie matrices etc.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -33,8 +32,8 @@ Imports:
     testthat,
     pryr,
     Rdpack,
-    demUtils
+    hierarchyUtils
 Remotes:
-    ihmeuw/demUtils
+    ihmeuw/hierarchyUtils
 Depends: R (>= 2.10)
 RdMacros: Rdpack

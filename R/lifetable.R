@@ -44,7 +44,7 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
 
   # check for `age_length` and add if missing
   if(!"age_length" %in% names(dt)) {
-    dt <- demUtils::gen_length(dt, col_stem = "age")
+    dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
   }
 
   # check `dt` for 2/3 of mx, ax, qx

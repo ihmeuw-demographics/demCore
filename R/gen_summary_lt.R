@@ -59,7 +59,7 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    dt <- demUtils::gen_length(dt, col_stem = "age")
+    dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
   }
 
   # get `id_cols` without 'draw'

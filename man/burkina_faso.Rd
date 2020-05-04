@@ -83,6 +83,6 @@ Data.” Journal of the American Statistical Association 108 (501): 96–110.
 \href{https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf}{popReconstruct R Package}
 }
 \seealso{
-\code{\link[=ccmpp]{ccmpp()}}, \code{\link[populationMethods:popReconstruct]{populationMethods::popReconstruct()}}
+\code{\link[=ccmpp]{ccmpp()}}, \code{\link[popMethods:popReconstruct]{popMethods::popReconstruct()}}
 }
 \keyword{datasets}

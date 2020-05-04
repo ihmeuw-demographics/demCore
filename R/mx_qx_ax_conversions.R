@@ -35,7 +35,7 @@
 #' @seealso
 #' \itemize{
 #'   \item{Preston Demography textbook}
-#'   \item \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+#'   \item \code{vignette("introduction_to_life_tables", package = "demCore")}
 #' }
 #'
 #' @examples

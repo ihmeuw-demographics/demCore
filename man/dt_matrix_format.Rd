@@ -68,7 +68,7 @@ and if the data is sex specific each sex will have a separate matrix stored
 in a named list (names corresponding to each sex).
 }
 \examples{
-output_matrix <- lifetableUtils:::dt_to_matrix(thailand_initial_estimates$survival)
-output_dt <- lifetableUtils:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
+output_matrix <- demCore:::dt_to_matrix(thailand_initial_estimates$survival)
+output_dt <- demCore:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
 
 }

@@ -12,7 +12,7 @@
 #'   aggregate to. Required columns are 'age_start' and 'age_end'. Use "Inf" as
 #'   'age_end' for terminal age group. If scaling, this mapping is inferred
 #'   from the ages included.
-#' @inheritParams demUtils::agg
+#' @inheritParams hierarchyUtils::agg
 #'
 #' @return \[`data.table()`\]\cr Aggregated or scaled qx values, has `id_cols`
 #'   and 'qx' columns for aggregate age groups if aggregating or all age
@@ -24,20 +24,20 @@
 #'   specified age range together to get the conditional probability of survival
 #'   through all granular age groups, and subtract from one to get the
 #'   aggregated conditional probability of death (qx). `agg_qx` is a wrapper
-#'   for [demUtils::agg()].
+#'   for [hierarchyUtils::agg()].
 #'
 #' **Scaling:** Convert to px-space, scale up age-hierarchy so that granular px
 #'   values multiply to aggregate px values, convert back to qx-space.
-#'   `scale_qx` is a wrapper for [demUtils::scale()].
+#'   `scale_qx` is a wrapper for [hierarchyUtils::scale()].
 #'
 #' This function is unique to aggregating and scaling qx over age because of
 #' the dependence between age and the definition of qx. Aggregation of qx
 #' across sex, location, or other variables should be done by first aggregating
-#' ax and mx as population-weighted means (can use [demUtils::agg()] and
-#' [demUtils::scale()] directly), then recalculating qx from mx and ax
-#' (see [lifetableUtils::mx_ax_to_qx()]).
+#' ax and mx as population-weighted means (can use [hierarchyUtils::agg()] and
+#' [hierarchyUtils::scale()] directly), then recalculating qx from mx and ax
+#' (see [demCore::mx_ax_to_qx()]).
 #'
-#' @seealso Vignette on scaling multiplicative aggregates in `demUtils`.
+#' @seealso Vignette on scaling multiplicative aggregates in `hierarchyUtils`.
 #'
 #' @examples
 #' # Example 1: aggregate qx
@@ -74,7 +74,7 @@ agg_qx <- function(dt, id_cols, age_mapping, missing_dt_severity = "stop",
   # check `id_cols` and `dt`
   validate_lifetable(dt, id_cols, param_cols = c("qx"))
 
-  # other assertions completed within demUtils::agg
+  # other assertions completed within hierarchyUtils::agg
 
   # Aggregate ------------------------------------------------------------
 
@@ -86,7 +86,7 @@ agg_qx <- function(dt, id_cols, age_mapping, missing_dt_severity = "stop",
   dt[, qx := NULL]
 
   # Aggregate over age using multiplicative aggregation
-  dt <- demUtils::agg(
+  dt <- hierarchyUtils::agg(
     dt,
     id_cols = id_cols,
     value_cols = c("px"),
@@ -115,7 +115,7 @@ scale_qx <- function(dt, id_cols, missing_dt_severity = "stop") {
   # check `id_cols` and `dt`
   validate_lifetable(dt, id_cols, param_cols = c("qx"))
 
-  # other assertions completed within demUtils::scale
+  # other assertions completed within hierarchyUtils::scale
 
   # Scale ------------------------------------------------------------
 
@@ -127,7 +127,7 @@ scale_qx <- function(dt, id_cols, missing_dt_severity = "stop") {
   dt[, qx := NULL]
 
   # Scale over age using multiplicative aggregation
-  dt <- demUtils::scale(
+  dt <- hierarchyUtils::scale(
     dt,
     id_cols = id_cols,
     value_cols = c("px"),

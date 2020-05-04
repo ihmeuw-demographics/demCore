@@ -66,9 +66,9 @@
 #'
 #' @seealso
 #' \itemize{
-#'   \item{[lifetableUtils::mx_qx_ax_conversions]}
-#'   \item{[lifetableUtils::lifetable]}
-#'   \item \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+#'   \item{[demCore::mx_qx_ax_conversions]}
+#'   \item{[demCore::lifetable]}
+#'   \item \code{vignette("introduction_to_life_tables", package = "demCore")}
 #' }
 #'
 #' @examples
@@ -224,7 +224,7 @@ gen_nLx <- function(dt, id_cols, assert_na = T) {
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    dt <- demUtils::gen_length(dt, col_stem = "age")
+    dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
   }
 
   # calculate nLx -----------------------------------------------------------

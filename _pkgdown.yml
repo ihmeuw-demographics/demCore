@@ -40,7 +40,7 @@ reference:
   - validate_lifetable
 
 - title: "Example data"
-  desc: "Data included for testing or running `lifetableUtils` functions."
+  desc: "Data included for testing or running `demCore` functions."
 - contents:
   - austria_1992_lt
   - full_lt_pars

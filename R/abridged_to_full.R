@@ -118,7 +118,7 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
 
   # add 'age_length' if not in input
   if(!"age_length" %in% names(dt)) {
-    dt <- demUtils::gen_length(dt, col_stem = "age")
+    dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
   }
 
   # capture terminal age for reference later
@@ -148,7 +148,7 @@ abridged_to_full <- function(dt, id_cols, regression_fits, regression_id_cols,
     ]
 
     # add `age_end`
-    full_lt_spline <- demUtils::gen_end(
+    full_lt_spline <- hierarchyUtils::gen_end(
       full_lt_spline,
       id_cols = c(id_cols_no_age, "age_start"),
       col_stem = "age"

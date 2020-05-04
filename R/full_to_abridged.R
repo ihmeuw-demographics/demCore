@@ -105,7 +105,7 @@ full_to_abridged <- function(dt, id_cols,
   # check output -----------------------------------------------------
 
   # add `age_end` back onto dataset
-  agg_lt <- demUtils::gen_end(
+  agg_lt <- hierarchyUtils::gen_end(
     agg_lt,
     c(id_cols_no_age, "age_start"),
     col_stem = "age"

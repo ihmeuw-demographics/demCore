@@ -29,7 +29,7 @@
 #'
 #' @seealso Preston Demography book pg 45. Also, see more details on this
 #'    method explained in the introduction to life tables vignette:
-#'    \code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+#'    \code{vignette("introduction_to_life_tables", package = "demCore")}
 #'
 #' @references
 #' Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
@@ -70,7 +70,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
   dt <- copy(dt)
   setkeyv(dt, id_cols)
   id_cols_no_age <- setdiff(id_cols, c("age_start", "age_end"))
-  if(!"age_length" %in% names(dt)) demUtils::gen_length(dt, "age")
+  if(!"age_length" %in% names(dt)) hierarchyUtils::gen_length(dt, "age")
 
   # initialize
   iter_num <- 1

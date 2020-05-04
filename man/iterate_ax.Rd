@@ -64,5 +64,5 @@ population processes. MA: Blackwell Publishing. 2001.
 \seealso{
 Preston Demography book pg 45. Also, see more details on this
 method explained in the introduction to life tables vignette:
-\code{vignette("introduction_to_life_tables", package = "lifetableUtils")}
+\code{vignette("introduction_to_life_tables", package = "demCore")}
 }

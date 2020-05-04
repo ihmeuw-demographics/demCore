@@ -59,18 +59,18 @@ present in the data.
 specified age range together to get the conditional probability of survival
 through all granular age groups, and subtract from one to get the
 aggregated conditional probability of death (qx). \code{agg_qx} is a wrapper
-for \code{\link[demUtils:agg]{demUtils::agg()}}.
+for \code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}}.
 
 \strong{Scaling:} Convert to px-space, scale up age-hierarchy so that granular px
 values multiply to aggregate px values, convert back to qx-space.
-\code{scale_qx} is a wrapper for \code{\link[demUtils:scale]{demUtils::scale()}}.
+\code{scale_qx} is a wrapper for \code{\link[hierarchyUtils:scale]{hierarchyUtils::scale()}}.
 
 This function is unique to aggregating and scaling qx over age because of
 the dependence between age and the definition of qx. Aggregation of qx
 across sex, location, or other variables should be done by first aggregating
-ax and mx as population-weighted means (can use \code{\link[demUtils:agg]{demUtils::agg()}} and
-\code{\link[demUtils:scale]{demUtils::scale()}} directly), then recalculating qx from mx and ax
-(see \code{\link[lifetableUtils:mx_ax_to_qx]{lifetableUtils::mx_ax_to_qx()}}).
+ax and mx as population-weighted means (can use \code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}} and
+\code{\link[hierarchyUtils:scale]{hierarchyUtils::scale()}} directly), then recalculating qx from mx and ax
+(see \code{\link[demCore:mx_ax_to_qx]{demCore::mx_ax_to_qx()}}).
 }
 \examples{
 # Example 1: aggregate qx
@@ -95,5 +95,5 @@ dt <- scale_qx(dt, id_cols = c("sex", "age_start", "age_end"))
 
 }
 \seealso{
-Vignette on scaling multiplicative aggregates in \code{demUtils}.
+Vignette on scaling multiplicative aggregates in \code{hierarchyUtils}.
 }
