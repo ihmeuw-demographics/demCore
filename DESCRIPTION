@@ -35,6 +35,6 @@ Imports:
     Rdpack,
     hierarchyUtils
 Remotes:
-    ihmeuw/hierarchyUtils
+    ihmeuw-demographics/hierarchyUtils
 Depends: R (>= 2.10)
 RdMacros: Rdpack
