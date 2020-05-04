@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Convert between demographic data stored in data.table and matrix
-format — matrix_to_dt • lifetableUtils</title>
+format — matrix_to_dt • demCore</title>
 
 
 <!-- jquery -->
@@ -76,7 +76,7 @@ year)." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">lifetableUtils</a>
+        <a class="navbar-link" href="../index.html">demCore</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -100,13 +100,21 @@ year)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ccmpp.html">ccmpp</a>
+    </li>
+    <li>
       <a href="../articles/introduction_to_life_tables.html">Introduction to life tables</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/ihmeuw-demographics/demCore/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -122,7 +130,7 @@ year)." />
     <div class="page-header">
     <h1>Convert between demographic data stored in data.table and matrix
 format</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/matrix_dt_formatting.R'><code>R/matrix_dt_formatting.R</code></a></small>
     <div class="hidden name"><code>dt_matrix_format.Rd</code></div>
     </div>
 
@@ -205,8 +213,8 @@ and if the data is sex specific each sex will have a separate matrix stored
 in a named list (names corresponding to each sex).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>output_matrix</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>lifetableUtils</span><span class='kw ns'>:::</span><span class='fu'>dt_to_matrix</span>(<span class='no'>thailand_initial_estimates</span>$<span class='no'>survival</span>)
-<span class='no'>output_dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>lifetableUtils</span><span class='kw ns'>:::</span><span class='fu'>matrix_to_dt</span>(<span class='no'>output_matrix</span>, <span class='kw'>year_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>2000</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>output_matrix</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>demCore</span><span class='kw ns'>:::</span><span class='fu'>dt_to_matrix</span>(<span class='no'>thailand_initial_estimates</span>$<span class='no'>survival</span>)
+<span class='no'>output_dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>demCore</span><span class='kw ns'>:::</span><span class='fu'>matrix_to_dt</span>(<span class='no'>output_matrix</span>, <span class='kw'>year_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>2000</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Aggregate or scale qx values over age — agg_scale_qx • lifetableUtils</title>
+<title>Aggregate or scale qx values over age — agg_scale_qx • demCore</title>
 
 
 <!-- jquery -->
@@ -74,7 +74,7 @@ present in the data." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">lifetableUtils</a>
+        <a class="navbar-link" href="../index.html">demCore</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
       </span>
     </div>
@@ -98,13 +98,21 @@ present in the data." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ccmpp.html">ccmpp</a>
+    </li>
+    <li>
       <a href="../articles/introduction_to_life_tables.html">Introduction to life tables</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/ihmeuw-demographics/demCore/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -119,7 +127,7 @@ present in the data." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Aggregate or scale qx values over age</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/agg_scale_qx.R'><code>R/agg_scale_qx.R</code></a></small>
     <div class="hidden name"><code>agg_scale_qx.Rd</code></div>
     </div>
 
@@ -191,19 +199,19 @@ groups if scaling.</p>
 specified age range together to get the conditional probability of survival
 through all granular age groups, and subtract from one to get the
 aggregated conditional probability of death (qx). <code>agg_qx</code> is a wrapper
-for <code><a href='https://rdrr.io/pkg/demUtils/man/agg_scale.html'>demUtils::agg()</a></code>.</p>
+for <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code>.</p>
 <p><strong>Scaling:</strong> Convert to px-space, scale up age-hierarchy so that granular px
 values multiply to aggregate px values, convert back to qx-space.
-<code>scale_qx</code> is a wrapper for <code><a href='https://rdrr.io/pkg/demUtils/man/agg_scale.html'>demUtils::scale()</a></code>.</p>
+<code>scale_qx</code> is a wrapper for <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code>.</p>
 <p>This function is unique to aggregating and scaling qx over age because of
 the dependence between age and the definition of qx. Aggregation of qx
 across sex, location, or other variables should be done by first aggregating
-ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/demUtils/man/agg_scale.html'>demUtils::agg()</a></code> and
-<code><a href='https://rdrr.io/pkg/demUtils/man/agg_scale.html'>demUtils::scale()</a></code> directly), then recalculating qx from mx and ax
-(see <code><a href='mx_qx_ax_conversions.html'>lifetableUtils::mx_ax_to_qx()</a></code>).</p>
+ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code> and
+<code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code> directly), then recalculating qx from mx and ax
+(see <code><a href='mx_qx_ax_conversions.html'>demCore::mx_ax_to_qx()</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>demUtils</code>.</p></div>
+    <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>hierarchyUtils</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Example 1: aggregate qx</span>
