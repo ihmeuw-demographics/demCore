@@ -7,6 +7,7 @@ Authors@R: c(person("Katie", "Paulson", email = "krpaul@uw.edu", role = "aut"),
              person("Spencer", "Pease", email = "spease@uw.edu", role = "aut"),
              person("Haidong", "Wang", email = "haidong@uw.edu", role = "cre"),
              person("Institute for Health Metrics and Evaluation", role = c("cph", "fnd")))
+URL: https://github.com/ihmeuw-demographics/demCore/
 Description: This package is for basic demography calculations. This includes
   life table conversions, ccmpp, calculating tfr, nrr, leslie matrices etc.
 License: GPL-3
