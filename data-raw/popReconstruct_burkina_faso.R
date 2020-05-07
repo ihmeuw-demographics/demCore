@@ -32,7 +32,7 @@ burkina_faso_initial_estimates <- list(
   baseline = matrix_to_dt(
     mdt = list(female = burkina.faso.females$baseline.pop.counts),
     year_right_most_endpoint = NULL
-  ),
+  )[, list(year = year_start, sex, age_start, age_end, value)],
   survival = matrix_to_dt(
     mdt = list(female = burkina.faso.females$survival.proportions),
     year_right_most_endpoint = 2005

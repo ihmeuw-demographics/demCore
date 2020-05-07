@@ -10,13 +10,15 @@ matrix_to_dt(
   mdt,
   year_right_most_endpoint,
   age_right_most_endpoint = Inf,
-  value_col = "value"
+  value_col = "value",
+  validate_arguments = TRUE
 )
 
 dt_to_matrix(
   dt,
   id_cols = c("year_start", "year_end", "sex", "age_start", "age_end"),
-  value_col = "value"
+  value_col = "value",
+  validate_arguments = TRUE
 )
 }
 \arguments{

@@ -24,13 +24,13 @@ test_that("test that `ccmpp` gives expected output", {
   )
   assertable::assert_ids(
     data = population,
-    id_vars = list(year_start = seq(1960, 2000, 5),
+    id_vars = list(year = seq(1960, 2000, 5),
                    sex = c("female", "male"),
                    age_start = seq(0, 80, 5)),
     quiet = T
   )
   testthat::expect_identical(
     names(population),
-    c("year_start", "year_end", "sex", "age_start", "age_end", "value")
+    c("year", "sex", "age_start", "age_end", "value")
   )
 })

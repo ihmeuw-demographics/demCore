@@ -1,6 +1,6 @@
 # reformats example Thailand data from the Bayesian Reconstruction github repo
 # (https://github.com/markalava/Bayesian-Reconstruction)
-repo_path <- ""
+repo_path <- "~/Documents/Bayesian-Reconstruction/"
 load(paste0(repo_path, "Thailand_Example/data/thai_initial_ests.RData"))
 load(paste0(repo_path, "Thailand_Example/data/thai_propvars.RData"))
 
@@ -27,7 +27,7 @@ thailand_initial_estimates <- list(
     mdt = list(female = baselineTHAI.mat$female,
                male = baselineTHAI.mat$male),
     year_right_most_endpoint = NULL
-  ),
+  )[, list(year = year_start, sex, age_start, age_end, value)],
   survival = matrix_to_dt(
     mdt = list(female = asSurvTHAI.mat$female,
                male = asSurvTHAI.mat$male),

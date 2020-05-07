@@ -54,6 +54,8 @@ Corresponds to 'ages_reproductive' setting.
 
 baseline: [\code{data.table()}]\cr
 \itemize{
+\item year: [\code{integer()}] mid-year for population estimate.
+Corresponds to 'years' \code{setting}.
 \item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
 \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).

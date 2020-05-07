@@ -50,6 +50,8 @@
 #'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate estimates.
 #'
 #' baseline: \[`data.table()`\]\cr
+#'   * year: \[`integer()`\] mid-year for population estimate.
+#'   Corresponds to 'years' `setting`.
 #'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
 #'   `setting`.
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
@@ -155,7 +157,9 @@ ccmpp <- function(inputs,
   projection_years <- c(settings$years, max(settings$years) + int)
   all_cols <- c("year_start", "year_end", "sex", "age_start", "age_end",
                 value_col)
+  pop_all_cols <- c("year", "sex", "age_start", "age_end", value_col)
   id_cols <- setdiff(all_cols, value_col)
+  pop_id_cols <- setdiff(pop_all_cols, value_col)
 
   # Project population ------------------------------------------------------
 
@@ -170,7 +174,7 @@ ccmpp <- function(inputs,
     y_next <- projection_years[i + 1]
 
     # get vector of values for current year
-    population_female <- population[sex == "female" & year_start == y,
+    population_female <- population[sex == "female" & year == y,
                                     get(value_col)]
     survival_female <- inputs$survival[sex == "female" & year_start == y,
                                        get(value_col)]
@@ -208,6 +212,8 @@ ccmpp <- function(inputs,
       year_right_most_endpoint = NULL,
       value_col = value_col
     )
+    population_next_female_dt[, year_end := NULL]
+    setnames(population_next_female_dt, "year_start", "year")
     population_next_female_dt[, sex := "female"]
     population <- rbind(population, population_next_female_dt, use.names = T)
 
@@ -215,7 +221,7 @@ ccmpp <- function(inputs,
     if ("male" %in% settings$sexes) {
 
       # get vector of values for current year
-      population_male <- population[sex == "male" & year_start == y,
+      population_male <- population[sex == "male" & year == y,
                                     get(value_col)]
       survival_male <- inputs$survival[sex == "male" & year_start == y,
                                        get(value_col)]
@@ -255,6 +261,8 @@ ccmpp <- function(inputs,
         year_right_most_endpoint = NULL,
         value_col = value_col
       )
+      population_next_male_dt[, year_end := NULL]
+      setnames(population_next_male_dt, "year_start", "year")
       population_next_male_dt[, sex := "male"]
       population <- rbind(population, population_next_male_dt, use.names = T)
     }
@@ -267,8 +275,8 @@ ccmpp <- function(inputs,
                             test_val = 0, quiet = T)
 
   # format output
-  data.table::setcolorder(population, all_cols)
-  data.table::setkeyv(population, id_cols)
+  data.table::setcolorder(population, pop_all_cols)
+  data.table::setkeyv(population, pop_id_cols)
   return(population)
 }
 
@@ -454,10 +462,11 @@ validate_ccmpp_inputs <- function(inputs,
   components <- c("srb", "asfr", "baseline", "survival", "net_migration")
   all_cols <- c("year_start", "year_end", "sex", "age_start", "age_end",
                 value_col)
+  pop_all_cols <- c("year", "sex", "age_start", "age_end", value_col)
   component_cols <- list(
     "srb" = setdiff(all_cols, c("sex", "age_start", "age_end")),
     "asfr" = setdiff(all_cols, "sex"),
-    "baseline" = setdiff(all_cols, c("year_start", "year_end")),
+    "baseline" = pop_all_cols,
     "survival" = all_cols,
     "net_migration" = all_cols
   )
@@ -465,7 +474,8 @@ validate_ccmpp_inputs <- function(inputs,
     "srb" = list(year_start = settings$years),
     "asfr" = list(year_start = settings$years,
                   age_start = settings$ages_reproductive),
-    "baseline" = list(sex = settings$sexes,
+    "baseline" = list(year = min(settings$years),
+                      sex = settings$sexes,
                       age_start = settings$ages),
     "survival" = list(year_start = settings$years,
                       sex = settings$sexes,
