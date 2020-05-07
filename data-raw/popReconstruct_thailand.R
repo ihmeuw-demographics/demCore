@@ -22,7 +22,7 @@ thailand_initial_estimates <- list(
   asfr = matrix_to_dt(
     mdt = asFertTHAI.mat,
     year_right_most_endpoint = 2000
-  ),
+  )[between(age_start, 15, 45)],
   baseline = matrix_to_dt(
     mdt = list(female = baselineTHAI.mat$female,
                male = baselineTHAI.mat$male),
@@ -40,6 +40,6 @@ thailand_initial_estimates <- list(
   )
 )
 
-devtools::use_data(thailand_data,
-                   thailand_initial_estimates,
-                   overwrite = T)
+usethis::use_data(thailand_data,
+                  thailand_initial_estimates,
+                  overwrite = T)

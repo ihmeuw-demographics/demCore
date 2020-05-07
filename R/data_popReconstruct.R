@@ -16,9 +16,7 @@
 #' **Section: Possible \[`data.table()`\] columns for inputs** for more information
 #' on each of the inputs.
 #'
-#' @inheritSection ccmpp CCMPP inputs
-#'
-#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
+#' @inheritSection ccmpp [ccmpp()] inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -28,7 +26,7 @@
 #'
 #' [popReconstruct R Package](https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf)
 #'
-#' @seealso [ccmpp()], [popMethods::popReconstruct()]
+#' @seealso [ccmpp()]
 #'
 #' @rdname burkina_faso
 "burkina_faso_data"
@@ -54,9 +52,7 @@
 #' **Section: Possible \[`data.table()`\] columns for inputs** for more information
 #' on each of the inputs.
 #'
-#' @inheritSection ccmpp CCMPP inputs
-#'
-#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
+#' @inheritSection ccmpp [ccmpp()] inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -67,7 +63,7 @@
 #'
 #' [markalava/Bayesian-Reconstruction github repo](https://github.com/markalava/Bayesian-Reconstruction)
 #'
-#' @seealso [ccmpp()], [popMethods::popReconstruct()]
+#' @seealso [ccmpp()]
 #'
 #' @rdname thailand
 "thailand_data"

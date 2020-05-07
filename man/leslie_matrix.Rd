@@ -13,7 +13,7 @@ alive \code{int} years later in a stationary population}
 
 \item{asfr}{[\code{numeric(n_ages)}]\cr
 Annual age specific fertility rates NOT yet mulitplied by \code{int}. Must
-include both maternal and non-maternal age groups that are zero.}
+include both reproductive and non-reproductive age groups that are zero.}
 
 \item{srb}{[\code{numeric(1)}]\cr
 Sex ratio at birth.}
@@ -53,7 +53,9 @@ See the references for more information.
 leslie <- leslie_matrix(
   survival = thailand_initial_estimates$survival[year_start == 1960 &
                                                   sex == "female", value],
-  asfr = thailand_initial_estimates$asfr[year_start == 1960, value],
+  asfr = c(rep(0, 3),
+           thailand_initial_estimates$asfr[year_start == 1960, value],
+           rep(0, 7)),
   srb = thailand_initial_estimates$srb[year_start == 1960, value],
   n_ages = 17, int = 5, female = TRUE
 )

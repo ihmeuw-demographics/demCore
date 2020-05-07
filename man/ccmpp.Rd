@@ -4,24 +4,19 @@
 \alias{ccmpp}
 \title{Cohort Component Method of Population Projection (CCMPP)}
 \usage{
-ccmpp(inputs, input_years, input_sexes, input_ages, value_col = "value")
+ccmpp(inputs, settings, value_col = "value")
 }
 \arguments{
-\item{inputs}{list of [\code{data.table()}]s of initial estimates for each ccmpp
-input. See \strong{Section: CCMPP inputs} and
-\strong{Section: Possible [\code{data.table()}] columns for inputs} for more
-information on each of the inputs.}
+\item{inputs}{[\code{list()}]\cr
+[\code{data.table()}] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
+and 'survival'; and migration estimates provided as just 'net_migration' or
+'immigration' and 'emigration'. See \strong{Section: \code{\link[=ccmpp]{ccmpp()}} inputs} for more
+information on each of the required inputs.}
 
-\item{input_years}{[\code{numeric()}]\cr
-the unique 'year_start' column values in each of the \code{inputs}. The minimum
-value must correspond to the only 'year_start' value in the baseline input.}
-
-\item{input_sexes}{[\code{character()}]\cr
-the unique 'sex' column values in each of the sex-specific \code{inputs}. Must
-be either just 'female', or 'female' and 'male'.}
-
-\item{input_ages}{[\code{numeric()}]\cr
-the unique 'age_start' column values in each of the age-specific \code{inputs}.}
+\item{settings}{[\code{list()}]\cr
+named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
+\strong{Section: \code{\link[=ccmpp]{ccmpp()}} settings} for more information on each of the
+required settings.}
 
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest in each of the
@@ -39,64 +34,134 @@ Given information on the starting population size, the population at
 later time points is a function of mortality, fertility, sex-ratio at birth,
 and net-migration.
 
-The cohort component method of population projection (CCMPP) projects an
+The cohort component method of population projection (CCMPP) projects a
 sex-age specific population forward in time using leslie matrices
 \code{\link[=leslie_matrix]{leslie_matrix()}} which encode information about fertility, sex-ratio at
 birth, and mortality.
 
 \deqn{Population(t + \delta) = Leslie[t, t + \delta] * Population(t)}
 
-See \link{vignette("ccmpp")} or linked references for more details on this method.
+See \code{vignette("ccmpp", package = "demCore")} or linked references for more
+details on this method.
 }
-\section{CCMPP inputs}{
+\section{\code{\link[=ccmpp]{ccmpp()}} inputs}{
 
-\itemize{
-\item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
-\item asfr: [\code{data.table()}] of year-age-specific average annual single-year
-age-specific fertility rate estimates. Must include both maternal and
-non-maternal age groups that are zero.
-\item baseline: [\code{data.table()}] of year-sex-age specific baseline year
-population counts.
-\item survival: [\code{data.table()}] of year-sex-age-specific survivorship ratio
-estimates.
-\item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
-net migration proportion estimates
-}
-}
-
-\section{Possible [\code{data.table()}] columns for inputs}{
-
-
-All contain:
-\itemize{
-\item \code{value_col}: [\code{numeric()}] contains value of interest for each input.
-}
-
-If year-specific:
+srb: [\code{data.table()}]\cr
 \itemize{
 \item year_start: [\code{integer()}] start of the calendar year interval
-(inclusive).
+(inclusive). Corresponds to 'years' \code{setting}.
 \item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item \code{value_col}: [\code{numeric()}] sex-ratio at birth estimates.
 }
 
-If sex-specific:
+asfr: [\code{data.table()}]\cr
 \itemize{
-\item sex: [\code{character()}] either 'female' or 'male'.
-}
-
-If age-specific:
-\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
 \item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages_reproductive' setting.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate estimates.
+}
+
+baseline: [\code{data.table()}]\cr
+\itemize{
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] baseline year population count estimates.
+}
+
+survival: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] survivorship ratio estimates.
+}
+
+net_migration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual net-migration proportion estimates.
+}
+
+immigration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual immigration proportion estimates.
+}
+
+emigration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual emigration proportion estimates.
+}
+}
+
+\section{\code{\link[=ccmpp]{ccmpp()}} settings}{
+
+\itemize{
+\item years: [\code{numeric()}]\cr
+The start of each calendar year interval to project in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}.
+Corresponds to the 'year_start' column in each of the year-specific inputs.
+\item sexes: [\code{character()}]\cr
+The sexes being projected in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}, must be either just
+'female', or 'female' and 'male'. Corresponds to the 'sex' column in each
+of the sex-specific inputs.
+\item ages: [\code{numeric()}]\cr
+The ages being projected in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}. Corresponds to the
+'age_start' column in each of the standard age-specific inputs.
+\item ages_survival: [\code{numeric()}]\cr
+The ages for which survivorship ratio estimates are available, includes one
+extra age group compared to the 'ages' setting. Corresponds to the
+'age_start' column in the 'survival' [\code{data.table()}] input.
+\item ages_reproductive: [\code{numeric()}]\cr
+The assumed female reproductive ages, subset of 'ages'. Corresponds to the
+'age_start' column in the age-specific fertility rate (asfr)
+[\code{data.table()}] input.
 }
 }
 
 \examples{
 population <- ccmpp(
   inputs = thailand_initial_estimates,
-  input_years = seq(1960, 1995, 5),
-  input_sexes = c("female", "male"),
-  input_ages = seq(0, 80, 5)
+  settings = list(
+    years = seq(1960, 1995, 5),
+    sexes = c("female", "male"),
+    ages = seq(0, 80, 5),
+    ages_survival = seq(0, 85, 5),
+    ages_reproductive = seq(15, 45, 5)
+  )
 )
 
 }
@@ -105,5 +170,7 @@ Preston, Samuel, Patrick Heuveline, and Michel Guillot. 2001. Demography:
 Measuring and Modeling Population. Wiley.
 }
 \seealso{
-\code{\link[=leslie_matrix]{leslie_matrix()}} \link{vignette("ccmpp")}
+\code{\link[=leslie_matrix]{leslie_matrix()}}
+
+vignette("ccmpp")
 }
