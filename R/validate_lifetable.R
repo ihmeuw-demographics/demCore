@@ -60,7 +60,7 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
 
   # unique
   if(length(id_cols) > 0) {
-    hierarchyUtils::assert_is_unique_dt(dt, id_cols = id_cols)
+    demUtils::assert_is_unique_dt(dt, id_cols = id_cols)
   }
 
   # has correct columns

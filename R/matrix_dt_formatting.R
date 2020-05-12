@@ -177,7 +177,7 @@ dt_to_matrix <- function(dt,
   # check `dt` argument
   assertive::assert_is_data.table(dt)
   assertable::assert_colnames(dt, c(id_cols, value_col), quiet = T)
-  hierarchyUtils::assert_is_unique_dt(dt, id_cols)
+  demUtils::assert_is_unique_dt(dt, id_cols)
 
 # Convert to matrix -------------------------------------------------------
 
