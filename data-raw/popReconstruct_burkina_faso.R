@@ -17,7 +17,7 @@ burkina_faso_data <- list(
   population = matrix_to_dt(
     mdt = list(female = burkina.faso.females$census.pop.counts),
     year_right_most_endpoint = NULL
-  )
+  )[, list(year = year_start, sex, age_start, age_end, value)]
 )
 
 burkina_faso_initial_estimates <- list(

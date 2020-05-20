@@ -11,7 +11,7 @@ thailand_data <- list(
     mdt = list(female = censusTHAI.mat$female,
                male = censusTHAI.mat$male),
     year_right_most_endpoint = NULL
-  )
+  )[, list(year = year_start, sex, age_start, age_end, value)]
 )
 
 thailand_initial_estimates <- list(
