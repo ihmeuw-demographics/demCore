@@ -20,7 +20,8 @@ Suggests:
     spelling,
     covr,
     devtools,
-    ggplot2
+    ggplot2,
+    LexisPlotR
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
