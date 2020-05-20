@@ -16,9 +16,8 @@ five-year age groups from 0 to 80+.
 \code{burkina_faso_initial_estimates}: list of [\code{data.table()}] of initial
 estimates for each \code{\link[=ccmpp]{ccmpp()}} input. Calendar year intervals are for five-year
 intervals between 1960 and 2005. Age groups are five-year age groups from 0
-to 80+ (except 'survival' goes up to 85+). See \strong{Section: CCMPP inputs} and
-\strong{Section: Possible [\code{data.table()}] columns for inputs} for more information
-on each of the inputs.
+to 80+ (except 'survival' goes up to 85+). See \strong{Section: Inputs} for more
+information on each of the inputs.
 
 An object of class \code{list} of length 5.
 }
@@ -31,7 +30,7 @@ burkina_faso_initial_estimates
 Example data and initial estimates for reconstructing the female
 population in Burkina Faso from 1960 to 2005.
 }
-\section{\code{\link[=ccmpp]{ccmpp()}} inputs}{
+\section{Inputs}{
 
 srb: [\code{data.table()}]\cr
 \itemize{
@@ -47,7 +46,7 @@ asfr: [\code{data.table()}]\cr
 (inclusive). Corresponds to 'years' \code{setting}.
 \item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages_reproductive' setting.
+Corresponds to 'ages_asfr' setting.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate estimates.
 }

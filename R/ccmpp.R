@@ -6,15 +6,18 @@
 #' @param inputs \[`list()`\]\cr
 #'   \[`data.table()`\] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 #'   and 'survival'; and migration estimates provided as just 'net_migration' or
-#'   'immigration' and 'emigration'. See **Section: [ccmpp()] inputs** for more
+#'   'immigration' and 'emigration'. See **Section: Inputs** for more
 #'   information on each of the required inputs.
 #' @param settings \[`list()`\]\cr
-#'   named list of settings for running [ccmpp()] with. See
-#'   **Section: [ccmpp()] settings** for more information on each of the
-#'   required settings.
+#'   Named list of settings for running [ccmpp()] with. See
+#'   **Section: Settings** for more information on each of the required
+#'   settings.
 #' @param value_col \[`character(1)`\]\cr
 #'   Name of the column containing the value of interest in each of the
 #'   `inputs`. Default is 'value'.
+#' @param assert_positive_pop \[`logical(1)`\]\cr
+#'   Whether or not to check that the projected population estimates are all
+#'   greater than or equal to zero. Default is 'TRUE'.
 #'
 #' @return \[`data.table()`\] of year-sex-age specific population counts.
 #'
@@ -33,7 +36,7 @@
 #' See `vignette("ccmpp", package = "demCore")` or linked references for more
 #' details on this method.
 #'
-#' @section [ccmpp()] inputs:
+#' @section Inputs:
 #' srb: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
 #'   (inclusive). Corresponds to 'years' `setting`.
@@ -45,7 +48,7 @@
 #'   (inclusive). Corresponds to 'years' `setting`.
 #'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   Corresponds to 'ages_reproductive' setting.
+#'   Corresponds to 'ages_asfr' setting.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate estimates.
 #'
@@ -103,7 +106,7 @@
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] annual emigration proportion estimates.
 #'
-#' @section [ccmpp()] settings:
+#' @section Settings:
 #'   * years: \[`numeric()`\]\cr
 #'   The start of each calendar year interval to project in [demCore::ccmpp()].
 #'   Corresponds to the 'year_start' column in each of the year-specific inputs.
@@ -118,7 +121,7 @@
 #'   The ages for which survivorship ratio estimates are available, includes one
 #'   extra age group compared to the 'ages' setting. Corresponds to the
 #'   'age_start' column in the 'survival' \[`data.table()`\] input.
-#'   * ages_reproductive: \[`numeric()`\]\cr
+#'   * ages_asfr: \[`numeric()`\]\cr
 #'   The assumed female reproductive ages, subset of 'ages'. Corresponds to the
 #'   'age_start' column in the age-specific fertility rate (asfr)
 #'   \[`data.table()`\] input.
@@ -131,7 +134,7 @@
 #'     sexes = c("female", "male"),
 #'     ages = seq(0, 80, 5),
 #'     ages_survival = seq(0, 85, 5),
-#'     ages_reproductive = seq(15, 45, 5)
+#'     ages_asfr = seq(15, 45, 5)
 #'   )
 #' )
 #'
@@ -147,7 +150,8 @@
 #' @export
 ccmpp <- function(inputs,
                   settings,
-                  value_col = "value") {
+                  value_col = "value",
+                  assert_positive_pop = TRUE) {
 
   # Validate input arguments ------------------------------------------------
 
@@ -163,10 +167,9 @@ ccmpp <- function(inputs,
 
   # Project population ------------------------------------------------------
 
-
-
   # initialize population dt
-  population <- copy(inputs$baseline)
+  population <- inputs$baseline[, c("year", "sex", "age_start", "age_end",
+                                    value_col), with = F]
 
   # loop over number of projection time periods
   for (i in 1:length(settings$years)) {
@@ -183,9 +186,9 @@ ccmpp <- function(inputs,
                                                  get(value_col)]
     srb <- inputs$srb[year_start == y, get(value_col)]
     # add assumed zero asfr ages
-    asfr <- c(rep(0, sum(settings$ages < min(settings$ages_reproductive))),
+    asfr <- c(rep(0, sum(settings$ages < min(settings$ages_asfr))),
               inputs$asfr[year_start == y, get(value_col)],
-              rep(0, sum(settings$ages > max(settings$ages_reproductive))))
+              rep(0, sum(settings$ages > max(settings$ages_asfr))))
 
     # create leslie matrix for females
     leslie_female <- leslie_matrix(
@@ -271,8 +274,10 @@ ccmpp <- function(inputs,
   # check population values
   assertable::assert_values(population, colnames = value_col, test = "not_na",
                             quiet = T)
-  assertable::assert_values(population, colnames = value_col, test = "gte",
-                            test_val = 0, quiet = T)
+  if (assert_positive_pop) {
+    assertable::assert_values(population, colnames = value_col, test = "gte",
+                              test_val = 0, quiet = T)
+  }
 
   # format output
   data.table::setcolorder(population, pop_all_cols)
@@ -406,16 +411,21 @@ validate_ccmpp_inputs <- function(inputs,
                                   settings,
                                   value_col) {
 
-  # TODO
   # check for all required settings
+  required_settings <- c("years", "sexes", "ages", "ages_survival", "ages_asfr")
+  assertthat::assert_that(
+    all(required_settings %in% names(settings)),
+    msg = paste0("Need all required settings: '",
+                 paste0(required_settings, collapse = "', '"), "'.")
+  )
 
   # check `settings$years` argument
   assertthat::assert_that(
     assertive::is_numeric(settings$years),
     length(unique(diff(settings$years))) == 1,
     unique(diff(settings$years)) != 0,
-    msg = "`settings$years` must be a numeric vector defining the start of
-    evenly spaced calendar year intervals"
+    msg = paste0("`settings$years` must be a numeric vector defining the start ",
+                 "of evenly spaced calendar year intervals")
   )
 
   # check `settings$sexes` argument
@@ -423,8 +433,8 @@ validate_ccmpp_inputs <- function(inputs,
     assertive::is_character(settings$sexes),
     "female" %in% settings$sexes,
     all(settings$sexes %in% c("female", "male")),
-    msg = "`settings$sexes` must be a character vector containing 'female' and
-    optionally 'male'"
+    msg = paste0("`settings$sexes` must be a character vector containing ",
+                 "'female' and optionally 'male'")
   )
 
   # check `settings$ages` argument
@@ -432,21 +442,41 @@ validate_ccmpp_inputs <- function(inputs,
     assertive::is_numeric(settings$ages),
     length(unique(diff(settings$ages))) == 1,
     unique(diff(settings$ages)) != 0,
-    msg = "`settings$ages` must be a numeric vector defining the start of evenly
-    spaced age group intervals"
+    msg = paste0("`settings$ages` must be a numeric vector defining the start ",
+                 "of evenly spaced age group intervals")
   )
-
-  # TODO
-  # check for `settings$ages_survival` argument
-  # check for `settings$ages_reproductive` argument
 
   # check implied interval in `settings$years` and `settings$ages` is identical
   assertthat::assert_that(
     identical(unique(diff(settings$years)), unique(diff(settings$ages))),
-    msg = "`settings$years` & `settings$ages` must have the same interval length
-    between each calendar year interval and between each age group"
+    msg = paste0("`settings$years` & `settings$ages` must have the same interval ",
+                 "length between each calendar year interval and between each ",
+                 "age group")
   )
   int <- unique(diff(settings$ages))
+
+  # check `settings$ages_survival` argument
+  assertthat::assert_that(
+    assertive::is_numeric(settings$ages_survival),
+    length(unique(diff(settings$ages_survival))) == 1,
+    unique(diff(settings$ages_survival)) != 0,
+    all(settings$ages %in% settings$ages_survival),
+    max(settings$ages_survival) == max(settings$ages) + int,
+    msg = paste0("`settings$ages_survival` must be a numeric vector defining ",
+                 "the start of evenly spaced age group intervals for the ",
+                 "survivorship ratio estimates")
+  )
+
+  # check `settings$ages_asfr` argument
+  assertthat::assert_that(
+    assertive::is_numeric(settings$ages_asfr),
+    length(unique(diff(settings$ages_asfr))) == 1,
+    unique(diff(settings$ages_asfr)) != 0,
+    all(settings$ages_asfr %in% settings$ages),
+    msg = paste0("`settings$ages_asfr` must be a numeric vector defining ",
+                 "the start of evenly spaced age group intervals for the ",
+                 "asfr estimates")
+  )
 
   # check `value_col` argument
   assertthat::assert_that(assertthat::is.string(value_col))
@@ -473,7 +503,7 @@ validate_ccmpp_inputs <- function(inputs,
   component_ids <- list(
     "srb" = list(year_start = settings$years),
     "asfr" = list(year_start = settings$years,
-                  age_start = settings$ages_reproductive),
+                  age_start = settings$ages_asfr),
     "baseline" = list(year = min(settings$years),
                       sex = settings$sexes,
                       age_start = settings$ages),

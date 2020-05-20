@@ -12,11 +12,10 @@
 #' `burkina_faso_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2005. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
-#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
-#' on each of the inputs.
+#' to 80+ (except 'survival' goes up to 85+). See **Section: Inputs** for more
+#' information on each of the inputs.
 #'
-#' @inheritSection ccmpp [ccmpp()] inputs
+#' @inheritSection ccmpp Inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -48,11 +47,10 @@
 #' `thailand_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2000. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
-#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
-#' on each of the inputs.
+#' to 80+ (except 'survival' goes up to 85+). See **Section: Inputs** for more
+#' information on each of the inputs.
 #'
-#' @inheritSection ccmpp [ccmpp()] inputs
+#' @inheritSection ccmpp Inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.

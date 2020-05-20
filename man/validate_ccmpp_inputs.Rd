@@ -10,13 +10,13 @@ validate_ccmpp_inputs(inputs, settings, value_col)
 \item{inputs}{[\code{list()}]\cr
 [\code{data.table()}] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 and 'survival'; and migration estimates provided as just 'net_migration' or
-'immigration' and 'emigration'. See \strong{Section: \code{\link[=ccmpp]{ccmpp()}} inputs} for more
+'immigration' and 'emigration'. See \strong{Section: Inputs} for more
 information on each of the required inputs.}
 
 \item{settings}{[\code{list()}]\cr
-named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
-\strong{Section: \code{\link[=ccmpp]{ccmpp()}} settings} for more information on each of the
-required settings.}
+Named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
+\strong{Section: Settings} for more information on each of the required
+settings.}
 
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest in each of the

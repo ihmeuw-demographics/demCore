@@ -37,6 +37,10 @@ Assumed right most endpoint of the age group intervals. Default is Inf.}
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest. Default is 'value'.}
 
+\item{validate_arguments}{[\code{logical(1)}]\cr
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.}
+
 \item{dt}{[\code{data.table()}]\cr
 Input demographic data in the data.table format described in the details
 section.}

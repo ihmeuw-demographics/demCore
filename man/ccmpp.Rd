@@ -4,23 +4,27 @@
 \alias{ccmpp}
 \title{Cohort Component Method of Population Projection (CCMPP)}
 \usage{
-ccmpp(inputs, settings, value_col = "value")
+ccmpp(inputs, settings, value_col = "value", assert_positive_pop = TRUE)
 }
 \arguments{
 \item{inputs}{[\code{list()}]\cr
 [\code{data.table()}] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 and 'survival'; and migration estimates provided as just 'net_migration' or
-'immigration' and 'emigration'. See \strong{Section: \code{\link[=ccmpp]{ccmpp()}} inputs} for more
+'immigration' and 'emigration'. See \strong{Section: Inputs} for more
 information on each of the required inputs.}
 
 \item{settings}{[\code{list()}]\cr
-named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
-\strong{Section: \code{\link[=ccmpp]{ccmpp()}} settings} for more information on each of the
-required settings.}
+Named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
+\strong{Section: Settings} for more information on each of the required
+settings.}
 
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest in each of the
 \code{inputs}. Default is 'value'.}
+
+\item{assert_positive_pop}{[\code{logical(1)}]\cr
+Whether or not to check that the projected population estimates are all
+greater than or equal to zero. Default is 'TRUE'.}
 }
 \value{
 [\code{data.table()}] of year-sex-age specific population counts.
@@ -44,7 +48,7 @@ birth, and mortality.
 See \code{vignette("ccmpp", package = "demCore")} or linked references for more
 details on this method.
 }
-\section{\code{\link[=ccmpp]{ccmpp()}} inputs}{
+\section{Inputs}{
 
 srb: [\code{data.table()}]\cr
 \itemize{
@@ -60,7 +64,7 @@ asfr: [\code{data.table()}]\cr
 (inclusive). Corresponds to 'years' \code{setting}.
 \item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages_reproductive' setting.
+Corresponds to 'ages_asfr' setting.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate estimates.
 }
@@ -130,7 +134,7 @@ Corresponds to 'ages' \code{setting}.
 }
 }
 
-\section{\code{\link[=ccmpp]{ccmpp()}} settings}{
+\section{Settings}{
 
 \itemize{
 \item years: [\code{numeric()}]\cr
@@ -147,7 +151,7 @@ The ages being projected in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}. Corre
 The ages for which survivorship ratio estimates are available, includes one
 extra age group compared to the 'ages' setting. Corresponds to the
 'age_start' column in the 'survival' [\code{data.table()}] input.
-\item ages_reproductive: [\code{numeric()}]\cr
+\item ages_asfr: [\code{numeric()}]\cr
 The assumed female reproductive ages, subset of 'ages'. Corresponds to the
 'age_start' column in the age-specific fertility rate (asfr)
 [\code{data.table()}] input.
@@ -162,7 +166,7 @@ population <- ccmpp(
     sexes = c("female", "male"),
     ages = seq(0, 80, 5),
     ages_survival = seq(0, 85, 5),
-    ages_reproductive = seq(15, 45, 5)
+    ages_asfr = seq(15, 45, 5)
   )
 )
 

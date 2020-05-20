@@ -19,7 +19,7 @@ test_that("test that `ccmpp` gives expected output", {
       sexes = c("female", "male"),
       ages = seq(0, 80, 5),
       ages_survival = seq(0, 85, 5),
-      ages_reproductive = seq(15, 45, 5)
+      ages_asfr = seq(15, 45, 5)
     )
   )
   assertable::assert_ids(
