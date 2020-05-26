@@ -197,7 +197,7 @@ lexis_survivorship_ratio
 
 ### CCMPP for most age groups with migration
 
-When modeling actual populations immigration and emigration needs to be accounted for.
+When modeling actual populations migration needs to be accounted for.
 These migrants are also at risk of dying and giving birth in their new populations but it is unknown when exactly in the interval they migrated.
 A standard assumption is that half of the migrants in a given interval migrate at the beginning of the interval and the other half at the end of the interval.
 
