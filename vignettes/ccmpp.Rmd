@@ -39,10 +39,10 @@ G =& \text{net migrants}
 
 # CCMPP
 
-The demographic balancing equation can be extended to be by age and sex, this is called the cohort component method of population projection (CCMPP).
-It is the most common method for projecting populations forward in time.
+The cohort component method of population projection (CCMPP) is the most common method for projecting populations forward in time.
+It satisfies the age- and sex-specific version of the demographic balancing equation.
 
-It takes as input age and sex specific estimates of the baseline population, survivorship ratios, net migration proportion, age-specific fertility rates and sex-ratio at birth to produce projected population estimates starting from the baseline.
+CCMPP takes as input age and sex specific estimates of the baseline population, survivorship ratios, net migration proportion, age-specific fertility rates and sex-ratio at birth to produce projected population estimates starting from the baseline.
 
 Below are two sections, the first gives a quick introduction to the `demCore::ccmpp` function and the second actually gives a more detailed explanation of CCMPP.
 
@@ -113,7 +113,7 @@ Explained below are some of the basics of CCMPP using notation from Preston et a
 
 In order to understand CCMPP it is helpful to use lexis diagrams.
 A lexis diagram is a simple tool often used in demography to clearly identify the ages, calendar years and cohorts included in a given population.
-The lexis diagrams in the following sections were created using `LexisPlotR` which I highly recommend.
+The lexis diagrams in the following sections were created using `LexisPlotR` which is highly recommend.
 
 ```{r, echo = FALSE}
 library(LexisPlotR)
@@ -198,7 +198,7 @@ lexis_survivorship_ratio
 ### CCMPP for most age groups with migration
 
 When modeling actual populations immigration and emigration needs to be accounted for.
-These migrants are also at risk of dying and giving birth in their new populations but we don't know exactly when in the interval they migrated.
+These migrants are also at risk of dying and giving birth in their new populations but it is unknown when exactly in the interval they migrated.
 A standard assumption is that half of the migrants in a given interval migrate at the beginning of the interval and the other half at the end of the interval.
 
 **Example equation**:
@@ -212,7 +212,7 @@ $$\begin{aligned} {_n}N_{x}(t) = & \text{the population at time } t \text{ betwe
 
 ### CCMPP for the youngest age group with out migration
 
-For the youngest age group we need to calculate the number of births occuring in the interval and then use the survivorship ratios to calculate the proportion that survive to the next time point.
+For the youngest age group the number of births occuring in the interval needs to be calculated and then the survivorship ratios are used to calculate the proportion that survive to the next time point.
 
 **Example equation**:
 $$\begin{aligned} {_1}N_{0}(2018) =& \cdot B[2017, 2018] \cdot \frac{{_1}L_{0}[2017, 2018]}{l_0[2017, 2018]} \\ B[2017, 2018] =& \sum_{x=0}^{A} \frac{1}{2} \cdot  {_1}F_x \cdot \frac{{_1}N^F_{x+1}(t) + {_1}N^F_x(t) \cdot \frac{{_1}L_{x+1}[t, t+1]}{{_1}L_{x}[t, t+1]}}{2} \end{aligned}$$
@@ -271,7 +271,7 @@ lexis_parallelogram_terminal +
 
 ### Leslie Matrix
 
-We can write all these tedious ccmpp equations in matrix notation which helps to speed up computation and can lead to other useful relationships from matrix algebra.
+All these tedious ccmpp equations can be written in matrix notation which helps to speed up computation and can lead to other useful relationships from matrix algebra.
 
 $$\begin{aligned}
 \mathbf{n}(t + 1) =& \mathbf{L}[t, t + 1] \cdot \mathbf{n}(t) \\
