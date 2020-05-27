@@ -4,7 +4,14 @@
 \alias{ccmpp}
 \title{Cohort Component Method of Population Projection (CCMPP)}
 \usage{
-ccmpp(inputs, settings, value_col = "value", assert_positive_pop = TRUE)
+ccmpp(
+  inputs,
+  settings,
+  value_col = "value",
+  assert_positive_pop = TRUE,
+  validate_arguments = TRUE,
+  gen_end_interval_col = TRUE
+)
 }
 \arguments{
 \item{inputs}{[\code{list()}]\cr
@@ -25,6 +32,14 @@ Name of the column containing the value of interest in each of the
 \item{assert_positive_pop}{[\code{logical(1)}]\cr
 Whether or not to check that the projected population estimates are all
 greater than or equal to zero. Default is 'TRUE'.}
+
+\item{validate_arguments}{[\code{logical(1)}]\cr
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.}
+
+\item{gen_end_interval_col}{[\code{logical(1)}]\cr
+Whether to automatically generate the end of the interval columns (like
+'age'). Default is 'TRUE'.}
 }
 \value{
 [\code{data.table()}] of year-sex-age specific population counts.

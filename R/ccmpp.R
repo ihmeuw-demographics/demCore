@@ -18,6 +18,12 @@
 #' @param assert_positive_pop \[`logical(1)`\]\cr
 #'   Whether or not to check that the projected population estimates are all
 #'   greater than or equal to zero. Default is 'TRUE'.
+#' @param validate_arguments \[`logical(1)`\]\cr
+#'   Whether to validate that the input arguments are formatted correctly.
+#'   Default is 'TRUE'.
+#' @param gen_end_interval_col \[`logical(1)`\]\cr
+#'   Whether to automatically generate the end of the interval columns (like
+#'   'age'). Default is 'TRUE'.
 #'
 #' @return \[`data.table()`\] of year-sex-age specific population counts.
 #'
@@ -151,25 +157,58 @@
 ccmpp <- function(inputs,
                   settings,
                   value_col = "value",
-                  assert_positive_pop = TRUE) {
+                  assert_positive_pop = TRUE,
+                  validate_arguments = TRUE,
+                  gen_end_interval_col = TRUE) {
 
   # Validate input arguments ------------------------------------------------
 
-  validate_ccmpp_inputs(inputs, settings, value_col)
+  assertthat::assert_that(
+    assertthat::is.flag(validate_arguments),
+    msg = "`validate_arguments` must be a logical flag"
+  )
+
+  if (validate_arguments) validate_ccmpp_inputs(inputs, settings, value_col)
 
   int <- unique(diff(settings$ages))
   projection_years <- c(settings$years, max(settings$years) + int)
   all_cols <- c("year_start", "year_end", "sex", "age_start", "age_end",
                 value_col)
   pop_all_cols <- c("year", "sex", "age_start", "age_end", value_col)
+  if (!gen_end_interval_col) {
+    all_cols <- all_cols[!grepl("_end$", all_cols)]
+    pop_all_cols <- pop_all_cols[!grepl("_end$", pop_all_cols)]
+  }
   id_cols <- setdiff(all_cols, value_col)
   pop_id_cols <- setdiff(pop_all_cols, value_col)
 
   # Project population ------------------------------------------------------
 
-  # initialize population dt
-  population <- inputs$baseline[, c("year", "sex", "age_start", "age_end",
-                                    value_col), with = F]
+  # convert inputs to matrices
+  inputs_mdt <- lapply(names(inputs), function(input) {
+    dt <- inputs[[input]]
+    mdt <- dt_to_matrix(
+      dt = dt,
+      id_cols = setdiff(names(dt), value_col),
+      value_col = value_col,
+      validate_arguments = FALSE
+    )
+    return(mdt)
+  })
+  names(inputs_mdt) <- names(inputs)
+
+  # initialize population matrix
+  population_mdt <- list()
+  for (s in settings$sexes) {
+    population_mdt[[s]] <- matrix(
+      NA,
+      nrow = length(settings$ages),
+      ncol = length(projection_years)
+    )
+    population_mdt[[s]][, 1] <- inputs_mdt[["baseline"]][[s]]
+    dimnames(population_mdt[[s]]) <- list(settings$ages,
+                                          projection_years)
+  }
 
   # loop over number of projection time periods
   for (i in 1:length(settings$years)) {
@@ -177,17 +216,13 @@ ccmpp <- function(inputs,
     y_next <- projection_years[i + 1]
 
     # get vector of values for current year
-    population_female <- population[sex == "female" & year == y,
-                                    get(value_col)]
-    survival_female <- inputs$survival[sex == "female" & year_start == y,
-                                       get(value_col)]
-    net_migration_female <- inputs$net_migration[sex == "female" &
-                                                   year_start == y,
-                                                 get(value_col)]
-    srb <- inputs$srb[year_start == y, get(value_col)]
+    population_female <- population_mdt[["female"]][, i]
+    survival_female <- inputs_mdt[["survival"]][["female"]][, i]
+    net_migration_female <- inputs_mdt[["net_migration"]][["female"]][, i]
+    srb <- inputs_mdt[["srb"]][, i]
     # add assumed zero asfr ages
     asfr <- c(rep(0, sum(settings$ages < min(settings$ages_asfr))),
-              inputs$asfr[year_start == y, get(value_col)],
+              inputs_mdt[["asfr"]][, i],
               rep(0, sum(settings$ages > max(settings$ages_asfr))))
 
     # create leslie matrix for females
@@ -207,30 +242,17 @@ ccmpp <- function(inputs,
     population_next_female <- leslie_female %*%
       (population_female + half_net_migrants_female) +
       half_net_migrants_female
-    colnames(population_next_female) <- y_next
 
-    # convert from matrix to dt
-    population_next_female_dt <- matrix_to_dt(
-      mdt = population_next_female,
-      year_right_most_endpoint = NULL,
-      value_col = value_col
-    )
-    population_next_female_dt[, year_end := NULL]
-    setnames(population_next_female_dt, "year_start", "year")
-    population_next_female_dt[, sex := "female"]
-    population <- rbind(population, population_next_female_dt, use.names = T)
+    # add on projected population for next year to complete matrix
+    population_mdt[["female"]][, i + 1] <- population_next_female[, 1]
 
     # project male population forward one projection period
     if ("male" %in% settings$sexes) {
 
       # get vector of values for current year
-      population_male <- population[sex == "male" & year == y,
-                                    get(value_col)]
-      survival_male <- inputs$survival[sex == "male" & year_start == y,
-                                       get(value_col)]
-      net_migration_male <- inputs$net_migration[sex == "male" &
-                                                   year_start == y,
-                                                 get(value_col)]
+      population_male <- population_mdt[["male"]][, i]
+      survival_male <- inputs_mdt[["survival"]][["male"]][, i]
+      net_migration_male <- inputs_mdt[["net_migration"]][["male"]][, i]
 
       # create leslie matrix for males
       leslie_male <- leslie_matrix(
@@ -248,7 +270,6 @@ ccmpp <- function(inputs,
       population_next_male <- leslie_male %*%
         (population_male + half_net_migrants_male) +
         half_net_migrants_male
-      colnames(population_next_male) <- y_next
 
       # back-calculate total births in projection period
       total_births <- population_next_female[1, 1] /
@@ -258,31 +279,34 @@ ccmpp <- function(inputs,
       # add onto migrants
       population_next_male[1, 1] <- population_next_male[1, 1] + young_male_pop
 
-      # convert from matrix to dt
-      population_next_male_dt <- matrix_to_dt(
-        mdt = population_next_male,
-        year_right_most_endpoint = NULL,
-        value_col = value_col
-      )
-      population_next_male_dt[, year_end := NULL]
-      setnames(population_next_male_dt, "year_start", "year")
-      population_next_male_dt[, sex := "male"]
-      population <- rbind(population, population_next_male_dt, use.names = T)
+      # add on projected population for next year to complete matrix
+      population_mdt[["male"]][, i + 1] <- population_next_male[, 1]
     }
   }
 
+  # convert from matrix to dt
+  population_dt <- matrix_to_dt(
+    mdt = population_mdt,
+    year_right_most_endpoint = NULL,
+    gen_end_interval_col = gen_end_interval_col,
+    value_col = value_col,
+    validate_arguments = validate_arguments
+  )
+  if (gen_end_interval_col) population_dt[, year_end := NULL]
+  setnames(population_dt, "year_start", "year")
+
   # check population values
-  assertable::assert_values(population, colnames = value_col, test = "not_na",
+  assertable::assert_values(population_dt, colnames = value_col, test = "not_na",
                             quiet = T)
   if (assert_positive_pop) {
-    assertable::assert_values(population, colnames = value_col, test = "gte",
+    assertable::assert_values(population_dt, colnames = value_col, test = "gte",
                               test_val = 0, quiet = T)
   }
 
   # format output
-  data.table::setcolorder(population, pop_all_cols)
-  data.table::setkeyv(population, pop_id_cols)
-  return(population)
+  data.table::setcolorder(population_dt, pop_all_cols)
+  data.table::setkeyv(population_dt, pop_id_cols)
+  return(population_dt)
 }
 
 #' @title Make Leslie matrix

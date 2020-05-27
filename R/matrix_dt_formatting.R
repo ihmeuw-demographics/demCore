@@ -18,6 +18,7 @@
 #'   not spanning intervals then assign 'NULL'.
 #' @param age_right_most_endpoint \[`numeric(1)`\]\cr
 #'   Assumed right most endpoint of the age group intervals. Default is Inf.
+#' @inheritParams ccmpp
 #' @param id_cols \[`character()`\]\cr
 #'   ID columns that uniquely identify each row of `dt`. This can only contain
 #'   year, sex, and age variables. 'year_start' and 'year_end' must be included,
@@ -52,12 +53,26 @@
 matrix_to_dt <- function(mdt,
                          year_right_most_endpoint,
                          age_right_most_endpoint = Inf,
+                         gen_end_interval_col = TRUE,
                          value_col = "value",
                          validate_arguments = TRUE) {
 
   # Validate input arguments ------------------------------------------------
 
+  # check `validate_arguments` argument
+  assertthat::assert_that(
+    assertthat::is.flag(validate_arguments),
+    msg = "`validate_arguments` must be a logical flag"
+  )
+
   if (validate_arguments) {
+
+    # check `gen_end_interval_col` argument
+    assertthat::assert_that(
+      assertthat::is.flag(gen_end_interval_col),
+      msg = "`gen_end_interval_col` must be a logical flag"
+    )
+
     ## check `mdt` argument
     assertthat::assert_that(
       assertive::is_matrix(mdt) |
@@ -102,13 +117,16 @@ matrix_to_dt <- function(mdt,
 
   sex_specific <- assertive::is_list(mdt)
   age_specific <- ifelse(sex_specific, nrow(mdt[[1]]) > 1, nrow(mdt) > 1)
-  id_cols <- c("year_start", "year_end",
+  id_cols <- c("year_start",
+               if (gen_end_interval_col) "year_end",
                if (sex_specific) "sex",
-               if (age_specific) c("age_start", "age_end"))
+               if (age_specific) "age_start",
+               if (age_specific & gen_end_interval_col) "age_end")
 
   melt_matrix_format <- function(m,
                                  year_right_most_endpoint,
                                  age_right_most_endpoint,
+                                 gen_end_interval_col,
                                  value_col) {
 
     d <- data.table(m)
@@ -122,25 +140,29 @@ matrix_to_dt <- function(mdt,
                  variable.factor = FALSE, value.name = value_col)
     d[, year_start := as.integer(year_start)]
 
-    # add on the year_end column
-    if (!is.null(year_right_most_endpoint)) {
+    if (gen_end_interval_col) {
+
+      # add on the year_end column
+      if (!is.null(year_right_most_endpoint)) {
+        hierarchyUtils::gen_end(
+          dt = d,
+          id_cols = c("year_start", "age_start"),
+          col_stem = "year",
+          right_most_endpoint = year_right_most_endpoint
+        )
+      } else {
+        d[, year_end := year_start]
+      }
+
+      # add on the age_end column
       hierarchyUtils::gen_end(
         dt = d,
         id_cols = c("year_start", "age_start"),
-        col_stem = "year",
-        right_most_endpoint = year_right_most_endpoint
+        col_stem = "age",
+        right_most_endpoint = age_right_most_endpoint
       )
-    } else {
-      d[, year_end := year_start]
     }
 
-    # add on the age_end column
-    hierarchyUtils::gen_end(
-      dt = d,
-      id_cols = c("year_start", "age_start"),
-      col_stem = "age",
-      right_most_endpoint = age_right_most_endpoint
-    )
     return(d)
   }
 
@@ -149,15 +171,20 @@ matrix_to_dt <- function(mdt,
     dt <- rbindlist(
       lapply(sexes, function(s) {
         dt <- melt_matrix_format(mdt[[s]], year_right_most_endpoint,
-                                 age_right_most_endpoint, value_col)
+                                 age_right_most_endpoint, gen_end_interval_col,
+                                 value_col)
         dt[, sex := s]
       })
     )
   } else {
     dt <- melt_matrix_format(mdt, year_right_most_endpoint,
-                             age_right_most_endpoint, value_col)
+                             age_right_most_endpoint, gen_end_interval_col,
+                             value_col)
   }
-  if (!age_specific) dt[, c("age_start", "age_end") := NULL]
+
+  if (!age_specific) {
+    dt[, c("age_start", if (gen_end_interval_col) "age_end") := NULL]
+  }
 
   data.table::setcolorder(dt, c(id_cols, "value"))
   data.table::setkeyv(dt, id_cols)
