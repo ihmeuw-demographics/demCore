@@ -100,7 +100,7 @@ year)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ccmpp.html">ccmpp</a>
+      <a href="../articles/ccmpp.html">Cohort Component Method of Population Projection (CCMPP)</a>
     </li>
     <li>
       <a href="../articles/introduction_to_life_tables.html">Introduction to life tables</a>
@@ -145,13 +145,15 @@ year).</p>
   <span class='no'>mdt</span>,
   <span class='no'>year_right_most_endpoint</span>,
   <span class='kw'>age_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>
+  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
+  <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
 
 <span class='fu'>dt_to_matrix</span>(
   <span class='no'>dt</span>,
   <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"year_start"</span>, <span class='st'>"year_end"</span>, <span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>),
-  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>
+  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
+  <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,6 +181,12 @@ Assumed right most endpoint of the age group intervals. Default is Inf.</p></td>
       <th>value_col</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
 Name of the column containing the value of interest. Default is 'value'.</p></td>
+    </tr>
+    <tr>
+      <th>validate_arguments</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.</p></td>
     </tr>
     <tr>
       <th>dt</th>

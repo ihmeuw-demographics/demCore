@@ -96,7 +96,7 @@ method of population projection." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ccmpp.html">ccmpp</a>
+      <a href="../articles/ccmpp.html">Cohort Component Method of Population Projection (CCMPP)</a>
     </li>
     <li>
       <a href="../articles/introduction_to_life_tables.html">Introduction to life tables</a>
@@ -134,40 +134,37 @@ method of population projection." />
 method of population projection.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ccmpp</span>(<span class='no'>inputs</span>, <span class='no'>input_years</span>, <span class='no'>input_sexes</span>, <span class='no'>input_ages</span>, <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>)</pre>
+    <pre class="usage"><span class='fu'>ccmpp</span>(<span class='no'>inputs</span>, <span class='no'>settings</span>, <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>, <span class='kw'>assert_positive_pop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>inputs</th>
-      <td><p>list of [<code>data.table()</code>]s of initial estimates for each ccmpp
-input. See <strong>Section: CCMPP inputs</strong> and
-<strong>Section: Possible [<code>data.table()</code>] columns for inputs</strong> for more
-information on each of the inputs.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>]<br />
+[<code>data.table()</code>] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
+and 'survival'; and migration estimates provided as just 'net_migration' or
+'immigration' and 'emigration'. See <strong>Section: Inputs</strong> for more
+information on each of the required inputs.</p></td>
     </tr>
     <tr>
-      <th>input_years</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
-the unique 'year_start' column values in each of the <code>inputs</code>. The minimum
-value must correspond to the only 'year_start' value in the baseline input.</p></td>
-    </tr>
-    <tr>
-      <th>input_sexes</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
-the unique 'sex' column values in each of the sex-specific <code>inputs</code>. Must
-be either just 'female', or 'female' and 'male'.</p></td>
-    </tr>
-    <tr>
-      <th>input_ages</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
-the unique 'age_start' column values in each of the age-specific <code>inputs</code>.</p></td>
+      <th>settings</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>]<br />
+Named list of settings for running <code>ccmpp()</code> with. See
+<strong>Section: Settings</strong> for more information on each of the required
+settings.</p></td>
     </tr>
     <tr>
       <th>value_col</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
 Name of the column containing the value of interest in each of the
 <code>inputs</code>. Default is 'value'.</p></td>
+    </tr>
+    <tr>
+      <th>assert_positive_pop</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether or not to check that the projected population estimates are all
+greater than or equal to zero. Default is 'TRUE'.</p></td>
     </tr>
     </table>
 
@@ -179,51 +176,116 @@ Name of the column containing the value of interest in each of the
     <p>Given information on the starting population size, the population at
 later time points is a function of mortality, fertility, sex-ratio at birth,
 and net-migration.</p>
-<p>The cohort component method of population projection (CCMPP) projects an
+<p>The cohort component method of population projection (CCMPP) projects a
 sex-age specific population forward in time using leslie matrices
 <code><a href='leslie_matrix.html'>leslie_matrix()</a></code> which encode information about fertility, sex-ratio at
 birth, and mortality.</p>
 <p>$$Population(t + \delta) = Leslie[t, t + \delta] * Population(t)$$</p>
-<p>See vignette("ccmpp") or linked references for more details on this method.</p>
-    <h2 class="hasAnchor" id="ccmpp-inputs"><a class="anchor" href="#ccmpp-inputs"></a>CCMPP inputs</h2>
+<p>See <code><a href='../articles/ccmpp.html'>vignette("ccmpp", package = "demCore")</a></code> or linked references for more
+details on this method.</p>
+    <h2 class="hasAnchor" id="inputs"><a class="anchor" href="#inputs"></a>Inputs</h2>
+
+    
+
+<p>srb: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] sex-ratio at birth estimates.</p></li>
+</ul>
+
+<p>asfr: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages_asfr' setting.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual age-specific fertility rate estimates.</p></li>
+</ul>
+
+<p>baseline: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] mid-year for population estimate.
+Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] baseline year population count estimates.</p></li>
+</ul>
+
+<p>survival: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] survivorship ratio estimates.</p></li>
+</ul>
+
+<p>net_migration: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual net-migration proportion estimates.</p></li>
+</ul>
+
+<p>immigration: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual immigration proportion estimates.</p></li>
+</ul>
+
+<p>emigration: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual emigration proportion estimates.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="settings"><a class="anchor" href="#settings"></a>Settings</h2>
 
     
 
 <ul>
-<li><p>srb: [<code>data.table()</code>] of year-specific sex ratio at birth estimates.</p></li>
-<li><p>asfr: [<code>data.table()</code>] of year-age-specific average annual single-year
-age-specific fertility rate estimates. Must include both maternal and
-non-maternal age groups that are zero.</p></li>
-<li><p>baseline: [<code>data.table()</code>] of year-sex-age specific baseline year
-population counts.</p></li>
-<li><p>survival: [<code>data.table()</code>] of year-sex-age-specific survivorship ratio
-estimates.</p></li>
-<li><p>net_migration: [<code>data.table()</code>] of year-sex-age-specific average annual
-net migration proportion estimates</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="possible-data-table-columns-for-inputs"><a class="anchor" href="#possible-data-table-columns-for-inputs"></a>Possible [<code>data.table()</code>] columns for inputs</h2>
-
-    
-
-
-<p>All contain:</p><ul>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] contains value of interest for each input.</p></li>
-</ul>
-
-<p>If year-specific:</p><ul>
-<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
-(inclusive).</p></li>
-<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
-</ul>
-
-<p>If sex-specific:</p><ul>
-<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'.</p></li>
-</ul>
-
-<p>If age-specific:</p><ul>
-<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).</p></li>
-<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p>years: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+The start of each calendar year interval to project in <code>demCore::ccmpp()</code>.
+Corresponds to the 'year_start' column in each of the year-specific inputs.</p></li>
+<li><p>sexes: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
+The sexes being projected in <code>demCore::ccmpp()</code>, must be either just
+'female', or 'female' and 'male'. Corresponds to the 'sex' column in each
+of the sex-specific inputs.</p></li>
+<li><p>ages: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+The ages being projected in <code>demCore::ccmpp()</code>. Corresponds to the
+'age_start' column in each of the standard age-specific inputs.</p></li>
+<li><p>ages_survival: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+The ages for which survivorship ratio estimates are available, includes one
+extra age group compared to the 'ages' setting. Corresponds to the
+'age_start' column in the 'survival' [<code>data.table()</code>] input.</p></li>
+<li><p>ages_asfr: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
+The assumed female reproductive ages, subset of 'ages'. Corresponds to the
+'age_start' column in the age-specific fertility rate (asfr)
+[<code>data.table()</code>] input.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -232,14 +294,19 @@ net migration proportion estimates</p></li>
 Measuring and Modeling Population. Wiley.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='leslie_matrix.html'>leslie_matrix()</a></code> vignette("ccmpp")</p></div>
+    <div class='dont-index'><p><code><a href='leslie_matrix.html'>leslie_matrix()</a></code></p>
+<p>vignette("ccmpp")</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='fu'>ccmpp</span>(
   <span class='kw'>inputs</span> <span class='kw'>=</span> <span class='no'>thailand_initial_estimates</span>,
-  <span class='kw'>input_years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1960</span>, <span class='fl'>1995</span>, <span class='fl'>5</span>),
-  <span class='kw'>input_sexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>),
-  <span class='kw'>input_ages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span>)
+  <span class='kw'>settings</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    <span class='kw'>years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1960</span>, <span class='fl'>1995</span>, <span class='fl'>5</span>),
+    <span class='kw'>sexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>),
+    <span class='kw'>ages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span>),
+    <span class='kw'>ages_survival</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>85</span>, <span class='fl'>5</span>),
+    <span class='kw'>ages_asfr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>15</span>, <span class='fl'>45</span>, <span class='fl'>5</span>)
+  )
 )</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

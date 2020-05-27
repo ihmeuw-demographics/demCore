@@ -96,7 +96,7 @@ of population projection ccmpp()." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ccmpp.html">ccmpp</a>
+      <a href="../articles/ccmpp.html">Cohort Component Method of Population Projection (CCMPP)</a>
     </li>
     <li>
       <a href="../articles/introduction_to_life_tables.html">Introduction to life tables</a>
@@ -149,7 +149,7 @@ alive <code>int</code> years later in a stationary population</p></td>
       <th>asfr</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(n_ages)</a></code>]<br />
 Annual age specific fertility rates NOT yet mulitplied by <code>int</code>. Must
-include both maternal and non-maternal age groups that are zero.</p></td>
+include both reproductive and non-reproductive age groups that are zero.</p></td>
     </tr>
     <tr>
       <th>srb</th>
@@ -199,7 +199,9 @@ Measuring and Modeling Population. Wiley.</p>
     <pre class="examples"><div class='input'><span class='no'>leslie</span> <span class='kw'>&lt;-</span> <span class='fu'>leslie_matrix</span>(
   <span class='kw'>survival</span> <span class='kw'>=</span> <span class='no'>thailand_initial_estimates</span>$<span class='no'>survival</span>[<span class='no'>year_start</span> <span class='kw'>==</span> <span class='fl'>1960</span> <span class='kw'>&amp;</span>
                                                   <span class='no'>sex</span> <span class='kw'>==</span> <span class='st'>"female"</span>, <span class='no'>value</span>],
-  <span class='kw'>asfr</span> <span class='kw'>=</span> <span class='no'>thailand_initial_estimates</span>$<span class='no'>asfr</span>[<span class='no'>year_start</span> <span class='kw'>==</span> <span class='fl'>1960</span>, <span class='no'>value</span>],
+  <span class='kw'>asfr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>),
+           <span class='no'>thailand_initial_estimates</span>$<span class='no'>asfr</span>[<span class='no'>year_start</span> <span class='kw'>==</span> <span class='fl'>1960</span>, <span class='no'>value</span>],
+           <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>7</span>)),
   <span class='kw'>srb</span> <span class='kw'>=</span> <span class='no'>thailand_initial_estimates</span>$<span class='no'>srb</span>[<span class='no'>year_start</span> <span class='kw'>==</span> <span class='fl'>1960</span>, <span class='no'>value</span>],
   <span class='kw'>n_ages</span> <span class='kw'>=</span> <span class='fl'>17</span>, <span class='kw'>int</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>female</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div></pre>
