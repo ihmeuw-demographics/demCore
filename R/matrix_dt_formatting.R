@@ -188,6 +188,7 @@ matrix_to_dt <- function(mdt,
 
   data.table::setcolorder(dt, c(id_cols, "value"))
   data.table::setkeyv(dt, id_cols)
+  data.table::setindexv(dt, NULL)
   return(dt)
 }
 
