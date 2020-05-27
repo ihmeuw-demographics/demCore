@@ -10,6 +10,7 @@ matrix_to_dt(
   mdt,
   year_right_most_endpoint,
   age_right_most_endpoint = Inf,
+  gen_end_interval_col = TRUE,
   value_col = "value",
   validate_arguments = TRUE
 )
@@ -33,6 +34,10 @@ not spanning intervals then assign 'NULL'.}
 
 \item{age_right_most_endpoint}{[\code{numeric(1)}]\cr
 Assumed right most endpoint of the age group intervals. Default is Inf.}
+
+\item{gen_end_interval_col}{[\code{logical(1)}]\cr
+Whether to automatically generate the end of the interval columns (like
+'age'). Default is 'TRUE'.}
 
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest. Default is 'value'.}
