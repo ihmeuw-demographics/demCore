@@ -16,9 +16,8 @@ five-year age groups from 0 to 80+.
 \code{thailand_initial_estimates}: list of [\code{data.table()}] of initial
 estimates for each \code{\link[=ccmpp]{ccmpp()}} input. Calendar year intervals are for five-year
 intervals between 1960 and 2000. Age groups are five-year age groups from 0
-to 80+ (except 'survival' goes up to 85+). See \strong{Section: CCMPP inputs} and
-\strong{Section: Possible [\code{data.table()}] columns for inputs} for more information
-on each of the inputs.
+to 80+ (except 'survival' goes up to 85+). See \strong{Section: Inputs} for more
+information on each of the inputs.
 
 An object of class \code{list} of length 5.
 }
@@ -31,46 +30,89 @@ thailand_initial_estimates
 Example data and initial estimates for reconstructing the female
 and male population in Thailand from 1960 to 2000.
 }
-\section{CCMPP inputs}{
+\section{Inputs}{
 
-\itemize{
-\item srb: [\code{data.table()}] of year-specific sex ratio at birth estimates.
-\item asfr: [\code{data.table()}] of year-age-specific average annual single-year
-age-specific fertility rate estimates. Must include both maternal and
-non-maternal age groups that are zero.
-\item baseline: [\code{data.table()}] of year-sex-age specific baseline year
-population counts.
-\item survival: [\code{data.table()}] of year-sex-age-specific survivorship ratio
-estimates.
-\item net_migration: [\code{data.table()}] of year-sex-age-specific average annual
-net migration proportion estimates
-}
-}
-
-\section{Possible [\code{data.table()}] columns for inputs}{
-
-
-All contain:
-\itemize{
-\item \code{value_col}: [\code{numeric()}] contains value of interest for each input.
-}
-
-If year-specific:
+srb: [\code{data.table()}]\cr
 \itemize{
 \item year_start: [\code{integer()}] start of the calendar year interval
-(inclusive).
+(inclusive). Corresponds to 'years' \code{setting}.
 \item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item \code{value_col}: [\code{numeric()}] sex-ratio at birth estimates.
 }
 
-If sex-specific:
+asfr: [\code{data.table()}]\cr
 \itemize{
-\item sex: [\code{character()}] either 'female' or 'male'.
-}
-
-If age-specific:
-\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
 \item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages_asfr' setting.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate estimates.
+}
+
+baseline: [\code{data.table()}]\cr
+\itemize{
+\item year: [\code{integer()}] mid-year for population estimate.
+Corresponds to 'years' \code{setting}.
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] baseline year population count estimates.
+}
+
+survival: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] survivorship ratio estimates.
+}
+
+net_migration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual net-migration proportion estimates.
+}
+
+immigration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual immigration proportion estimates.
+}
+
+emigration: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] annual emigration proportion estimates.
 }
 }
 
@@ -84,6 +126,6 @@ Statistical Society. Series A: Statistics in Society 178 (4): 977–1007.
 \href{https://github.com/markalava/Bayesian-Reconstruction}{markalava/Bayesian-Reconstruction github repo}
 }
 \seealso{
-\code{\link[=ccmpp]{ccmpp()}}, \code{\link[popMethods:popReconstruct]{popMethods::popReconstruct()}}
+\code{\link[=ccmpp]{ccmpp()}}
 }
 \keyword{datasets}

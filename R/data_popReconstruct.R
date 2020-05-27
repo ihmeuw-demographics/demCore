@@ -12,13 +12,10 @@
 #' `burkina_faso_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2005. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
-#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
-#' on each of the inputs.
+#' to 80+ (except 'survival' goes up to 85+). See **Section: Inputs** for more
+#' information on each of the inputs.
 #'
-#' @inheritSection ccmpp CCMPP inputs
-#'
-#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
+#' @inheritSection ccmpp Inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -28,7 +25,7 @@
 #'
 #' [popReconstruct R Package](https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf)
 #'
-#' @seealso [ccmpp()], [popMethods::popReconstruct()]
+#' @seealso [ccmpp()]
 #'
 #' @rdname burkina_faso
 "burkina_faso_data"
@@ -50,13 +47,10 @@
 #' `thailand_initial_estimates`: list of \[`data.table()`\] of initial
 #' estimates for each [ccmpp()] input. Calendar year intervals are for five-year
 #' intervals between 1960 and 2000. Age groups are five-year age groups from 0
-#' to 80+ (except 'survival' goes up to 85+). See **Section: CCMPP inputs** and
-#' **Section: Possible \[`data.table()`\] columns for inputs** for more information
-#' on each of the inputs.
+#' to 80+ (except 'survival' goes up to 85+). See **Section: Inputs** for more
+#' information on each of the inputs.
 #'
-#' @inheritSection ccmpp CCMPP inputs
-#'
-#' @inheritSection ccmpp Possible \[`data.table()`\] columns for inputs
+#' @inheritSection ccmpp Inputs
 #'
 #' @references
 #' Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
@@ -67,7 +61,7 @@
 #'
 #' [markalava/Bayesian-Reconstruction github repo](https://github.com/markalava/Bayesian-Reconstruction)
 #'
-#' @seealso [ccmpp()], [popMethods::popReconstruct()]
+#' @seealso [ccmpp()]
 #'
 #' @rdname thailand
 "thailand_data"

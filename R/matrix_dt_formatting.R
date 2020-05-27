@@ -25,6 +25,9 @@
 #'   'age_end' if the data is age-specific.
 #' @param value_col \[`character(1)`\]\cr
 #'   Name of the column containing the value of interest. Default is 'value'.
+#' @param validate_arguments \[`logical(1)`\]\cr
+#'   Whether to validate that the input arguments are formatted correctly.
+#'   Default is 'TRUE'.
 #'
 #' @details
 #' data.table format: When data is in data.table format then it must have a
@@ -49,51 +52,55 @@
 matrix_to_dt <- function(mdt,
                          year_right_most_endpoint,
                          age_right_most_endpoint = Inf,
-                         value_col = "value") {
+                         value_col = "value",
+                         validate_arguments = TRUE) {
 
   # Validate input arguments ------------------------------------------------
 
-  ## check `mdt` argument
-  assertthat::assert_that(
-    assertive::is_matrix(mdt) |
-      (assertive::is_list(mdt) & all(mapply(assertive::is_matrix, mdt))),
-    msg = "`mdt` must be a matrix or list of matrices"
-  )
-  sex_specific <- assertive::is_list(mdt)
+  if (validate_arguments) {
+    ## check `mdt` argument
+    assertthat::assert_that(
+      assertive::is_matrix(mdt) |
+        (assertive::is_list(mdt) & all(mapply(assertive::is_matrix, mdt))),
+      msg = "`mdt` must be a matrix or list of matrices"
+    )
 
-  # standardize to list format to make other checks easier
-  check_mdt <- copy(mdt)
-  if (!sex_specific) check_mdt <- list("none" = mdt)
-  assertthat::assert_that(
-    all(assertive::is_not_null(unlist(mapply(rownames, check_mdt)))),
-    all(assertive::is_not_null(unlist(mapply(colnames, check_mdt)))),
-    msg = "rownames (age_start) and colnames (year_start) of `mdt` must exist"
-  )
-  assertthat::assert_that(
-    all(assertive::is_numeric_string(unlist(mapply(rownames, check_mdt)))),
-    all(assertive::is_numeric_string(unlist(mapply(colnames, check_mdt)))),
-    msg = "rownames (age_start) and colnames (year_start) of `mdt` must be
+    # standardize to list format to make other checks easier
+    check_mdt <- copy(mdt)
+    sex_specific <- assertive::is_list(mdt)
+    if (!sex_specific) check_mdt <- list("none" = mdt)
+    assertthat::assert_that(
+      all(assertive::is_not_null(unlist(mapply(rownames, check_mdt)))),
+      all(assertive::is_not_null(unlist(mapply(colnames, check_mdt)))),
+      msg = "rownames (age_start) and colnames (year_start) of `mdt` must exist"
+    )
+    assertthat::assert_that(
+      all(assertive::is_numeric_string(unlist(mapply(rownames, check_mdt)))),
+      all(assertive::is_numeric_string(unlist(mapply(colnames, check_mdt)))),
+      msg = "rownames (age_start) and colnames (year_start) of `mdt` must be
     numeric strings"
-  )
+    )
 
-  ## check `year_right_most_endpoint` argument
-  assertthat::assert_that(
-    assertthat::is.number(year_right_most_endpoint) |
-      is.null(year_right_most_endpoint),
-    msg = "`year_right_most_endpoint` must be a length one numeric or NULL"
-  )
+    ## check `year_right_most_endpoint` argument
+    assertthat::assert_that(
+      assertthat::is.number(year_right_most_endpoint) |
+        is.null(year_right_most_endpoint),
+      msg = "`year_right_most_endpoint` must be a length one numeric or NULL"
+    )
 
-  ## check `age_right_most_endpoint` argument
-  assertthat::assert_that(
-    assertthat::is.number(age_right_most_endpoint),
-    msg = "`age_right_most_endpoint` must be a length one numeric"
-  )
+    ## check `age_right_most_endpoint` argument
+    assertthat::assert_that(
+      assertthat::is.number(age_right_most_endpoint),
+      msg = "`age_right_most_endpoint` must be a length one numeric"
+    )
 
-  ## check `value_col` argument
-  assertthat::assert_that(assertthat::is.string(value_col))
+    ## check `value_col` argument
+    assertthat::assert_that(assertthat::is.string(value_col))
+  }
 
   # Convert to data.table ---------------------------------------------------
 
+  sex_specific <- assertive::is_list(mdt)
   age_specific <- ifelse(sex_specific, nrow(mdt[[1]]) > 1, nrow(mdt) > 1)
   id_cols <- c("year_start", "year_end",
                if (sex_specific) "sex",
@@ -161,37 +168,42 @@ matrix_to_dt <- function(mdt,
 dt_to_matrix <- function(dt,
                          id_cols = c("year_start", "year_end", "sex",
                                      "age_start", "age_end"),
-                         value_col = "value") {
+                         value_col = "value",
+                         validate_arguments = TRUE) {
 
   # Validate arguments ------------------------------------------------------
 
-  # check `id_cols` argument
-  assertive::assert_is_character(id_cols)
-  possible_id_cols <- c("year_start", "year_end", "sex", "age_start", "age_end")
-  assertthat::assert_that(
-    length(setdiff(id_cols, possible_id_cols)) == 0,
-    msg = paste0("id_cols can only include '",
-                paste(possible_id_cols, collapse = "', '"), "'.")
-  )
+  if (validate_arguments) {
+    # check `id_cols` argument
+    assertive::assert_is_character(id_cols)
+    possible_id_cols <- c("year_start", "year_end", "year",
+                          "sex", "age_start", "age_end")
+    assertthat::assert_that(
+      length(setdiff(id_cols, possible_id_cols)) == 0,
+      msg = paste0("id_cols can only include '",
+                   paste(possible_id_cols, collapse = "', '"), "'.")
+    )
 
-  # check `dt` argument
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c(id_cols, value_col), quiet = T)
-  demUtils::assert_is_unique_dt(dt, id_cols)
+    # check `dt` argument
+    assertive::assert_is_data.table(dt)
+    assertable::assert_colnames(dt, c(id_cols, value_col), quiet = T)
+    demUtils::assert_is_unique_dt(dt, id_cols)
+  }
 
 # Convert to matrix -------------------------------------------------------
 
   sex_specific <- "sex" %in% id_cols
   age_specific <- "age_start" %in% id_cols
   dt <- copy(dt)
+  year_col <- ifelse("year_start" %in% id_cols, "year_start", "year")
 
-  dcast_matrix_format <- function(d, age_specific, value_col) {
+  dcast_matrix_format <- function(d, year_col, age_specific, value_col) {
     if (age_specific) {
       age_starts <- sort(unique(d$age_start))
-      form <- eval("age_start ~ year_start")
+      form <- eval(paste0("age_start ~ ", year_col))
     } else {
       age_starts <- 0
-      form <- eval(". ~ year_start")
+      form <- eval(paste0(". ~ ", year_col))
     }
     m <- dcast(d,  form , value.var = value_col)
     m[, c(ifelse(age_specific, "age_start", ".")) := NULL]
@@ -203,13 +215,13 @@ dt_to_matrix <- function(dt,
   if (sex_specific) {
     sexes <- sort(unique(dt$sex))
     mdt <- lapply(sexes, function(s) {
-      m <- dcast_matrix_format(dt[sex == s], age_specific, value_col)
+      m <- dcast_matrix_format(dt[sex == s], year_col, age_specific, value_col)
       return(m)
     })
     names(mdt) <- sexes
 
   } else {
-    mdt <- dcast_matrix_format(dt, age_specific, value_col)
+    mdt <- dcast_matrix_format(dt, year_col, age_specific, value_col)
   }
   return(mdt)
 }

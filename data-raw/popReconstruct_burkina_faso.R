@@ -17,7 +17,7 @@ burkina_faso_data <- list(
   population = matrix_to_dt(
     mdt = list(female = burkina.faso.females$census.pop.counts),
     year_right_most_endpoint = NULL
-  )
+  )[, list(year = year_start, sex, age_start, age_end, value)]
 )
 
 burkina_faso_initial_estimates <- list(
@@ -28,11 +28,11 @@ burkina_faso_initial_estimates <- list(
   asfr = matrix_to_dt(
     mdt = burkina.faso.females$fertility.rates,
     year_right_most_endpoint = 2005
-  ),
+  )[between(age_start, 15, 45)],
   baseline = matrix_to_dt(
     mdt = list(female = burkina.faso.females$baseline.pop.counts),
     year_right_most_endpoint = NULL
-  ),
+  )[, list(year = year_start, sex, age_start, age_end, value)],
   survival = matrix_to_dt(
     mdt = list(female = burkina.faso.females$survival.proportions),
     year_right_most_endpoint = 2005
@@ -43,6 +43,6 @@ burkina_faso_initial_estimates <- list(
   )
 )
 
-devtools::use_data(burkina_faso_data,
-                   burkina_faso_initial_estimates,
-                   overwrite = T)
+usethis::use_data(burkina_faso_data,
+                  burkina_faso_initial_estimates,
+                  overwrite = T)

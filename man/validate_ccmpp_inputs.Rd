@@ -4,24 +4,19 @@
 \alias{validate_ccmpp_inputs}
 \title{Validate the ccmpp input arguments}
 \usage{
-validate_ccmpp_inputs(inputs, input_years, input_sexes, input_ages, value_col)
+validate_ccmpp_inputs(inputs, settings, value_col)
 }
 \arguments{
-\item{inputs}{list of [\code{data.table()}]s of initial estimates for each ccmpp
-input. See \strong{Section: CCMPP inputs} and
-\strong{Section: Possible [\code{data.table()}] columns for inputs} for more
-information on each of the inputs.}
+\item{inputs}{[\code{list()}]\cr
+[\code{data.table()}] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
+and 'survival'; and migration estimates provided as just 'net_migration' or
+'immigration' and 'emigration'. See \strong{Section: Inputs} for more
+information on each of the required inputs.}
 
-\item{input_years}{[\code{numeric()}]\cr
-the unique 'year_start' column values in each of the \code{inputs}. The minimum
-value must correspond to the only 'year_start' value in the baseline input.}
-
-\item{input_sexes}{[\code{character()}]\cr
-the unique 'sex' column values in each of the sex-specific \code{inputs}. Must
-be either just 'female', or 'female' and 'male'.}
-
-\item{input_ages}{[\code{numeric()}]\cr
-the unique 'age_start' column values in each of the age-specific \code{inputs}.}
+\item{settings}{[\code{list()}]\cr
+Named list of settings for running \code{\link[=ccmpp]{ccmpp()}} with. See
+\strong{Section: Settings} for more information on each of the required
+settings.}
 
 \item{value_col}{[\code{character(1)}]\cr
 Name of the column containing the value of interest in each of the
