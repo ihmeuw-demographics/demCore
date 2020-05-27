@@ -145,6 +145,7 @@ year).</p>
   <span class='no'>mdt</span>,
   <span class='no'>year_right_most_endpoint</span>,
   <span class='kw'>age_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
+  <span class='kw'>gen_end_interval_col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
   <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
@@ -176,6 +177,12 @@ not spanning intervals then assign 'NULL'.</p></td>
       <th>age_right_most_endpoint</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>]<br />
 Assumed right most endpoint of the age group intervals. Default is Inf.</p></td>
+    </tr>
+    <tr>
+      <th>gen_end_interval_col</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to automatically generate the end of the interval columns (like
+'age'). Default is 'TRUE'.</p></td>
     </tr>
     <tr>
       <th>value_col</th>
