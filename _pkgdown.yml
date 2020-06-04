@@ -33,6 +33,9 @@ reference:
 - contents:
   - ccmpp
   - leslie_matrix
+  - nSx_from_lx_nLx_Tx
+  - gen_nLx_from_nSx
+  - gen_lx_from_nLx_ax
 
 - title: "Other"
   desc: "Additional miscellaneous functions."

@@ -9,7 +9,8 @@
 # https://community.rstudio.com/t/how-to-solve-no-visible-binding-for-global-variable-note/28887
 utils::globalVariables(c("age_int", "age_group_years_start", "age_group_years_end",
                          "test", "px", "qx", "lx", "dx", "mx", "ax", "ex", "Tx",
-                         "nLx", "head", "age", "age_start", "age_end", "check",
+                         "nLx", "nSx", "head",
+                         "age", "age_start", "age_end", "check",
                          "agg_age_start", "ax_full_years", "axdx_total",
                          "age_count", "abridged_age", "axdx_full_years",
                          "age_length", "reg_qx", "slope", "intercept",
