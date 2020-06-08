@@ -17,7 +17,70 @@
 #'   `id_cols`, 'qx', and 'ax'. Will only include the age groups specified in
 #'   `age_mapping`.
 #'
-#' @seealso hierarchyUtils::agg
+#' @seealso [`hierarchyUtils::agg()`]
+#' @seealso [`agg_qx()`]
+#'
+#' @details
+#' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
+#' for the formatted equations below.
+#'
+#' This function works by aggregating the qx and ax life table parameters
+#' separately.
+#'
+#' **qx aggregation:**
+#'
+#' To explain how qx is aggregated it is useful to define a couple of different
+#' events:
+#' \deqn{A = \text{death between age } x \text{ and } x + n}
+#' \deqn{A' = \text{survival between age } x \text{ and } x + n}
+#' \deqn{B = \text{survival to age } x}
+#'
+#' Now qx and px can be written in terms of events A and B.
+#' \deqn{{}_{n}q_x = P(A | B)}
+#' \deqn{{}_{n}p_x = P(A' | B)}
+#'
+#' Now say there are multiple sub age-groups that make up the overall age group
+#' between \eqn{x \text{ and } x + n}. The first sub age-group could be between
+#' \eqn{x \text{ and } x + n_1} and the second between
+#' \eqn{x + n_1 \text{ and } x + n}. So \eqn{n = n_1 + n_2}.
+#'
+#' The overall px value can be written as a function of the sub age-group's px
+#' values.
+#' \deqn{P(A'|B) = P(A'_1|B_1) \cap P(A'_2|B_2) = P(A'_1|B_1) * P(A'_2|B_2)}
+#'
+#' where:
+#' \deqn{P(A'_1 | B_1) = \text{survival between age } x \text{ and } x + n_1
+#'   \text{ given survival to age } x}
+#' \deqn{P(A'_2 | B_2) = \text{survival between age } x + n_1 \text{ and } x + n
+#'   \text{ given survival to age } x + n_1}
+#'
+#' More generally if there are \eqn{A} age groups between age
+#' \eqn{x \text{ and } x + n}, and \eqn{i} indexes each of the sub age
+#' intervals then:
+#' \deqn{{}_{n}p_x = \prod_{i=1}^{A} {}_{n_i}p_{x_i}}
+#' \deqn{{}_{n}q_x = 1 - {}_{n}p_x}
+#'
+#' **ax aggregation:**
+#'
+#' \eqn{{}_{n}a_x} is aggregated across age groups by aggregating the number of
+#' person-years lived in each age group by those who died in the interval.
+#'
+#' \deqn{{}_{n}a_x \cdot {}_{n}d_x = \text{person-years lived between age } x
+#'   \text{ and } x + n \text{ by those who died in this age interval}}
+#' where:
+#' \deqn{{}_{n}a_x = \text{average years lived between age } x \text{ and }
+#'   x + n \text{ by those who died in the age interval}}
+#' \deqn{{}_{n}d_x = \text{number that died between age } x \text{ and } x + n}
+#'
+#' Now say there are \eqn{A} age groups between age \eqn{x \text{ and } x + n},
+#' and \eqn{i} indexes each of the sub age intervals. The total number of
+#' person-years lived by those who died in the aggregate age group is a simple
+#' sum of the number of person-years lived in each sub age interval. The
+#' aggregate ax can then be solved for.
+#' \deqn{{}_{n}a_x \cdot {}_{n}d_x = \sum_{i = 1}^{A} {}_{n_i}a_{x_i}
+#'   \cdot {}_{n_i}d_{x_i}}
+#' \deqn{{}_{n}a_x = \frac{\sum_{i = 1}^{A} {}_{n_i}a_{x_i}
+#'   \cdot {}_{n_i}d_{x_i}}{\sum_{i = 1}^{A} {}_{n_i}d_{x_i}}}
 #'
 #' @examples
 #' dt <- data.table::data.table(
@@ -100,9 +163,8 @@ agg_lt <- function(dt,
   dt <- dt[, .SD, .SDcols = c(id_cols, "qx", "ax", "dx")]
   dt[, px := 1 - qx]
 
-  # aggregate ----------------------------------------------------------
+  # aggregate qx ------------------------------------------------------------
 
-  # aggregate qx
   dt_qx <- hierarchyUtils::agg(
     dt = dt[, .SD, .SDcols = c(id_cols, "px")],
     id_cols = id_cols,
@@ -116,6 +178,8 @@ agg_lt <- function(dt,
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
+
+  # aggregate ax ------------------------------------------------------------
 
   # determine the aggregate age group each granular age group belongs to
   dt[, agg_age_start := cut(
@@ -148,9 +212,11 @@ agg_lt <- function(dt,
   dt_ax[, ax := axdx_total / dx]
   dt_ax[, c("axdx_total", "dx") := NULL]
 
-  agg_lt <- merge(dt_qx, dt_ax, all = TRUE, by = id_cols)
-
   # check output -----------------------------------------------------
+
+  # combine aggregated qx and ax
+
+  agg_lt <- merge(dt_qx, dt_ax, all = TRUE, by = id_cols)
 
   assertable::assert_values(agg_lt, "ax", "gte", 0, quiet = T)
   assertable::assert_values(agg_lt, "qx", "gte", 0, quiet = T)

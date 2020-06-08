@@ -1,7 +1,7 @@
 destination: docs
 
 reference:
-- title: "Calculating standard life table parameters"
+- title: "Calculating basic life table parameters"
   desc: "Functions to calculate mx, ax, qx, etc. using standard demographic methods."
 - contents:
   - mx_to_qx

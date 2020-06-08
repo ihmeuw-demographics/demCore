@@ -50,7 +50,6 @@ calculate_nSx_then_inverse <- function(terminal_age) {
   data.table::setcolorder(output_lt, names(lt))
 
   testthat::expect_equal(lt, output_lt)
-
 }
 
 testthat::test_that("survivorship ratios are calculated correctly", {

@@ -29,6 +29,9 @@ represent the proportion of people in one age group that will survive into
 the next age group given the age-specific mortality rates in a lifetable.
 }
 \details{
+See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
+for the formatted equations below.
+
 First age group:
 \deqn{{}_{n}S_0 = \frac{{}_{n}L_{0}}{n \cdot l_0}}
 

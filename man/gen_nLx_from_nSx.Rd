@@ -22,6 +22,9 @@ Generate the nLx life table parameter given survivorship ratios
 (nSx).
 }
 \details{
+See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
+for the formatted equations below.
+
 First age group:
 \deqn{{}_{n}S_0 = \frac{{}_{n}L_{0}}{n \cdot l_0}}
 \deqn{{}_{n}L_{0} = {}_{n}S_0 \cdot n \cdot l_0}

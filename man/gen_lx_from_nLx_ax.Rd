@@ -21,6 +21,9 @@ data.tables in place.
 Generate the lx life table parameter given nLx and ax.
 }
 \details{
+See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
+for the formatted equations below.
+
 Terminal age group:
 \deqn{\begin{align} {}_{\infty}L_{x} &= n \cdot l_{x+n} + {}_{\infty}a_{x}
     \cdot {}_{\infty}d_{x} \\ &= {}_{\infty}a_{x} \cdot {}_{\infty}d_{x}

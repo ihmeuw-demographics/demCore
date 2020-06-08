@@ -14,6 +14,9 @@
 #'   maximum 'age_start' in `dt`.
 #'
 #' @details
+#' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
+#' for the formatted equations below.
+#'
 #' First age group:
 #'   \deqn{{}_{n}S_0 = \frac{{}_{n}L_{0}}{n \cdot l_0}}
 #'
@@ -47,25 +50,16 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
 
   # Validate arguments ------------------------------------------------------
 
-  validate_lifetable(dt, id_cols, param_cols = c("lx", "nLx", "Tx"))
-
-  # check that age interval is constant in input lifetable
   dt <- copy(dt)
-  if (!"age_length" %in% names(dt)) {
-    hierarchyUtils::gen_length(dt, col_stem = "age")
-  }
-  age_int <- dt[age_length != Inf, unique(age_length)]
-  assertthat::assert_that(
-    length(age_int) == 1,
-    msg = "the age intervals in `dt` must be consistent across all age groups"
+  validate_lifetable(
+    dt = dt,
+    id_cols = id_cols,
+    param_cols = c("lx", "nLx", "Tx"),
+    assert_uniform_age_length = TRUE,
+    assert_uniform_terminal_age = TRUE,
+    assert_age_start_0 = TRUE,
   )
-
-  # check that the terminal age group in `dt` is consistent
-  dt_terminal_ages <- dt[age_end == "Inf", unique(age_start)]
-  assertthat::assert_that(
-    length(dt_terminal_ages) == 1,
-    msg = "the terminal ages in `dt` must be consistent across `id_cols`"
-  )
+  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # check `terminal_age` argument
   assertthat::assert_that(
@@ -128,6 +122,9 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
 #' @inherit gen_lifetable_parameters return
 #'
 #' @details
+#' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
+#' for the formatted equations below.
+#'
 #' First age group:
 #'   \deqn{{}_{n}S_0 = \frac{{}_{n}L_{0}}{n \cdot l_0}}
 #'   \deqn{{}_{n}L_{0} = {}_{n}S_0 \cdot n \cdot l_0}
@@ -158,23 +155,16 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
 
   # Validate arguments ------------------------------------------------------
 
-  validate_lifetable(dt, id_cols, param_cols = "nSx")
-
-  # check that age interval is constant in input lifetable
-  hierarchyUtils::gen_length(dt, col_stem = "age")
-  age_int <- dt[age_length != Inf, unique(age_length)]
-  assertthat::assert_that(
-    length(age_int) == 1,
-    msg = "the age intervals in `dt` must be consistent across all age groups"
+  validate_lifetable(
+    dt = dt,
+    id_cols = id_cols,
+    param_cols = c("nSx"),
+    assert_uniform_age_length = TRUE,
+    assert_uniform_terminal_age = TRUE,
+    assert_age_start_0 = TRUE,
   )
-  dt[, age_length := NULL]
-
-  # check that the terminal age group in `dt` is consistent
+  age_int <- dt[age_end != Inf, unique(diff(age_start))]
   terminal_age <- dt[age_end == "Inf", unique(age_start)]
-  assertthat::assert_that(
-    length(terminal_age) == 1,
-    msg = "the terminal ages in `dt` must be consistent across `id_cols`"
-  )
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
@@ -217,6 +207,9 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
 #' @inherit gen_lifetable_parameters return
 #'
 #' @details
+#' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
+#' for the formatted equations below.
+#'
 #' Terminal age group:
 #'   \deqn{\begin{align} {}_{\infty}L_{x} &= n \cdot l_{x+n} + {}_{\infty}a_{x}
 #'     \cdot {}_{\infty}d_{x} \\ &= {}_{\infty}a_{x} \cdot {}_{\infty}d_{x}
@@ -248,24 +241,15 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
 
   # Validate arguments ------------------------------------------------------
 
-  validate_lifetable(dt, id_cols, param_cols = c("nLx", "ax"))
-
-  # check that age interval is constant in input lifetable
-  if (!"age_length" %in% names(dt)) {
-    hierarchyUtils::gen_length(dt, col_stem = "age")
-  }
-  age_int <- dt[age_length != Inf, unique(age_length)]
-  assertthat::assert_that(
-    length(age_int) == 1,
-    msg = "the age intervals in `dt` must be consistent across all age groups"
+  validate_lifetable(
+    dt = dt,
+    id_cols = id_cols,
+    param_cols = c("nLx", "ax"),
+    assert_uniform_age_length = TRUE,
+    assert_uniform_terminal_age = TRUE,
+    assert_age_start_0 = TRUE,
   )
-
-  # check that the terminal age group in `dt` is consistent
-  terminal_age <- dt[age_end == "Inf", unique(age_start)]
-  assertthat::assert_that(
-    length(terminal_age) == 1,
-    msg = "the terminal ages in `dt` must be consistent across `id_cols`"
-  )
+  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]

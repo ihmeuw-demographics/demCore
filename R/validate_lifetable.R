@@ -8,6 +8,13 @@
 #'   of `dt`.
 #' @param param_cols \[`character()`\]\cr Columns containing life table
 #'   parameters (qx, lx, etc.)
+#' @param assert_uniform_age_length \[`logical()`\]\cr Whether to check that
+#'   the age groups in the lifetable are all of the same length except for the
+#'   terminal age group.
+#' @param assert_uniform_terminal_age \[`logical()`\]\cr Whether to check that
+#'   each terminal age group starts at the same age.
+#' @param assert_age_start_0 \[`logical()`\]\cr Whether to check that the
+#'   youngest age group starts at age zero.
 #' @param assert_na \[`logical()`\]\cr Whether to check for NA values in the
 #'   generated variable.
 #'
@@ -26,8 +33,13 @@
 #'
 #' @export
 
-validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
-                                assert_na = NA) {
+validate_lifetable <- function(dt,
+                               id_cols = c(),
+                               param_cols = c(),
+                               assert_uniform_age_length = FALSE,
+                               assert_uniform_terminal_age = FALSE,
+                               assert_age_start_0 = FALSE,
+                               assert_na = NA) {
 
   # check `id_cols` argument -------------------------------------------------
 
@@ -46,13 +58,14 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
     if("age_length" %in% id_cols) stop("'age_length' cannot be in id_cols.")
     if("age_group" %in% id_cols) stop("'age_group' cannot be in id_cols.")
     if("age_group_id" %in% id_cols) stop("'age_group_id' cannot be in id_cols.")
-    id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
-    if(any(tolower(id_cols_no_age) %like% "age")) {
-      warning("Confirm that no age vars other than 'age_start' and 'age_end'
-              are in 'id_cols'.")
-    }
+
   }
 
+  id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+  if(any(tolower(id_cols_no_age) %like% "age")) {
+    warning("Confirm that no age vars other than 'age_start' and 'age_end'
+              are in 'id_cols'.")
+  }
   # check `dt` ---------------------------------------------------------------
 
   # data.table
@@ -73,6 +86,39 @@ validate_lifetable <- function(dt, id_cols = c(), param_cols = c(),
   for(param in param_cols) {
     assertive::assert_is_numeric(dt[[param]])
   }
+
+  # check that age interval is constant in input lifetable
+  if (assert_uniform_age_length) {
+    age_length_column <- "age_length" %in% names(dt)
+    if (!age_length_column) {
+      hierarchyUtils::gen_length(dt, col_stem = "age")
+    }
+    age_int <- dt[age_length != Inf, unique(age_length)]
+    assertthat::assert_that(
+      length(age_int) == 1,
+      msg = "the age intervals in `dt` must be consistent across all age groups"
+    )
+    if (!age_length_column) dt[, age_length := NULL]
+  }
+
+  # check that the terminal age group in `dt` is consistent
+  if (assert_uniform_terminal_age) {
+    dt_terminal_ages <- dt[age_end == "Inf", unique(age_start)]
+    assertthat::assert_that(
+      length(dt_terminal_ages) == 1,
+      msg = "the terminal ages in `dt` must be consistent across `id_cols`"
+    )
+  }
+
+  # check that the starting age group in `dt` is consistently zero
+  if (assert_age_start_0) {
+    dt_min_age_start <- dt[, min(age_start), by = id_cols_no_age]
+    assertthat::assert_that(
+      all(dt_min_age_start$V1 == 0),
+      msg = "the starting age group in `dt` must be zero across `id_cols`"
+    )
+  }
+
 
   # all life table params > 0
   assertable::assert_values(dt, param_cols, test = "gte",

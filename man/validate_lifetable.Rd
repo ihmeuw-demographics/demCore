@@ -4,7 +4,15 @@
 \alias{validate_lifetable}
 \title{Validate life table}
 \usage{
-validate_lifetable(dt, id_cols = c(), param_cols = c(), assert_na = NA)
+validate_lifetable(
+  dt,
+  id_cols = c(),
+  param_cols = c(),
+  assert_uniform_age_length = FALSE,
+  assert_uniform_terminal_age = FALSE,
+  assert_age_start_0 = FALSE,
+  assert_na = NA
+)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr Input life tables}
@@ -14,6 +22,16 @@ of \code{dt}.}
 
 \item{param_cols}{[\code{character()}]\cr Columns containing life table
 parameters (qx, lx, etc.)}
+
+\item{assert_uniform_age_length}{[\code{logical()}]\cr Whether to check that
+the age groups in the lifetable are all of the same length except for the
+terminal age group.}
+
+\item{assert_uniform_terminal_age}{[\code{logical()}]\cr Whether to check that
+each terminal age group starts at the same age.}
+
+\item{assert_age_start_0}{[\code{logical()}]\cr Whether to check that the
+youngest age group starts at age zero.}
 
 \item{assert_na}{[\code{logical()}]\cr Whether to check for NA values in the
 generated variable.}
