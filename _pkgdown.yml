@@ -23,8 +23,8 @@ reference:
 - title: "Aggregation and scaling"
   desc: "Functions for aggregating and scaling life tables. Includes conversions between single-year and abridged life tables."
 - contents:
-  - agg_qx
   - agg_lt
+  - scale_qx
   - gen_summary_lt
   - abridged_to_full
 

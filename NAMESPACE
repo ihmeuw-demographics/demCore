@@ -2,7 +2,6 @@
 
 export(abridged_to_full)
 export(agg_lt)
-export(agg_qx)
 export(ccmpp)
 export(gen_Tx)
 export(gen_dx_from_lx)

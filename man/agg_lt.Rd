@@ -15,7 +15,7 @@ agg_lt(
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
 Life table  to be aggregated. Must include all columns in \code{id_cols}, and
-at least two of 'qx', 'ax', and 'mx'.}
+at least two of 'qx', 'ax', and 'mx', or just 'qx'.}
 
 \item{id_cols}{[\code{character()}]\cr
 ID columns that uniquely identify each row of \code{dt}.}
@@ -38,20 +38,21 @@ present in \code{dt} before aggregating. Default is 'False' and the function
 errors out.}
 }
 \value{
-[\code{data.table()}]\cr Aggregated life table(s) with columns for
-\code{id_cols}, 'qx', and 'ax'. Will only include the age groups specified in
-\code{age_mapping}.
+[\code{data.table()}]\cr Aggregated life table(s) with columns for all
+\code{id_cols}. A column for 'qx' is always included, a column for 'ax' will
+also be returned if two of 'qx', 'ax', and 'mx' are included in the input
+\code{dt}. Will only return the age groups specified in \code{age_mapping}.
 }
 \description{
 Aggregate life table(s) to less granular age groups using
-standard life table aggregation functions.
+standard life table aggregation functions of qx (and ax).
 }
 \details{
 See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
 for the formatted equations below.
 
 This function works by aggregating the qx and ax life table parameters
-separately.
+separately. If only qx is included in \code{dt} than ax aggregation is not done.
 
 \strong{qx aggregation:}
 
@@ -125,9 +126,16 @@ dt <- agg_lt(
     age_end = c(seq(5, 110, 5), Inf)
   )
 )
+
+dt <- agg_lt(
+  dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
+  id_cols = id_cols,
+  age_mapping = data.table::data.table(
+    age_start = seq(0, 110, 5),
+    age_end = c(seq(5, 110, 5), Inf)
+  )
+)
 }
 \seealso{
 \code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}}
-
-\code{\link[=agg_qx]{agg_qx()}}
 }

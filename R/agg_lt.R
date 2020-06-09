@@ -1,31 +1,31 @@
 #' @title Aggregate life table(s) to less granular age groups
 #'
 #' @description Aggregate life table(s) to less granular age groups using
-#'   standard life table aggregation functions.
+#'   standard life table aggregation functions of qx (and ax).
 #'
 #' @param dt \[`data.table()`\]\cr
 #'   Life table  to be aggregated. Must include all columns in `id_cols`, and
-#'   at least two of 'qx', 'ax', and 'mx'.
+#'   at least two of 'qx', 'ax', and 'mx', or just 'qx'.
 #' @param age_mapping \[`data.table()`\]\cr
 #'   Specification of intervals to aggregate to. Required columns are
 #'   'age_start' and 'age_end'. Use "Inf" as 'age_end' for terminal age group.
 #'   The age group intervals must be contiguous and cover the entire interval
 #'   specified in the input life tables `dt`.
-#' @inheritParams agg_qx
+#' @inheritParams hierarchyUtils::agg
 #'
-#' @return \[`data.table()`\]\cr Aggregated life table(s) with columns for
-#'   `id_cols`, 'qx', and 'ax'. Will only include the age groups specified in
-#'   `age_mapping`.
+#' @return \[`data.table()`\]\cr Aggregated life table(s) with columns for all
+#'   `id_cols`. A column for 'qx' is always included, a column for 'ax' will
+#'   also be returned if two of 'qx', 'ax', and 'mx' are included in the input
+#'   `dt`. Will only return the age groups specified in `age_mapping`.
 #'
 #' @seealso [`hierarchyUtils::agg()`]
-#' @seealso [`agg_qx()`]
 #'
 #' @details
 #' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
 #' for the formatted equations below.
 #'
 #' This function works by aggregating the qx and ax life table parameters
-#' separately.
+#' separately. If only qx is included in `dt` than ax aggregation is not done.
 #'
 #' **qx aggregation:**
 #'
@@ -99,6 +99,15 @@
 #'     age_end = c(seq(5, 110, 5), Inf)
 #'   )
 #' )
+#'
+#' dt <- agg_lt(
+#'   dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
+#'   id_cols = id_cols,
+#'   age_mapping = data.table::data.table(
+#'     age_start = seq(0, 110, 5),
+#'     age_end = c(seq(5, 110, 5), Inf)
+#'   )
+#' )
 #' @export
 agg_lt <- function(dt,
                    id_cols,
@@ -110,12 +119,14 @@ agg_lt <- function(dt,
 
   # check `dt` for 2/3 of mx, ax, qx
   assertive::assert_is_data.table(dt)
-  assertthat::assert_that(length(intersect(c("mx", "ax", "qx"),
-                                           names(dt))) >= 2,
-                          msg = "Need at least two of mx, ax, qx in 'dt'.")
+  param_cols <- intersect(names(dt), c("mx", "ax", "qx"))
+  assertthat::assert_that(
+    length(param_cols) >= 2 | "qx" %in% param_cols,
+    msg = "Need at least two of 'mx', 'ax', 'qx' in 'dt' or just 'qx' in 'dt'."
+  )
+  only_qx <- length(param_cols) == 1
 
   # check `dt` and `id_cols`
-  param_cols <- intersect(names(dt), c("mx", "ax", "qx"))
   validate_lifetable(dt, id_cols, param_cols)
 
   # sort age mapping
@@ -153,15 +164,16 @@ agg_lt <- function(dt,
 
   hierarchyUtils::gen_length(dt, "age")
 
-  # fill in such that we have qx, ax, and dx
   if(!"qx" %in% names(dt)) dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
-  if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, age_length)]
-  if(!"dx" %in% names(dt)) {
-    gen_lx_from_qx(dt, id_cols, assert_na = T)
-    gen_dx_from_lx(dt, id_cols, assert_na = T)
-  }
-  dt <- dt[, .SD, .SDcols = c(id_cols, "qx", "ax", "dx")]
   dt[, px := 1 - qx]
+
+  if (!only_qx) {
+    if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, age_length)]
+    if(!"dx" %in% names(dt)) {
+      gen_lx_from_qx(dt, id_cols, assert_na = T)
+      gen_dx_from_lx(dt, id_cols, assert_na = T)
+    }
+  }
 
   # aggregate qx ------------------------------------------------------------
 
@@ -181,52 +193,58 @@ agg_lt <- function(dt,
 
   # aggregate ax ------------------------------------------------------------
 
-  # determine the aggregate age group each granular age group belongs to
-  dt[, agg_age_start := cut(
-    x = age_start,
-    breaks = c(age_mapping$age_start, Inf),
-    labels = age_mapping$age_start,
-    right = F
-  )]
-  dt[, agg_age_start := as.integer(as.character(agg_age_start))]
+  if (!only_qx) {
 
-  # calculate the integer number of complete person-years lived by those who die
-  # in each aggregate age group.
-  dt[, ax_full_years := age_start - agg_age_start]
+    # determine the aggregate age group each granular age group belongs to
+    dt[, agg_age_start := cut(
+      x = age_start,
+      breaks = c(age_mapping$age_start, Inf),
+      labels = age_mapping$age_start,
+      right = F
+    )]
+    dt[, agg_age_start := as.integer(as.character(agg_age_start))]
 
-  # calculate total number of person-years lived by those who die in each age
-  # group
-  dt[, axdx_total := (ax + ax_full_years) * dx]
+    # calculate the integer number of complete person-years lived by those who die
+    # in each aggregate age group.
+    dt[, ax_full_years := age_start - agg_age_start]
 
-  dt_ax <- hierarchyUtils::agg(
-    dt = dt[, .SD, .SDcols = c(id_cols, "axdx_total", "dx")],
-    id_cols = id_cols,
-    value_cols = c("axdx_total", "dx"),
-    col_stem = "age",
-    col_type = "interval",
-    mapping = age_mapping,
-    agg_function = sum,
-    missing_dt_severity = missing_dt_severity,
-    drop_present_aggs = drop_present_aggs
-  )
-  dt_ax[, ax := axdx_total / dx]
-  dt_ax[, c("axdx_total", "dx") := NULL]
+    # calculate total number of person-years lived by those who die in each age
+    # group
+    dt[, axdx_total := (ax + ax_full_years) * dx]
+
+    dt_ax <- hierarchyUtils::agg(
+      dt = dt[, .SD, .SDcols = c(id_cols, "axdx_total", "dx")],
+      id_cols = id_cols,
+      value_cols = c("axdx_total", "dx"),
+      col_stem = "age",
+      col_type = "interval",
+      mapping = age_mapping,
+      agg_function = sum,
+      missing_dt_severity = missing_dt_severity,
+      drop_present_aggs = drop_present_aggs
+    )
+    dt_ax[, ax := axdx_total / dx]
+    dt_ax[, c("axdx_total", "dx") := NULL]
+
+  }
 
   # check output -----------------------------------------------------
 
-  # combine aggregated qx and ax
+  if (only_qx) {
+    dt <- copy(dt_qx)
+  } else {
+    dt <- merge(dt_qx, dt_ax, all = TRUE, by = id_cols)
+  }
 
-  agg_lt <- merge(dt_qx, dt_ax, all = TRUE, by = id_cols)
+  if (!only_qx) assertable::assert_values(dt, "ax", "gte", 0, quiet = T)
+  assertable::assert_values(dt, "qx", "gte", 0, quiet = T)
+  assertable::assert_values(dt, "qx", "lte", 1, quiet = T)
+  assertable::assert_values(dt, c("qx", if (!only_qx) "ax"), "not_na", quiet = T)
 
-  assertable::assert_values(agg_lt, "ax", "gte", 0, quiet = T)
-  assertable::assert_values(agg_lt, "qx", "gte", 0, quiet = T)
-  assertable::assert_values(agg_lt, "qx", "lte", 1, quiet = T)
-  assertable::assert_values(agg_lt, c("qx", "ax"), "not_na", quiet = T)
-
-  expected_cols <- c(id_cols, "qx", "ax")
+  expected_cols <- c(id_cols, "qx", if (!only_qx) "ax")
   original_col_order <- original_col_order[original_col_order %in% expected_cols]
-  data.table::setcolorder(agg_lt, original_col_order)
-  data.table::setkeyv(agg_lt, original_keys)
+  data.table::setcolorder(dt, original_col_order)
+  data.table::setkeyv(dt, original_keys)
 
-  return(agg_lt)
+  return(dt)
 }
