@@ -136,7 +136,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-calculating-life-table-parameters" class="hasAnchor"><a href="#section-calculating-life-table-parameters" class="anchor"></a>Calculating life table parameters</h2>
+          <h2 id="section-calculating-basic-life-table-parameters" class="hasAnchor"><a href="#section-calculating-basic-life-table-parameters" class="anchor"></a>Calculating basic life table parameters</h2>
           <p class="section-desc"><p>Functions to calculate mx, ax, qx, etc. using standard demographic methods.</p></p>
         </th>
       </tr>
@@ -191,9 +191,15 @@
       <tr>
         
         <td>
-          <p><code><a href="agg_scale_qx.html">agg_qx()</a></code> <code><a href="agg_scale_qx.html">scale_qx()</a></code> </p>
+          <p><code><a href="agg_lt.html">agg_lt()</a></code> </p>
         </td>
-        <td><p>Aggregate or scale qx values over age</p></td>
+        <td><p>Aggregate life table(s) to less granular age groups</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="scale_qx.html">scale_qx()</a></code> </p>
+        </td>
+        <td><p>Scale qx values over age</p></td>
       </tr><tr>
         
         <td>
@@ -206,12 +212,6 @@
           <p><code><a href="abridged_to_full.html">abridged_to_full()</a></code> </p>
         </td>
         <td><p>Generate full life table from abridged life table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="full_to_abridged.html">full_to_abridged()</a></code> </p>
-        </td>
-        <td><p>Generate abridged life table from full life table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -237,6 +237,24 @@
           <p><code><a href="leslie_matrix.html">leslie_matrix()</a></code> </p>
         </td>
         <td><p>Make Leslie matrix</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="nSx_from_lx_nLx_Tx.html">nSx_from_lx_nLx_Tx()</a></code> </p>
+        </td>
+        <td><p>Calculate survivorship ratios</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gen_nLx_from_nSx.html">gen_nLx_from_nSx()</a></code> </p>
+        </td>
+        <td><p>Generate nLx lifetable parameter from survivorship ratios</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gen_lx_from_nLx_ax.html">gen_lx_from_nLx_ax()</a></code> </p>
+        </td>
+        <td><p>Generate the lx life table parameter given nLx and ax.</p></td>
       </tr>
     </tbody><tbody>
       <tr>
