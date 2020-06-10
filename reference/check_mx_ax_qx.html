@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Check two of mx, ax, qx — check_mx_ax_qx" />
 <meta property="og:description" content="Helper function to check a data.table for two of mx, ax, and qx
-and compute the missing parameter is one is missing." />
+and compute the missing parameter if one is missing." />
 
 
 
@@ -125,13 +125,13 @@ and compute the missing parameter is one is missing." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Check two of mx, ax, qx</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/lifetable.R'><code>R/lifetable.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/validate_lifetable.R'><code>R/validate_lifetable.R</code></a></small>
     <div class="hidden name"><code>check_mx_ax_qx.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Helper function to check a data.table for two of mx, ax, and qx
-and compute the missing parameter is one is missing.</p>
+and compute the missing parameter if one is missing.</p>
     </div>
 
     <pre class="usage"><span class='fu'>check_mx_ax_qx</span>(<span class='no'>dt</span>)</pre>
@@ -156,6 +156,14 @@ parameters.</p>
     <p>Uses <code><a href='mx_qx_ax_conversions.html'>mx_ax_to_qx()</a></code>, <code><a href='mx_qx_ax_conversions.html'>qx_ax_to_mx()</a></code>, or <code><a href='mx_qx_ax_conversions.html'>mx_qx_to_ax()</a></code> function
 to complete the set of three life table parameters.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
+  <span class='kw'>age_start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>),
+  <span class='kw'>age_length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>mx</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.009</span>, <span class='fl'>0.0004</span>, <span class='fl'>0.00015</span>, <span class='fl'>0.00019</span>),
+  <span class='kw'>ax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.068</span>, <span class='fl'>1.626</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
+)
+<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'>check_mx_ax_qx</span>(<span class='no'>dt</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
