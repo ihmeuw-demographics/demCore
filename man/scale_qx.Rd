@@ -31,7 +31,7 @@ Scale granular qx values to be consistent with aggregate age
 interval qx values already present in the data.
 }
 \details{
-\strong{Scaling:} Convert to px-space, scale up age-hierarchy so that granular px
+Convert to px-space, scale up age-hierarchy so that granular px
 values multiply to aggregate px values, convert back to qx-space.
 \code{scale_qx()} is a wrapper for \code{\link[hierarchyUtils:scale]{hierarchyUtils::scale()}}.
 

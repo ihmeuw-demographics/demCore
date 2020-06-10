@@ -52,39 +52,42 @@ See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{referenc
 for the formatted equations below.
 
 This function works by aggregating the qx and ax life table parameters
-separately. If only qx is included in \code{dt} than ax aggregation is not done.
+separately. If only qx is included in \code{dt} then ax aggregation is not done.
 
 \strong{qx aggregation:}
 
 To explain how qx is aggregated it is useful to define a couple of different
 events:
-\deqn{A = \text{death between age } x \text{ and } x + n}
-\deqn{A' = \text{survival between age } x \text{ and } x + n}
-\deqn{B = \text{survival to age } x}
+\deqn{D = \text{death between age } x \text{ and } x + n}
+\deqn{D' = \text{survival between age } x \text{ and } x + n}
+\deqn{S = \text{survival to age } x}
 
-Now qx and px can be written in terms of events A and B.
-\deqn{{}_{n}q_x = P(A | B)}
-\deqn{{}_{n}p_x = P(A' | B)}
+Now qx and px can be written in terms of events D and S.
+\deqn{{}_{n}q_x = P(D | S)}
+\deqn{{}_{n}p_x = P(D' | S)}
 
 Now say there are multiple sub age-groups that make up the overall age group
-between \eqn{x \text{ and } x + n}. The first sub age-group could be between
-\eqn{x \text{ and } x + n_1} and the second between
-\eqn{x + n_1 \text{ and } x + n}. So \eqn{n = n_1 + n_2}.
+between \eqn{x \text{ and } x + n}. Let subscripts "1" and "2" indicate
+values specific to the first and second sub age-groups and assume values with
+no subscript apply to the original aggregate age group. The first sub
+age-group could be between \eqn{x \text{ and } x + n_1} and the second
+between \eqn{x + n_1 \text{ and } x + n_1 + n_2}, where \eqn{n_1 + n_2 = n}.
 
 The overall px value can be written as a function of the sub age-group's px
 values.
-\deqn{P(A'|B) = P(A'_1|B_1) \cap P(A'_2|B_2) = P(A'_1|B_1) * P(A'_2|B_2)}
+\deqn{P(D'|S) = P(D'_1|B_1) \cap P(D'_2|B_2) = P(D'_1|B_1) * P(D'_2|B_2)}
 
 where:
-\deqn{P(A'_1 | B_1) = \text{survival between age } x \text{ and } x + n_1
+\deqn{P(D'_1 | B_1) = \text{survival between age } x \text{ and } x + n_1
   \text{ given survival to age } x}
-\deqn{P(A'_2 | B_2) = \text{survival between age } x + n_1 \text{ and } x + n
+\deqn{P(D'_2 | B_2) = \text{survival between age } x + n_1 \text{ and } x + n
   \text{ given survival to age } x + n_1}
 
 More generally if there are \eqn{A} age groups between age
 \eqn{x \text{ and } x + n}, and \eqn{i} indexes each of the sub age
 intervals then:
-\deqn{{}_{n}p_x = \prod_{i=1}^{A} {}_{n_i}p_{x_i}}
+\deqn{{}_{n}p_x = \prod_{i=1}^{A} {}_{n_i}p_{x_i} =
+  \prod_{i=1}^{A}(1 - {}_{n_i}q_{x_i})}
 \deqn{{}_{n}q_x = 1 - {}_{n}p_x}
 
 \strong{ax aggregation:}
@@ -102,11 +105,15 @@ where:
 Now say there are \eqn{A} age groups between age \eqn{x \text{ and } x + n},
 and \eqn{i} indexes each of the sub age intervals. The total number of
 person-years lived by those who died in the aggregate age group is a simple
-sum of the number of person-years lived in each sub age interval. The
-aggregate ax can then be solved for.
-\deqn{{}_{n}a_x \cdot {}_{n}d_x = \sum_{i = 1}^{A} {}_{n_i}a_{x_i}
-  \cdot {}_{n_i}d_{x_i}}
-\deqn{{}_{n}a_x = \frac{\sum_{i = 1}^{A} {}_{n_i}a_{x_i}
+sum of the number of person-years lived in each sub age interval.
+\deqn{{}_{n}a_x \cdot {}_{n}d_x = \sum_{i = 1}^{A}
+  ((x_i - x) + {}_{n_i}a_{x_i}) \cdot {}_{n_i}d_{x_i}}
+where:
+\deqn{x_i - x = \text{ number of complete person years lived in the previous
+  sub age intervals by someone who dies in sub age interval } i}
+
+The aggregate ax can then be solved for.
+\deqn{{}_{n}a_x = \frac{\sum_{i = 1}^{A} ((x_i - x) + {}_{n_i}a_{x_i})
   \cdot {}_{n_i}d_{x_i}}{\sum_{i = 1}^{A} {}_{n_i}d_{x_i}}}
 }
 \examples{

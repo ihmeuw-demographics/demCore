@@ -12,7 +12,7 @@
 #'   columns for all age groups.
 #'
 #' @details
-#' **Scaling:** Convert to px-space, scale up age-hierarchy so that granular px
+#' Convert to px-space, scale up age-hierarchy so that granular px
 #'   values multiply to aggregate px values, convert back to qx-space.
 #'   `scale_qx()` is a wrapper for [hierarchyUtils::scale()].
 #'
