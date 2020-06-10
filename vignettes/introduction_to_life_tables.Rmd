@@ -334,12 +334,19 @@ gen_ex(dt)
 
 ### Summary
 
-The majority of these functions can be combined for convenience with the
-`lifetable` function. `lifetable` requires at least two of $m_x$, $a_x$, and
-$q_x$, but solves out the remaining life table metrics following the methods
-and functions described here.
+One possible set of steps for calculating a complete period life table from 
+deaths and mid-year population is:
 
-The resulting life table is the life table at the top of this document.
+1. Compute mx = deaths / population
+2. Estimate <5 ax from mx using `gen_u5_ax`, and set ax over age 5 as n/2
+3. Calculate qx directly using `mx_ax_to_qx`
+4. Use ax iteration with `iterate_ax` to modify ax and qx values, improving
+  ax over the naive n/2 values
+5. Calculate px, lx, dx, nLx, Tx, and ex directly, in that order, from mx, ax, 
+  and qx, with `lifetable` function. The `lifetable` function combines many
+  of the functions described in this vignette for convenience.
+6. In the terminal age group, ax is equal to ex. So, once ex is solved for,
+  terminal ax can be replaced with that value.
 
 ### References
 

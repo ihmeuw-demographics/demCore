@@ -33,10 +33,12 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
   # validate and prep  ------------------------------------------------------
 
   # standard validations
-  validate_lifetable(dt = dt,
-                     id_cols = id_cols,
-                     param_cols = intersect(c("mx", "ax", "qx"), names(dt)),
-                     assert_na = assert_na)
+  validate_lifetable(
+    dt = dt,
+    id_cols = id_cols,
+    param_cols = intersect(c("mx", "ax", "qx"), names(dt)),
+    assert_na = assert_na
+  )
 
   # check `preserve_u5`
   assertive::assert_is_logical(preserve_u5)
@@ -89,6 +91,9 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
 
   # ex
   gen_ex(dt, assert_na)
+
+  # replace terminal ax with terminal ex
+  dt[age_end == Inf, ax := ex]
 
   # return
   setkeyv(dt, original_keys)

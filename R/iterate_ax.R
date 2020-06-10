@@ -60,10 +60,10 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
   validate_lifetable(dt, id_cols, param_cols = c("ax", "qx", "dx"))
 
   # check `n_iterations`
-  assertthat::assert_that(is.integer(n_iterations) &
-                            length(n_iterations) == 1,
-                          msg = "`n_iterations' must be of class integer
-                                  and length 1.")
+  assertthat::assert_that(
+    is.integer(n_iterations) & length(n_iterations) == 1,
+    msg = "`n_iterations' must be of class integer and length 1."
+  )
 
   # prep --------------------------------------------------------------------
 
