@@ -41,6 +41,7 @@ reference:
   desc: "Additional miscellaneous functions."
 - contents:
   - validate_lifetable
+  - check_mx_ax_qx
 
 - title: "Example data"
   desc: "Data included for testing or running `demCore` functions."
