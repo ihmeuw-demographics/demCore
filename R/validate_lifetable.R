@@ -167,7 +167,7 @@ validate_lifetable <- function(dt,
 check_mx_ax_qx <- function(dt) {
 
   # quick checks
-  assertive::asseert_is_data.table(dt)
+  assertive::assert_is_data.table(dt)
   assertable::assert_colnames(dt, c("age_length"), only_colnames = F, quiet = T)
 
   # check `dt` for 2/3 of mx, ax, qx
