@@ -1,7 +1,7 @@
 destination: docs
 
 reference:
-- title: "Calculating life table parameters"
+- title: "Calculating basic life table parameters"
   desc: "Functions to calculate mx, ax, qx, etc. using standard demographic methods."
 - contents:
   - mx_to_qx
@@ -23,16 +23,19 @@ reference:
 - title: "Aggregation and scaling"
   desc: "Functions for aggregating and scaling life tables. Includes conversions between single-year and abridged life tables."
 - contents:
-  - agg_qx
+  - agg_lt
+  - scale_qx
   - gen_summary_lt
   - abridged_to_full
-  - full_to_abridged
 
 - title: "Population Projection"
   desc: "Functions for projecting populations forward in time."
 - contents:
   - ccmpp
   - leslie_matrix
+  - nSx_from_lx_nLx_Tx
+  - gen_nLx_from_nSx
+  - gen_lx_from_nLx_ax
 
 - title: "Other"
   desc: "Additional miscellaneous functions."

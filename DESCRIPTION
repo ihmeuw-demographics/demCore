@@ -33,6 +33,7 @@ Imports:
     assertthat,
     testthat,
     pryr,
+    purrr,
     Rdpack,
     hierarchyUtils,
     demUtils,
