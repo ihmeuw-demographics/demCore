@@ -32,7 +32,6 @@
 #'   **assert_na** check `assert_na` is a logical.
 #'
 #' @export
-
 validate_lifetable <- function(dt,
                                id_cols = c(),
                                param_cols = c(),
@@ -139,3 +138,49 @@ validate_lifetable <- function(dt,
   return(invisible(dt))
 }
 
+
+#' @title Check two of mx, ax, qx
+#'
+#' @description Helper function to check a data.table for two of mx, ax, and qx
+#'   and compute the missing parameter if one is missing.
+#'
+#' @param dt \[`data.table()`\]\cr Data to check for mx, ax, and/or qx. Must
+#'   also have 'age_length' column.
+#'
+#' @return `dt` with input columns plus any of 'mx', 'ax', and 'qx' that is
+#'   missing in input. Or, returns error if input has fewer than two of these
+#'   parameters.
+#'
+#' @details Uses [mx_ax_to_qx()], [qx_ax_to_mx()], or [mx_qx_to_ax()] function
+#'   to complete the set of three life table parameters.
+#'
+#' @examples
+#' dt <- data.table::data.table(
+#'   age_start = c(0, 1, 5, 10),
+#'   age_length = c(1, 4, 5, 5),
+#'   mx = c(0.009, 0.0004, 0.00015, 0.00019),
+#'   ax = c(0.068, 1.626, 2.5, 2.5)
+#' )
+#' dt <- check_mx_ax_qx(dt)
+#'
+#' @export
+check_mx_ax_qx <- function(dt) {
+
+  # quick checks
+  assertive::assert_is_data.table(dt)
+  assertable::assert_colnames(dt, c("age_length"), only_colnames = F, quiet = T)
+
+  # check `dt` for 2/3 of mx, ax, qx
+  assertthat::assert_that(
+    length(intersect(c("mx", "ax", "qx"), names(dt))) >= 2,
+    msg = "Need at least two of mx, ax, qx."
+  )
+
+  # qx, mx, ax if missing
+  if(!"qx" %in% names(dt)) dt[, qx := mx_ax_to_qx(mx, ax, age_length)]
+  if(!"mx" %in% names(dt)) dt[, mx := qx_ax_to_mx(qx, ax, age_length)]
+  if(!"ax" %in% names(dt)) dt[, ax := mx_qx_to_ax(mx, qx, age_length)]
+
+  return(dt)
+
+}

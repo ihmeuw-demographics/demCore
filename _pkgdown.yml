@@ -12,6 +12,7 @@ reference:
   - mx_to_ax
   - gen_u5_ax
   - iterate_ax
+  - gen_ax_from_dx
   - gen_lx_from_qx
   - gen_qx_from_lx
   - gen_dx_from_lx
@@ -40,6 +41,7 @@ reference:
   desc: "Additional miscellaneous functions."
 - contents:
   - validate_lifetable
+  - check_mx_ax_qx
 
 - title: "Example data"
   desc: "Data included for testing or running `demCore` functions."

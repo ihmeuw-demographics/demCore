@@ -2,12 +2,12 @@
 % Please edit documentation in R/iterate_ax.R
 \name{iterate_ax}
 \alias{iterate_ax}
-\alias{ax_from_dx}
+\alias{gen_ax_from_dx}
 \title{Ax iteration method from dx}
 \usage{
 iterate_ax(dt, id_cols, n_iterations = 30L, threshold = 0.01, quiet = F)
 
-ax_from_dx(dt, id_cols)
+gen_ax_from_dx(dt, id_cols)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -30,7 +30,8 @@ progress messages are given.}
 }
 \value{
 [\code{data.table()}]\cr Input life tables with ax, dx, qx modified.
-Input mx is unchanged.
+Input mx is unchanged. \code{iterate_ax} makes a copy while \code{gen_ax_from_dx}
+modifies in place.
 }
 \description{
 Implement iteration method to minimize the difference across
@@ -44,11 +45,11 @@ first place, initialization and iteration is required.
 \details{
 \strong{iterate_ax:} Implement ax iteration.
 
-\strong{ax_from_dx:} Calculate ax from dx without iteration. This is used as a
+\strong{gen_ax_from_dx:} Calculate ax from dx without iteration. This is used as a
 helper function within \code{iterate_ax} but can also be used independently when
 dx is believed to be accurate. The complete relationship is:
-\deqn{nax = (_na_x = \frac{-\frac{n}{24}  {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
-\frac{n}{24} {_nd_{x+n}}}{_nd_x})}
+\deqn{_na_x = \frac{-\frac{n}{24}  {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
+\frac{n}{24} {_nd_{x+n}}}{_nd_x}}
 See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
 for the formatted equation.
 
@@ -65,7 +66,7 @@ new_dt <- iterate_ax(dt, id_cols = c("age_start", "age_end"))
 
 # plot change in qx, ax, lx, dx, mx
 dt <- merge(dt, new_dt, by = c("age_start", "age_end"))
-setnames(dt, c("ax.x", "ax.y"), c("ax.initial", "ax.iterated"))
+data.table::setnames(dt, c("ax.x", "ax.y"), c("ax.initial", "ax.iterated"))
 plot(data = dt, ax.iterated/ax.initial ~ age_start)
 
 }

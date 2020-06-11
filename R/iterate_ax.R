@@ -22,12 +22,13 @@
 #' @inheritParams gen_lx_from_qx
 #'
 #' @return \[`data.table()`\]\cr Input life tables with ax, dx, qx modified.
-#'   Input mx is unchanged.
+#'   Input mx is unchanged. `iterate_ax` makes a copy while `gen_ax_from_dx`
+#'   modifies in place.
 #'
 #' @details
 #' **iterate_ax:** Implement ax iteration.
 #'
-#' **ax_from_dx:** Calculate ax from dx without iteration. This is used as a
+#' **gen_ax_from_dx:** Calculate ax from dx without iteration. This is used as a
 #' helper function within `iterate_ax` but can also be used independently when
 #' dx is believed to be accurate. The complete relationship is:
 #' \deqn{_na_x = \frac{-\frac{n}{24}  {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
@@ -56,7 +57,7 @@
 #'
 #' # plot change in qx, ax, lx, dx, mx
 #' dt <- merge(dt, new_dt, by = c("age_start", "age_end"))
-#' setnames(dt, c("ax.x", "ax.y"), c("ax.initial", "ax.iterated"))
+#' data.table::setnames(dt, c("ax.x", "ax.y"), c("ax.initial", "ax.iterated"))
 #' plot(data = dt, ax.iterated/ax.initial ~ age_start)
 #'
 #' @export
@@ -93,7 +94,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
     dt[, initial_ax := ax]
 
     # estimate ax from dx (Preston pg 45)
-    dt <- ax_from_dx(dt, id_cols)
+    dt <- gen_ax_from_dx(dt, id_cols)
 
     # reset ax if it goes out of bounds
     dt[ax <= 0, ax := 0.01]
@@ -144,7 +145,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
 
   dt <- rbindlist(list(dt, holdouts), use.names = T, fill = T)
 
-  dt[, c("diff", "max_ax_diff") := NULL]
+  dt[, c("diff", "max_ax_diff", "initial_ax") := NULL]
 
   if(!quiet) message("Iterations done")
   return(dt)
@@ -155,7 +156,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
 
 #' @rdname iterate_ax
 #' @export
-ax_from_dx <- function(dt, id_cols) {
+gen_ax_from_dx <- function(dt, id_cols) {
 
   # check and sort
   assertive::assert_is_data.table(dt)

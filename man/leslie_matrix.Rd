@@ -12,7 +12,7 @@ Survivorship ratio, the proportion of people aged x - \code{int} that will be
 alive \code{int} years later in a stationary population}
 
 \item{asfr}{[\code{numeric(n_ages)}]\cr
-Annual age specific fertility rates NOT yet mulitplied by \code{int}. Must
+Annual age specific fertility rates NOT yet multiplied by \code{int}. Must
 include both reproductive and non-reproductive age groups that are zero.}
 
 \item{srb}{[\code{numeric(1)}]\cr

@@ -2,7 +2,7 @@
 % Please edit documentation in R/survivorship_ratio.R
 \name{gen_nLx_from_nSx}
 \alias{gen_nLx_from_nSx}
-\title{Generate nLx lifetable parameter from survivorship ratios}
+\title{Generate nLx life table parameter from survivorship ratios}
 \usage{
 gen_nLx_from_nSx(dt, id_cols)
 }

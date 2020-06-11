@@ -26,7 +26,7 @@ survivorship ratio value.
 Calculate survivorship ratios to be used in projecting
 populations forward in time with \code{\link[=ccmpp]{ccmpp()}}. The survivorship ratios
 represent the proportion of people in one age group that will survive into
-the next age group given the age-specific mortality rates in a lifetable.
+the next age group given the age-specific mortality rates in a life table.
 }
 \details{
 See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
