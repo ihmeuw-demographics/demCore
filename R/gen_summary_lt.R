@@ -45,15 +45,19 @@ gen_summary_lt <- function(dt, id_cols, lt_params) {
   # validate ----------------------------------------------------------------
 
   # check `lt_params`
-  assertthat::assert_that(length(setdiff(c("mx", "ax"), lt_params)) == 0,
-                          msg = "`lt_params` must include 'mx' and 'ax'")
+  assertthat::assert_that(
+    length(setdiff(c("mx", "ax"), lt_params)) == 0,
+    msg = "`lt_params` must include 'mx' and 'ax'"
+  )
 
   # check `dt`
   validate_lifetable(dt, id_cols, param_cols = lt_params)
 
   # additional `id_cols` check
-  assertthat::assert_that("draw" %in% id_cols,
-                          msg = "`id_cols` must include 'draw'.")
+  assertthat::assert_that(
+    "draw" %in% id_cols,
+    msg = "`id_cols` must include 'draw'."
+  )
 
   # prep --------------------------------------------------------------------
 

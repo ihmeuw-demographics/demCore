@@ -23,3 +23,13 @@ and compute the missing parameter is one is missing.
 Uses \code{\link[=mx_ax_to_qx]{mx_ax_to_qx()}}, \code{\link[=qx_ax_to_mx]{qx_ax_to_mx()}}, or \code{\link[=mx_qx_to_ax]{mx_qx_to_ax()}} function
 to complete the set of three life table parameters.
 }
+\examples{
+dt <- data.table::data.table(
+  age_start = c(0, 1, 5, 10),
+  age_length = c(1, 4, 5, 5),
+  mx = c(0.009, 0.0004, 0.00015, 0.00019),
+  ax = c(0.068, 1.626, 2.5, 2.5)
+)
+dt <- check_mx_ax_qx(dt)
+
+}

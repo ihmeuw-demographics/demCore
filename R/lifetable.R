@@ -118,7 +118,7 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
 #' @details Uses [mx_ax_to_qx()], [qx_ax_to_mx()], or [mx_qx_to_ax()] function
 #'   to complete the set of three life table parameters.
 #'
-#' @example
+#' @examples
 #' dt <- data.table::data.table(
 #'   age_start = c(0, 1, 5, 10),
 #'   age_length = c(1, 4, 5, 5),
