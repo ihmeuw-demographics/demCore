@@ -134,21 +134,21 @@ and male population in Thailand from 1960 to 2000." />
 and male population in Thailand from 1960 to 2000.</p>
     </div>
 
-    <pre class="usage"><span class='no'>thailand_data</span>
+    <pre class="usage"><span class='kw'>thailand_data</span>
 
-<span class='no'>thailand_initial_estimates</span></pre>
+<span class='kw'>thailand_initial_estimates</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><code>thailand_data</code>: [<code>data.table()</code>] with 'population' data.</p><ul>
-<li><p>population: [<code>data.table()</code>] year-sex-age-specific census counts in
+    <p><code>thailand_data</code>: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>] with 'population' data.</p><ul>
+<li><p>population: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>] year-sex-age-specific census counts in
 years after the baseline year (1970, 1980, 1990, 2000). Age groups are
 five-year age groups from 0 to 80+.</p></li>
 </ul>
 
-<p><code>thailand_initial_estimates</code>: list of [<code>data.table()</code>] of initial
-estimates for each <code><a href='ccmpp.html'>ccmpp()</a></code> input. Calendar year intervals are for five-year
+<p><code>thailand_initial_estimates</code>: list of [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>] of initial
+estimates for each <code>ccmpp()</code> input. Calendar year intervals are for five-year
 intervals between 1960 and 2000. Age groups are five-year age groups from 0
 to 80+ (except 'survival' goes up to 85+). See <strong>Section: Inputs</strong> for more
 information on each of the inputs.</p>
@@ -157,14 +157,14 @@ information on each of the inputs.</p>
 
     
 
-<p>srb: [<code>data.table()</code>]<br /></p><ul>
+<p>srb: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] sex-ratio at birth estimates.</p></li>
 </ul>
 
-<p>asfr: [<code>data.table()</code>]<br /></p><ul>
+<p>asfr: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
@@ -174,7 +174,7 @@ Corresponds to 'ages_asfr' setting.</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual age-specific fertility rate estimates.</p></li>
 </ul>
 
-<p>baseline: [<code>data.table()</code>]<br /></p><ul>
+<p>baseline: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] mid-year for population estimate.
 Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
@@ -185,7 +185,7 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] baseline year population count estimates.</p></li>
 </ul>
 
-<p>survival: [<code>data.table()</code>]<br /></p><ul>
+<p>survival: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
@@ -197,7 +197,7 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] survivorship ratio estimates.</p></li>
 </ul>
 
-<p>net_migration: [<code>data.table()</code>]<br /></p><ul>
+<p>net_migration: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
@@ -209,7 +209,7 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual net-migration proportion estimates.</p></li>
 </ul>
 
-<p>immigration: [<code>data.table()</code>]<br /></p><ul>
+<p>immigration: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
@@ -221,7 +221,7 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual immigration proportion estimates.</p></li>
 </ul>
 
-<p>emigration: [<code>data.table()</code>]<br /></p><ul>
+<p>emigration: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
@@ -243,7 +243,7 @@ Statistical Society. Series A: Statistics in Society 178 (4): 977–1007.
 <p><a href='https://github.com/markalava/Bayesian-Reconstruction'>markalava/Bayesian-Reconstruction github repo</a></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='ccmpp.html'>ccmpp()</a></code></p></div>
+    <div class='dont-index'><p><code>ccmpp()</code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

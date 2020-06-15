@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ax iteration method — iterate_ax • demCore</title>
+<title>Ax iteration method from dx — iterate_ax • demCore</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Ax iteration method — iterate_ax" />
+<meta property="og:title" content="Ax iteration method from dx — iterate_ax" />
 <meta property="og:description" content="Implement iteration method to minimize the difference across
 initialized ax and its expected relationship with dx. This method can be
 used to start with naive values of ax (like age_length/2) and arrive
@@ -129,7 +129,7 @@ first place, initialization and iteration is required." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Ax iteration method</h1>
+    <h1>Ax iteration method from dx</h1>
     <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/iterate_ax.R'><code>R/iterate_ax.R</code></a></small>
     <div class="hidden name"><code>iterate_ax.Rd</code></div>
     </div>
@@ -144,15 +144,18 @@ Since dx is often calculated using the mx --&gt; ax --&gt; qx method in the
 first place, initialization and iteration is required.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>iterate_ax</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>n_iterations</span> <span class='kw'>=</span> <span class='fl'>30L</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='fu'>iterate_ax</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, n_iterations = <span class='fl'>30L</span>, threshold = <span class='fl'>0.01</span>, quiet = <span class='kw'>F</span>)
+
+<span class='fu'>gen_ax_from_dx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, validate_arguments = <span class='kw'>T</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>]<br /> Life tables with columns: all <code>id_cols</code>,
-'age_start', 'age_end', 'dx', 'ax', 'qx', 'mx'.</p></td>
+      <td><p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br />
+Life tables with columns: all <code>id_cols</code>, 'age_start', 'age_end', 'dx',
+'ax', 'qx', 'mx'.</p></td>
     </tr>
     <tr>
       <th>id_cols</th>
@@ -161,30 +164,48 @@ of <code>dt</code>. Must include 'age_start' and 'age_end'.</p></td>
     </tr>
     <tr>
       <th>n_iterations</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>]<br /> Maximum number of iterations to run.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>]<br />
+Maximum number of iterations to run.</p></td>
     </tr>
     <tr>
       <th>threshold</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>]<br /> How far apart should ax and the
-implied ax from dx be before removal from iteration. Default: 0.01.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>]<br />
+How far apart should ax and the implied ax from dx be before removal from
+iteration.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br /> Whether to omit messages about iteration
-progress. Default is F and progress messages are given.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to omit messages about iteration progress. Default is F and
+progress messages are given.</p></td>
+    </tr>
+    <tr>
+      <th>validate_arguments</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>[<code>data.table()</code>]<br /> Input life tables with ax, dx, qx modified.
-Input mx is unchanged.</p>
+    <p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Input life tables with ax, dx, qx modified.
+Input mx is unchanged. <code>iterate_ax</code> makes a copy while <code>gen_ax_from_dx</code>
+modifies in place.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Limitations: this method relies on initialized ax and dx values, and cannot
-produce estimates for the first and last age groups. Preston pg 45.</p>
-<p>Note: this is not the best method for ages under 5 years. See
-<code><a href='gen_u5_ax.html'>gen_u5_ax()</a></code>.</p>
+    <p><strong>iterate_ax:</strong> Implement ax iteration.</p>
+<p><strong>gen_ax_from_dx:</strong> Calculate ax from dx without iteration. This is used as a
+helper function within <code>iterate_ax</code> but can also be used independently when
+dx is believed to be accurate. The complete relationship is:
+$$_na_x = \frac{-\frac{n}{24}  {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
+\frac{n}{24} {_nd_{x+n}}}{_nd_x}$$
+See the <a href='https://ihmeuw-demographics.github.io/demCore/index.html'>references page</a>
+for the formatted equation.</p>
+<p><strong>Limitations:</strong> this method relies on initialized ax and dx values, and
+cannot produce estimates for the first and last age groups. Preston pg 45.</p>
+<p><strong>Note:</strong> this is not the best method for ages under 5 years. See
+<code>gen_u5_ax()</code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
@@ -193,22 +214,17 @@ population processes. MA: Blackwell Publishing. 2001.</p>
 
     <div class='dont-index'><p>Preston Demography book pg 45. Also, see more details on this
 method explained in the introduction to life tables vignette:
-<code><a href='../articles/introduction_to_life_tables.html'>vignette("introduction_to_life_tables", package = "demCore")</a></code></p></div>
+<code>vignette("introduction_to_life_tables", package = "demCore")</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"austria_1992_lt"</span>)
-<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='no'>austria_1992_lt</span>[,<span class='fu'>.</span>(<span class='no'>age_start</span>, <span class='no'>age_end</span>, <span class='no'>age_length</span>, <span class='no'>mx</span>, <span class='no'>ax</span>, <span class='no'>qx</span>, <span class='no'>dx</span>, <span class='no'>lx</span>)]
-<span class='no'>new_dt</span> <span class='kw'>&lt;-</span> <span class='fu'>iterate_ax</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div><div class='output co'>#&gt; <span class='message'>Iteration 1</span></div><div class='output co'>#&gt; <span class='message'>Number of remaining life tables: 1</span></div><div class='output co'>#&gt; <span class='message'>Min. | 1st Qu. | Median | Mean | 3rd Qu. | Max. </span>
+<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>austria_1992_lt</span>[,<span class='fu'>.</span>(<span class='kw'>age_start</span>, <span class='kw'>age_end</span>, <span class='kw'>age_length</span>, <span class='kw'>mx</span>, <span class='kw'>ax</span>, <span class='kw'>qx</span>, <span class='kw'>dx</span>, <span class='kw'>lx</span>)]
+<span class='kw'>new_dt</span> <span class='op'>&lt;-</span> <span class='fu'>iterate_ax</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div><div class='output co'>#&gt; <span class='message'>Iteration 1</span></div><div class='output co'>#&gt; <span class='message'>Number of remaining life tables: 1</span></div><div class='output co'>#&gt; <span class='message'>Min. | 1st Qu. | Median | Mean | 3rd Qu. | Max. </span>
 #&gt; <span class='message'> 0.25 | 0.25 | 0.25 | 0.25 | 0.25 | 0.25</span></div><div class='output co'>#&gt; <span class='message'>Iteration 2</span></div><div class='output co'>#&gt; <span class='message'>Number of remaining life tables: 0</span></div><div class='output co'>#&gt; <span class='message'>Iterations done</span></div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='co'># plot change in qx, ax, lx, dx, mx</span>
-  <span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>dt</span>, <span class='no'>new_dt</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>qx.y</span>/<span class='no'>qx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>ax.y</span>/<span class='no'>ax.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>lx.y</span>/<span class='no'>lx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>dx.y</span>/<span class='no'>dx.x</span> ~ <span class='no'>age_start</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dt</span>, <span class='no'>mx.y</span>/<span class='no'>mx.x</span> ~ <span class='no'>age_start</span>) <span class='co'># expect no change in mx</span>
-}</div></pre>
+<span class='co'># plot change in qx, ax, lx, dx, mx</span>
+<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/merge.html'>merge</a></span>(<span class='kw'>dt</span>, <span class='kw'>new_dt</span>, by = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/setattr.html'>setnames</a></span>(<span class='kw'>dt</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ax.x"</span>, <span class='st'>"ax.y"</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ax.initial"</span>, <span class='st'>"ax.iterated"</span>))
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(data = <span class='kw'>dt</span>, <span class='kw'>ax.iterated</span><span class='op'>/</span><span class='kw'>ax.initial</span> <span class='op'>~</span> <span class='kw'>age_start</span>)</div><div class='img'><img src='iterate_ax-1.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

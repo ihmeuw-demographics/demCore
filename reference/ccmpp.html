@@ -135,12 +135,12 @@ method of population projection.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ccmpp</span>(
-  <span class='no'>inputs</span>,
-  <span class='no'>settings</span>,
-  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
-  <span class='kw'>assert_positive_pop</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>gen_end_interval_col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>inputs</span>,
+  <span class='kw'>settings</span>,
+  value_col = <span class='st'>"value"</span>,
+  assert_positive_pop = <span class='fl'>TRUE</span>,
+  validate_arguments = <span class='fl'>TRUE</span>,
+  gen_end_interval_col = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -197,10 +197,10 @@ later time points is a function of mortality, fertility, sex-ratio at birth,
 and net-migration.</p>
 <p>The cohort component method of population projection (CCMPP) projects a
 sex-age specific population forward in time using leslie matrices
-<code><a href='leslie_matrix.html'>leslie_matrix()</a></code> which encode information about fertility, sex-ratio at
+<code>leslie_matrix()</code> which encode information about fertility, sex-ratio at
 birth, and mortality.</p>
 <p>$$Population(t + \delta) = Leslie[t, t + \delta] * Population(t)$$</p>
-<p>See <code><a href='../articles/ccmpp.html'>vignette("ccmpp", package = "demCore")</a></code> or linked references for more
+<p>See <code>vignette("ccmpp", package = "demCore")</code> or linked references for more
 details on this method.</p>
     <h2 class="hasAnchor" id="inputs"><a class="anchor" href="#inputs"></a>Inputs</h2>
 
@@ -288,14 +288,14 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 
 <ul>
 <li><p>years: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
-The start of each calendar year interval to project in <code>demCore::ccmpp()</code>.
+The start of each calendar year interval to project in <code><a href='https://rdrr.io/pkg/demCore/man/ccmpp.html'>demCore::ccmpp()</a></code>.
 Corresponds to the 'year_start' column in each of the year-specific inputs.</p></li>
 <li><p>sexes: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
-The sexes being projected in <code>demCore::ccmpp()</code>, must be either just
+The sexes being projected in <code><a href='https://rdrr.io/pkg/demCore/man/ccmpp.html'>demCore::ccmpp()</a></code>, must be either just
 'female', or 'female' and 'male'. Corresponds to the 'sex' column in each
 of the sex-specific inputs.</p></li>
 <li><p>ages: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
-The ages being projected in <code>demCore::ccmpp()</code>. Corresponds to the
+The ages being projected in <code><a href='https://rdrr.io/pkg/demCore/man/ccmpp.html'>demCore::ccmpp()</a></code>. Corresponds to the
 'age_start' column in each of the standard age-specific inputs.</p></li>
 <li><p>ages_survival: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>]<br />
 The ages for which survivorship ratio estimates are available, includes one
@@ -313,20 +313,21 @@ The assumed female reproductive ages, subset of 'ages'. Corresponds to the
 Measuring and Modeling Population. Wiley.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='leslie_matrix.html'>leslie_matrix()</a></code></p>
+    <div class='dont-index'><p><code>leslie_matrix()</code></p>
 <p>vignette("ccmpp")</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='fu'>ccmpp</span>(
-  <span class='kw'>inputs</span> <span class='kw'>=</span> <span class='no'>thailand_initial_estimates</span>,
-  <span class='kw'>settings</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1960</span>, <span class='fl'>1995</span>, <span class='fl'>5</span>),
-    <span class='kw'>sexes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>),
-    <span class='kw'>ages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span>),
-    <span class='kw'>ages_survival</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>85</span>, <span class='fl'>5</span>),
-    <span class='kw'>ages_asfr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>15</span>, <span class='fl'>45</span>, <span class='fl'>5</span>)
+    <pre class="examples"><div class='input'><span class='kw'>population</span> <span class='op'>&lt;-</span> <span class='fu'>ccmpp</span>(
+  inputs = <span class='kw'>thailand_initial_estimates</span>,
+  settings = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    years = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1960</span>, <span class='fl'>1995</span>, <span class='fl'>5</span>),
+    sexes = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>),
+    ages = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>80</span>, <span class='fl'>5</span>),
+    ages_survival = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>85</span>, <span class='fl'>5</span>),
+    ages_asfr = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>15</span>, <span class='fl'>45</span>, <span class='fl'>5</span>)
   )
-)</div></pre>
+)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

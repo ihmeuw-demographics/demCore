@@ -142,19 +142,19 @@ year).</p>
     </div>
 
     <pre class="usage"><span class='fu'>matrix_to_dt</span>(
-  <span class='no'>mdt</span>,
-  <span class='no'>year_right_most_endpoint</span>,
-  <span class='kw'>age_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>gen_end_interval_col</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
-  <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>mdt</span>,
+  <span class='kw'>year_right_most_endpoint</span>,
+  age_right_most_endpoint = <span class='fl'>Inf</span>,
+  gen_end_interval_col = <span class='fl'>TRUE</span>,
+  value_col = <span class='st'>"value"</span>,
+  validate_arguments = <span class='fl'>TRUE</span>
 )
 
 <span class='fu'>dt_to_matrix</span>(
-  <span class='no'>dt</span>,
-  <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"year_start"</span>, <span class='st'>"year_end"</span>, <span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>),
-  <span class='kw'>value_col</span> <span class='kw'>=</span> <span class='st'>"value"</span>,
-  <span class='kw'>validate_arguments</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>dt</span>,
+  id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"year_start"</span>, <span class='st'>"year_end"</span>, <span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>),
+  value_col = <span class='st'>"value"</span>,
+  validate_arguments = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -228,8 +228,9 @@ and if the data is sex specific each sex will have a separate matrix stored
 in a named list (names corresponding to each sex).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>output_matrix</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>demCore</span><span class='kw ns'>:::</span><span class='fu'>dt_to_matrix</span>(<span class='no'>thailand_initial_estimates</span>$<span class='no'>survival</span>)
-<span class='no'>output_dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>demCore</span><span class='kw ns'>:::</span><span class='fu'>matrix_to_dt</span>(<span class='no'>output_matrix</span>, <span class='kw'>year_right_most_endpoint</span> <span class='kw'>=</span> <span class='fl'>2000</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>output_matrix</span> <span class='op'>&lt;-</span> <span class='kw'>demCore</span>:::<span class='fu'><a href='https://rdrr.io/pkg/demCore/man/dt_matrix_format.html'>dt_to_matrix</a></span>(<span class='kw'>thailand_initial_estimates</span><span class='op'>$</span><span class='kw'>survival</span>)
+<span class='kw'>output_dt</span> <span class='op'>&lt;-</span> <span class='kw'>demCore</span>:::<span class='fu'><a href='https://rdrr.io/pkg/demCore/man/dt_matrix_format.html'>matrix_to_dt</a></span>(<span class='kw'>output_matrix</span>, year_right_most_endpoint = <span class='fl'>2000</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

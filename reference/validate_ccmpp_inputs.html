@@ -132,7 +132,7 @@
     <p>Validate the ccmpp input arguments</p>
     </div>
 
-    <pre class="usage"><span class='fu'>validate_ccmpp_inputs</span>(<span class='no'>inputs</span>, <span class='no'>settings</span>, <span class='no'>value_col</span>)</pre>
+    <pre class="usage"><span class='fu'>validate_ccmpp_inputs</span>(<span class='kw'>inputs</span>, <span class='kw'>settings</span>, <span class='kw'>value_col</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,7 +140,7 @@
     <tr>
       <th>inputs</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>]<br />
-[<code>data.table()</code>] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
+[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 and 'survival'; and migration estimates provided as just 'net_migration' or
 'immigration' and 'emigration'. See <strong>Section: Inputs</strong> for more
 information on each of the required inputs.</p></td>
@@ -148,7 +148,7 @@ information on each of the required inputs.</p></td>
     <tr>
       <th>settings</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/list.html'>list()</a></code>]<br />
-Named list of settings for running <code><a href='ccmpp.html'>ccmpp()</a></code> with. See
+Named list of settings for running <code>ccmpp()</code> with. See
 <strong>Section: Settings</strong> for more information on each of the required
 settings.</p></td>
     </tr>
