@@ -7,7 +7,7 @@
 \usage{
 iterate_ax(dt, id_cols, n_iterations = 30L, threshold = 0.01, quiet = F)
 
-gen_ax_from_dx(dt, id_cols)
+gen_ax_from_dx(dt, id_cols, validate_arguments = T)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -27,6 +27,10 @@ iteration.}
 \item{quiet}{[\code{logical(1)}]\cr
 Whether to omit messages about iteration progress. Default is F and
 progress messages are given.}
+
+\item{validate_arguments}{[\code{logical(1)}]\cr
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.}
 }
 \value{
 [\code{data.table()}]\cr Input life tables with ax, dx, qx modified.

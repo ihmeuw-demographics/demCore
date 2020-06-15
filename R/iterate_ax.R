@@ -94,7 +94,7 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
     dt[, initial_ax := ax]
 
     # estimate ax from dx (Preston pg 45)
-    dt <- gen_ax_from_dx(dt, id_cols)
+    dt <- gen_ax_from_dx(dt, id_cols, validate_arguments = F)
 
     # reset ax if it goes out of bounds
     dt[ax <= 0, ax := 0.01]
@@ -155,13 +155,22 @@ iterate_ax <- function(dt, id_cols, n_iterations = 30L,
 
 
 #' @rdname iterate_ax
+#' @param validate_arguments \[`logical(1)`\]\cr
+#'   Whether to validate that the input arguments are formatted correctly.
+#'   Default is 'TRUE'.
 #' @export
-gen_ax_from_dx <- function(dt, id_cols) {
+gen_ax_from_dx <- function(dt, id_cols, validate_arguments = T) {
 
-  # check and sort
-  assertive::assert_is_data.table(dt)
-  assertable::assert_colnames(dt, c("dx", "age_start"), only_colnames = F,
-                              quiet = T)
+  # check
+  assertthat::assert_that(
+    assertthat::is.flag(validate_arguments),
+    msg = "`validate_arguments` must be a logical flag"
+  )
+  if (validate_arguments) {
+    validate_lifetable(dt = dt, id_cols = id_cols, param_cols = c("dx"))
+  }
+
+  # sort
   setorderv(dt, id_cols)
 
   # estimate ax from dx (Preston pg 45)
