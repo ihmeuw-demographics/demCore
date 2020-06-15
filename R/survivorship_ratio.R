@@ -3,7 +3,7 @@
 #' @description Calculate survivorship ratios to be used in projecting
 #'   populations forward in time with [`ccmpp()`]. The survivorship ratios
 #'   represent the proportion of people in one age group that will survive into
-#'   the next age group given the age-specific mortality rates in a lifetable.
+#'   the next age group given the age-specific mortality rates in a life table.
 #'
 #' @param dt \[`data.table()`\]\cr
 #'   Input data that includes columns for `id_cols`, 'lx', 'nLx' and 'Tx'.
@@ -110,7 +110,7 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
   return(nSx_dt)
 }
 
-#' @title Generate nLx lifetable parameter from survivorship ratios
+#' @title Generate nLx life table parameter from survivorship ratios
 #'
 #' @description Generate the nLx life table parameter given survivorship ratios
 #'   (nSx).

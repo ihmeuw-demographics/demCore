@@ -2,28 +2,40 @@
 % Please edit documentation in R/iterate_ax.R
 \name{iterate_ax}
 \alias{iterate_ax}
-\title{Ax iteration method}
+\alias{gen_ax_from_dx}
+\title{Ax iteration method from dx}
 \usage{
 iterate_ax(dt, id_cols, n_iterations = 30L, threshold = 0.01, quiet = F)
+
+gen_ax_from_dx(dt, id_cols, validate_arguments = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}]\cr Life tables with columns: all \code{id_cols},
-'age_start', 'age_end', 'dx', 'ax', 'qx', 'mx'.}
+\item{dt}{[\code{data.table()}]\cr
+Life tables with columns: all \code{id_cols}, 'age_start', 'age_end', 'dx',
+'ax', 'qx', 'mx'.}
 
 \item{id_cols}{[\code{character()}]\cr Columns that uniquely identify each row
 of \code{dt}. Must include 'age_start' and 'age_end'.}
 
-\item{n_iterations}{[\code{integer(1)}]\cr Maximum number of iterations to run.}
+\item{n_iterations}{[\code{integer(1)}]\cr
+Maximum number of iterations to run.}
 
-\item{threshold}{[\code{numeric(1)}]\cr How far apart should ax and the
-implied ax from dx be before removal from iteration. Default: 0.01.}
+\item{threshold}{[\code{numeric(1)}]\cr
+How far apart should ax and the implied ax from dx be before removal from
+iteration.}
 
-\item{quiet}{[\code{logical(1)}]\cr Whether to omit messages about iteration
-progress. Default is F and progress messages are given.}
+\item{quiet}{[\code{logical(1)}]\cr
+Whether to omit messages about iteration progress. Default is F and
+progress messages are given.}
+
+\item{validate_arguments}{[\code{logical(1)}]\cr
+Whether to validate that the input arguments are formatted correctly.
+Default is 'TRUE'.}
 }
 \value{
 [\code{data.table()}]\cr Input life tables with ax, dx, qx modified.
-Input mx is unchanged.
+Input mx is unchanged. \code{iterate_ax} makes a copy while \code{gen_ax_from_dx}
+modifies in place.
 }
 \description{
 Implement iteration method to minimize the difference across
@@ -35,10 +47,20 @@ Since dx is often calculated using the mx --> ax --> qx method in the
 first place, initialization and iteration is required.
 }
 \details{
-Limitations: this method relies on initialized ax and dx values, and cannot
-produce estimates for the first and last age groups. Preston pg 45.
+\strong{iterate_ax:} Implement ax iteration.
 
-Note: this is not the best method for ages under 5 years. See
+\strong{gen_ax_from_dx:} Calculate ax from dx without iteration. This is used as a
+helper function within \code{iterate_ax} but can also be used independently when
+dx is believed to be accurate. The complete relationship is:
+\deqn{_na_x = \frac{-\frac{n}{24}  {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
+\frac{n}{24} {_nd_{x+n}}}{_nd_x}}
+See the \href{https://ihmeuw-demographics.github.io/demCore/index.html}{references page}
+for the formatted equation.
+
+\strong{Limitations:} this method relies on initialized ax and dx values, and
+cannot produce estimates for the first and last age groups. Preston pg 45.
+
+\strong{Note:} this is not the best method for ages under 5 years. See
 \code{\link[=gen_u5_ax]{gen_u5_ax()}}.
 }
 \examples{
@@ -46,15 +68,10 @@ data("austria_1992_lt")
 dt <- austria_1992_lt[,.(age_start, age_end, age_length, mx, ax, qx, dx, lx)]
 new_dt <- iterate_ax(dt, id_cols = c("age_start", "age_end"))
 
-\dontrun{
-  # plot change in qx, ax, lx, dx, mx
-  dt <- merge(dt, new_dt, by = c("age_start", "age_end"))
-  plot(data = dt, qx.y/qx.x ~ age_start)
-  plot(data = dt, ax.y/ax.x ~ age_start)
-  plot(data = dt, lx.y/lx.x ~ age_start)
-  plot(data = dt, dx.y/dx.x ~ age_start)
-  plot(data = dt, mx.y/mx.x ~ age_start) # expect no change in mx
-}
+# plot change in qx, ax, lx, dx, mx
+dt <- merge(dt, new_dt, by = c("age_start", "age_end"))
+data.table::setnames(dt, c("ax.x", "ax.y"), c("ax.initial", "ax.iterated"))
+plot(data = dt, ax.iterated/ax.initial ~ age_start)
 
 }
 \references{

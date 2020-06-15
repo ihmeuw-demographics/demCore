@@ -318,7 +318,7 @@ ccmpp <- function(inputs,
 #'   Survivorship ratio, the proportion of people aged x - `int` that will be
 #'   alive `int` years later in a stationary population
 #' @param asfr \[`numeric(n_ages)`\]\cr
-#'   Annual age specific fertility rates NOT yet mulitplied by `int`. Must
+#'   Annual age specific fertility rates NOT yet multiplied by `int`. Must
 #'   include both reproductive and non-reproductive age groups that are zero.
 #' @param srb \[`numeric(1)`\]\cr
 #'   Sex ratio at birth.

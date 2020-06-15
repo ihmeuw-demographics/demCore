@@ -7,27 +7,49 @@
 lifetable(dt, id_cols, preserve_u5 = F, assert_na = T)
 }
 \arguments{
-\item{dt}{[\code{data.table()}]\cr Input life tables, variables: 'qx', 'mx',
-'ax', 'age_start', 'age_end', and all \code{id_cols}}
+\item{dt}{[\code{data.table()}]\cr
+Input life tables. Must include 2/3 of 'qx', 'mx', and 'ax', in addition
+to all \code{id_cols}.}
 
-\item{id_cols}{[\code{character()}]\cr Columns that uniquely identify each
-row of \code{dt}}
+\item{id_cols}{[\code{character()}]\cr
+Columns that uniquely identify each row of \code{dt}. Must include 'age_start'
+and 'age_end'.}
 
-\item{preserve_u5}{[\code{logical()}]\cr Whether to preserve under-5 qx
-estimates rather than recalculating them based on mx and ax. Default: F.}
+\item{preserve_u5}{[\code{logical()}]\cr
+Whether to preserve under-5 qx estimates rather than recalculating them
+based on mx and ax.}
 
 \item{assert_na}{[\code{logical()}]\cr Whether to assert that there is no
-missingness. Default T.}
+missingness.}
 }
 \value{
-[\code{data.table()}]\cr Life table(s) with additional columns: px, lx,
-dx, Tx, nLx, ex
+[\code{data.table()}]\cr
+Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex
 }
 \description{
 Given a \code{data.table} with at least two of variables mx, ax, and
 qx, compute a complete life table. This is a helper function that combines
 many other functions in this package to calculate px, lx, dx, Tx, nLx,
 and ex.
+}
+\details{
+Note that while it typically takes estimation techniques to arrive at mx, ax,
+and qx from empirical data, the solution of the remaining life table
+parameters as compiled in this function is deterministic once mx, ax, and qx
+are specified. The steps of this solution are as follows:
+\enumerate{
+\item Calculate mx, ax, or qx if one of the three is missing
+\item Recalculate qx if all three of mx, ax, and qx are provided to confirm
+the three agree. See \code{mx_qx_ax_conversions} functions. Will not recalculate
+under-5 qx if \code{preserve_u5} is true.
+\item Compute px from qx
+\item \code{\link[=gen_lx_from_qx]{gen_lx_from_qx()}}
+\item \code{\link[=gen_dx_from_lx]{gen_dx_from_lx()}}
+\item \code{\link[=gen_nLx]{gen_nLx()}}
+\item \code{\link[=gen_Tx]{gen_Tx()}}
+\item \code{\link[=gen_ex]{gen_ex()}}
+\item Replace terminal (age_end = Inf) ax with terminal ex
+}
 }
 \examples{
 dt <- data.table::data.table(

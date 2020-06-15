@@ -12,6 +12,7 @@ reference:
   - mx_to_ax
   - gen_u5_ax
   - iterate_ax
+  - gen_ax_from_dx
   - gen_lx_from_qx
   - gen_qx_from_lx
   - gen_dx_from_lx
@@ -26,7 +27,6 @@ reference:
   - agg_lt
   - scale_qx
   - gen_summary_lt
-  - abridged_to_full
 
 - title: "Population Projection"
   desc: "Functions for projecting populations forward in time."
