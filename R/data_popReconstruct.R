@@ -23,7 +23,7 @@
 #' Data.” Journal of the American Statistical Association 108 (501): 96–110.
 #' [https://doi.org/10.1080/01621459.2012.737729](https://doi.org/10.1080/01621459.2012.737729).
 #'
-#' [popReconstruct R Package](https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf)
+#' [popReconstruct R Package](https://CRAN.R-project.org/package=popReconstruct)
 #'
 #' @seealso [ccmpp()]
 #'

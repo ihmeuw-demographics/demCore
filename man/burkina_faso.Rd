@@ -122,7 +122,7 @@ Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland.
 Data.” Journal of the American Statistical Association 108 (501): 96–110.
 \url{https://doi.org/10.1080/01621459.2012.737729}.
 
-\href{https://cran.r-project.org/web/packages/popReconstruct/popReconstruct.pdf}{popReconstruct R Package}
+\href{https://CRAN.R-project.org/package=popReconstruct}{popReconstruct R Package}
 }
 \seealso{
 \code{\link[=ccmpp]{ccmpp()}}
