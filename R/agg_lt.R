@@ -18,7 +18,7 @@
 #'   also be returned if two of 'qx', 'ax', and 'mx' are included in the input
 #'   `dt`. Will only return the age groups specified in `age_mapping`.
 #'
-#' @seealso [`hierarchyUtils::agg()`]
+#' @seealso \code{\link[hierarchyUtils::agg_scale]{hierarchyUtils::agg()}}
 #'
 #' @details
 #' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
