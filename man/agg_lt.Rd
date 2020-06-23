@@ -144,5 +144,5 @@ dt <- agg_lt(
 )
 }
 \seealso{
-\code{\link[hierarchyUtils::agg_scale]{hierarchyUtils::agg()}}
+\code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}}
 }
