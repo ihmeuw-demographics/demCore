@@ -47,7 +47,8 @@
 #'   * year_start: \[`integer()`\] start of the calendar year interval
 #'   (inclusive). Corresponds to 'years' `setting`.
 #'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
-#'   * `value_col`: \[`numeric()`\] sex-ratio at birth estimates.
+#'   * `value_col`: \[`numeric()`\] sex-ratio at birth estimates, must be
+#'   greater than zero.
 #'
 #' asfr: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -56,7 +57,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages_asfr' setting.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate estimates.
+#'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate
+#'   estimates, must be greater than zero.
 #'
 #' baseline: \[`data.table()`\]\cr
 #'   * year: \[`integer()`\] mid-year for population estimate.
@@ -66,7 +68,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] baseline year population count estimates.
+#'   * `value_col`: \[`numeric()`\] baseline year population count estimates,
+#'   must be greater than zero.
 #'
 #' survival: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -77,7 +80,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] survivorship ratio estimates.
+#'   * `value_col`: \[`numeric()`\] survivorship ratio estimates, must be
+#'   greater than zero and less than one.
 #'
 #' net_migration: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -99,7 +103,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual immigration proportion estimates.
+#'   * `value_col`: \[`numeric()`\] annual immigration proportion estimates,
+#'   must be greater than zero.
 #'
 #' emigration: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -110,7 +115,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual emigration proportion estimates.
+#'   * `value_col`: \[`numeric()`\] annual emigration proportion estimates, must
+#'   be greater than zero.
 #'
 #' @section Settings:
 #'   * years: \[`numeric()`\]\cr

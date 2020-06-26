@@ -37,7 +37,8 @@ srb: [\code{data.table()}]\cr
 \item year_start: [\code{integer()}] start of the calendar year interval
 (inclusive). Corresponds to 'years' \code{setting}.
 \item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
-\item \code{value_col}: [\code{numeric()}] sex-ratio at birth estimates.
+\item \code{value_col}: [\code{numeric()}] sex-ratio at birth estimates, must be
+greater than zero.
 }
 
 asfr: [\code{data.table()}]\cr
@@ -48,7 +49,8 @@ asfr: [\code{data.table()}]\cr
 \item age_start: [\code{integer()}] start of the age group (inclusive).
 Corresponds to 'ages_asfr' setting.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
-\item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate estimates.
+\item \code{value_col}: [\code{numeric()}] annual age-specific fertility rate
+estimates, must be greater than zero.
 }
 
 baseline: [\code{data.table()}]\cr
@@ -60,7 +62,8 @@ Corresponds to 'years' \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).
 Corresponds to 'ages' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
-\item \code{value_col}: [\code{numeric()}] baseline year population count estimates.
+\item \code{value_col}: [\code{numeric()}] baseline year population count estimates,
+must be greater than zero.
 }
 
 survival: [\code{data.table()}]\cr
@@ -73,7 +76,8 @@ survival: [\code{data.table()}]\cr
 \item age_start: [\code{integer()}] start of the age group (inclusive).
 Corresponds to 'ages' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
-\item \code{value_col}: [\code{numeric()}] survivorship ratio estimates.
+\item \code{value_col}: [\code{numeric()}] survivorship ratio estimates, must be
+greater than zero and less than one.
 }
 
 net_migration: [\code{data.table()}]\cr
@@ -99,7 +103,8 @@ immigration: [\code{data.table()}]\cr
 \item age_start: [\code{integer()}] start of the age group (inclusive).
 Corresponds to 'ages' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
-\item \code{value_col}: [\code{numeric()}] annual immigration proportion estimates.
+\item \code{value_col}: [\code{numeric()}] annual immigration proportion estimates,
+must be greater than zero.
 }
 
 emigration: [\code{data.table()}]\cr
@@ -112,7 +117,8 @@ emigration: [\code{data.table()}]\cr
 \item age_start: [\code{integer()}] start of the age group (inclusive).
 Corresponds to 'ages' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
-\item \code{value_col}: [\code{numeric()}] annual emigration proportion estimates.
+\item \code{value_col}: [\code{numeric()}] annual emigration proportion estimates, must
+be greater than zero.
 }
 }
 
