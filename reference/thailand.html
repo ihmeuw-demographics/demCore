@@ -161,7 +161,8 @@ information on each of the inputs.</p>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] sex-ratio at birth estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] sex-ratio at birth estimates, must be
+greater than zero.</p></li>
 </ul>
 
 <p>asfr: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
@@ -171,7 +172,8 @@ information on each of the inputs.</p>
 <li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
 Corresponds to 'ages_asfr' setting.</p></li>
 <li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual age-specific fertility rate estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual age-specific fertility rate
+estimates, must be greater than zero.</p></li>
 </ul>
 
 <p>baseline: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
@@ -182,7 +184,8 @@ Corresponds to 'years' <code>setting</code>.</p></li>
 <li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
 Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] baseline year population count estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] baseline year population count estimates,
+must be greater than zero.</p></li>
 </ul>
 
 <p>survival: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
@@ -194,7 +197,8 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
 Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] survivorship ratio estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] survivorship ratio estimates, must be
+greater than zero and less than one.</p></li>
 </ul>
 
 <p>net_migration: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
@@ -218,7 +222,8 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
 Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual immigration proportion estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual immigration proportion estimates,
+must be greater than zero.</p></li>
 </ul>
 
 <p>emigration: [<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /></p><ul>
@@ -230,7 +235,8 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
 Corresponds to 'ages' <code>setting</code>.</p></li>
 <li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
-<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual emigration proportion estimates.</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] annual emigration proportion estimates, must
+be greater than zero.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
