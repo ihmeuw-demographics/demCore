@@ -6,7 +6,7 @@
 #' @param inputs \[`list()`\]\cr
 #'   \[`data.table()`\] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 #'   and 'survival'; and migration estimates provided as just 'net_migration' or
-#'   'immigration' and 'emigration'. See **Section: Inputs** for more
+#'   both 'immigration' and 'emigration'. See **Section: Inputs** for more
 #'   information on each of the required inputs.
 #' @param settings \[`list()`\]\cr
 #'   Named list of settings for running [ccmpp()] with. See
