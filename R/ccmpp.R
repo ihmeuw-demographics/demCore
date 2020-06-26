@@ -6,7 +6,7 @@
 #' @param inputs \[`list()`\]\cr
 #'   \[`data.table()`\] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
 #'   and 'survival'; and migration estimates provided as just 'net_migration' or
-#'   'immigration' and 'emigration'. See **Section: Inputs** for more
+#'   both 'immigration' and 'emigration'. See **Section: Inputs** for more
 #'   information on each of the required inputs.
 #' @param settings \[`list()`\]\cr
 #'   Named list of settings for running [ccmpp()] with. See
@@ -47,7 +47,8 @@
 #'   * year_start: \[`integer()`\] start of the calendar year interval
 #'   (inclusive). Corresponds to 'years' `setting`.
 #'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
-#'   * `value_col`: \[`numeric()`\] sex-ratio at birth estimates.
+#'   * `value_col`: \[`numeric()`\] sex-ratio at birth estimates, must be
+#'   greater than zero.
 #'
 #' asfr: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -56,7 +57,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages_asfr' setting.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate estimates.
+#'   * `value_col`: \[`numeric()`\] annual age-specific fertility rate
+#'   estimates, must be greater than zero.
 #'
 #' baseline: \[`data.table()`\]\cr
 #'   * year: \[`integer()`\] mid-year for population estimate.
@@ -66,7 +68,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] baseline year population count estimates.
+#'   * `value_col`: \[`numeric()`\] baseline year population count estimates,
+#'   must be greater than zero.
 #'
 #' survival: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -77,7 +80,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] survivorship ratio estimates.
+#'   * `value_col`: \[`numeric()`\] survivorship ratio estimates, must be
+#'   greater than zero and less than one.
 #'
 #' net_migration: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -99,7 +103,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual immigration proportion estimates.
+#'   * `value_col`: \[`numeric()`\] annual immigration proportion estimates,
+#'   must be greater than zero.
 #'
 #' emigration: \[`data.table()`\]\cr
 #'   * year_start: \[`integer()`\] start of the calendar year interval
@@ -110,7 +115,8 @@
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
-#'   * `value_col`: \[`numeric()`\] annual emigration proportion estimates.
+#'   * `value_col`: \[`numeric()`\] annual emigration proportion estimates, must
+#'   be greater than zero.
 #'
 #' @section Settings:
 #'   * years: \[`numeric()`\]\cr
@@ -214,18 +220,15 @@ ccmpp <- function(inputs,
   for (i in 1:length(settings$years)) {
     y <- projection_years[i]
     y_next <- projection_years[i + 1]
-
-    # get vector of values for current year
     population_female <- population_mdt[["female"]][, i]
+
+    # create leslie matrix for females
     survival_female <- inputs_mdt[["survival"]][["female"]][, i]
-    net_migration_female <- inputs_mdt[["net_migration"]][["female"]][, i]
     srb <- inputs_mdt[["srb"]][, i]
     # add assumed zero asfr ages
     asfr <- c(rep(0, sum(settings$ages < min(settings$ages_asfr))),
               inputs_mdt[["asfr"]][, i],
               rep(0, sum(settings$ages > max(settings$ages_asfr))))
-
-    # create leslie matrix for females
     leslie_female <- leslie_matrix(
       survival = survival_female,
       asfr = asfr,
@@ -236,7 +239,15 @@ ccmpp <- function(inputs,
     )
 
     # calculate half the number of net migrants for females
-    half_net_migrants_female <- net_migration_female * population_female * 0.5
+    if ("net_migration" %in% names(inputs_mdt)) {
+      net_migration_female <- inputs_mdt[["net_migration"]][["female"]][, i]
+      half_net_migrants_female <- net_migration_female * population_female * 0.5
+    } else {
+      immigration_female <- inputs_mdt[["immigration"]][["female"]][, i]
+      emigration_female <- inputs_mdt[["emigration"]][["female"]][, i]
+      half_net_migrants_female <- ((immigration_female * population_female) +
+        (emigration_female * population_female)) * 0.5
+    }
 
     # project female population forward one projection period
     population_next_female <- leslie_female %*%
@@ -249,12 +260,10 @@ ccmpp <- function(inputs,
     # project male population forward one projection period
     if ("male" %in% settings$sexes) {
 
-      # get vector of values for current year
       population_male <- population_mdt[["male"]][, i]
-      survival_male <- inputs_mdt[["survival"]][["male"]][, i]
-      net_migration_male <- inputs_mdt[["net_migration"]][["male"]][, i]
 
       # create leslie matrix for males
+      survival_male <- inputs_mdt[["survival"]][["male"]][, i]
       leslie_male <- leslie_matrix(
         survival = survival_male,
         asfr = asfr,
@@ -263,8 +272,17 @@ ccmpp <- function(inputs,
         int = int,
         female = FALSE
       )
+
       # calculate half the number of net migrants for males
-      half_net_migrants_male <- net_migration_male * population_male * 0.5
+      if ("net_migration" %in% names(inputs_mdt)) {
+        net_migration_male <- inputs_mdt[["net_migration"]][["male"]][, i]
+        half_net_migrants_male <- net_migration_male * population_male * 0.5
+      } else {
+        immigration_male <- inputs_mdt[["immigration"]][["male"]][, i]
+        emigration_male <- inputs_mdt[["emigration"]][["male"]][, i]
+        half_net_migrants_male <- ((immigration_male * population_male) +
+          (emigration_male * population_male)) * 0.5
+      }
 
       # project male population forward one projection period
       population_next_male <- leslie_male %*%
@@ -512,8 +530,18 @@ validate_ccmpp_inputs <- function(inputs,
     msg = "`inputs` must be a list of data.tables"
   )
 
+  # check all required components are present in `inputs`
+  components <- names(inputs)
+  assertthat::assert_that(
+    all(c("srb", "asfr", "baseline", "survival") %in% components),
+    "net_migration" %in% components |
+      all(c("immigration", "emigration") %in% components),
+    msg = "`inputs` requires named components for each of 'srb', 'asfr',
+    'baseline', and 'survival'; and migration estimates provided as just
+    'net_migration' or 'immigration' and 'emigration'."
+  )
+
   # check all required columns are present in `inputs`
-  components <- c("srb", "asfr", "baseline", "survival", "net_migration")
   all_cols <- c("year_start", "year_end", "sex", "age_start", "age_end",
                 value_col)
   pop_all_cols <- c("year", "sex", "age_start", "age_end", value_col)
@@ -522,8 +550,11 @@ validate_ccmpp_inputs <- function(inputs,
     "asfr" = setdiff(all_cols, "sex"),
     "baseline" = pop_all_cols,
     "survival" = all_cols,
-    "net_migration" = all_cols
+    "net_migration" = all_cols,
+    "immigration" = all_cols,
+    "emigration" = all_cols
   )
+  component_cols <- component_cols[names(component_cols) %in% components]
   component_ids <- list(
     "srb" = list(year_start = settings$years),
     "asfr" = list(year_start = settings$years,
@@ -536,8 +567,15 @@ validate_ccmpp_inputs <- function(inputs,
                       age_start = settings$ages_survival),
     "net_migration" = list(year_start = settings$years,
                            sex = settings$sexes,
-                           age_start = settings$ages)
+                           age_start = settings$ages),
+    "immigration" = list(year_start = settings$years,
+                         sex = settings$sexes,
+                         age_start = settings$ages),
+    "emigration" = list(year_start = settings$years,
+                        sex = settings$sexes,
+                        age_start = settings$ages)
   )
+  component_ids <- component_ids[names(component_ids) %in% components]
   for (component in components) {
     required_cols <- component_cols[[component]]
     assertthat::assert_that(
@@ -566,5 +604,11 @@ validate_ccmpp_inputs <- function(inputs,
                             test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["survival"]], colnames = value_col,
                             test = "lte", test_val = "1", quiet = T)
+  if (!"net_migration" %in% components) {
+    assertable::assert_values(inputs[["immigration"]], colnames = value_col,
+                              test = "gte", test_val = "0", quiet = T)
+    assertable::assert_values(inputs[["emigration"]], colnames = value_col,
+                              test = "gte", test_val = "0", quiet = T)
+  }
   return(invisible(inputs))
 }
