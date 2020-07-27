@@ -9,6 +9,10 @@ determine_age_int(dt, id_cols_no_age)
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
 Input data that includes columns for \code{id_cols}, 'lx', 'nLx' and 'Tx'.}
+
+\item{id_cols_no_age}{[\code{character()}]\cr
+Columns that uniquely identify each unique lifetable in \code{dt}. Must not
+include 'age_start' and 'age_end'.}
 }
 \value{
 [\code{numeric(1)}] age interval
