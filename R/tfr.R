@@ -17,8 +17,10 @@
 #'
 #' @details
 #' Calculate total fertility aggregate for ages within `age_lower`` and 
-#' `age_upper` such as total fertility under 25 and total fertility over 30.
-#'
+#' `age_upper` such as total fertility under 25 and total fertility over 30. TFR
+#'  is calculated as the sum of ASFR multiplied by the number of years in an
+#'  age group.
+#'  
 #' @examples 
 #' # calculate total fertility under 25 (ages 10 to 24)
 #' dt <- data.table('asfr' = c(0.00005, 0.02, 0.07, 0.08, 0.05, 0.02, 0.004, 0.0002),
