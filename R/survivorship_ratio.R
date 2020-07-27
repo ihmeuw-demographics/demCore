@@ -196,7 +196,8 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
 
   # calculate nLx for the terminal age group
   dt[age_start >= terminal_age - age_int,
-     nLx := c(nLx[1], (nSx[2] * nLx[1]) / (1 - nSx[2]))]
+     nLx := c(nLx[1], (nSx[2] * nLx[1]) / (1 - nSx[2])),
+     by = id_cols_no_age]
 
   # check and return ---------------------------------------------------------
 
