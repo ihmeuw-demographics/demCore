@@ -59,7 +59,6 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # check `terminal_age` argument
   assertthat::assert_that(
@@ -71,6 +70,13 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int` for all combinations of `id_cols_no_age`
+  age_int <- determine_age_int(dt, id_cols_no_age)
+  assertthat::assert_that(
+    assertthat::is.number(age_int),
+    msg = "identified age interval in input `dt` must be identical across `id_cols`"
+  )
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -163,11 +169,17 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
   terminal_age <- dt[age_end == "Inf", unique(age_start)]
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int` for all combinations of `id_cols_no_age`
+  age_int <- determine_age_int(dt, id_cols_no_age)
+  assertthat::assert_that(
+    assertthat::is.number(age_int),
+    msg = "identified age interval in input `dt` must be identical across `id_cols`"
+  )
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -249,10 +261,16 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int` for all combinations of `id_cols_no_age`
+  age_int <- determine_age_int(dt, id_cols_no_age)
+  assertthat::assert_that(
+    assertthat::is.number(age_int),
+    msg = "identified age interval in input `dt` must be identical across `id_cols`"
+  )
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -299,4 +317,20 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
 #' @return \[`numeric(1)`\]\cr
 lx_from_lxpn_nLx_ax <- function(lxpn, nLx, ax, age_int) {
   return((nLx - ((age_int - ax) * lxpn)) / ax)
+}
+
+#' @title Helper function to identify unique age intervals for input data.table
+#'
+#' @inheritParams nSx_from_lx_nLx_Tx
+#' @param id_cols_no_age \[`character()`\]\cr
+#'   Columns that uniquely identify each unique lifetable in `dt`. Must not
+#'   include 'age_start' and 'age_end'.
+#'
+#' @return \[`numeric(1)`\] age interval
+determine_age_int <- function(dt, id_cols_no_age) {
+  # determine `age_int` for all combinations of `id_cols_no_age`
+  age_int <- dt[age_end != Inf, list(int = unique(diff(age_start))),
+                by = id_cols_no_age]
+  age_int <- unique(age_int$int)
+  return(age_int)
 }
