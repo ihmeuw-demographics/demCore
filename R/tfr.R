@@ -10,7 +10,7 @@
 #'    Start age for total fertility calculation
 #' @param age_upper \[`integer(1)`\]\cr
 #'    End age for total fertility calculation
-#' @param 
+#' @inheritParams hierarchyUtils::agg
 #'
 #' @return \[`data.table()`\]\cr Total fertility values, has `id_cols` and 'tfr'
 #'   columns.
@@ -35,6 +35,10 @@ tfr <- function(dt, id_cols, age_lower, age_upper) {
   assertable::assert_colnames(dt, c('age_start', 'age_end', 'asfr'), 
                               only_colnames = F)
   
+  # check that age_lower and age_upper are length one numeric
+  assertthat::is.number(age_lower)
+  assertthat::is.number(age_upper)
+  
   # confirm age_lower and age_upper are bounds of age groups in data
   assertthat::assert_that(age_lower %in% dt[,age_start],
                           msg = 'age_lower not found in data')
@@ -44,13 +48,27 @@ tfr <- function(dt, id_cols, age_lower, age_upper) {
   # prep -----------------------------------------------------------------------
   
   dt <- copy(dt)
-  dt[,age_group_size := age_end-age_start]
+  hierarchyUtils::gen_length(dt, col_stem = 'age')
   
   # calculate ------------------------------------------------------------------
   
   dt <- dt[age_start >= age_lower & age_end <= age_upper]
-  dt <- dt[,.(tfr = sum(asfr*age_group_size)), by = id_cols]
+  dt <- dt[, tfr := asfr*age_length]
+  
+  dt <- hierarchyUtils::agg(
+    dt[,c(..id_cols, 'age_start', 'age_end', 'tfr')],
+    id_cols = c(id_cols, 'age_start', 'age_end'),
+    value_cols = 'tfr',
+    col_stem = 'age',
+    col_type = 'interval',
+    mapping = data.table::data.table(
+      age_start = age_lower,
+      age_end = age_upper
+    ),
+    agg_function = sum
+  )
   
   return(dt)
 }
+
 
