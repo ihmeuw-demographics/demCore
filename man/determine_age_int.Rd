@@ -2,21 +2,18 @@
 % Please edit documentation in R/survivorship_ratio.R
 \name{determine_age_int}
 \alias{determine_age_int}
-\title{Helper function to identify unique age intervals for input data.table}
+\title{Helper function to identify unique age interval for input data.table}
 \usage{
-determine_age_int(dt, id_cols_no_age)
+determine_age_int(dt)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
 Input data that includes columns for \code{id_cols}, 'lx', 'nLx' and 'Tx'.}
-
-\item{id_cols_no_age}{[\code{character()}]\cr
-Columns that uniquely identify each unique lifetable in \code{dt}. Must not
-include 'age_start' and 'age_end'.}
 }
 \value{
-[\code{numeric(1)}] age interval
+[\code{numeric(1)}] unique age interval
 }
 \description{
-Helper function to identify unique age intervals for input data.table
+Identifies age intervals present excluding the terminal age
+group and asserts it is uniform across the input data.table.
 }
