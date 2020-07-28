@@ -1,17 +1,24 @@
 
-id_cols <- c("age_start", "age_end")
+id_cols <- c("id", "age_start", "age_end")
 
 # create input lifetable in 5-year age-groups with all lifetable parameters
 lt <- austria_1992_lt[, list(age_start, age_end, qx, ax)]
 lt <- agg_lt(
   dt = lt,
-  id_cols = id_cols,
+  id_cols = setdiff(id_cols, "id"),
   age_mapping = data.table(
     age_start = seq(0, 85, 5),
     age_end = c(seq(5, 85, 5), Inf)
   )
 )
+lt <- rbind(
+  lt[, list(id = 1, age_start, age_end, qx, ax)],
+  lt[, list(id = 2, age_start, age_end, qx, ax)]
+
+)
+
 lifetable(lt, id_cols = id_cols)
+
 
 calculate_nSx_then_inverse <- function(terminal_age) {
 

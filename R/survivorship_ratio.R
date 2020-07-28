@@ -59,7 +59,6 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # check `terminal_age` argument
   assertthat::assert_that(
@@ -71,6 +70,9 @@ nSx_from_lx_nLx_Tx <- function(dt, id_cols, terminal_age) {
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int`
+  age_int <- determine_age_int(dt)
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -163,11 +165,13 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
   terminal_age <- dt[age_end == "Inf", unique(age_start)]
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int`
+  age_int <- determine_age_int(dt)
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -184,7 +188,8 @@ gen_nLx_from_nSx <-function(dt, id_cols) {
 
   # calculate nLx for the terminal age group
   dt[age_start >= terminal_age - age_int,
-     nLx := c(nLx[1], (nSx[2] * nLx[1]) / (1 - nSx[2]))]
+     nLx := c(nLx[1], (nSx[2] * nLx[1]) / (1 - nSx[2])),
+     by = id_cols_no_age]
 
   # check and return ---------------------------------------------------------
 
@@ -249,10 +254,12 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
     assert_uniform_terminal_age = TRUE,
     assert_age_start_0 = TRUE,
   )
-  age_int <- dt[age_end != Inf, unique(diff(age_start))]
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # determine `age_int`
+  age_int <- determine_age_int(dt)
 
   # set key with 'age_start' as last variable
   original_keys <- key(dt)
@@ -299,4 +306,27 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
 #' @return \[`numeric(1)`\]\cr
 lx_from_lxpn_nLx_ax <- function(lxpn, nLx, ax, age_int) {
   return((nLx - ((age_int - ax) * lxpn)) / ax)
+}
+
+#' @title Helper function to identify unique age interval for input data.table
+#'
+#' @description Identifies age intervals present excluding the terminal age
+#'   group and asserts it is uniform across the input data.table.
+#'
+#' @inheritParams nSx_from_lx_nLx_Tx
+#'
+#' @return \[`numeric(1)`\] unique age interval
+determine_age_int <- function(dt) {
+  if (!"age_length" %in% names(dt)) {
+    hierarchyUtils::gen_length(dt, col_stem = "age")
+  }
+  age_int <- dt[age_end != Inf, unique(age_length)]
+
+  assertthat::assert_that(
+    assertthat::is.number(age_int),
+    msg = "identified age interval in input `dt` must be uniform"
+  )
+
+  dt[, age_length := NULL]
+  return(age_int)
 }
