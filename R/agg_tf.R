@@ -1,4 +1,4 @@
-#' @title Calculate total fertility 
+#' @title Calculate total fertility aggregates
 #'
 #' @description Calculate total fertility for a specified age range based on 
 #'              age-specific fertility rates
@@ -13,7 +13,7 @@
 #' 
 #' @seealso [hierarchyUtils::agg()]
 #'
-#' @return \[`data.table()`\]\cr Total fertility values, has `id_cols` and 'tfr'
+#' @return \[`data.table()`\]\cr Total fertility values, has `id_cols` and 'tf'
 #'   columns.
 #'
 #' @details
@@ -28,7 +28,7 @@
 #'  This is different from an age-specific fertility rate (ASFR) or a crude birth
 #'  rate (CBR), both of which are calculated as births/population for a 
 #'  particular age group or all reproductive ages, respectively. 
-#'   `tfr()` is a wrapper for [hierarchyUtils::agg()].
+#'   `agg_tf()` is a wrapper for [hierarchyUtils::agg()].
 #'  
 #' @seealso Preston Demography book page 95.
 #'  
@@ -79,7 +79,7 @@ agg_tf <- function(dt, id_cols, age_lower, age_upper) {
   dt <- dt[, tf := asfr*age_length]
   
   dt <- hierarchyUtils::agg(
-    dt[,c(..id_cols, 'age_start', 'age_end', 'tfr')],
+    dt[,c(..id_cols, 'age_start', 'age_end', 'tf')],
     id_cols = c(id_cols, 'age_start', 'age_end'),
     value_cols = 'tf',
     col_stem = 'age',
