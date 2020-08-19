@@ -134,17 +134,17 @@ parameters from others, using established demographic relationships." />
 parameters from others, using established demographic relationships.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gen_lx_from_qx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, assert_na = <span class='kw'>T</span>)
+    <pre class="usage"><span class='fu'>gen_lx_from_qx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>gen_qx_from_lx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, assert_na = <span class='kw'>T</span>)
+<span class='fu'>gen_qx_from_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>gen_dx_from_lx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, assert_na = <span class='kw'>T</span>)
+<span class='fu'>gen_dx_from_lx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>gen_nLx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, assert_na = <span class='kw'>T</span>)
+<span class='fu'>gen_nLx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>gen_Tx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, assert_na = <span class='kw'>T</span>)
+<span class='fu'>gen_Tx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)
 
-<span class='fu'>gen_ex</span>(<span class='kw'>dt</span>, assert_na = <span class='kw'>T</span>)</pre>
+<span class='fu'>gen_ex</span>(<span class='no'>dt</span>, <span class='kw'>assert_na</span> <span class='kw'>=</span> <span class='no'>T</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,32 +219,31 @@ age group (lx): ex = Tx / lx.</p>
 
     <div class='dont-index'>
 <ul>
-<li><p><a href='https://rdrr.io/pkg/demCore/man/mx_qx_ax_conversions.html'>demCore::mx_qx_ax_conversions</a></p></li>
-<li><p><a href='https://rdrr.io/pkg/demCore/man/lifetable.html'>demCore::lifetable</a></p></li>
-<li><p><code>vignette("introduction_to_life_tables", package = "demCore")</code></p></li>
+<li><p><a href='mx_qx_ax_conversions.html'>demCore::mx_qx_ax_conversions</a></p></li>
+<li><p><a href='lifetable.html'>demCore::lifetable</a></p></li>
+<li><p><code><a href='../articles/introduction_to_life_tables.html'>vignette("introduction_to_life_tables", package = "demCore")</a></code></p></li>
 </ul>
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  sex = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"both"</span>, <span class='fl'>4</span>),
-  age_start = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
-  age_end = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>Inf</span>),
-  age_length = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>Inf</span>),
-  mx = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.3</span>, <span class='fl'>0.4</span>),
-  ax = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
+    <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"both"</span>, <span class='fl'>4</span>),
+  <span class='kw'>age_start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
+  <span class='kw'>age_end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>Inf</span>),
+  <span class='kw'>age_length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>Inf</span>),
+  <span class='kw'>mx</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.3</span>, <span class='fl'>0.4</span>),
+  <span class='kw'>ax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
 )
-<span class='kw'>dt</span>[, <span class='kw'>qx</span> <span class='op'>:=</span> <span class='fu'>mx_ax_to_qx</span>(<span class='kw'>mx</span>, <span class='kw'>ax</span>, <span class='kw'>age_length</span>)]</div><div class='output co'>#&gt;     sex age_start age_end age_length  mx  ax        qx
+<span class='no'>dt</span>[, <span class='no'>qx</span> <span class='kw'>:=</span> <span class='fu'><a href='mx_qx_ax_conversions.html'>mx_ax_to_qx</a></span>(<span class='no'>mx</span>, <span class='no'>ax</span>, <span class='no'>age_length</span>)]</div><div class='output co'>#&gt;     sex age_start age_end age_length  mx  ax        qx
 #&gt; 1: both         0       5          5 0.1 2.5 0.4000000
 #&gt; 2: both         5      10          5 0.2 2.5 0.6666667
 #&gt; 3: both        10      15          5 0.3 2.5 0.8571429
-#&gt; 4: both        15     Inf        Inf 0.4 2.5 1.0000000</div><div class='input'><span class='fu'>gen_lx_from_qx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-<span class='fu'>gen_dx_from_lx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-<span class='fu'>gen_nLx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-<span class='fu'>gen_Tx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-<span class='fu'>gen_ex</span>(<span class='kw'>dt</span>)
-<span class='fu'>gen_qx_from_lx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
-</div></pre>
+#&gt; 4: both        15     Inf        Inf 0.4 2.5 1.0000000</div><div class='input'><span class='fu'>gen_lx_from_qx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='fu'>gen_dx_from_lx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='fu'>gen_nLx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='fu'>gen_Tx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='fu'>gen_ex</span>(<span class='no'>dt</span>)
+<span class='fu'>gen_qx_from_lx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -260,7 +259,7 @@ age group (lx): ex = Tx / lx.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

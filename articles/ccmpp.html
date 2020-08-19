@@ -136,11 +136,10 @@ G =&amp; \text{net migrants}
 <li>A list of settings describing the years, sexes, and ages ccmpp will run with.</li>
 </ol>
 <p>Below is a summary of what the Thailand example inputs look like. The baseline population is for the year 1960 and includes both female and male populations for five year age groups up to 80+. The other four inputs define how the population changes every five calendar years between 1960 and 2000. The survivorship ratios go up to age 85+ while the asfr estimates are defined for the reproductive age groups between age 15 and 50.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/ihmeuw-demographics/demCore">demCore</a></span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">demCore</span>)
 
 <span class="co"># the list of data.tables for each of the inputs</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">demCore</span>::<span class="kw"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="no"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>)
 <span class="co">#&gt; List of 5</span>
 <span class="co">#&gt;  $ srb          :Classes 'data.table' and 'data.frame':  8 obs. of  3 variables:</span>
 <span class="co">#&gt;   ..$ year_start: num [1:8] 1960 1965 1970 1975 1980 ...</span>
@@ -183,21 +182,19 @@ G =&amp; \text{net migrants}
 <span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:5] "year_start" "year_end" "sex" "age_start" ...</span>
 
 <span class="co"># the settings for this run of ccmpp</span>
-<span class="kw">thailand_settings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  years = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1960</span>, <span class="fl">1995</span>, <span class="fl">5</span>),
-  sexes = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"female"</span>, <span class="st">"male"</span>),
-  ages = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span>),
-  ages_survival = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span>),
-  ages_asfr = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">15</span>, <span class="fl">45</span>, <span class="fl">5</span>)
-)
-</pre></div>
+<span class="no">thailand_settings</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+  <span class="kw">years</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1960</span>, <span class="fl">1995</span>, <span class="fl">5</span>),
+  <span class="kw">sexes</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"female"</span>, <span class="st">"male"</span>),
+  <span class="kw">ages</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span>),
+  <span class="kw">ages_survival</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span>),
+  <span class="kw">ages_asfr</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">15</span>, <span class="fl">45</span>, <span class="fl">5</span>)
+)</pre></body></html></div>
 <p>Once those inputs are ready <code>ccmpp</code> can be run to produce a full time series of projected populations between 1960 and 2000 in five year age groups up to 80+.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">thailand_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span>(
-  inputs = <span class="kw">demCore</span>::<span class="kw"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span>,
-  settings = <span class="kw">thailand_settings</span>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">thailand_population</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span>(
+  <span class="kw">inputs</span> <span class="kw">=</span> <span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="no"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>,
+  <span class="kw">settings</span> <span class="kw">=</span> <span class="no">thailand_settings</span>
 )
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">thailand_population</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">thailand_population</span>)
 <span class="co">#&gt; Classes 'data.table' and 'data.frame':   306 obs. of  5 variables:</span>
 <span class="co">#&gt;  $ year     : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span>
 <span class="co">#&gt;  $ sex      : chr  "female" "female" "female" "female" ...</span>
@@ -205,8 +202,7 @@ G =&amp; \text{net migrants}
 <span class="co">#&gt;  $ age_end  : num  5 10 15 20 25 30 35 40 45 50 ...</span>
 <span class="co">#&gt;  $ value    : num  2338000 1857000 1543000 1287000 1250000 ...</span>
 <span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span>
-</pre></div>
+<span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span></pre></body></html></div>
 <p><img src="ccmpp_files/figure-html/ccmpp_plot-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="ccmpp-details" class="section level2">
@@ -283,17 +279,16 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 \mathbf{L}[t, t + 1] =&amp; \text{Leslie matrix} \\
 \tilde{f_{a, t}} =&amp; s_{0, t} \cdot \frac{f_{a,t} + f_{a + 1, t} \cdot s_{a + 1, t}}{2} \end{aligned}\]</span></p>
 <p><code><a href="../reference/leslie_matrix.html">demCore::leslie_matrix</a></code> is a function to produce the leslie matrix from input vectors of the survivorship ratio, asfr, and the sex-ratio at birth. Below is the Thailand example leslie matrix for the rates between 1960 and 1965.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">leslie</span> <span class="op">&lt;-</span> <span class="kw">demCore</span>::<span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span>(
-  survival = <span class="kw">demCore</span>::<span class="kw"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="kw">survival</span>[<span class="kw">year_start</span> <span class="op">==</span> <span class="fl">1960</span> <span class="op">&amp;</span>
-                                                  <span class="kw">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="kw">value</span>],
-  asfr = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>, <span class="fl">3</span>),
-           <span class="kw">demCore</span>::<span class="kw"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="kw">asfr</span>[<span class="kw">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="kw">value</span>],
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">leslie</span> <span class="kw">&lt;-</span> <span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span>(
+  <span class="kw">survival</span> <span class="kw">=</span> <span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="no"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>$<span class="no">survival</span>[<span class="no">year_start</span> <span class="kw">==</span> <span class="fl">1960</span> <span class="kw">&amp;</span>
+                                                  <span class="no">sex</span> <span class="kw">==</span> <span class="st">"female"</span>, <span class="no">value</span>],
+  <span class="kw">asfr</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>, <span class="fl">3</span>),
+           <span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="no"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>$<span class="no">asfr</span>[<span class="no">year_start</span> <span class="kw">==</span> <span class="fl">1960</span>, <span class="no">value</span>],
            <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>, <span class="fl">7</span>)),
-  srb = <span class="kw">demCore</span>::<span class="kw"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="kw">srb</span>[<span class="kw">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="kw">value</span>],
-  n_ages = <span class="fl">17</span>, int = <span class="fl">5</span>, female = <span class="fl">TRUE</span>
+  <span class="kw">srb</span> <span class="kw">=</span> <span class="kw pkg">demCore</span><span class="kw ns">::</span><span class="no"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>$<span class="no">srb</span>[<span class="no">year_start</span> <span class="kw">==</span> <span class="fl">1960</span>, <span class="no">value</span>],
+  <span class="kw">n_ages</span> <span class="kw">=</span> <span class="fl">17</span>, <span class="kw">int</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">female</span> <span class="kw">=</span> <span class="fl">TRUE</span>
 )
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">leslie</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">leslie</span>)
 <span class="co">#&gt;            0         5         10        15        20        25        30</span>
 <span class="co">#&gt; 0  0.0000000 0.0000000 0.05557411 0.3130232 0.5680982 0.6021338 0.5191943</span>
 <span class="co">#&gt; 5  0.9612171 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
@@ -347,8 +342,7 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 <span class="co">#&gt; 65 0.0000000 0.00000 0.0000000</span>
 <span class="co">#&gt; 70 0.0000000 0.00000 0.0000000</span>
 <span class="co">#&gt; 75 0.7909366 0.00000 0.0000000</span>
-<span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span>
-</pre></div>
+<span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span></pre></body></html></div>
 </div>
 </div>
 </div>
@@ -376,7 +370,7 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

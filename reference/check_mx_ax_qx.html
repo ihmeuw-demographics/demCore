@@ -134,7 +134,7 @@ and compute the missing parameter if one is missing." />
 and compute the missing parameter if one is missing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_mx_ax_qx</span>(<span class='kw'>dt</span>)</pre>
+    <pre class="usage"><span class='fu'>check_mx_ax_qx</span>(<span class='no'>dt</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,18 +153,17 @@ missing in input. Or, returns error if input has fewer than two of these
 parameters.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Uses <code>mx_ax_to_qx()</code>, <code>qx_ax_to_mx()</code>, or <code>mx_qx_to_ax()</code> function
+    <p>Uses <code><a href='mx_qx_ax_conversions.html'>mx_ax_to_qx()</a></code>, <code><a href='mx_qx_ax_conversions.html'>qx_ax_to_mx()</a></code>, or <code><a href='mx_qx_ax_conversions.html'>mx_qx_to_ax()</a></code> function
 to complete the set of three life table parameters.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  age_start = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>),
-  age_length = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>),
-  mx = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.009</span>, <span class='fl'>0.0004</span>, <span class='fl'>0.00015</span>, <span class='fl'>0.00019</span>),
-  ax = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.068</span>, <span class='fl'>1.626</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
+    <pre class="examples"><div class='input'><span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
+  <span class='kw'>age_start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>5</span>, <span class='fl'>10</span>),
+  <span class='kw'>age_length</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>mx</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.009</span>, <span class='fl'>0.0004</span>, <span class='fl'>0.00015</span>, <span class='fl'>0.00019</span>),
+  <span class='kw'>ax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.068</span>, <span class='fl'>1.626</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
 )
-<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>check_mx_ax_qx</span>(<span class='kw'>dt</span>)
-</div></pre>
+<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'>check_mx_ax_qx</span>(<span class='no'>dt</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -180,7 +179,7 @@ to complete the set of three life table parameters.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -134,14 +134,14 @@ interval qx values already present in the data." />
 interval qx values already present in the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scale_qx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>, missing_dt_severity = <span class='st'>"stop"</span>)</pre>
+    <pre class="usage"><span class='fu'>scale_qx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>, <span class='kw'>missing_dt_severity</span> <span class='kw'>=</span> <span class='st'>"stop"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Data to be aggregated.</p><ul>
+      <td><p>[<code>data.table()</code>]<br /> Data to be aggregated.</p><ul>
 <li><p>Must only include columns 'qx' and those specified in <code>id_cols</code></p></li>
 <li><p>Must include 'age_start' and 'age_end' columns</p></li>
 </ul></td>
@@ -163,7 +163,7 @@ scaling is done using the available data.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Scaled qx values, has <code>id_cols</code> and 'qx'
+    <p>[<code>data.table()</code>]<br /> Scaled qx values, has <code>id_cols</code> and 'qx'
 columns for all age groups.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -175,20 +175,20 @@ the dependence between age and the definition of qx. Aggregation of qx
 across sex, location, or other variables should be done by first aggregating
 ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code> and
 <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code> directly), then recalculating qx from mx and ax
-(see <code><a href='https://rdrr.io/pkg/demCore/man/mx_qx_ax_conversions.html'>demCore::mx_ax_to_qx()</a></code>).</p>
+(see <code><a href='mx_qx_ax_conversions.html'>demCore::mx_ax_to_qx()</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>hierarchyUtils</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># scale qx up single-year to abridged u5 hierarchy</span>
-<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  sex = <span class='st'>"male"</span>,
-  qx = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.03</span>, <span class='fl'>0.015</span>, <span class='fl'>0.005</span>, <span class='fl'>0.004</span>, <span class='fl'>0.001</span>, <span class='fl'>0.03</span>, <span class='fl'>0.05</span>),
-  age_start = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>0</span>),
-  age_end = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span>)
+<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='st'>"male"</span>,
+  <span class='kw'>qx</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.03</span>, <span class='fl'>0.015</span>, <span class='fl'>0.005</span>, <span class='fl'>0.004</span>, <span class='fl'>0.001</span>, <span class='fl'>0.03</span>, <span class='fl'>0.05</span>),
+  <span class='kw'>age_start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>0</span>),
+  <span class='kw'>age_end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span>)
 )
-<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>scale_qx</span>(<span class='kw'>dt</span>, id_cols = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))
+<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'>scale_qx</span>(<span class='no'>dt</span>, <span class='kw'>id_cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>))</div><div class='output co'>#&gt; [1] "Node$fields will be deprecated in the next release. Please use Node$attributes instead."</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -205,7 +205,7 @@ ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/p
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

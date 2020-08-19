@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • demCore</title>
+<title>Helper function to identify unique age interval for input data.table — determine_age_int • demCore</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Helper function to identify unique age interval for input data.table — determine_age_int" />
+<meta property="og:description" content="Identifies age intervals present excluding the terminal age
+group and asserts it is uniform across the input data.table." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -122,20 +124,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Helper function to identify unique age interval for input data.table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/survivorship_ratio.R'><code>R/survivorship_ratio.R</code></a></small>
+    <div class="hidden name"><code>determine_age_int.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="ccmpp.html">Cohort Component Method of Population Projection (CCMPP)</a></dt>
-        <dd></dt>
-        <dt><a href="introduction_to_life_tables.html">Introduction to life tables</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>Identifies age intervals present excluding the terminal age
+group and asserts it is uniform across the input data.table.</p>
     </div>
+
+    <pre class="usage"><span class='fu'>determine_age_int</span>(<span class='no'>dt</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dt</th>
+      <td><p>[<code>data.table()</code>]<br />
+Input data that includes columns for <code>id_cols</code>, 'lx', 'nLx' and 'Tx'.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>] unique age interval</p>
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
