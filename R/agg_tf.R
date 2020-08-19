@@ -53,13 +53,13 @@ agg_tf <- function(dt, id_cols, age_lower, age_upper) {
   # and age_lower and age_upper are bounds of age groups in data
   assertthat::assert_that(
     age_lower %in% dt[,age_start], 
-    assertthat::is.number(age_lower)
+    assertthat::is.number(age_lower),
     msg = 'age_lower not found in data'
   )
   
   assertthat::assert_that(
     age_upper %in% dt[,age_start], 
-    assertthat::is.number(age_upper)
+    assertthat::is.number(age_upper),
     msg = 'age_upper not found in data'
   )
   
