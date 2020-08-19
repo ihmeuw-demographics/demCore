@@ -46,11 +46,11 @@ test_that("test that `agg_lt` works with odd ages", {
         age_end = c(0, 500, Inf)
       )
     ),
-    regexp = "missing intervals"
+    regexp = "Some aggregates in `mapping` cannot be made because input data is missing"
   )
 
   # check functionality with non-standard ages
-  output_dt <-agg_lt(
+  output_dt <- agg_lt(
     dt = dt,
     id_cols = id_cols,
     age_mapping = data.table(
@@ -92,7 +92,7 @@ expected_dt <- data.table(
   sex = c("female", "male"),
   age_start = c(15, 15),
   age_end = c(40, 40),
-  qx = c(0.40951, 0.67232)
+  qx = c(1 - ((1 - 0.1) ^ 5), 1 - ((1 - 0.2) ^ 5))
 )
 
 test_that("test that `agg_lt` with only 'qx' works", {
@@ -128,4 +128,33 @@ test_that("test that `agg_lt` errors are thrown for different cases", {
   non_unique_input_dt <- rbind(input_dt, input_dt)
   testthat::expect_error(agg_lt(non_unique_input_dt, age_start = 15,
                                 age_end = 40, id_cols = id_cols))
+})
+
+
+# test that `agg_lt` with age_mapping not covering the entire range -------
+
+# set up standard input data.tables
+input_dt <- data.table::data.table(
+  sex = c(rep("female", 5), rep("male", 5)),
+  age_start = rep(seq(15, 35, 5), 2),
+  age_end = rep(seq(20, 40, 5), 2),
+  qx = c(rep(.1, 5), rep(.2, 5))
+)
+age_mapping <- data.table::data.table(
+  age_start = c(20),
+  age_end = c(30)
+)
+id_cols = c("sex", "age_start", "age_end")
+
+# set up expected output table
+expected_dt <- data.table(
+  sex = c("female", "male"),
+  age_start = c(20, 20),
+  age_end = c(30, 30),
+  qx = c(1 - ((1 - 0.1) ^ 2), 1 - ((1 - 0.2) ^ 2))
+)
+
+test_that("test that `agg_lt` with age_mapping not covering the entire range", {
+  output_dt <- agg_lt(input_dt, id_cols = id_cols, age_mapping = age_mapping)
+  testthat::expect_equal(output_dt, expected_dt)
 })
