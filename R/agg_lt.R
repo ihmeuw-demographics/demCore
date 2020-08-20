@@ -145,18 +145,6 @@ agg_lt <- function(dt,
     quiet = T
   )
   data.table::setkeyv(age_mapping, c("age_start", "age_end"))
-  # assertion that age mapping covers same age range as input lifetable
-  hierarchyUtils::assert_no_missing_intervals(
-    ints_dt = age_mapping,
-    expected_ints_dt = data.table(start = min(dt$age_start),
-                                  end = max(dt$age_end))
-  )
-  hierarchyUtils::assert_no_missing_intervals(
-    ints_dt = unique(dt[, .SD, .SDcols = c("age_start", "age_end")]),
-    expected_ints_dt = data.table(start = min(age_mapping$age_start),
-                                  end = max(age_mapping$age_end))
-  )
-  # other assertions completed within hierarchyUtils::agg
 
   # prep ------------------------------------------------------------
 
