@@ -34,12 +34,20 @@
 #'  
 #' @examples 
 #' # calculate total fertility under 25 (ages 10 to 24)
-#' dt <- data.table('asfr' = c(0.00005, 0.02, 0.07, 0.08, 0.05, 0.02, 0.004, 0.0002),
+#' dt <- data.table(
+#'                  'asfr' = c(0.00005, 0.02, 0.07, 0.08, 0.05, 0.02, 0.004, 0.0002),
 #'                  'age_start' = c(10, 15, 20, 25, 30, 35, 40, 45),
-#'                  'age_end' = c(15, 20, 25, 30, 35, 40, 45, 50))
-#' dt <- agg_tf(dt, c(), 10, 25)
+#'                  'age_end' = c(15, 20, 25, 30, 35, 40, 45, 50)
+#'                  )
+#'                  
+#' age_map <- data.table(
+#'                       'age_start' = 10,
+#'                       'age_end' = 25
+#'                       )
+#' 
+#' dt <- agg_tf(dt, c(), age_map)
 
-agg_tf <- function(dt, id_cols, age_lower, age_upper) {
+agg_tf <- function(dt, id_cols, age_mapping) {
   # validate -------------------------------------------------------------------
   
   # check for required columns
@@ -52,20 +60,20 @@ agg_tf <- function(dt, id_cols, age_lower, age_upper) {
   # check that age_lower and age_upper are length one numeric
   # and age_lower and age_upper are bounds of age groups in data
   assertthat::assert_that(
-    age_lower %in% dt[,age_start], 
-    assertthat::is.number(age_lower),
+    age_mapping[,age_start] %in% dt[,age_start], 
+    assertthat::is.number(age_mapping[,age_start]),
     msg = 'age_lower not found in data'
   )
   
   assertthat::assert_that(
-    age_upper %in% dt[,age_start], 
-    assertthat::is.number(age_upper),
+    age_mapping[,age_end] %in% dt[,age_start], 
+    assertthat::is.number(age_mapping[,age_end]),
     msg = 'age_upper not found in data'
   )
   
   # check that age_lower < age_upper
   assertthat::assert_that(
-    age_lower < age_upper,
+    age_mapping[,age_start < age_end],
     msg = 'age_lower is not less than age_upper'
   )
   
@@ -84,10 +92,7 @@ agg_tf <- function(dt, id_cols, age_lower, age_upper) {
     value_cols = 'tf',
     col_stem = 'age',
     col_type = 'interval',
-    mapping = data.table::data.table(
-      age_start = age_lower,
-      age_end = age_upper
-    ),
+    mapping = age_mapping,
     agg_function = sum
   )
   
