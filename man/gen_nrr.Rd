@@ -4,11 +4,11 @@
 \alias{gen_nrr}
 \title{Generate Net Reproductive Rate (NRR)}
 \usage{
-gen_nrr(dt, id_cols, reproductive_age_start = 15, reproductive_age_end = 49)
+gen_nrr(dt, id_cols, reproductive_age_start = 15, reproductive_age_end = 50)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
-Input data with asfr, sex-ratio at birth (\code{srb}), and nLx.}
+Input data with 'asfr', sex-ratio at birth ('srb'), and 'nLx'.}
 
 \item{id_cols}{[\code{character()}]\cr Columns that uniquely identify
 observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
@@ -17,16 +17,38 @@ observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 Age in years of start of reproductive age span (default 15 years).}
 
 \item{reproductive_age_end}{[\code{numeric(1)}]\cr
-Age in years of end of reproductive age span (default 49 years).}
+Age in years of end of reproductive age span (default 50 years).}
 }
 \value{
 dt [\code{data.table()}]\cr
 Data table with \code{nrr} by \code{id_cols} (excluding 'age_start' and 'age_end').
 }
 \description{
-Calculate Net Reproductive Rate (NRR) from X and X and
+Calculate Net Reproductive Rate (NRR) from age-specific
+fertility rate (ASFR) and sex-ratio at birth (SRB) and
 generate \code{nrr} variable in the data.table.
 }
+\details{
+Calculate proportion female: prop_female = (1 / srb) / (1 + (1 / srb)).
+Then, calculate NRR: sum(asfr * prop_female * nLx) over age, by id columns.
+}
 \examples{
+dt <- data.table::data.table(
+  age_start = seq(15, 45, 5),
+  age_end = seq(20, 50, 5),
+  sex = "female",
+  asfr = c(0.00002, 0.009, 0.1, 0.18, 0.19, 0.11, 0.03),
+  srb = 1.057,
+  nLx = 4.9
+)
+output <- gen_nrr(
+  dt,
+  id_cols = c("age_start", "age_end", "sex"),
+  reproductive_age_start = 15,
+  reproductive_age_end = 50
+)
 
+}
+\seealso{
+Preston Demography textbook page 113.
 }
