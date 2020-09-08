@@ -43,9 +43,11 @@ macb_from_nfx <- function(dt, id_cols, nfx_col = "nfx", value_col = "macb") {
 
   macb_dt <- dt[
     ,
-    get(value_col) = weighted.mean((age_end - age_start) / 2, get(nfx_col)),
+    .(macb = weighted.mean((age_end + age_start) / 2, get(nfx_col))),
     by = id_cols_no_age
   ]
+
+  setnames(macb_dt, "macb", value_col)
 
   return(macb_dt)
 
