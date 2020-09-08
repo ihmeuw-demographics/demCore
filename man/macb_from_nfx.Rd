@@ -30,3 +30,15 @@ fertility rates observed in a given year.
 
 See \href{https://www.un.org/en/development/desa/population/publications/dataset/fertility/age-childbearing.asp}{UNPOP page} for more deatils.
 }
+\examples{
+asfr_data <- data.table(
+  asfr = c(.051, .196, .208, .147, .075, .024, .004),
+  age_start = seq(15, 45, 5),
+  age_end = seq(20, 50, 5)
+ )
+
+id_cols <- c("age_start", "age_end")
+macb_dt <- macb_from_nfx(asfr_data, id_cols = id_cols, nfx_col = "asfr")
+
+
+}

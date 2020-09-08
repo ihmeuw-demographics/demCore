@@ -23,6 +23,16 @@
 #' @export
 #'
 #' @examples
+#' asfr_data <- data.table(
+#'   asfr = c(.051, .196, .208, .147, .075, .024, .004),
+#'   age_start = seq(15, 45, 5),
+#'   age_end = seq(20, 50, 5)
+#'  )
+#'
+#' id_cols <- c("age_start", "age_end")
+#' macb_dt <- macb_from_nfx(asfr_data, id_cols = id_cols, nfx_col = "asfr")
+#'
+#'
 macb_from_nfx <- function(dt, id_cols, nfx_col = "nfx", value_col = "macb") {
 
 
