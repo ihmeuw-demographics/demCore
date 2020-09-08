@@ -19,4 +19,5 @@ utils::globalVariables(c("age_int", "age_group_years_start", "age_group_years_en
                          "value", "life_table_parameter",
                          "id_cols_no_age", "sex", "mx_inf", "has_1m0",
                          "new_ax", "max_ax_diff",
-                         "year_start", "year_end", "initial_ax"))
+                         "year_start", "year_end", "initial_ax",
+                         "prop_female", "srb", "asfr"))
