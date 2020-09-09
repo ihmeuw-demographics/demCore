@@ -134,7 +134,7 @@
 (nSx).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gen_nLx_from_nSx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>)</pre>
+    <pre class="usage"><span class='fu'>gen_nLx_from_nSx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,14 +176,16 @@ $${}_{\infty}L_{x} = \frac{{}_{n}S_x \cdot {}_{n}L_{x - n}}{1 - {}_{n}S_x}$$</p>
 <code><a href='nSx_from_lx_nLx_Tx.html'>nSx_from_lx_nLx_Tx</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>id_cols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>)
-<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>data.table</span><span class='kw ns'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"both"</span>, <span class='fl'>4</span>),
-  <span class='kw'>age_start</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
-  <span class='kw'>age_end</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>Inf</span>),
-  <span class='kw'>nSx</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.95</span>, <span class='fl'>0.99</span>, <span class='fl'>0.99</span>, <span class='fl'>0.75</span>)
+    <pre class="examples"><div class='input'><span class='kw'>id_cols</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>)
+<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
+  sex = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"both"</span>, <span class='fl'>4</span>),
+  age_start = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
+  age_end = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>Inf</span>),
+  nSx = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.95</span>, <span class='fl'>0.99</span>, <span class='fl'>0.99</span>, <span class='fl'>0.75</span>)
 )
-<span class='fu'>gen_nLx_from_nSx</span>(<span class='no'>dt</span>, <span class='no'>id_cols</span>)</div></pre>
+<span class='fu'>gen_nLx_from_nSx</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -199,7 +201,7 @@ $${}_{\infty}L_{x} = \frac{{}_{n}S_x \cdot {}_{n}L_{x - n}}{1 - {}_{n}S_x}$$</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
