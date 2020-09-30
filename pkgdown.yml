@@ -1,6 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.6.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-09T20:48Z
+articles:
+  ccmpp: ccmpp.html
+  introduction_to_life_tables: introduction_to_life_tables.html
+last_built: 2020-09-30T22:49Z
 

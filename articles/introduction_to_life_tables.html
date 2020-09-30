@@ -439,10 +439,9 @@
 \frac{\text{observed deaths}}{\text{mid-interval population}}\]</span></p>
 <p>Let’s load in our example data and calculate <span class="math inline">\(m_x\)</span>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"austria_1992_lt"</span>)
-<span class="kw">dt</span> <span class="op">&lt;-</span> <span class="kw">austria_1992_lt</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"deaths"</span>, <span class="st">"pop"</span>)]
-<span class="kw">dt</span>[, <span class="kw">mx</span> <span class="op">:=</span> <span class="kw">deaths</span> <span class="op">/</span> <span class="kw">pop</span>]
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"austria_1992_lt"</span><span class="op">)</span>
+<span class="va">dt</span> <span class="op">&lt;-</span> <span class="va">austria_1992_lt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"deaths"</span>, <span class="st">"pop"</span><span class="op">)</span><span class="op">]</span>
+<span class="va">dt</span><span class="op">[</span>, <span class="va">mx</span> <span class="op">:=</span> <span class="va">deaths</span> <span class="op">/</span> <span class="va">pop</span><span class="op">]</span></pre></div>
 </div>
 <div id="ax" class="section level3">
 <h3 class="hasAnchor">
@@ -453,9 +452,8 @@
 <p>Another assumption we can make is that the age-specific death rate is constant between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span>. Under this assumption, <span class="math display">\[_na_x = n + \frac{1}{_nm_x} - \frac{n}{1- e^{-n  \cdot {_nm_x}}}.\]</span> The function <code>mx_to_ax</code> implements this assumption.</p>
 <p>Using our example data, we get:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">dt</span> <span class="op">&lt;-</span> <span class="kw">hierarchyUtils</span>::<span class="fu"><a href="https://rdrr.io/pkg/hierarchyUtils/man/gen_interval_cols.html">gen_length</a></span>(<span class="kw">dt</span>, col_stem = <span class="st">"age"</span>)
-<span class="kw">dt</span>[, <span class="kw">ax</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_to_ax</a></span>(mx = <span class="kw">mx</span>, age_length = <span class="kw">age_length</span>)]
-</pre></div>
+<span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu">hierarchyUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/hierarchyUtils/man/gen_interval_cols.html">gen_length</a></span><span class="op">(</span><span class="va">dt</span>, col_stem <span class="op">=</span> <span class="st">"age"</span><span class="op">)</span>
+<span class="va">dt</span><span class="op">[</span>, <span class="va">ax</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_to_ax</a></span><span class="op">(</span>mx <span class="op">=</span> <span class="va">mx</span>, age_length <span class="op">=</span> <span class="va">age_length</span><span class="op">)</span><span class="op">]</span></pre></div>
 <p>Note that we can use <code><a href="https://rdrr.io/pkg/hierarchyUtils/man/gen_interval_cols.html">hierarchyUtils::gen_length</a></code> to add the <code>age_length</code> column given <code>age_start</code> and <code>age_end</code>.</p>
 <p><strong>1a0 and 4a1:</strong></p>
 <p>Preston et al adapted an analysis first completed by Coale and Demeny (1983) to derive a relationship between infant mortality rate (<span class="math inline">\(_1m_0\)</span>) and under-5 <span class="math inline">\(a_x\)</span> values (<span class="math inline">\(_1a_0\)</span> and <span class="math inline">\(_4a_1\)</span>). In the absence of reliable data to produce <span class="math inline">\(a_x\)</span>, these relationships can be used to predict <span class="math inline">\(a_x\)</span> from infant <span class="math inline">\(m_x\)</span>:</p>
@@ -505,9 +503,8 @@
 </table>
 <p>Use the <code>gen_u5_ax</code> function to implement this method:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">dt</span>[, <span class="kw">sex</span> <span class="op">:=</span> <span class="st">"male"</span>]
-<span class="fu"><a href="../reference/gen_u5_ax.html">gen_u5_ax</a></span>(<span class="kw">dt</span>, id_cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"sex"</span>))
-</pre></div>
+<span class="va">dt</span><span class="op">[</span>, <span class="va">sex</span> <span class="op">:=</span> <span class="st">"male"</span><span class="op">]</span>
+<span class="fu"><a href="../reference/gen_u5_ax.html">gen_u5_ax</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><strong>Graduation method:</strong> One strategy for selecting <span class="math inline">\(a_x\)</span> values is based on the level and slope of the <span class="math inline">\(_nm_x\)</span> function. Comparing two populations with the same <span class="math inline">\(_5m_60\)</span>, the population with more rapidly rising mortality rate with respect to age will have deaths that are more concentrated in the later part of the interval (higher <span class="math inline">\(a_x\)</span>). Comparing two populations with the same slope in <span class="math inline">\(m_x\)</span>, the one with higher mortality rate will have more deaths at the beginning of the interval (lower <span class="math inline">\(a_x\)</span>).</p>
 <p>To utilize this theory, we can implement iteration as described in the Preston book, and originally proposed by Keyfitz (1966): <span class="math display">\[_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 \frac{n}{24} {_nd_{x+n}}}{_nd_x}\]</span> Where <span class="math inline">\(d_x\)</span> is derived from the conversion from <span class="math inline">\(m_x\)</span> to <span class="math inline">\(q_x\)</span>. However, since the <span class="math inline">\(m_x\)</span> to <span class="math inline">\(q_x\)</span> conversion requires <span class="math inline">\(a_x\)</span>, this requires us to pick a starting place for <span class="math inline">\(a_x\)</span> (like <span class="math inline">\(n/2\)</span>), solve for <span class="math inline">\(d_x\)</span>, solve for <span class="math inline">\(a_x\)</span>, and so on until convergence. Use <code><a href="../reference/iterate_ax.html">demCore::iterate_ax</a></code> to implement this method.</p>
@@ -519,14 +516,12 @@
 <p><span class="math display">\[_nq_x = \frac{n \cdot {_nm_x}}{1 + (n - {_na_x}) \cdot {_nm_x}}\]</span> For the terminal age group, <span class="math inline">\(q_x\)</span> should be <span class="math inline">\(1\)</span> because all individuals surviving to the terminal age group will die in that age group (probability of death = <span class="math inline">\(1\)</span>).</p>
 <p>The <code>mx_ax_to_qx</code> combines the equation for <span class="math inline">\(q_x\)</span> and the requirement that terminal <span class="math inline">\(q_x\)</span> equal one by setting <span class="math inline">\(q_x = 1\)</span> if <code>age_length = Inf</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">dt</span>[, <span class="kw">qx</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_ax_to_qx</a></span>(mx = <span class="kw">mx</span>, ax = <span class="kw">ax</span>, age_length = <span class="kw">age_length</span>)]
-</pre></div>
+<span class="va">dt</span><span class="op">[</span>, <span class="va">qx</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_ax_to_qx</a></span><span class="op">(</span>mx <span class="op">=</span> <span class="va">mx</span>, ax <span class="op">=</span> <span class="va">ax</span>, age_length <span class="op">=</span> <span class="va">age_length</span><span class="op">)</span><span class="op">]</span></pre></div>
 <p>Other functions that utilize this relationship but solve for different metrics are <code>mx_qx_to_ax</code> and <code>qx_ax_to_mx</code>.</p>
 <p>You can also solve for <span class="math inline">\(q_x\)</span> under the assumption of constant mortality rate within an interval, which removes <span class="math inline">\(a_x\)</span> from the relationship:</p>
 <p><span class="math display">\[_nq_x = 1 - e^{-n \cdot {_nm_x}}.\]</span></p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">dt</span>[, <span class="kw">qx_compare</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_to_qx</a></span>(mx = <span class="kw">mx</span>, age_length = <span class="kw">age_length</span>)]
-</pre></div>
+<span class="va">dt</span><span class="op">[</span>, <span class="va">qx_compare</span> <span class="op">:=</span> <span class="fu"><a href="../reference/mx_qx_ax_conversions.html">mx_to_qx</a></span><span class="op">(</span>mx <span class="op">=</span> <span class="va">mx</span>, age_length <span class="op">=</span> <span class="va">age_length</span><span class="op">)</span><span class="op">]</span></pre></div>
 <p>These two <span class="math inline">\(q_x\)</span> values are the same, because the implied <span class="math inline">\(a_x\)</span> in <code>mx_to_qx</code> is equivalent to the <span class="math inline">\(a_x\)</span> we generate under the assumption in <code>mx_to_ax</code>.</p>
 </div>
 <div id="lx" class="section level3">
@@ -537,8 +532,7 @@
 <p>or in words, the proportion surviving to age <span class="math inline">\(x\)</span> times the proportion of those survivors who do not die between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span> is the proportion surviving to age <span class="math inline">\(x+n\)</span>.</p>
 <p>Our <code>gen_lx_from_qx</code> function can perform this calculation:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_lx_from_qx</a></span>(<span class="kw">dt</span>, id_cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>))
-</pre></div>
+<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_lx_from_qx</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="dx" class="section level3">
 <h3 class="hasAnchor">
@@ -546,8 +540,7 @@
 <p>Proportion of cohort dying between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span> (<span class="math inline">\(d_x\)</span>) is <span class="math inline">\(_nq_0\)</span> to start, then <span class="math inline">\(_nd_x = l_x - l_{x+n}\)</span> thereafter (difference between proportion surviving to age <span class="math inline">\(x\)</span> and proportion surviving to age <span class="math inline">\(x+n\)</span>).</p>
 <p>To calculate <span class="math inline">\(d_x\)</span>, use <code>gen_dx_from_lx</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_dx_from_lx</a></span>(<span class="kw">dt</span>, id_cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>))
-</pre></div>
+<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_dx_from_lx</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="nlx" class="section level3">
 <h3 class="hasAnchor">
@@ -567,8 +560,7 @@
 \cdot \text{deaths over age }x= \frac{l_x}{_{\infty}m_x}\]</span></p>
 <p>Use the <code>gen_nLx</code> function to calculate with this method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_nLx</a></span>(<span class="kw">dt</span>, id_cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>))
-</pre></div>
+<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_nLx</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="tx" class="section level3">
 <h3 class="hasAnchor">
@@ -576,8 +568,7 @@
 <p>Next, use <span class="math inline">\(_nL_x\)</span> to get <span class="math inline">\(T_x\)</span>:</p>
 <p><span class="math display">\[T_x = \sum_{x}^{\infty} {_nL_x}.\]</span></p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_Tx</a></span>(<span class="kw">dt</span>, id_cols = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age_start"</span>, <span class="st">"age_end"</span>))
-</pre></div>
+<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_Tx</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="ex" class="section level3">
 <h3 class="hasAnchor">
@@ -587,8 +578,7 @@
 <p>For the terminal age group, <span class="math inline">\(a_x = e_x\)</span> because everyone surviving to the interval dies in the interval.</p>
 <p>Calculate <span class="math inline">\(e_x\)</span> with <code>gen_ex</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_ex</a></span>(<span class="kw">dt</span>)
-</pre></div>
+<span class="fu"><a href="../reference/gen_lifetable_parameters.html">gen_ex</a></span><span class="op">(</span><span class="va">dt</span><span class="op">)</span></pre></div>
 </div>
 <div id="summary" class="section level3">
 <h3 class="hasAnchor">
@@ -629,7 +619,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -132,7 +132,7 @@
     <p>Generate the lx life table parameter given nLx and ax.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gen_lx_from_nLx_ax</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>)</pre>
+    <pre class="usage"><span class='fu'>gen_lx_from_nLx_ax</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,15 +175,15 @@ $$l_x = \frac{{}_{n}L_{x} - ((n - {}_{n}a_{x}) \cdot
 <code><a href='nSx_from_lx_nLx_Tx.html'>nSx_from_lx_nLx_Tx</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>id_cols</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>)
-<span class='kw'>dt</span> <span class='op'>&lt;-</span> <span class='kw'>data.table</span>::<span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  sex = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"both"</span>, <span class='fl'>4</span>),
-  age_start = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
-  age_end = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>Inf</span>),
-  nLx = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>0.6</span>, <span class='fl'>0.1</span>),
-  ax = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>)
-)
-<span class='fu'>gen_lx_from_nLx_ax</span>(<span class='kw'>dt</span>, <span class='kw'>id_cols</span>)
+    <pre class="examples"><div class='input'><span class='va'>id_cols</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span><span class='op'>)</span>
+<span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>
+  sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"both"</span>, <span class='fl'>4</span><span class='op'>)</span>,
+  age_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span><span class='op'>)</span>,
+  age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>10</span>, <span class='fl'>15</span>, <span class='cn'>Inf</span><span class='op'>)</span>,
+  nLx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>0.6</span>, <span class='fl'>0.1</span><span class='op'>)</span>,
+  ax <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span>, <span class='fl'>2.5</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='fu'>gen_lx_from_nLx_ax</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span><span class='op'>)</span>
 
 </div></pre>
   </div>
@@ -201,7 +201,7 @@ $$l_x = \frac{{}_{n}L_{x} - ((n - {}_{n}a_{x}) \cdot
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
