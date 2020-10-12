@@ -132,13 +132,13 @@ matrix_to_dt <- function(mdt,
     d <- data.table(m)
 
     # assign the age_start rownames as a new column
-    age_starts <- as.integer(rownames(m))
+    age_starts <- as.numeric(rownames(m))
     d[, age_start := age_starts]
 
     # melt the year_start columns
     d <- melt(d, id.vars = "age_start", variable.name = "year_start",
                  variable.factor = FALSE, value.name = value_col)
-    d[, year_start := as.integer(year_start)]
+    d[, year_start := as.numeric(year_start)]
 
     if (gen_end_interval_col) {
 
