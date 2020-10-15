@@ -45,8 +45,7 @@ test_that("test that `agg_lt` works with odd ages", {
         age_start = c(-20, 0, 500),
         age_end = c(0, 500, Inf)
       )
-    ),
-    regexp = "Some aggregates in `mapping` cannot be made because input data is missing"
+    )
   )
 
   # check functionality with non-standard ages

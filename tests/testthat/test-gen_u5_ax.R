@@ -1,5 +1,9 @@
 library(data.table)
 
+
+# gen_u5_ax ---------------------------------------------------------------
+
+
 # test input
 dt <- data.table::data.table(
   age_start = rep(c(0, 1, 5), 3),
@@ -39,3 +43,37 @@ test_that("test that `gen_u5_ax` modifies in place", {
   mem2 <- pryr::address(test_dt) # memory address after
   testthat::expect_equal(mem1, mem2)
 })
+
+
+# gen_u5_ax_from_qx -------------------------------------------------------
+
+
+# setup input
+dt <- data.table::data.table(
+  age_start = rep(c(0, 1), 4),
+  age_end = rep(c(1, 5), 4),
+  qx = c(0.0846, 0.3658, 0.11, 0.42, 0.06, 0.35, 0.082, 0.37),
+  sex = rep(c("male", "male", "female", "female"), 2),
+  location_id = c(rep(1, 4), rep(2, 4))
+)
+id_cols <- c("age_start", "age_end", "sex", "location_id")
+
+
+testthat::test_that("`gen_u5_ax_from_qx` works", {
+
+  # run function
+  dt <- testthat::expect_silent(gen_u5_ax_from_qx(dt, id_cols))
+
+  # invert function (go mx --> ax and see if you get the same thing)
+  dt[, mx := qx_ax_to_mx(qx = qx, ax = ax, age_length = age_end - age_start)]
+  setnames(dt, "ax", "ax_from_qx")
+  dt <- gen_u5_ax(dt, id_cols)
+
+  testthat::expect_equivalent(
+    dt$ax, dt$ax_from_qx, tolerance = 0.001
+  )
+
+})
+
+
+
