@@ -102,8 +102,8 @@
 #'   dt = dt,
 #'   id_cols = id_cols,
 #'   age_mapping = data.table::data.table(
-#'     age_start = seq(0, 110, 5),
-#'     age_end = c(seq(5, 110, 5), Inf)
+#'     age_start = seq(0, 105, 5),
+#'     age_end = seq(5, 110, 5)
 #'   )
 #' )
 #'
@@ -113,14 +113,16 @@
 #'   age_mapping = data.table::data.table(
 #'     age_start = seq(0, 110, 5),
 #'     age_end = c(seq(5, 110, 5), Inf)
-#'   )
+#'   ),
+#'   present_agg_severity = "none"
 #' )
 #' @export
 agg_lt <- function(dt,
                    id_cols,
                    age_mapping,
                    missing_dt_severity = "stop",
-                   drop_present_aggs = F) {
+                   overlapping_dt_severity = "stop",
+                   present_agg_severity = "stop") {
 
   # validate -------------------------------------------------------
 
@@ -172,6 +174,7 @@ agg_lt <- function(dt,
 
   # aggregate qx ------------------------------------------------------------
 
+  message("Aggregating px across age groups")
   dt_qx <- hierarchyUtils::agg(
     dt = dt[, .SD, .SDcols = c(id_cols, "px")],
     id_cols = id_cols,
@@ -181,7 +184,8 @@ agg_lt <- function(dt,
     mapping = age_mapping,
     agg_function = prod,
     missing_dt_severity = missing_dt_severity,
-    drop_present_aggs = drop_present_aggs
+    overlapping_dt_severity = overlapping_dt_severity,
+    present_agg_severity = present_agg_severity
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -207,6 +211,7 @@ agg_lt <- function(dt,
     # group
     dt[, axdx_total := (ax + ax_full_years) * dx]
 
+    message("Aggregating ax across age groups")
     dt_ax <- hierarchyUtils::agg(
       dt = dt[, .SD, .SDcols = c(id_cols, "axdx_total", "dx")],
       id_cols = id_cols,
@@ -216,7 +221,8 @@ agg_lt <- function(dt,
       mapping = age_mapping,
       agg_function = sum,
       missing_dt_severity = missing_dt_severity,
-      drop_present_aggs = drop_present_aggs
+      overlapping_dt_severity = overlapping_dt_severity,
+      present_agg_severity = present_agg_severity
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]

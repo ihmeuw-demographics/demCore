@@ -9,7 +9,8 @@ agg_lt(
   id_cols,
   age_mapping,
   missing_dt_severity = "stop",
-  drop_present_aggs = F
+  overlapping_dt_severity = "stop",
+  present_agg_severity = "stop"
 )
 }
 \arguments{
@@ -28,11 +29,24 @@ specified in the input life tables \code{dt}.}
 
 \item{missing_dt_severity}{[\code{character(1)}]\cr
 How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'stop', 'warning',
-'message', or 'none'. If not "stop", then only the possible aggregations or
-scaling is done using the available data.}
+aggregation or scaling from occurring be? Can be either 'skip', 'stop',
+'warning', 'message', or 'none'. If 'skip', the checks for missing data are
+skipped. If not 'stop', then only the possible aggregations or scaling is
+done using the available data.}
 
-\item{drop_present_aggs}{[\code{logical(1)}]\cr
+\item{overlapping_dt_severity}{[\code{character(1)}]\cr
+When \code{collapse_interval_cols = TRUE}, how severe should the consequences of
+overlapping intervals that change or prevent collapsing to the most
+detailed common set of intervals be? Can be either 'skip', 'stop',
+'warning', 'message', or 'none'. If not "stop", then overlapping intervals
+will be dropped and the function continues.}
+
+\item{present_agg_severity}{[\code{logical(1)}]\cr
+How severe should the consequences of aggregate data (versus only the most
+detailed level be)? Can be either 'skip', 'stop', 'warning', 'message',
+or 'none'. If 'skip', then the data will be included in any aggregates
+because the checks will be skipped. If anything else other then 'stop', the
+data will be dropped rather than included in possible aggregations.
 Whether to drop aggregates (or overlapping intervals) that are already
 present in \code{dt} before aggregating. Default is 'False' and the function
 errors out.}
@@ -129,8 +143,8 @@ dt <- agg_lt(
   dt = dt,
   id_cols = id_cols,
   age_mapping = data.table::data.table(
-    age_start = seq(0, 110, 5),
-    age_end = c(seq(5, 110, 5), Inf)
+    age_start = seq(0, 105, 5),
+    age_end = seq(5, 110, 5)
   )
 )
 
@@ -140,7 +154,8 @@ dt <- agg_lt(
   age_mapping = data.table::data.table(
     age_start = seq(0, 110, 5),
     age_end = c(seq(5, 110, 5), Inf)
-  )
+  ),
+  present_agg_severity = "none"
 )
 }
 \seealso{
