@@ -17,5 +17,5 @@ zero_u5_ax_from_qx(ax, qx, A, B)
 }
 \description{
 Function we want to zero. Uses relationship between under-5
-mx and ax as described in \code{\link[=gen_u5_ax]{gen_u5_ax()}}. \strong{Use only for 1a0.}
+mx and ax as described in \code{\link[=gen_u5_ax_from_mx]{gen_u5_ax_from_mx()}}. \strong{Use only for 1a0.}
 }

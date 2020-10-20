@@ -198,11 +198,11 @@ $a_x$, these relationships can be used to predict $a_x$ from infant $m_x$:
 | If 1m0 >= 0.107     | 1.352       | 1.361    |
 | If 1m0 < 0.107      | 1.651 - 2.816 * 1m0 | 1.522 - 1.518 * 1m0 |
 
-Use the `gen_u5_ax` function to implement this method:
+Use the `gen_u5_ax_from_mx` function to implement this method:
 
 ```{r ax_u5_calc, eval = F}
 dt[, sex := "male"]
-gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
+gen_u5_ax_from_mx(dt, id_cols = c("age_start", "age_end", "sex"))
 ```
 
 __Graduation method:__ One strategy for selecting $a_x$ values is based on the
@@ -338,7 +338,7 @@ One possible set of steps for calculating a complete period life table from
 deaths and mid-year population is:
 
 1. Compute mx = deaths / population
-2. Estimate <5 ax from mx using `gen_u5_ax`, and set ax over age 5 as n/2
+2. Estimate <5 ax from mx using `gen_u5_ax_from_mx`, and set ax over age 5 as n/2
 3. Calculate qx directly using `mx_ax_to_qx`
 4. Use ax iteration with `iterate_ax` to modify ax and qx values, improving
   ax over the naive n/2 values

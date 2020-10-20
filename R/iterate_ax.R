@@ -40,7 +40,7 @@
 #' cannot produce estimates for the first and last age groups. Preston pg 45.
 #'
 #' **Note:** this is not the best method for ages under 5 years. See
-#' [gen_u5_ax()].
+#' [gen_u5_ax_from_mx()].
 #'
 #' @seealso Preston Demography book pg 45. Also, see more details on this
 #'    method explained in the introduction to life tables vignette:

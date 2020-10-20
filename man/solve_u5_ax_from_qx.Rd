@@ -11,5 +11,5 @@ solve_u5_ax_from_qx(dt)
 }
 \description{
 Function which solves for zero. Uses relationship between
-under-5 mx and ax as described in \code{\link[=gen_u5_ax]{gen_u5_ax()}}.
+under-5 mx and ax as described in \code{\link[=gen_u5_ax_from_mx]{gen_u5_ax_from_mx()}}.
 }

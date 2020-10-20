@@ -28,14 +28,10 @@ specified in the input life tables \code{dt}.}
 
 \item{missing_dt_severity}{[\code{character(1)}]\cr
 How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'stop', 'warning',
-'message', or 'none'. If not "stop", then only the possible aggregations or
-scaling is done using the available data.}
-
-\item{drop_present_aggs}{[\code{logical(1)}]\cr
-Whether to drop aggregates (or overlapping intervals) that are already
-present in \code{dt} before aggregating. Default is 'False' and the function
-errors out.}
+aggregation or scaling from occurring be? Can be either 'skip', 'stop',
+'warning', 'message', or 'none'. If 'skip', the checks for missing data are
+skipped. If not 'stop', then only the possible aggregations or scaling is
+done using the available data.}
 }
 \value{
 [\code{data.table()}]\cr Aggregated life table(s) with columns for all

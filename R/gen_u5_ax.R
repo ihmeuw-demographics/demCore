@@ -1,4 +1,4 @@
-#' @title Generate ax for ages under 5 years
+#' @title Generate ax for ages under 5 years, from mx
 #'
 #' @description Add ax onto a data.table for ages <1 and 1-4 years, with
 #'   algorithm based on under-1 mx.
@@ -44,10 +44,10 @@
 #'   mx = c(0.09, 0.12),
 #'   sex = c("male", "male")
 #' )
-#' gen_u5_ax(dt, id_cols = c("age_start", "age_end", "sex"))
+#' gen_u5_ax_from_mx(dt, id_cols = c("age_start", "age_end", "sex"))
 #' @export
 
-gen_u5_ax <- function(dt, id_cols) {
+gen_u5_ax_from_mx <- function(dt, id_cols) {
 
   # validate/prep ----------------------------------------------------------
 
@@ -118,14 +118,15 @@ gen_u5_ax <- function(dt, id_cols) {
 #'   infant probability of death ('qx') and adds a column 'ax'. There is no
 #'   absolute relationship between ax and qx without mx also known. Instead,
 #'   this function performs an inverse calculation of the calculation described
-#'   for [demCore::gen_u5_ax()] which estimates ax from 1m0. Since the inverse
-#'   involves a quadratic, we use [stats::uniroot()] to find the solution.
+#'   for [demCore::gen_u5_ax_from_mx()] which estimates ax from 1m0. Since
+#'   the inverse involves a quadratic, we use [stats::uniroot()] to find the
+#'   solution.
 #'
 #' @references
 #' Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
 #'   population processes. MA: Blackwell Publishing. 2001.
 #'
-#' @seealso [demCore::gen_u5_ax()]
+#' @seealso [demCore::gen_u5_ax_from_mx()]
 #'
 #' @examples
 #' dt <- data.table::data.table(
@@ -175,7 +176,7 @@ gen_u5_ax_from_qx <- function(dt, id_cols) {
 # ==========================================================================
 #' @title Helper objective function for `gen_u5_ax_from_qx`
 #' @description Function we want to zero. Uses relationship between under-5
-#'   mx and ax as described in [gen_u5_ax()]. **Use only for 1a0.**
+#'   mx and ax as described in [gen_u5_ax_from_mx()]. **Use only for 1a0.**
 #' @param ax \[`numeric(1)`\] average person-years lived by those who die (1a0)
 #' @param qx \[`numeric(1)`\] probability of death (1q0)
 #' @param A \[`numeric(1)`\] Intercept for 1m0 --> 1a0
@@ -191,7 +192,7 @@ zero_u5_ax_from_qx <- function(ax, qx, A, B) {
 # ==========================================================================
 #' @title Helper solve function for `gen_u5_ax_from_qx`
 #' @description Function which solves for zero. Uses relationship between
-#'   under-5 mx and ax as described in [gen_u5_ax()].
+#'   under-5 mx and ax as described in [gen_u5_ax_from_mx()].
 #' @param dt \[`data.table()`\] A single life table.
 solve_u5_ax_from_qx <- function(dt) {
 
@@ -253,8 +254,8 @@ solve_u5_ax_from_qx <- function(dt) {
 
 # ==========================================================================
 #' @title Helper for `gen_u5_ax` validations
-#' @inheritParams gen_u5_ax
-#' @param param_cols \[`character()`\] "mx" for `gen_u5_ax` and "qx" for
+#' @inheritParams gen_u5_ax_from_mx
+#' @param param_cols \[`character()`\] "mx" for `gen_u5_ax_from_mx` and "qx" for
 #'     `gen_u5_ax_from_qx`
 validate_gen_u5_ax <- function(dt, id_cols, param_cols) {
 

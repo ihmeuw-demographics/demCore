@@ -21,7 +21,7 @@ input \code{dt}.
 \item{id_cols}{[\code{character()}]\cr Columns that uniquely identify
 observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 
-\item{param_cols}{[\code{character()}] "mx" for \code{gen_u5_ax} and "qx" for
+\item{param_cols}{[\code{character()}] "mx" for \code{gen_u5_ax_from_mx} and "qx" for
 \code{gen_u5_ax_from_qx}}
 }
 \description{
