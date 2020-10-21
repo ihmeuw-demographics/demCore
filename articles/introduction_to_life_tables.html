@@ -79,7 +79,8 @@
 
       
 
-      </header><script src="introduction_to_life_tables_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="introduction_to_life_tables_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="introduction_to_life_tables_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="introduction_to_life_tables_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to life tables</h1>
@@ -501,10 +502,10 @@
 </tr>
 </tbody>
 </table>
-<p>Use the <code>gen_u5_ax</code> function to implement this method:</p>
+<p>Use the <code>gen_u5_ax_from_mx</code> function to implement this method:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">dt</span><span class="op">[</span>, <span class="va">sex</span> <span class="op">:=</span> <span class="st">"male"</span><span class="op">]</span>
-<span class="fu"><a href="../reference/gen_u5_ax.html">gen_u5_ax</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/gen_u5_ax_from_mx.html">gen_u5_ax_from_mx</a></span><span class="op">(</span><span class="va">dt</span>, id_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age_start"</span>, <span class="st">"age_end"</span>, <span class="st">"sex"</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><strong>Graduation method:</strong> One strategy for selecting <span class="math inline">\(a_x\)</span> values is based on the level and slope of the <span class="math inline">\(_nm_x\)</span> function. Comparing two populations with the same <span class="math inline">\(_5m_60\)</span>, the population with more rapidly rising mortality rate with respect to age will have deaths that are more concentrated in the later part of the interval (higher <span class="math inline">\(a_x\)</span>). Comparing two populations with the same slope in <span class="math inline">\(m_x\)</span>, the one with higher mortality rate will have more deaths at the beginning of the interval (lower <span class="math inline">\(a_x\)</span>).</p>
 <p>To utilize this theory, we can implement iteration as described in the Preston book, and originally proposed by Keyfitz (1966): <span class="math display">\[_na_x = \frac{\frac{-n}{24} {_nd_{x-n}} + \frac{n}{2} {_nd_x} +
 \frac{n}{24} {_nd_{x+n}}}{_nd_x}\]</span> Where <span class="math inline">\(d_x\)</span> is derived from the conversion from <span class="math inline">\(m_x\)</span> to <span class="math inline">\(q_x\)</span>. However, since the <span class="math inline">\(m_x\)</span> to <span class="math inline">\(q_x\)</span> conversion requires <span class="math inline">\(a_x\)</span>, this requires us to pick a starting place for <span class="math inline">\(a_x\)</span> (like <span class="math inline">\(n/2\)</span>), solve for <span class="math inline">\(d_x\)</span>, solve for <span class="math inline">\(a_x\)</span>, and so on until convergence. Use <code><a href="../reference/iterate_ax.html">demCore::iterate_ax</a></code> to implement this method.</p>
@@ -586,7 +587,7 @@
 <p>One possible set of steps for calculating a complete period life table from deaths and mid-year population is:</p>
 <ol style="list-style-type: decimal">
 <li>Compute mx = deaths / population</li>
-<li>Estimate &lt;5 ax from mx using <code>gen_u5_ax</code>, and set ax over age 5 as n/2</li>
+<li>Estimate &lt;5 ax from mx using <code>gen_u5_ax_from_mx</code>, and set ax over age 5 as n/2</li>
 <li>Calculate qx directly using <code>mx_ax_to_qx</code>
 </li>
 <li>Use ax iteration with <code>iterate_ax</code> to modify ax and qx values, improving ax over the naive n/2 values</li>

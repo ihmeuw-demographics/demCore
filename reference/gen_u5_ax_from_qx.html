@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Scale qx values over age — scale_qx • demCore</title>
+<title>Generate ax for ages under 5 years, from qx — gen_u5_ax_from_qx • demCore</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Scale qx values over age — scale_qx" />
-<meta property="og:description" content="Scale granular qx values to be consistent with aggregate age
-interval qx values already present in the data." />
+<meta property="og:title" content="Generate ax for ages under 5 years, from qx — gen_u5_ax_from_qx" />
+<meta property="og:description" content="Add ax onto a data.table for ages &amp;lt;1 and 1-4 years, with
+algorithm based on under-1 qx." />
 
 
 
@@ -124,74 +124,71 @@ interval qx values already present in the data." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Scale qx values over age</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/scale_qx.R'><code>R/scale_qx.R</code></a></small>
-    <div class="hidden name"><code>scale_qx.Rd</code></div>
+    <h1>Generate ax for ages under 5 years, from qx</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/gen_u5_ax.R'><code>R/gen_u5_ax.R</code></a></small>
+    <div class="hidden name"><code>gen_u5_ax_from_qx.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Scale granular qx values to be consistent with aggregate age
-interval qx values already present in the data.</p>
+    <p>Add ax onto a data.table for ages &lt;1 and 1-4 years, with
+algorithm based on under-1 qx.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scale_qx</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span>, missing_dt_severity <span class='op'>=</span> <span class='st'>"stop"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>gen_u5_ax_from_qx</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Data to be aggregated.</p><ul>
-<li><p>Must only include columns 'qx' and those specified in <code>id_cols</code></p></li>
-<li><p>Must include 'age_start' and 'age_end' columns</p></li>
+      <td><p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Columns:</p><ul>
+<li><p>'age_start' with values 0 (for under-1) and 1 (for 1-4). Other ages
+permitted but will result in NA output for ax or unchanged ax if ax in
+input <code>dt</code>.</p></li>
+<li><p>'age_end' with values 1 (for under-1) and 5 (for 1-4).</p></li>
+<li><p>'sex' where values must be 'male', 'female', or 'both'</p></li>
+<li><p>'qx' for mortality rate</p></li>
+<li><p>All additional columns from 'id_cols'</p></li>
 </ul></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
-ID columns that uniquely identify each row of <code>dt</code>.</p></td>
-    </tr>
-    <tr>
-      <th>missing_dt_severity</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If 'skip', the checks for missing data are
-skipped. If not 'stop', then only the possible aggregations or scaling is
-done using the available data.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Columns that uniquely identify
+observations in <code>dt</code>. Must include 'age_start', 'age_end', and 'sex'.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>[<code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table()</a></code>]<br /> Scaled qx values, has <code>id_cols</code> and 'qx'
-columns for all age groups.</p>
+    <p>Modifies <code>dt</code> in place with 'ax' column added on.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Convert to px-space, scale up age-hierarchy so that granular px
-values multiply to aggregate px values, convert back to qx-space.
-<code>scale_qx()</code> is a wrapper for <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code>.</p>
-<p>This function is unique to aggregating and scaling qx over age because of
-the dependence between age and the definition of qx. Aggregation of qx
-across sex, location, or other variables should be done by first aggregating
-ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code> and
-<code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code> directly), then recalculating qx from mx and ax
-(see <code><a href='mx_qx_ax_conversions.html'>demCore::mx_ax_to_qx()</a></code>).</p>
+    <p>Takes a <code>data.table</code> with 'age_start', 'age_end', 'sex', and
+infant probability of death ('qx') and adds a column 'ax'. There is no
+absolute relationship between ax and qx without mx also known. Instead,
+this function performs an inverse calculation of the calculation described
+for <code><a href='gen_u5_ax_from_mx.html'>demCore::gen_u5_ax_from_mx()</a></code> which estimates ax from 1m0. Since
+the inverse involves a quadratic, we use <code><a href='https://rdrr.io/r/stats/uniroot.html'>stats::uniroot()</a></code> to find the
+solution.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
+population processes. MA: Blackwell Publishing. 2001.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>hierarchyUtils</code>.</p></div>
+    <div class='dont-index'><p><code><a href='gen_u5_ax_from_mx.html'>demCore::gen_u5_ax_from_mx()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># scale qx up single-year to abridged u5 hierarchy</span>
-<span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>
-  sex <span class='op'>=</span> <span class='st'>"male"</span>,
-  qx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.03</span>, <span class='fl'>0.015</span>, <span class='fl'>0.005</span>, <span class='fl'>0.004</span>, <span class='fl'>0.001</span>, <span class='fl'>0.03</span>, <span class='fl'>0.05</span><span class='op'>)</span>,
-  age_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,
-  age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>
+  age_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span>,
+  qx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.0846</span>, <span class='fl'>0.3658</span><span class='op'>)</span>,
+  sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"male"</span>, <span class='st'>"male"</span><span class='op'>)</span>
 <span class='op'>)</span>
-<span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>scale_qx</span><span class='op'>(</span><span class='va'>dt</span>, id_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span><span class='op'>)</span><span class='op'>)</span>
-
-</div></pre>
+<span class='fu'>gen_u5_ax_from_qx</span><span class='op'>(</span><span class='va'>dt</span>, id_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>, <span class='st'>"sex"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    age_start age_end     qx  sex       ax
+#&gt; 1:         0       1 0.0846 male 0.286650
+#&gt; 2:         1       5 0.3658 male 1.397466</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
