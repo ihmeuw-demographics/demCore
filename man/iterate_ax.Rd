@@ -61,7 +61,7 @@ for the formatted equation.
 cannot produce estimates for the first and last age groups. Preston pg 45.
 
 \strong{Note:} this is not the best method for ages under 5 years. See
-\code{\link[=gen_u5_ax]{gen_u5_ax()}}.
+\code{\link[=gen_u5_ax_from_mx]{gen_u5_ax_from_mx()}}.
 }
 \examples{
 data("austria_1992_lt")
