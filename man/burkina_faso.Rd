@@ -80,6 +80,49 @@ Corresponds to 'ages' \code{setting}.
 greater than zero and less than one.
 }
 
+mx: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] mortality rate estimates, must be greater
+than zero.
+}
+
+ax: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] average years lived by those dying in the
+interval estimates, must be greater than zero and less than the age
+interval length.
+}
+
+qx: [\code{data.table()}]\cr
+\itemize{
+\item year_start: [\code{integer()}] start of the calendar year interval
+(inclusive). Corresponds to 'years' \code{setting}.
+\item year_end: [\code{integer()}] end of the calendar year interval (exclusive).
+\item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
+\code{setting}.
+\item age_start: [\code{integer()}] start of the age group (inclusive).
+Corresponds to 'ages' \code{setting}.
+\item age_end: [\code{integer()}] end of the age group (exclusive).
+\item \code{value_col}: [\code{numeric()}] probability of death estimates, must be
+greater than zero and less than one.
+}
+
 net_migration: [\code{data.table()}]\cr
 \itemize{
 \item year_start: [\code{integer()}] start of the calendar year interval

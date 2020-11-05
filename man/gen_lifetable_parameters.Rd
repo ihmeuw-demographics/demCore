@@ -112,8 +112,8 @@ gen_qx_from_lx(dt, id_cols = c("sex", "age_start", "age_end"))
 }
 \seealso{
 \itemize{
-\item{\link[demCore:mx_qx_ax_conversions]{demCore::mx_qx_ax_conversions}}
-\item{\link[demCore:lifetable]{demCore::lifetable}}
+\item{\link{mx_qx_ax_conversions}}
+\item{\link{lifetable}}
 \item \code{vignette("introduction_to_life_tables", package = "demCore")}
 }
 }
