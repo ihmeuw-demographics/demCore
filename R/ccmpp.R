@@ -4,9 +4,10 @@
 #' method of population projection.
 #'
 #' @param inputs \[`list()`\]\cr
-#'   \[`data.table()`\] for each ccmpp input. Requires 'srb', 'asfr', 'baseline',
-#'   and 'survival'; and migration estimates provided as just 'net_migration' or
-#'   both 'immigration' and 'emigration'. See **Section: Inputs** for more
+#'   \[`data.table()`\] for each ccmpp input. Requires 'srb', 'asfr', 'baseline';
+#'   mortality estimates provided as just 'survival' or two of 'mx', 'ax', and
+#'   'qx'; and migration estimates provided as just 'net_migration' or both
+#'   'immigration' and 'emigration'. See **Section: Inputs** for more
 #'   information on each of the required inputs.
 #' @param settings \[`list()`\]\cr
 #'   Named list of settings for running [ccmpp()] with. See
@@ -41,6 +42,11 @@
 #'
 #' See `vignette("ccmpp", package = "demCore")` or linked references for more
 #' details on this method.
+#'
+#' For mortality related inputs, supplying 'survival' only, or two or more of
+#' 'mx', 'qx', and 'ax' is possible. When 'mx', 'qx', and 'ax' parameters are
+#' given then the function calculates the survivorship ratio with
+#' [nSx_from_lx_nLx_Tx()].
 #'
 #' @section Inputs:
 #' srb: \[`data.table()`\]\cr
@@ -81,6 +87,43 @@
 #'   Corresponds to 'ages' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] survivorship ratio estimates, must be
+#'   greater than zero and less than one.
+#'
+#' mx: \[`data.table()`\]\cr
+#'   * year_start: \[`integer()`\] start of the calendar year interval
+#'   (inclusive). Corresponds to 'years' `setting`.
+#'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
+#'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
+#'   `setting`.
+#'   * age_start: \[`integer()`\] start of the age group (inclusive).
+#'   Corresponds to 'ages' `setting`.
+#'   * age_end: \[`integer()`\] end of the age group (exclusive).
+#'   * `value_col`: \[`numeric()`\] mortality rate estimates, must be greater
+#'   than zero.
+#'
+#' ax: \[`data.table()`\]\cr
+#'   * year_start: \[`integer()`\] start of the calendar year interval
+#'   (inclusive). Corresponds to 'years' `setting`.
+#'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
+#'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
+#'   `setting`.
+#'   * age_start: \[`integer()`\] start of the age group (inclusive).
+#'   Corresponds to 'ages' `setting`.
+#'   * age_end: \[`integer()`\] end of the age group (exclusive).
+#'   * `value_col`: \[`numeric()`\] average years lived by those dying in the
+#'   interval estimates, must be greater than zero and less than the age
+#'   interval length.
+#'
+#' qx: \[`data.table()`\]\cr
+#'   * year_start: \[`integer()`\] start of the calendar year interval
+#'   (inclusive). Corresponds to 'years' `setting`.
+#'   * year_end: \[`integer()`\] end of the calendar year interval (exclusive).
+#'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
+#'   `setting`.
+#'   * age_start: \[`integer()`\] start of the age group (inclusive).
+#'   Corresponds to 'ages' `setting`.
+#'   * age_end: \[`integer()`\] end of the age group (exclusive).
+#'   * `value_col`: \[`numeric()`\] probability of death estimates, must be
 #'   greater than zero and less than one.
 #'
 #' net_migration: \[`data.table()`\]\cr
@@ -129,10 +172,10 @@
 #'   * ages: \[`numeric()`\]\cr
 #'   The ages being projected in [demCore::ccmpp()]. Corresponds to the
 #'   'age_start' column in each of the standard age-specific inputs.
-#'   * ages_survival: \[`numeric()`\]\cr
-#'   The ages for which survivorship ratio estimates are available, includes one
+#'   * ages_mortality: \[`numeric()`\]\cr
+#'   The ages for which mortality parameter estimates are available, includes one
 #'   extra age group compared to the 'ages' setting. Corresponds to the
-#'   'age_start' column in the 'survival' \[`data.table()`\] input.
+#'   'age_start' column in the mortality \[`data.table()`\] input(s).
 #'   * ages_asfr: \[`numeric()`\]\cr
 #'   The assumed female reproductive ages, subset of 'ages'. Corresponds to the
 #'   'age_start' column in the age-specific fertility rate (asfr)
@@ -145,7 +188,7 @@
 #'     years = seq(1960, 1995, 5),
 #'     sexes = c("female", "male"),
 #'     ages = seq(0, 80, 5),
-#'     ages_survival = seq(0, 85, 5),
+#'     ages_mortality = seq(0, 85, 5),
 #'     ages_asfr = seq(15, 45, 5)
 #'   )
 #' )
@@ -182,11 +225,40 @@ ccmpp <- function(inputs,
                 value_col)
   pop_all_cols <- c("year", "sex", "age_start", "age_end", value_col)
   if (!gen_end_interval_col) {
-    all_cols <- all_cols[!grepl("_end$", all_cols)]
     pop_all_cols <- pop_all_cols[!grepl("_end$", pop_all_cols)]
   }
   id_cols <- setdiff(all_cols, value_col)
   pop_id_cols <- setdiff(pop_all_cols, value_col)
+
+  # Calculate survivorship ratio if not given -------------------------------
+
+  if (!"survival" %in% names(inputs)) {
+    # calculate all life table parameters
+    inputs <- copy(inputs)
+    params <- c("mx", "qx", "ax")
+    params <- params[params %in% names(inputs)]
+    lifetable_input <- inputs[params]
+    for (param in params) {
+      setnames(lifetable_input[[param]], value_col, param)
+    }
+    lifetable_input <- Reduce(
+      f = function(x, y) merge(x, y, by = id_cols, all = T),
+      x = lifetable_input
+    )
+    lifetable_input <- demCore::lifetable(
+      dt = lifetable_input,
+      id_cols = id_cols
+    )
+    inputs[params] <- NULL
+
+    # calculate survivorship ratio
+    inputs$survival <- demCore::nSx_from_lx_nLx_Tx(
+      dt = lifetable_input,
+      id_cols = id_cols,
+      terminal_age = max(settings$ages)
+    )
+    setnames(inputs$survival, "nSx", value_col)
+  }
 
   # Project population ------------------------------------------------------
 
@@ -454,7 +526,7 @@ validate_ccmpp_inputs <- function(inputs,
                                   value_col) {
 
   # check for all required settings
-  required_settings <- c("years", "sexes", "ages", "ages_survival", "ages_asfr")
+  required_settings <- c("years", "sexes", "ages", "ages_mortality", "ages_asfr")
   assertthat::assert_that(
     all(required_settings %in% names(settings)),
     msg = paste0("Need all required settings: '",
@@ -497,16 +569,16 @@ validate_ccmpp_inputs <- function(inputs,
   )
   int <- unique(diff(settings$ages))
 
-  # check `settings$ages_survival` argument
+  # check `settings$ages_mortality` argument
   assertthat::assert_that(
-    assertive::is_numeric(settings$ages_survival),
-    length(unique(diff(settings$ages_survival))) == 1,
-    unique(diff(settings$ages_survival)) != 0,
-    all(settings$ages %in% settings$ages_survival),
-    max(settings$ages_survival) == max(settings$ages) + int,
-    msg = paste0("`settings$ages_survival` must be a numeric vector defining ",
+    assertive::is_numeric(settings$ages_mortality),
+    length(unique(diff(settings$ages_mortality))) == 1,
+    unique(diff(settings$ages_mortality)) != 0,
+    all(settings$ages %in% settings$ages_mortality),
+    max(settings$ages_mortality) == max(settings$ages) + int,
+    msg = paste0("`settings$ages_mortality` must be a numeric vector defining ",
                  "the start of evenly spaced age group intervals for the ",
-                 "survivorship ratio estimates")
+                 "mortality related estimates")
   )
 
   # check `settings$ages_asfr` argument
@@ -533,11 +605,14 @@ validate_ccmpp_inputs <- function(inputs,
   # check all required components are present in `inputs`
   components <- names(inputs)
   assertthat::assert_that(
-    all(c("srb", "asfr", "baseline", "survival") %in% components),
-    "net_migration" %in% components |
-      all(c("immigration", "emigration") %in% components),
+    all(c("srb", "asfr", "baseline") %in% components),
+    xor("survival" %in% components,
+        data.table::between(length(setdiff(c("mx", "qx", "ax"), components)), 0, 1)),
+    xor("net_migration" %in% components,
+        all(c("immigration", "emigration") %in% components)),
     msg = "`inputs` requires named components for each of 'srb', 'asfr',
-    'baseline', and 'survival'; and migration estimates provided as just
+    'baseline'; and mortality estimates provided as just 'survival' or at least
+    two of 'mx', 'qx, and 'ax'; and migration estimates provided as just
     'net_migration' or 'immigration' and 'emigration'."
   )
 
@@ -550,6 +625,9 @@ validate_ccmpp_inputs <- function(inputs,
     "asfr" = setdiff(all_cols, "sex"),
     "baseline" = pop_all_cols,
     "survival" = all_cols,
+    "mx" = all_cols,
+    "qx" = all_cols,
+    "ax" = all_cols,
     "net_migration" = all_cols,
     "immigration" = all_cols,
     "emigration" = all_cols
@@ -564,7 +642,16 @@ validate_ccmpp_inputs <- function(inputs,
                       age_start = settings$ages),
     "survival" = list(year_start = settings$years,
                       sex = settings$sexes,
-                      age_start = settings$ages_survival),
+                      age_start = settings$ages_mortality),
+    "mx" = list(year_start = settings$years,
+                      sex = settings$sexes,
+                      age_start = settings$ages_mortality),
+    "qx" = list(year_start = settings$years,
+                      sex = settings$sexes,
+                      age_start = settings$ages_mortality),
+    "ax" = list(year_start = settings$years,
+                      sex = settings$sexes,
+                      age_start = settings$ages_mortality),
     "net_migration" = list(year_start = settings$years,
                            sex = settings$sexes,
                            age_start = settings$ages),
@@ -600,10 +687,29 @@ validate_ccmpp_inputs <- function(inputs,
                             test = "gte", test_val = "0", quiet = T)
   assertable::assert_values(inputs[["baseline"]], colnames = value_col,
                             test = "gte", test_val = "0", quiet = T)
-  assertable::assert_values(inputs[["survival"]], colnames = value_col,
-                            test = "gte", test_val = "0", quiet = T)
-  assertable::assert_values(inputs[["survival"]], colnames = value_col,
-                            test = "lte", test_val = "1", quiet = T)
+  if ("survival" %in% components) {
+    assertable::assert_values(inputs[["survival"]], colnames = value_col,
+                              test = "gte", test_val = "0", quiet = T)
+    assertable::assert_values(inputs[["survival"]], colnames = value_col,
+                              test = "lte", test_val = "1", quiet = T)
+  } else {
+    if ("mx" %in% components) {
+      assertable::assert_values(inputs[["mx"]], colnames = value_col,
+                                test = "gte", test_val = "0", quiet = T)
+    }
+    if ("qx" %in% components) {
+      assertable::assert_values(inputs[["qx"]], colnames = value_col,
+                                test = "gte", test_val = "0", quiet = T)
+      assertable::assert_values(inputs[["qx"]], colnames = value_col,
+                                test = "lte", test_val = "1", quiet = T)
+    }
+    if ("ax" %in% components) {
+      assertable::assert_values(inputs[["ax"]], colnames = value_col,
+                                test = "gte", test_val = "0", quiet = T)
+      assertable::assert_values(inputs[["ax"]][!is.infinite(age_end)], colnames = value_col,
+                                test = "lte", test_val = int, quiet = T)
+    }
+  }
   if (!"net_migration" %in% components) {
     assertable::assert_values(inputs[["immigration"]], colnames = value_col,
                               test = "gte", test_val = "0", quiet = T)

@@ -33,7 +33,7 @@ Takes a \code{data.table} with 'age_start', 'age_end', 'sex', and
 infant probability of death ('qx') and adds a column 'ax'. There is no
 absolute relationship between ax and qx without mx also known. Instead,
 this function performs an inverse calculation of the calculation described
-for \code{\link[demCore:gen_u5_ax_from_mx]{demCore::gen_u5_ax_from_mx()}} which estimates ax from 1m0. Since
+for \code{\link[=gen_u5_ax_from_mx]{gen_u5_ax_from_mx()}} which estimates ax from 1m0. Since
 the inverse involves a quadratic, we use \code{\link[stats:uniroot]{stats::uniroot()}} to find the
 solution.
 }
@@ -51,5 +51,5 @@ Preston Samuel H, Patrick H, Michel G. Demography: measuring and modeling
 population processes. MA: Blackwell Publishing. 2001.
 }
 \seealso{
-\code{\link[demCore:gen_u5_ax_from_mx]{demCore::gen_u5_ax_from_mx()}}
+\code{\link[=gen_u5_ax_from_mx]{gen_u5_ax_from_mx()}}
 }
