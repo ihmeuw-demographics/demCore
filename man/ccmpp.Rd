@@ -66,7 +66,8 @@ details on this method.
 
 For mortality related inputs, supplying 'survival' only, or two or more of
 'mx', 'qx', and 'ax' is possible. When 'mx', 'qx', and 'ax' parameters are
-given then the function calculates the survivorship ratio internally.
+given then the function calculates the survivorship ratio with
+\code{\link[=nSx_from_lx_nLx_Tx]{nSx_from_lx_nLx_Tx()}}.
 }
 \section{Inputs}{
 
