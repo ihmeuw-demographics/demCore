@@ -137,8 +137,8 @@ G =&amp; \text{net migrants}
 <li>A list of settings describing the years, sexes, and ages ccmpp will run with.</li>
 </ol>
 <p>Below is a summary of what the Thailand example inputs look like. The baseline population is for the year 1960 and includes both female and male populations for five year age groups up to 80+. The other four inputs define how the population changes every five calendar years between 1960 and 2000. The survivorship ratios go up to age 85+ while the asfr estimates are defined for the reproductive age groups between age 15 and 50.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihmeuw-demographics/demCore/">demCore</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihmeuw-demographics/demCore/">demCore</a></span><span class="op">)</span>
 
 <span class="co"># the list of data.tables for each of the inputs</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">)</span>
@@ -188,12 +188,12 @@ G =&amp; \text{net migrants}
   years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1960</span>, <span class="fl">1995</span>, <span class="fl">5</span><span class="op">)</span>,
   sexes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span>,
   ages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span><span class="op">)</span>,
-  ages_survival <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span><span class="op">)</span>,
+  ages_mortality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span><span class="op">)</span>,
   ages_asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">45</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p>Once those inputs are ready <code>ccmpp</code> can be run to produce a full time series of projected populations between 1960 and 2000 in five year age groups up to 80+.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">thailand_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">thailand_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span><span class="op">(</span>
   inputs <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span>,
   settings <span class="op">=</span> <span class="va">thailand_settings</span>
 <span class="op">)</span>
@@ -205,7 +205,7 @@ G =&amp; \text{net migrants}
 <span class="co">#&gt;  $ age_end  : num  5 10 15 20 25 30 35 40 45 50 ...</span>
 <span class="co">#&gt;  $ value    : num  2338000 1857000 1543000 1287000 1250000 ...</span>
 <span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span></pre></div>
+<span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span></code></pre></div>
 <p><img src="ccmpp_files/figure-html/ccmpp_plot-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="ccmpp-details" class="section level2">
@@ -282,8 +282,8 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 \mathbf{L}[t, t + 1] =&amp; \text{Leslie matrix} \\
 \tilde{f_{a, t}} =&amp; s_{0, t} \cdot \frac{f_{a,t} + f_{a + 1, t} \cdot s_{a + 1, t}}{2} \end{aligned}\]</span></p>
 <p><code><a href="../reference/leslie_matrix.html">demCore::leslie_matrix</a></code> is a function to produce the leslie matrix from input vectors of the survivorship ratio, asfr, and the sex-ratio at birth. Below is the Thailand example leslie matrix for the rates between 1960 and 1965.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">leslie</span> <span class="op">&lt;-</span> <span class="fu">demCore</span><span class="fu">::</span><span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">leslie</span> <span class="op">&lt;-</span> <span class="fu">demCore</span><span class="fu">::</span><span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span><span class="op">(</span>
   survival <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">survival</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span> <span class="op">&amp;</span>
                                                   <span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="va">value</span><span class="op">]</span>,
   asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,
@@ -346,7 +346,7 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 <span class="co">#&gt; 65 0.0000000 0.00000 0.0000000</span>
 <span class="co">#&gt; 70 0.0000000 0.00000 0.0000000</span>
 <span class="co">#&gt; 75 0.7909366 0.00000 0.0000000</span>
-<span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span></pre></div>
+<span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span></code></pre></div>
 </div>
 </div>
 </div>

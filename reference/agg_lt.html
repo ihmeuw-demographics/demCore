@@ -168,10 +168,16 @@ specified in the input life tables <code>dt</code>.</p></td>
       <th>missing_dt_severity</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
 How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If 'skip', the checks for missing data are
-skipped. If not 'stop', then only the possible aggregations or scaling is
-done using the available data.</p></td>
+aggregation or scaling from occurring be? Can be either 'stop', 'warning',
+'message', or 'none'. If not "stop", then only the possible aggregations or
+scaling is done using the available data.</p></td>
+    </tr>
+    <tr>
+      <th>drop_present_aggs</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to drop aggregates (or overlapping intervals) that are already
+present in <code>dt</code> before aggregating. Default is 'False' and the function
+errors out.</p></td>
     </tr>
     </table>
 

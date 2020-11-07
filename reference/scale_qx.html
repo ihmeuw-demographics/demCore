@@ -155,10 +155,9 @@ ID columns that uniquely identify each row of <code>dt</code>.</p></td>
       <th>missing_dt_severity</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
 How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If 'skip', the checks for missing data are
-skipped. If not 'stop', then only the possible aggregations or scaling is
-done using the available data.</p></td>
+aggregation or scaling from occurring be? Can be either 'stop', 'warning',
+'message', or 'none'. If not "stop", then only the possible aggregations or
+scaling is done using the available data.</p></td>
     </tr>
     </table>
 
@@ -176,7 +175,7 @@ the dependence between age and the definition of qx. Aggregation of qx
 across sex, location, or other variables should be done by first aggregating
 ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code> and
 <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code> directly), then recalculating qx from mx and ax
-(see <code><a href='mx_qx_ax_conversions.html'>demCore::mx_ax_to_qx()</a></code>).</p>
+(see <code><a href='mx_qx_ax_conversions.html'>mx_ax_to_qx()</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>hierarchyUtils</code>.</p></div>

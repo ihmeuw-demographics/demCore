@@ -201,6 +201,46 @@ Corresponds to 'ages' <code>setting</code>.</p></li>
 greater than zero and less than one.</p></li>
 </ul>
 
+<p>mx: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] mortality rate estimates, must be greater
+than zero.</p></li>
+</ul>
+
+<p>ax: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] average years lived by those dying in the
+interval estimates, must be greater than zero and less than the age
+interval length.</p></li>
+</ul>
+
+<p>qx: [<code>data.table()</code>]<br /></p><ul>
+<li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
+(inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
+<li><p>year_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the calendar year interval (exclusive).</p></li>
+<li><p>sex: [<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>] either 'female' or 'male'. Corresponds to 'sexes'
+<code>setting</code>.</p></li>
+<li><p>age_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the age group (inclusive).
+Corresponds to 'ages' <code>setting</code>.</p></li>
+<li><p>age_end: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] end of the age group (exclusive).</p></li>
+<li><p><code>value_col</code>: [<code><a href='https://rdrr.io/r/base/numeric.html'>numeric()</a></code>] probability of death estimates, must be
+greater than zero and less than one.</p></li>
+</ul>
+
 <p>net_migration: [<code>data.table()</code>]<br /></p><ul>
 <li><p>year_start: [<code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>] start of the calendar year interval
 (inclusive). Corresponds to 'years' <code>setting</code>.</p></li>
