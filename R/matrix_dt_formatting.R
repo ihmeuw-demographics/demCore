@@ -37,9 +37,11 @@
 #' columns for 'age_start' and 'age_end.
 #'
 #' matrix format: When data is in matrix format, columns represent the start of
-#' each calendar year interval, rows represent the start of each age interval
-#' and if the data is sex specific each sex will have a separate matrix stored
-#' in a named list (names corresponding to each sex).
+#' each calendar year interval, rows represent the start of each age interval.
+#' If the data is sex specific each sex will have a separate matrix stored
+#' in a named list (names corresponding to each sex). If the data is age
+#' specific rows will be labeled with a numeric representing the start of the
+#' age group.
 #'
 #' @return `matrix_to_dt` returns a \[`data.table()`\] in data.table format as
 #' described in the details section. `dt_to_matrix` returns a matrix of list of
@@ -90,10 +92,8 @@ matrix_to_dt <- function(mdt,
       msg = "rownames (age_start) and colnames (year_start) of `mdt` must exist"
     )
     assertthat::assert_that(
-      all(assertive::is_numeric_string(unlist(mapply(rownames, check_mdt)))),
       all(assertive::is_numeric_string(unlist(mapply(colnames, check_mdt)))),
-      msg = "rownames (age_start) and colnames (year_start) of `mdt` must be
-    numeric strings"
+      msg = "colnames (year_start) of `mdt` must be numeric strings"
     )
 
     ## check `year_right_most_endpoint` argument
@@ -116,7 +116,9 @@ matrix_to_dt <- function(mdt,
   # Convert to data.table ---------------------------------------------------
 
   sex_specific <- assertive::is_list(mdt)
-  age_specific <- ifelse(sex_specific, nrow(mdt[[1]]) > 1, nrow(mdt) > 1)
+  ages <- ifelse(sex_specific, rownames(mdt[[1]]), rownames(mdt))
+  ages <- ages[assertive::is_numeric_string(ages)]
+  age_specific <- length(ages) > 0
   id_cols <- c("year_start",
                if (gen_end_interval_col) "year_end",
                if (sex_specific) "sex",
@@ -132,7 +134,7 @@ matrix_to_dt <- function(mdt,
     d <- data.table(m)
 
     # assign the age_start rownames as a new column
-    age_starts <- as.numeric(rownames(m))
+    age_starts <- suppressWarnings(as.numeric(rownames(m)))
     d[, age_start := age_starts]
 
     # melt the year_start columns
@@ -155,12 +157,14 @@ matrix_to_dt <- function(mdt,
       }
 
       # add on the age_end column
-      hierarchyUtils::gen_end(
-        dt = d,
-        id_cols = c("year_start", "age_start"),
-        col_stem = "age",
-        right_most_endpoint = age_right_most_endpoint
-      )
+      if (age_specific) {
+        hierarchyUtils::gen_end(
+          dt = d,
+          id_cols = c("year_start", "age_start"),
+          col_stem = "age",
+          right_most_endpoint = age_right_most_endpoint
+        )
+      }
     }
 
     return(d)
@@ -183,7 +187,7 @@ matrix_to_dt <- function(mdt,
   }
 
   if (!age_specific) {
-    dt[, c("age_start", if (gen_end_interval_col) "age_end") := NULL]
+    dt[, c("age_start") := NULL]
   }
 
   data.table::setcolorder(dt, c(id_cols, "value"))
@@ -229,7 +233,7 @@ dt_to_matrix <- function(dt,
       age_starts <- sort(unique(d$age_start))
       form <- eval(paste0("age_start ~ ", year_col))
     } else {
-      age_starts <- 0
+      age_starts <- "all"
       form <- eval(paste0(". ~ ", year_col))
     }
     m <- dcast(d,  form , value.var = value_col)
