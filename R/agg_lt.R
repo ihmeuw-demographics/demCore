@@ -20,6 +20,8 @@
 #'
 #' @seealso [hierarchyUtils::agg()]
 #'
+#' @inheritSection hierarchyUtils::agg Severity Arguments
+#'
 #' @details
 #' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
 #' for the formatted equations below.
@@ -122,7 +124,8 @@ agg_lt <- function(dt,
                    age_mapping,
                    missing_dt_severity = "stop",
                    overlapping_dt_severity = "stop",
-                   present_agg_severity = "stop") {
+                   present_agg_severity = "stop",
+                   na_value_severity = "stop") {
 
   # validate -------------------------------------------------------
 
@@ -185,7 +188,8 @@ agg_lt <- function(dt,
     agg_function = prod,
     missing_dt_severity = missing_dt_severity,
     overlapping_dt_severity = overlapping_dt_severity,
-    present_agg_severity = present_agg_severity
+    present_agg_severity = present_agg_severity,
+    na_value_severity = na_value_severity
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -232,7 +236,8 @@ agg_lt <- function(dt,
       agg_function = sum,
       missing_dt_severity = missing_dt_severity,
       overlapping_dt_severity = overlapping_dt_severity,
-      present_agg_severity = present_agg_severity
+      present_agg_severity = present_agg_severity,
+      na_value_severity = na_value_severity
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]

@@ -10,7 +10,8 @@ agg_lt(
   age_mapping,
   missing_dt_severity = "stop",
   overlapping_dt_severity = "stop",
-  present_agg_severity = "stop"
+  present_agg_severity = "stop",
+  na_value_severity = "stop"
 )
 }
 \arguments{
@@ -28,28 +29,27 @@ The age group intervals must be contiguous and cover the entire interval
 specified in the input life tables \code{dt}.}
 
 \item{missing_dt_severity}{[\code{character(1)}]\cr
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If 'skip', the checks for missing data are
-skipped. If not 'stop', then only the possible aggregations or scaling is
-done using the available data.}
+What should happen when \code{dt} is missing levels of \code{col_stem} that
+prevent aggregation or scaling from occurring? Can be either 'skip',
+'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
+'Severity Arguments' for more information.}
 
 \item{overlapping_dt_severity}{[\code{character(1)}]\cr
-When \code{collapse_interval_cols = TRUE}, how severe should the consequences of
-overlapping intervals that change or prevent collapsing to the most
-detailed common set of intervals be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If not "stop", then overlapping intervals
-will be dropped and the function continues.}
+When aggregating/scaling an interval variable or \code{collapse_interval_cols=TRUE}
+what should happen when overlapping intervals are identified? Can be either
+'skip', 'stop', 'warning', 'message', or 'none'. Default is 'stop'. See
+section on 'Severity Arguments' for more information.}
 
 \item{present_agg_severity}{[\code{logical(1)}]\cr
-How severe should the consequences of aggregate data (versus only the most
-detailed level be)? Can be either 'skip', 'stop', 'warning', 'message',
-or 'none'. If 'skip', then the data will be included in any aggregates
-because the checks will be skipped. If anything else other then 'stop', the
-data will be dropped rather than included in possible aggregations.
-Whether to drop aggregates (or overlapping intervals) that are already
-present in \code{dt} before aggregating. Default is 'False' and the function
-errors out.}
+What should happen when \code{dt} already has requested aggregates (from
+\code{mapping})? Can be either 'skip', 'stop', 'warning', 'message',
+or 'none'. Default is 'stop'. See section on 'Severity Arguments' for more
+information.}
+
+\item{na_value_severity}{[\code{character(1)}]\cr
+What should happen when 'NA' values are present in \code{value_cols}? Can be
+either 'skip', 'stop', 'warning', 'message', or 'none'. Default is 'stop'.
+See section on 'Severity Arguments' for more information.}
 }
 \value{
 [\code{data.table()}]\cr Aggregated life table(s) with columns for all
@@ -130,6 +130,71 @@ The aggregate ax can then be solved for.
 \deqn{{}_{n}a_x = \frac{\sum_{i = 1}^{A} ((x_i - x) + {}_{n_i}a_{x_i})
   \cdot {}_{n_i}d_{x_i}}{\sum_{i = 1}^{A} {}_{n_i}d_{x_i}}}
 }
+\section{Severity Arguments}{
+
+
+\strong{\code{missing_dt_severity}}:
+
+Check for missing levels of \code{col_stem}, the variable being aggregated or
+scaled over.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message and continue with
+aggregation/scaling for requested aggregations/scalings where expected input
+data in \code{dt} is available.
+\item \code{none}: don't throw error or warning, continue with aggregation/scaling
+for requested aggregations/scalings where expected input data in \code{dt} is
+available.
+\item \code{skip}: skip this check and continue with aggregation/scaling.
+}
+
+\strong{\code{present_agg_severity}} (\code{agg} only):
+
+Check for requested aggregates in \code{mapping} that are already present
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop aggregates and continue
+with aggregation.
+\item \code{none}: don't throw error or warning, drop aggregates and continue with
+aggregation.
+\item \code{skip}: skip this check and add to the values already present for the
+aggregates.
+}
+
+\strong{\code{na_value_severity}}:
+
+Check for 'NA' values in the \code{value_cols}.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop missing values and
+continue with aggregation/scaling where possible (this likely will cause
+another error because of \code{missing_dt_severity}, consider setting
+\code{missing_dt_severity = "skip"} for functionality similiar to \code{na.rm = TRUE}).
+\item \code{none}: don't throw error or warning, drop missing values and continue
+with aggregation/scaling where possible (this likely will cause another error
+because of \code{missing_dt_severity}, consider setting
+\code{missing_dt_severity = "skip"} for functionality similiar to \code{na.rm = TRUE}).
+\item \code{skip}: skip this check and propagate \code{NA} values through
+aggregation/scaling.
+}
+
+\strong{\code{overlapping_dt_severity}}:
+Check for overlapping intervals that prevent collapsing to the most detailed
+common set of intervals. Or check for overlapping intervals in \code{col_stem}
+when aggregating/scaling.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop overlapping intervals
+and continue with aggregation/scaling where possible (this may cause another
+error because of \code{missing_dt_severity}).
+3 \code{none}: don't throw error or warning, drop overlapping intervals and
+continue with aggregation/scaling where possible (this may cause another
+error because of \code{missing_dt_severity}).
+\item \code{skip}: skip this check and continue with aggregation/scaling.
+}
+
+}
+
 \examples{
 dt <- data.table::data.table(
   age_start = c(0:110),
@@ -159,5 +224,5 @@ dt <- agg_lt(
 )
 }
 \seealso{
-\code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}}
+\code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::agg()}}
 }

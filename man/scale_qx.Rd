@@ -17,11 +17,10 @@ scale_qx(dt, id_cols, missing_dt_severity = "stop")
 ID columns that uniquely identify each row of \code{dt}.}
 
 \item{missing_dt_severity}{[\code{character(1)}]\cr
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'skip', 'stop',
-'warning', 'message', or 'none'. If 'skip', the checks for missing data are
-skipped. If not 'stop', then only the possible aggregations or scaling is
-done using the available data.}
+What should happen when \code{dt} is missing levels of \code{col_stem} that
+prevent aggregation or scaling from occurring? Can be either 'skip',
+'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
+'Severity Arguments' for more information.}
 }
 \value{
 [\code{data.table()}]\cr Scaled qx values, has \code{id_cols} and 'qx'
@@ -34,14 +33,14 @@ interval qx values already present in the data.
 \details{
 Convert to px-space, scale up age-hierarchy so that granular px
 values multiply to aggregate px values, convert back to qx-space.
-\code{scale_qx()} is a wrapper for \code{\link[hierarchyUtils:scale]{hierarchyUtils::scale()}}.
+\code{scale_qx()} is a wrapper for \code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::scale()}}.
 
 This function is unique to aggregating and scaling qx over age because of
 the dependence between age and the definition of qx. Aggregation of qx
 across sex, location, or other variables should be done by first aggregating
-ax and mx as population-weighted means (can use \code{\link[hierarchyUtils:agg]{hierarchyUtils::agg()}} and
-\code{\link[hierarchyUtils:scale]{hierarchyUtils::scale()}} directly), then recalculating qx from mx and ax
-(see \code{\link[demCore:mx_ax_to_qx]{demCore::mx_ax_to_qx()}}).
+ax and mx as population-weighted means (can use \code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::agg()}} and
+\code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::scale()}} directly), then recalculating qx from mx and ax
+(see \code{\link[=mx_ax_to_qx]{mx_ax_to_qx()}}).
 }
 \examples{
 # scale qx up single-year to abridged u5 hierarchy
