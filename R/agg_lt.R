@@ -195,17 +195,27 @@ agg_lt <- function(dt,
   if (!only_qx) {
 
     # determine the aggregate age group each granular age group belongs to
-    dt[, agg_age_start := cut(
-      x = age_start,
-      breaks = c(age_mapping$age_start, Inf),
-      labels = age_mapping$age_start,
-      right = F
-    )]
-    dt[, agg_age_start := as.integer(as.character(agg_age_start))]
+    common_interval_mapping <- copy(age_mapping)
+    data.table::setnames(
+      common_interval_mapping,
+      old = c("age_start", "age_end"),
+      new = c("common_start", "common_end")
+    )
+    dt <- hierarchyUtils:::merge_common_intervals(
+      dt,
+      common_intervals = common_interval_mapping,
+      col_stem = "age"
+    )
+    data.table::setnames(
+      dt,
+      old = c("common_start", "common_end"),
+      new = c("agg_age_start", "agg_age_end")
+    )
 
     # calculate the integer number of complete person-years lived by those who die
     # in each aggregate age group.
     dt[, ax_full_years := age_start - agg_age_start]
+    dt[, c("agg_age_start", "agg_age_end") := NULL]
 
     # calculate total number of person-years lived by those who die in each age
     # group
