@@ -9,7 +9,8 @@ lt <- agg_lt(
   age_mapping = data.table(
     age_start = seq(0, 85, 5),
     age_end = c(seq(5, 85, 5), Inf)
-  )
+  ),
+  present_agg_severity = "none"
 )
 lt <- rbind(
   lt[, list(id = 1, age_start, age_end, qx, ax)],

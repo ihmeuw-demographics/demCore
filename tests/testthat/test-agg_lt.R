@@ -13,17 +13,17 @@ dt[age_end == Inf, qx := 1]
 id_cols = c("age_start", "age_end", "location")
 
 age_mapping <- data.table(
-  age_start = c(0, 1, seq(5, 110, 5)),
-  age_end = c(1, seq(5, 110, 5), Inf)
+  age_start = c(1, seq(5, 105, 5)),
+  age_end = seq(5, 110, 5)
 )
 
 # expected output
 expected_dt <- data.table(
   location = "Canada",
-  age_start = c(0, 1, seq(5, 110, 5)),
-  age_end = c(1, seq(5, 110, 5), Inf),
-  qx = c(0.2, 0.5904, rep(0.67232, 21), 1),
-  ax = c(0.5, 1.7249, rep(2.06306, 21), 0.5)
+  age_start = c(1, seq(5, 105, 5)),
+  age_end = seq(5, 110, 5),
+  qx = c(0.5904, rep(0.67232, 21)),
+  ax = c(1.7249, rep(2.06306, 21))
 )
 
 test_that("test that `agg_lt` gives expected output", {
@@ -45,7 +45,8 @@ test_that("test that `agg_lt` works with odd ages", {
         age_start = c(-20, 0, 500),
         age_end = c(0, 500, Inf)
       )
-    )
+    ),
+    regexp = "expected input data is missing"
   )
 
   # check functionality with non-standard ages
@@ -53,22 +54,11 @@ test_that("test that `agg_lt` works with odd ages", {
     dt = dt,
     id_cols = id_cols,
     age_mapping = data.table(
-      age_start = seq(0, 110, 10),
-      age_end = c(seq(10, 110, 10), Inf)
+      age_start = seq(0, 100, 10),
+      age_end = seq(10, 110, 10)
     )
   )
-  testthat::expect_equal(nrow(output_dt), 12)
-
-  # check functionality with oddly ordered ages
-  output_dt <- agg_lt(
-    dt = dt,
-    id_cols = id_cols,
-    age_mapping = data.table(
-      age_start = c(110, 100, seq(0, 90, 10)),
-      age_end = c(Inf, 110, seq(10, 100, 10))
-    )
-  )
-  testthat::expect_equal(nrow(output_dt), 12)
+  testthat::expect_equal(nrow(output_dt), 11)
 })
 
 # Tests with only qx input ------------------------------------------------

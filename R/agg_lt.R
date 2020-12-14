@@ -20,6 +20,8 @@
 #'
 #' @seealso [hierarchyUtils::agg()]
 #'
+#' @inheritSection hierarchyUtils::agg Severity Arguments
+#'
 #' @details
 #' See the [references page](https://ihmeuw-demographics.github.io/demCore/index.html)
 #' for the formatted equations below.
@@ -102,8 +104,8 @@
 #'   dt = dt,
 #'   id_cols = id_cols,
 #'   age_mapping = data.table::data.table(
-#'     age_start = seq(0, 110, 5),
-#'     age_end = c(seq(5, 110, 5), Inf)
+#'     age_start = seq(0, 105, 5),
+#'     age_end = seq(5, 110, 5)
 #'   )
 #' )
 #'
@@ -113,14 +115,18 @@
 #'   age_mapping = data.table::data.table(
 #'     age_start = seq(0, 110, 5),
 #'     age_end = c(seq(5, 110, 5), Inf)
-#'   )
+#'   ),
+#'   present_agg_severity = "none"
 #' )
 #' @export
 agg_lt <- function(dt,
                    id_cols,
                    age_mapping,
                    missing_dt_severity = "stop",
-                   drop_present_aggs = F) {
+                   overlapping_dt_severity = "stop",
+                   present_agg_severity = "stop",
+                   na_value_severity = "stop",
+                   quiet = FALSE) {
 
   # validate -------------------------------------------------------
 
@@ -172,6 +178,7 @@ agg_lt <- function(dt,
 
   # aggregate qx ------------------------------------------------------------
 
+  if (!quiet) message("Aggregating px across age groups")
   dt_qx <- hierarchyUtils::agg(
     dt = dt[, .SD, .SDcols = c(id_cols, "px")],
     id_cols = id_cols,
@@ -181,7 +188,10 @@ agg_lt <- function(dt,
     mapping = age_mapping,
     agg_function = prod,
     missing_dt_severity = missing_dt_severity,
-    drop_present_aggs = drop_present_aggs
+    overlapping_dt_severity = overlapping_dt_severity,
+    present_agg_severity = present_agg_severity,
+    na_value_severity = na_value_severity,
+    quiet = quiet
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -191,22 +201,33 @@ agg_lt <- function(dt,
   if (!only_qx) {
 
     # determine the aggregate age group each granular age group belongs to
-    dt[, agg_age_start := cut(
-      x = age_start,
-      breaks = c(age_mapping$age_start, Inf),
-      labels = age_mapping$age_start,
-      right = F
-    )]
-    dt[, agg_age_start := as.integer(as.character(agg_age_start))]
+    common_interval_mapping <- copy(age_mapping)
+    data.table::setnames(
+      common_interval_mapping,
+      old = c("age_start", "age_end"),
+      new = c("common_start", "common_end")
+    )
+    dt <- hierarchyUtils:::merge_common_intervals(
+      dt,
+      common_intervals = common_interval_mapping,
+      col_stem = "age"
+    )
+    data.table::setnames(
+      dt,
+      old = c("common_start", "common_end"),
+      new = c("agg_age_start", "agg_age_end")
+    )
 
     # calculate the integer number of complete person-years lived by those who die
     # in each aggregate age group.
     dt[, ax_full_years := age_start - agg_age_start]
+    dt[, c("agg_age_start", "agg_age_end") := NULL]
 
     # calculate total number of person-years lived by those who die in each age
     # group
     dt[, axdx_total := (ax + ax_full_years) * dx]
 
+    if (!quiet) message("Aggregating ax across age groups")
     dt_ax <- hierarchyUtils::agg(
       dt = dt[, .SD, .SDcols = c(id_cols, "axdx_total", "dx")],
       id_cols = id_cols,
@@ -216,7 +237,10 @@ agg_lt <- function(dt,
       mapping = age_mapping,
       agg_function = sum,
       missing_dt_severity = missing_dt_severity,
-      drop_present_aggs = drop_present_aggs
+      overlapping_dt_severity = overlapping_dt_severity,
+      present_agg_severity = present_agg_severity,
+      na_value_severity = na_value_severity,
+      quiet = quiet
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]
