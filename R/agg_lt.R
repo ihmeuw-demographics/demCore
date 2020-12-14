@@ -125,7 +125,8 @@ agg_lt <- function(dt,
                    missing_dt_severity = "stop",
                    overlapping_dt_severity = "stop",
                    present_agg_severity = "stop",
-                   na_value_severity = "stop") {
+                   na_value_severity = "stop",
+                   quiet = FALSE) {
 
   # validate -------------------------------------------------------
 
@@ -177,7 +178,7 @@ agg_lt <- function(dt,
 
   # aggregate qx ------------------------------------------------------------
 
-  message("Aggregating px across age groups")
+  if (!quiet) message("Aggregating px across age groups")
   dt_qx <- hierarchyUtils::agg(
     dt = dt[, .SD, .SDcols = c(id_cols, "px")],
     id_cols = id_cols,
@@ -189,7 +190,8 @@ agg_lt <- function(dt,
     missing_dt_severity = missing_dt_severity,
     overlapping_dt_severity = overlapping_dt_severity,
     present_agg_severity = present_agg_severity,
-    na_value_severity = na_value_severity
+    na_value_severity = na_value_severity,
+    quiet = quiet
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -225,7 +227,7 @@ agg_lt <- function(dt,
     # group
     dt[, axdx_total := (ax + ax_full_years) * dx]
 
-    message("Aggregating ax across age groups")
+    if (!quiet) message("Aggregating ax across age groups")
     dt_ax <- hierarchyUtils::agg(
       dt = dt[, .SD, .SDcols = c(id_cols, "axdx_total", "dx")],
       id_cols = id_cols,
@@ -237,7 +239,8 @@ agg_lt <- function(dt,
       missing_dt_severity = missing_dt_severity,
       overlapping_dt_severity = overlapping_dt_severity,
       present_agg_severity = present_agg_severity,
-      na_value_severity = na_value_severity
+      na_value_severity = na_value_severity,
+      quiet = quiet
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]

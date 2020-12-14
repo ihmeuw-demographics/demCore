@@ -11,7 +11,8 @@ agg_lt(
   missing_dt_severity = "stop",
   overlapping_dt_severity = "stop",
   present_agg_severity = "stop",
-  na_value_severity = "stop"
+  na_value_severity = "stop",
+  quiet = FALSE
 )
 }
 \arguments{
@@ -50,6 +51,10 @@ information.}
 What should happen when 'NA' values are present in \code{value_cols}? Can be
 either 'skip', 'stop', 'warning', 'message', or 'none'. Default is 'stop'.
 See section on 'Severity Arguments' for more information.}
+
+\item{quiet}{[\code{logical(1)}]\cr
+Should progress messages be suppressed as the function is run? Default is
+False.}
 }
 \value{
 [\code{data.table()}]\cr Aggregated life table(s) with columns for all
