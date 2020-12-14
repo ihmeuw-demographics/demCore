@@ -10,7 +10,8 @@ reference:
   - mx_qx_to_ax
   - qx_ax_to_mx
   - mx_to_ax
-  - gen_u5_ax
+  - gen_u5_ax_from_mx
+  - gen_u5_ax_from_qx
   - iterate_ax
   - gen_ax_from_dx
   - gen_lx_from_qx
