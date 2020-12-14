@@ -85,7 +85,7 @@ year)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -111,7 +111,7 @@ year)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ihmeuw-demographics/demCore/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -223,9 +223,11 @@ column for 'year_start' and 'year_end', if the data is sex-specific it must
 have a column for 'sex', and if the data is age-specific it must have
 columns for 'age_start' and 'age_end.</p>
 <p>matrix format: When data is in matrix format, columns represent the start of
-each calendar year interval, rows represent the start of each age interval
-and if the data is sex specific each sex will have a separate matrix stored
-in a named list (names corresponding to each sex).</p>
+each calendar year interval, rows represent the start of each age interval.
+If the data is sex specific each sex will have a separate matrix stored
+in a named list (names corresponding to each sex). If the data is age
+specific rows will be labeled with a numeric representing the start of the
+age group.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>output_matrix</span> <span class='op'>&lt;-</span> <span class='fu'>demCore</span><span class='fu'>:::</span><span class='fu'>dt_to_matrix</span><span class='op'>(</span><span class='va'>thailand_initial_estimates</span><span class='op'>$</span><span class='va'>survival</span><span class='op'>)</span>

@@ -81,7 +81,7 @@ interval qx values already present in the data." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -107,7 +107,7 @@ interval qx values already present in the data." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/ihmeuw-demographics/demCore/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -154,10 +154,10 @@ ID columns that uniquely identify each row of <code>dt</code>.</p></td>
     <tr>
       <th>missing_dt_severity</th>
       <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'stop', 'warning',
-'message', or 'none'. If not "stop", then only the possible aggregations or
-scaling is done using the available data.</p></td>
+What should happen when <code>dt</code> is missing levels of <code>col_stem</code> that
+prevent aggregation or scaling from occurring? Can be either 'skip',
+'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
+'Severity Arguments' for more information.</p></td>
     </tr>
     </table>
 
@@ -189,7 +189,7 @@ ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/p
   age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>scale_qx</span><span class='op'>(</span><span class='va'>dt</span>, id_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Scaling age</span></div><div class='output co'>#&gt; <span class='message'>Scaling 1 of 2: [0, 5)</span></div><div class='output co'>#&gt; <span class='message'>Scaling 2 of 2: [1, 5)</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
