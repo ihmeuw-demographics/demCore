@@ -38,6 +38,11 @@ reference:
   - gen_nLx_from_nSx
   - gen_lx_from_nLx_ax
 
+- title: "Fertility metrics"
+  desc: "Functions for calculating fertility related metrics."
+- contents:
+  - agg_tf
+
 - title: "Other"
   desc: "Additional miscellaneous functions."
 - contents:

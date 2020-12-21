@@ -1,27 +1,37 @@
 library(data.table)
 
-asfr.usa <- c(0.0004, 0.0170, 0.0681, 0.0964, 0.1003, 0.0526, 0.0119, 0.0008,
-              0.0001)
-asfr.mli <- c(0.0026, 0.1514, 0.2706, 0.2820, 0.2501, 0.1885, 0.1007, 0.0297,
-              0.0035)
+# test dataset from Preston pg 96 Box 5.1
+dt <- data.table::data.table(
+  location = "USA", year = 1992,
+  age_start = seq(10, 45, 5), age_end = seq(15, 50, 5),
+  asfr = c(0.0014, 0.0607, 0.1146, 0.1174, 0.0802, 0.0325, 0.0059, 0.0003)
+)
 
-dt <- data.table::data.table('asfr' = c(asfr.usa, asfr.mli),
-                             'age_start' = rep(seq(10, 50, 5), 2),
-                             'age_end' = rep(seq(15, 55, 5), 2),
-                             'location' = c(rep('USA', 9), rep('MLI', 9)))
+expected <- data.table::data.table(
+  location = "USA", year = 1992,
+  age_start = 10, age_end = 50,
+  tf = c(2.064)
+)
 
-expected <- data.table::data.table('location' = c('USA', 'MLI'),
-                                   'age_start' = c(10, 10),
-                                   'age_end' = c(20, 20),
-                                   'tf' = c(0.087, 0.77))
-setorder(expected, location)
-
+id_cols <- c("location", "year", "age_start", "age_end")
+mapping <- data.table(age_start = 10, age_end = 50)
 
 test_that("test that `agg_tf` gives expected output", {
-  test_dt <- agg_tf(dt, c('location'), 10, 20)
-  testthat::expect_equivalent(test_dt, expected, tolerance = 1e16)
+  output_dt <- agg_tf(
+    dt = dt,
+    id_cols = id_cols,
+    age_mapping = mapping
+  )
+  testthat::expect_equivalent(output_dt, expected, tolerance = 1e16)
 })
 
 test_that("test that `agg_tf` gives expected errors", {
-  testthat::expect_error(agg_tf(dt, c('location'), 10, 18))
+  testthat::expect_error(
+    agg_tf(
+      dt = dt,
+      id_cols = id_cols,
+      age_mapping = data.table(age_start = 10, age_end = 18)
+    ),
+    regexp = "expected input data is missing."
+  )
 })
