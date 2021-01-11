@@ -18,24 +18,26 @@ input_dt <- input_dt[, .SD, .SDcols = c("age_start", "age_end", "draw",
 input_dt <- lifetable(input_dt, id_cols = c("age_start", "age_end", "draw"))
 
 # run function
-output_dt <- gen_summary_lt(
-  input_dt,
+output_dt <- demCore::summarize_lt(
+  dt = input_dt,
   id_cols = c("age_start", "age_end", "draw"),
-  lt_params = c("mx", "ax", "qx", "lx", "dx", "ex", "nLx", "Tx")
+  summarize_cols = "draw",
+  value_cols = c("mx", "ax", "qx", "lx", "dx", "ex", "nLx", "Tx"),
+  format_long = TRUE
 )
 
-test_that("test that `gen_summary_lt` gives expected columns", {
-  testthat::expect_equivalent(names(output_dt), c("age_start", "age_end",
-                                           "life_table_parameter", "mean",
-                                           "lower", "upper"))
+test_that("test that `summarize_lt` gives expected columns", {
+  testthat::expect_equivalent(
+    names(output_dt),
+    c("age_start", "age_end", "life_table_parameter", "mean", "q2.5", "q97.5"))
 })
 
-test_that("test that `gen_sumamry_lt` gives lower <= mean <= upper", {
-  testthat::expect_equal(nrow(output_dt[lower > mean]), 0)
-  testthat::expect_equal(nrow(output_dt[mean > upper]), 0)
+test_that("test that `summarize_lt` gives lower <= mean <= upper", {
+  testthat::expect_equal(nrow(output_dt[q2.5 > mean]), 0)
+  testthat::expect_equal(nrow(output_dt[mean > q97.5]), 0)
 })
 
-test_that("test that `gen_summary_lt` gives expected output vals", {
+test_that("test that `summarize_lt` gives expected output vals", {
   # check that mean doesn't deviate substantially from expectation
   output_wide <- copy(output_dt)
   output_wide <- dcast(output_wide, age_start ~ life_table_parameter,
