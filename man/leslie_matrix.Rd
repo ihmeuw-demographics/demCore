@@ -7,9 +7,9 @@
 leslie_matrix(survival, asfr, srb, n_ages, int, female)
 }
 \arguments{
-\item{survival}{[\code{numeric(n_ages + 1)}]\cr
+\item{survival}{[\code{numeric(n_ages + 1)} or \code{numeric(n_ages)}]\cr
 Survivorship ratio, the proportion of people aged x - \code{int} that will be
-alive \code{int} years later in a stationary population}
+alive \code{int} years later in a stationary population.}
 
 \item{asfr}{[\code{numeric(n_ages)}]\cr
 Annual age specific fertility rates NOT yet multiplied by \code{int}. Must

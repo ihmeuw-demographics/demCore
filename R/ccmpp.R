@@ -84,7 +84,7 @@
 #'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
 #'   `setting`.
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   Corresponds to 'ages' `setting`.
+#'   Corresponds to 'ages_mortality' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] survivorship ratio estimates, must be
 #'   greater than zero and less than one.
@@ -96,7 +96,7 @@
 #'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
 #'   `setting`.
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   Corresponds to 'ages' `setting`.
+#'   Corresponds to 'ages_mortality' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] mortality rate estimates, must be greater
 #'   than zero.
@@ -108,7 +108,7 @@
 #'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
 #'   `setting`.
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   Corresponds to 'ages' `setting`.
+#'   Corresponds to 'ages_mortality' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] average years lived by those dying in the
 #'   interval estimates, must be greater than zero and less than the age
@@ -121,7 +121,7 @@
 #'   * sex: \[`character()`\] either 'female' or 'male'. Corresponds to 'sexes'
 #'   `setting`.
 #'   * age_start: \[`integer()`\] start of the age group (inclusive).
-#'   Corresponds to 'ages' `setting`.
+#'   Corresponds to 'ages_mortality' `setting`.
 #'   * age_end: \[`integer()`\] end of the age group (exclusive).
 #'   * `value_col`: \[`numeric()`\] probability of death estimates, must be
 #'   greater than zero and less than one.
@@ -404,9 +404,9 @@ ccmpp <- function(inputs,
 #' @description Constructs the Leslie matrix needed for cohort component method
 #' of population projection [`ccmpp()`].
 #'
-#' @param survival \[`numeric(n_ages + 1)`\]\cr
+#' @param survival \[`numeric(n_ages + 1)` or `numeric(n_ages)`\]\cr
 #'   Survivorship ratio, the proportion of people aged x - `int` that will be
-#'   alive `int` years later in a stationary population
+#'   alive `int` years later in a stationary population.
 #' @param asfr \[`numeric(n_ages)`\]\cr
 #'   Annual age specific fertility rates NOT yet multiplied by `int`. Must
 #'   include both reproductive and non-reproductive age groups that are zero.
@@ -469,9 +469,10 @@ leslie_matrix <- function(survival,
   # check `survival` argument
   assertthat::assert_that(
     assertive::is_numeric(survival),
-    length(survival) == n_ages + 1,
-    msg = "`survival` must be a numeric of length `n_ages` + 1"
+    length(survival) %in% c(n_ages, n_ages + 1),
+    msg = "`survival` must be a numeric of length `n_ages` or (`n_ages` + 1)"
   )
+  if (length(survival) == n_ages) survival[n_ages + 1] <- survival[n_ages]
 
   # check `asfr` argument
   assertthat::assert_that(
@@ -505,7 +506,7 @@ leslie_matrix <- function(survival,
   }
 
   # other rows include survivorship ratios
-  leslie[2:n_ages, 1:(n_ages - 1)] <- diag(survival[-c(1, n_ages + 1)])
+  leslie[2:n_ages, 1:(n_ages - 1)] <- diag(survival[2:n_ages])
   leslie[n_ages, n_ages] <- survival[n_ages + 1]
 
   # label columns and rows
@@ -575,7 +576,7 @@ validate_ccmpp_inputs <- function(inputs,
     length(unique(diff(settings$ages_mortality))) == 1,
     unique(diff(settings$ages_mortality)) != 0,
     all(settings$ages %in% settings$ages_mortality),
-    max(settings$ages_mortality) == max(settings$ages) + int,
+    max(settings$ages_mortality) %in% c(max(settings$ages), max(settings$ages) + int),
     msg = paste0("`settings$ages_mortality` must be a numeric vector defining ",
                  "the start of evenly spaced age group intervals for the ",
                  "mortality related estimates")
