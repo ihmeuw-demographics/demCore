@@ -21,4 +21,4 @@ utils::globalVariables(c("age_int", "age_group_years_start", "age_group_years_en
                          "new_ax", "max_ax_diff",
                          "year_start", "year_end", "initial_ax",
                          "prop_female", "srb", "asfr", "tf",
-                         "qx_inf"))
+                         "qx_inf", "statistic"))
