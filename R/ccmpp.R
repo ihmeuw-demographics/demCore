@@ -173,8 +173,10 @@
 #'   The ages being projected in [demCore::ccmpp()]. Corresponds to the
 #'   'age_start' column in each of the standard age-specific inputs.
 #'   * ages_mortality: \[`numeric()`\]\cr
-#'   The ages for which mortality parameter estimates are available, includes one
-#'   extra age group compared to the 'ages' setting. Corresponds to the
+#'   The ages for which mortality parameter estimates are available. Must either
+#'   be equivalent to 'ages' or include one extra older age group. See the
+#'   [vignette](https://ihmeuw-demographics.github.io/demCore/articles/ccmpp.html#ccmpp-for-the-terminal-age-group-with-out-migration)
+#'   for the approximation made when 'ages = ages_mortality'. Corresponds to the
 #'   'age_start' column in the mortality \[`data.table()`\] input(s).
 #'   * ages_asfr: \[`numeric()`\]\cr
 #'   The assumed female reproductive ages, subset of 'ages'. Corresponds to the
