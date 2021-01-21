@@ -11,6 +11,7 @@ summarize_lt(
   value_cols,
   summary_fun = c("mean"),
   probs = c(0.025, 0.975),
+  recalculate_starting_params = c("mx", "ax"),
   recalculate_stats = c("mean"),
   preserve_u5 = FALSE,
   assert_na = FALSE,
@@ -32,7 +33,7 @@ over.}
 \item{value_cols}{[\code{character()}]\cr
 Value columns (life table parameters) that summary statistics should be
 calculated for. Valid choices are 'mx', 'qx', 'ax,', 'dx', 'px', 'lx',
-'dx', 'Tx', 'nLx', & 'ex'. Must include at least 2 of 'mx', 'qx', or 'ax'.}
+'Tx', 'nLx', & 'ex'. Must include at least 2 of 'mx', 'qx', or 'ax'.}
 
 \item{summary_fun}{[\code{character()}]\cr
 Names of the functions that can be used to summarize a vector of values.
@@ -42,6 +43,11 @@ Default is "mean".}
 Probabilities with values in \verb{[0,1]} to be used when producing sample
 quantiles with \code{stats::quantile()}. Default is 0.025 and 0.975 for the
 2.5th and 97.5th quantiles. Can be NULL if no quantiles are needed.}
+
+\item{recalculate_starting_params}{[\code{character(2)}]\cr
+2 of 'mx', 'qx', or 'ax' from which to recalculate certain summary
+statistics (\code{recalculate_stats}) for all other \code{value_cols} using
+\code{demCore::lifetable}.}
 
 \item{recalculate_stats}{[\code{character()}]\cr
 The summary statistic to recalculate all life table parameters

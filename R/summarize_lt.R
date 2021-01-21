@@ -12,7 +12,11 @@
 #' @param value_cols \[`character()`\]\cr
 #'   Value columns (life table parameters) that summary statistics should be
 #'   calculated for. Valid choices are 'mx', 'qx', 'ax,', 'dx', 'px', 'lx',
-#'   'dx', 'Tx', 'nLx', & 'ex'. Must include at least 2 of 'mx', 'qx', or 'ax'.
+#'   'Tx', 'nLx', & 'ex'. Must include at least 2 of 'mx', 'qx', or 'ax'.
+#' @param recalculate_starting_params \[`character(2)`\]\cr
+#'   2 of 'mx', 'qx', or 'ax' from which to recalculate certain summary
+#'   statistics (`recalculate_stats`) for all other `value_cols` using
+#'   `demCore::lifetable`.
 #' @param recalculate_stats \[`character()`\]\cr
 #'   The summary statistic to recalculate all life table parameters
 #'   corresponding to that statistic so that they are consistent with one
@@ -76,6 +80,7 @@ summarize_lt <- function(dt,
                          value_cols,
                          summary_fun = c("mean"),
                          probs = c(0.025, 0.975),
+                         recalculate_starting_params = c("mx", "ax"),
                          recalculate_stats = c("mean"),
                          preserve_u5 = FALSE,
                          assert_na = FALSE,
@@ -96,8 +101,17 @@ summarize_lt <- function(dt,
                  paste(invalid_value_cols, collapse = "', '"), "'")
   )
   assertthat::assert_that(
-    length(intersect(c("mx", "ax", "qx"), value_cols)) >= 2,
-    msg = "`value_cols` must include at least 2 of 'mx', 'qx', or 'ax'."
+    length(intersect(required_value_cols, value_cols)) >= 2,
+    msg = paste0("`value_cols` must include at least 2 of '", paste(required_value_cols, collapse = "', '"), "'")
+  )
+
+  # check `recalculate_starting_params`
+  assertthat::assert_that(
+    all(recalculate_starting_params %in% required_value_cols),
+    all(recalculate_starting_params %in% value_cols),
+    length(intersect(recalculate_starting_params, required_value_cols)) == 2,
+    msg = paste0("`recalculate_starting_params` must only include 2 of '",
+                 paste(required_value_cols, collapse = "', '"), "'")
   )
 
   # standard validations
@@ -124,8 +138,18 @@ summarize_lt <- function(dt,
 
   # recalculate mean --------------------------------------------------------
 
-  keep_params <- c("mx", "qx", "ax")
-  recalculate_params <- setdiff(value_cols, keep_params)
+  # `probs` and `summary_fun` checked in `demUtils::summarize_dt`
+  quantile_names <- paste0("q", probs * 100)
+  summary_value_cols <- c(summary_fun, if (length(probs) > 0) quantile_names)
+
+  # check `recalculate_stats`
+  assertthat::assert_that(
+    all(recalculate_stats %in% summary_value_cols),
+    msg = paste0("`recalculate_stats` must be one of the calculated summary statistics columns: '",
+                 paste(summary_value_cols, collapse = "', '"), "'")
+  )
+
+  recalculate_params <- setdiff(value_cols, recalculate_starting_params)
   by_id_cols <- setdiff(id_cols, summarize_cols)
 
   # check if we need to recalculate lt parameters at all
@@ -136,14 +160,12 @@ summarize_lt <- function(dt,
       hierarchyUtils::gen_length(dt, col_stem = "age")
     }
 
-    keep_params <- keep_params[keep_params %in% value_cols]
-
     summary_dt_recalculated <- lapply(recalculate_stats, function(stat) {
-      recalculate_cols <- paste0(keep_params, "_", stat)
+      recalculate_cols <- paste0(recalculate_starting_params, "_", stat)
       recalculated_cols <- paste0(value_cols, "_", stat)
 
       summary_dt_temp <- summary_dt[, .SD, .SDcols = c(by_id_cols, recalculate_cols)]
-      setnames(summary_dt_temp, recalculate_cols, keep_params)
+      setnames(summary_dt_temp, recalculate_cols, recalculate_starting_params)
 
       summary_dt_temp <- demCore::lifetable(
         dt = summary_dt_temp,
@@ -159,7 +181,7 @@ summarize_lt <- function(dt,
 
     # replace recalculated parameters
     all_recalculated_cols <- paste(
-      rep(value_cols[!value_cols %in% keep_params], each = length(recalculate_stats)),
+      rep(recalculate_params, each = length(recalculate_stats)),
       recalculate_stats, sep = "_"
     )
     summary_dt_recalculated <- summary_dt_recalculated[
@@ -206,9 +228,6 @@ summarize_lt <- function(dt,
     )
 
     # format column order and keys
-    quantile_names <- paste0("q", probs * 100)
-    summary_value_cols <- c(summary_fun, if (length(probs) > 0) quantile_names)
-
     new_summary_cols <- original_summary_cols[original_summary_cols %in% by_id_cols]
     new_summary_cols <- c(new_summary_cols, "life_table_parameter", summary_value_cols)
     setcolorder(summary_dt, new_summary_cols)
