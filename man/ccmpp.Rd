@@ -113,7 +113,7 @@ survival: [\code{data.table()}]\cr
 \item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
 \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages' \code{setting}.
+Corresponds to 'ages_mortality' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] survivorship ratio estimates, must be
 greater than zero and less than one.
@@ -127,7 +127,7 @@ mx: [\code{data.table()}]\cr
 \item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
 \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages' \code{setting}.
+Corresponds to 'ages_mortality' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] mortality rate estimates, must be greater
 than zero.
@@ -141,7 +141,7 @@ ax: [\code{data.table()}]\cr
 \item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
 \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages' \code{setting}.
+Corresponds to 'ages_mortality' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] average years lived by those dying in the
 interval estimates, must be greater than zero and less than the age
@@ -156,7 +156,7 @@ qx: [\code{data.table()}]\cr
 \item sex: [\code{character()}] either 'female' or 'male'. Corresponds to 'sexes'
 \code{setting}.
 \item age_start: [\code{integer()}] start of the age group (inclusive).
-Corresponds to 'ages' \code{setting}.
+Corresponds to 'ages_mortality' \code{setting}.
 \item age_end: [\code{integer()}] end of the age group (exclusive).
 \item \code{value_col}: [\code{numeric()}] probability of death estimates, must be
 greater than zero and less than one.
@@ -218,8 +218,10 @@ of the sex-specific inputs.
 The ages being projected in \code{\link[=ccmpp]{ccmpp()}}. Corresponds to the
 'age_start' column in each of the standard age-specific inputs.
 \item ages_mortality: [\code{numeric()}]\cr
-The ages for which mortality parameter estimates are available, includes one
-extra age group compared to the 'ages' setting. Corresponds to the
+The ages for which mortality parameter estimates are available. Must either
+be equivalent to 'ages' or include one extra older age group. See the
+\href{https://ihmeuw-demographics.github.io/demCore/articles/ccmpp.html#ccmpp-for-the-terminal-age-group-with-out-migration}{vignette}
+for the approximation made when 'ages = ages_mortality'. Corresponds to the
 'age_start' column in the mortality [\code{data.table()}] input(s).
 \item ages_asfr: [\code{numeric()}]\cr
 The assumed female reproductive ages, subset of 'ages'. Corresponds to the
