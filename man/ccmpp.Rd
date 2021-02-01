@@ -159,14 +159,14 @@ be greater than zero.
 
 \itemize{
 \item years: [\code{numeric()}]\cr
-The start of each calendar year interval to project in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}.
+The start of each calendar year interval to project in \code{\link[=ccmpp]{ccmpp()}}.
 Corresponds to the 'year_start' column in each of the year-specific inputs.
 \item sexes: [\code{character()}]\cr
-The sexes being projected in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}, must be either just
+The sexes being projected in \code{\link[=ccmpp]{ccmpp()}}, must be either just
 'female', or 'female' and 'male'. Corresponds to the 'sex' column in each
 of the sex-specific inputs.
 \item ages: [\code{numeric()}]\cr
-The ages being projected in \code{\link[demCore:ccmpp]{demCore::ccmpp()}}. Corresponds to the
+The ages being projected in \code{\link[=ccmpp]{ccmpp()}}. Corresponds to the
 'age_start' column in each of the standard age-specific inputs.
 \item ages_survival: [\code{numeric()}]\cr
 The ages for which survivorship ratio estimates are available, includes one
