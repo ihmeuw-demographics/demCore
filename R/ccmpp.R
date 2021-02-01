@@ -490,7 +490,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check implied interval in `settings$years` and `settings$ages` is identical
   assertthat::assert_that(
-    identical(unique(diff(settings$years)), unique(diff(settings$ages))),
+    all.equal(unique(diff(settings$years)), unique(diff(settings$ages))),
     msg = paste0("`settings$years` & `settings$ages` must have the same interval ",
                  "length between each calendar year interval and between each ",
                  "age group")
