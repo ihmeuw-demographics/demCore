@@ -1,8 +1,8 @@
-#' @title Generate Net Reproductive Rate (NRR)
+#' @title Calculate Net Reproductive Rate (NRR)
 #'
 #' @description Calculate Net Reproductive Rate (NRR) from age-specific
-#'   fertility rate (ASFR) and sex-ratio at birth (SRB) and
-#'   generate `nrr` variable in the data.table.
+#'   fertility rate (ASFR), sex-ratio at birth (SRB), and person-years
+#'   (nLx) and generate `nrr` variable in the data.table.
 #'
 #' @param dt \[`data.table()`\]\cr
 #'   Input data with 'asfr', sex-ratio at birth ('srb'), and 'nLx'.
@@ -20,7 +20,7 @@
 #' Then, calculate NRR: sum(asfr * prop_female * nLx) over age, by id columns.
 #'
 #' @seealso
-#' Preston Demography textbook page 113.
+#' Preston Demography textbook page 113 (Section 5.5 Reproduction Measures).
 #'
 #' @examples
 #' dt <- data.table::data.table(
@@ -29,9 +29,9 @@
 #'   sex = "female",
 #'   asfr = c(0.00002, 0.009, 0.1, 0.18, 0.19, 0.11, 0.03),
 #'   srb = 1.057,
-#'   nLx = 4.9
+#'   nLx = c(4.61, 4.55, 4.48, 4.39, 4.30, 4.18, 4.03)
 #' )
-#' output <- gen_nrr(
+#' output <- calculate_nrr(
 #'   dt,
 #'   id_cols = c("age_start", "age_end", "sex"),
 #'   reproductive_age_start = 15,
@@ -39,7 +39,10 @@
 #' )
 #'
 #' @export
-gen_nrr <- function(dt, id_cols, reproductive_age_start = 15, reproductive_age_end = 50) {
+calculate_nrr <- function(dt,
+                          id_cols,
+                          reproductive_age_start = 15,
+                          reproductive_age_end = 50) {
 
   # validate ----------------------------------------------------------------
 
@@ -60,7 +63,7 @@ gen_nrr <- function(dt, id_cols, reproductive_age_start = 15, reproductive_age_e
 
   # check female
   assertthat::assert_that(
-    unique(dt$sex) == "female",
+    identical(unique(dt$sex), "female"),
     msg = "`sex` must be 'female'."
   )
 
@@ -83,8 +86,10 @@ gen_nrr <- function(dt, id_cols, reproductive_age_start = 15, reproductive_age_e
   dt[, prop_female := (1 / srb) / (1 + (1 / srb))]
 
   # calculate NRR
-  dt <- dt[, list(nrr = sum(asfr * prop_female * nLx)),
-            by = setdiff(id_cols, c("age_start", "age_end"))]
+  dt <- dt[,
+    list(nrr = sum(asfr * prop_female * nLx)),
+    by = setdiff(id_cols, c("age_start", "age_end"))
+  ]
 
   return(dt)
 
