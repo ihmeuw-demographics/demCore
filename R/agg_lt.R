@@ -11,6 +11,7 @@
 #'   'age_start' and 'age_end'. Use "Inf" as 'age_end' for terminal age group.
 #'   The age group intervals must be contiguous and cover the entire interval
 #'   specified in the input life tables `dt`.
+#' @param ... Other arguments to pass to [hierarchyUtils::agg()].
 #' @inheritParams hierarchyUtils::agg
 #'
 #' @return \[`data.table()`\]\cr Aggregated life table(s) with columns for all
@@ -106,21 +107,11 @@
 #'     age_end = c(seq(5, 110, 5), Inf)
 #'   )
 #' )
-#'
-#' dt <- agg_lt(
-#'   dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
-#'   id_cols = id_cols,
-#'   age_mapping = data.table::data.table(
-#'     age_start = seq(0, 110, 5),
-#'     age_end = c(seq(5, 110, 5), Inf)
-#'   )
-#' )
 #' @export
 agg_lt <- function(dt,
                    id_cols,
                    age_mapping,
-                   missing_dt_severity = "stop",
-                   drop_present_aggs = F) {
+                   ...) {
 
   # validate -------------------------------------------------------
 
@@ -180,8 +171,8 @@ agg_lt <- function(dt,
     col_type = "interval",
     mapping = age_mapping,
     agg_function = prod,
-    missing_dt_severity = missing_dt_severity,
-    drop_present_aggs = drop_present_aggs
+    present_agg_severity = "none",
+    ...
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -215,8 +206,8 @@ agg_lt <- function(dt,
       col_type = "interval",
       mapping = age_mapping,
       agg_function = sum,
-      missing_dt_severity = missing_dt_severity,
-      drop_present_aggs = drop_present_aggs
+      present_agg_severity = "none",
+      ...
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]

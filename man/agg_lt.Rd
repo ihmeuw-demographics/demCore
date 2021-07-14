@@ -4,13 +4,7 @@
 \alias{agg_lt}
 \title{Aggregate life table(s) to less granular age groups}
 \usage{
-agg_lt(
-  dt,
-  id_cols,
-  age_mapping,
-  missing_dt_severity = "stop",
-  drop_present_aggs = F
-)
+agg_lt(dt, id_cols, age_mapping, ...)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -26,16 +20,7 @@ Specification of intervals to aggregate to. Required columns are
 The age group intervals must be contiguous and cover the entire interval
 specified in the input life tables \code{dt}.}
 
-\item{missing_dt_severity}{[\code{character(1)}]\cr
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'stop', 'warning',
-'message', or 'none'. If not "stop", then only the possible aggregations or
-scaling is done using the available data.}
-
-\item{drop_present_aggs}{[\code{logical(1)}]\cr
-Whether to drop aggregates (or overlapping intervals) that are already
-present in \code{dt} before aggregating. Default is 'False' and the function
-errors out.}
+\item{...}{Other arguments to pass to \code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::agg()}}.}
 }
 \value{
 [\code{data.table()}]\cr Aggregated life table(s) with columns for all
@@ -127,15 +112,6 @@ dt <- data.table::data.table(
 id_cols = c("age_start", "age_end", "location")
 dt <- agg_lt(
   dt = dt,
-  id_cols = id_cols,
-  age_mapping = data.table::data.table(
-    age_start = seq(0, 110, 5),
-    age_end = c(seq(5, 110, 5), Inf)
-  )
-)
-
-dt <- agg_lt(
-  dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
   id_cols = id_cols,
   age_mapping = data.table::data.table(
     age_start = seq(0, 110, 5),

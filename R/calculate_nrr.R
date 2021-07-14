@@ -41,8 +41,8 @@
 #' @export
 calculate_nrr <- function(dt,
                           id_cols,
-                          reproductive_age_start = 15,
-                          reproductive_age_end = 50) {
+                          reproductive_age_start = 10,
+                          reproductive_age_end = 55) {
 
   # validate ----------------------------------------------------------------
 
@@ -55,10 +55,16 @@ calculate_nrr <- function(dt,
 
   # check `dt`
   assertable::assert_colnames(
-    dt,
-    colnames = c("asfr", "srb", "nLx", id_cols),
-    only_colnames = F,
-    quiet = T
+    dt, colnames = c("asfr", "srb", "nLx", id_cols),
+    only_colnames = F, quiet = T
+  )
+  assertable::assert_values(
+    dt, colnames = c("asfr", "srb", "nLx", id_cols),
+    test = "not_na", quiet = T
+  )
+  assertable::assert_values(
+    dt, colnames = c("asfr", "srb", "nLx", id_cols),
+    test = "gte", test_val = 0, quiet = T
   )
 
   # check female
