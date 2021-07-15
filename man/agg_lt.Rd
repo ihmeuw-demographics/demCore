@@ -4,16 +4,7 @@
 \alias{agg_lt}
 \title{Aggregate life table(s) to less granular age groups}
 \usage{
-agg_lt(
-  dt,
-  id_cols,
-  age_mapping,
-  missing_dt_severity = "stop",
-  overlapping_dt_severity = "stop",
-  present_agg_severity = "stop",
-  na_value_severity = "stop",
-  quiet = FALSE
-)
+agg_lt(dt, id_cols, age_mapping, quiet = F, ...)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -29,32 +20,11 @@ Specification of intervals to aggregate to. Required columns are
 The age group intervals must be contiguous and cover the entire interval
 specified in the input life tables \code{dt}.}
 
-\item{missing_dt_severity}{[\code{character(1)}]\cr
-What should happen when \code{dt} is missing levels of \code{col_stem} that
-prevent aggregation or scaling from occurring? Can be either 'skip',
-'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
-'Severity Arguments' for more information.}
-
-\item{overlapping_dt_severity}{[\code{character(1)}]\cr
-When aggregating/scaling an interval variable or \code{collapse_interval_cols=TRUE}
-what should happen when overlapping intervals are identified? Can be either
-'skip', 'stop', 'warning', 'message', or 'none'. Default is 'stop'. See
-section on 'Severity Arguments' for more information.}
-
-\item{present_agg_severity}{[\code{logical(1)}]\cr
-What should happen when \code{dt} already has requested aggregates (from
-\code{mapping})? Can be either 'skip', 'stop', 'warning', 'message',
-or 'none'. Default is 'stop'. See section on 'Severity Arguments' for more
-information.}
-
-\item{na_value_severity}{[\code{character(1)}]\cr
-What should happen when 'NA' values are present in \code{value_cols}? Can be
-either 'skip', 'stop', 'warning', 'message', or 'none'. Default is 'stop'.
-See section on 'Severity Arguments' for more information.}
-
 \item{quiet}{[\code{logical(1)}]\cr
 Should progress messages be suppressed as the function is run? Default is
 False.}
+
+\item{...}{Other arguments to pass to \code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::agg()}}.}
 }
 \value{
 [\code{data.table()}]\cr Aggregated life table(s) with columns for all
@@ -192,7 +162,7 @@ when aggregating/scaling.
 \item \code{warning} or \code{message}: throw warning/message, drop overlapping intervals
 and continue with aggregation/scaling where possible (this may cause another
 error because of \code{missing_dt_severity}).
-3 \code{none}: don't throw error or warning, drop overlapping intervals and
+\item \code{none}: don't throw error or warning, drop overlapping intervals and
 continue with aggregation/scaling where possible (this may cause another
 error because of \code{missing_dt_severity}).
 \item \code{skip}: skip this check and continue with aggregation/scaling.
@@ -216,16 +186,6 @@ dt <- agg_lt(
     age_start = seq(0, 105, 5),
     age_end = seq(5, 110, 5)
   )
-)
-
-dt <- agg_lt(
-  dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
-  id_cols = id_cols,
-  age_mapping = data.table::data.table(
-    age_start = seq(0, 110, 5),
-    age_end = c(seq(5, 110, 5), Inf)
-  ),
-  present_agg_severity = "none"
 )
 }
 \seealso{

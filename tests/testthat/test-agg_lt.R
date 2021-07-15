@@ -46,7 +46,7 @@ test_that("test that `agg_lt` works with odd ages", {
         age_end = c(0, 500, Inf)
       )
     ),
-    regexp = "expected input data is missing"
+    regexp = "missing"
   )
 
   # check functionality with non-standard ages

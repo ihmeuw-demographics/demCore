@@ -11,6 +11,7 @@
 #'   'age_start' and 'age_end'. Use "Inf" as 'age_end' for terminal age group.
 #'   The age group intervals must be contiguous and cover the entire interval
 #'   specified in the input life tables `dt`.
+#' @param ... Other arguments to pass to [hierarchyUtils::agg()].
 #' @inheritParams hierarchyUtils::agg
 #'
 #' @return \[`data.table()`\]\cr Aggregated life table(s) with columns for all
@@ -108,25 +109,12 @@
 #'     age_end = seq(5, 110, 5)
 #'   )
 #' )
-#'
-#' dt <- agg_lt(
-#'   dt = dt[, .SD, .SDcols = c(id_cols, "qx")],
-#'   id_cols = id_cols,
-#'   age_mapping = data.table::data.table(
-#'     age_start = seq(0, 110, 5),
-#'     age_end = c(seq(5, 110, 5), Inf)
-#'   ),
-#'   present_agg_severity = "none"
-#' )
 #' @export
 agg_lt <- function(dt,
                    id_cols,
                    age_mapping,
-                   missing_dt_severity = "stop",
-                   overlapping_dt_severity = "stop",
-                   present_agg_severity = "stop",
-                   na_value_severity = "stop",
-                   quiet = FALSE) {
+                   quiet = F,
+                   ...) {
 
   # validate -------------------------------------------------------
 
@@ -187,11 +175,7 @@ agg_lt <- function(dt,
     col_type = "interval",
     mapping = age_mapping,
     agg_function = prod,
-    missing_dt_severity = missing_dt_severity,
-    overlapping_dt_severity = overlapping_dt_severity,
-    present_agg_severity = present_agg_severity,
-    na_value_severity = na_value_severity,
-    quiet = quiet
+    ...
   )
   dt_qx[, qx := 1 - px]
   dt_qx[, px := NULL]
@@ -236,11 +220,7 @@ agg_lt <- function(dt,
       col_type = "interval",
       mapping = age_mapping,
       agg_function = sum,
-      missing_dt_severity = missing_dt_severity,
-      overlapping_dt_severity = overlapping_dt_severity,
-      present_agg_severity = present_agg_severity,
-      na_value_severity = na_value_severity,
-      quiet = quiet
+      ...
     )
     dt_ax[, ax := axdx_total / dx]
     dt_ax[, c("axdx_total", "dx") := NULL]

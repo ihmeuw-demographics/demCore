@@ -17,6 +17,7 @@ Suggests:
     knitr,
     rmarkdown,
     kableExtra,
+    markdown,
     spelling,
     covr,
     devtools,

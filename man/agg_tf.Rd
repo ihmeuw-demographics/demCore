@@ -137,7 +137,7 @@ when aggregating/scaling.
 \item \code{warning} or \code{message}: throw warning/message, drop overlapping intervals
 and continue with aggregation/scaling where possible (this may cause another
 error because of \code{missing_dt_severity}).
-3 \code{none}: don't throw error or warning, drop overlapping intervals and
+\item \code{none}: don't throw error or warning, drop overlapping intervals and
 continue with aggregation/scaling where possible (this may cause another
 error because of \code{missing_dt_severity}).
 \item \code{skip}: skip this check and continue with aggregation/scaling.
