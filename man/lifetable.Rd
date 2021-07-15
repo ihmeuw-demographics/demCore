@@ -4,7 +4,13 @@
 \alias{lifetable}
 \title{Generate a life table with all parameters}
 \usage{
-lifetable(dt, id_cols, preserve_u5 = F, assert_na = T)
+lifetable(
+  dt,
+  id_cols,
+  preserve_u5 = FALSE,
+  assert_na = TRUE,
+  format_long = FALSE
+)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -21,10 +27,17 @@ based on mx and ax.}
 
 \item{assert_na}{[\code{logical()}]\cr Whether to assert that there is no
 missingness.}
+
+\item{format_long}{[\code{logical(1)}]\cr
+Whether to format output with a 'life_table_parameter' column and a column
+for each summary statistic (rather than a column for each
+'life_table_parameter' and summary statistic pair).}
 }
 \value{
 [\code{data.table()}]\cr
-Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex
+Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex.
+Or, if \code{format_long} is TRUE, additional columns 'life_table_parameter'
+and 'value' with data long on life table parameter.
 }
 \description{
 Given a \code{data.table} with at least two of variables mx, ax, and
