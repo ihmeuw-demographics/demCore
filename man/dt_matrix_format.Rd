@@ -74,9 +74,11 @@ have a column for 'sex', and if the data is age-specific it must have
 columns for 'age_start' and 'age_end.
 
 matrix format: When data is in matrix format, columns represent the start of
-each calendar year interval, rows represent the start of each age interval
-and if the data is sex specific each sex will have a separate matrix stored
-in a named list (names corresponding to each sex).
+each calendar year interval, rows represent the start of each age interval.
+If the data is sex specific each sex will have a separate matrix stored
+in a named list (names corresponding to each sex). If the data is age
+specific rows will be labeled with a numeric representing the start of the
+age group.
 }
 \examples{
 output_matrix <- demCore:::dt_to_matrix(thailand_initial_estimates$survival)

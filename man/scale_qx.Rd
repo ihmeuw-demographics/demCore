@@ -17,10 +17,10 @@ scale_qx(dt, id_cols, missing_dt_severity = "stop")
 ID columns that uniquely identify each row of \code{dt}.}
 
 \item{missing_dt_severity}{[\code{character(1)}]\cr
-How severe should the consequences of missing data that prevents
-aggregation or scaling from occurring be? Can be either 'stop', 'warning',
-'message', or 'none'. If not "stop", then only the possible aggregations or
-scaling is done using the available data.}
+What should happen when \code{dt} is missing levels of \code{col_stem} that
+prevent aggregation or scaling from occurring? Can be either 'skip',
+'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
+'Severity Arguments' for more information.}
 }
 \value{
 [\code{data.table()}]\cr Scaled qx values, has \code{id_cols} and 'qx'

@@ -4,7 +4,7 @@
 \alias{agg_lt}
 \title{Aggregate life table(s) to less granular age groups}
 \usage{
-agg_lt(dt, id_cols, age_mapping, ...)
+agg_lt(dt, id_cols, age_mapping, quiet = F, ...)
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
@@ -19,6 +19,10 @@ Specification of intervals to aggregate to. Required columns are
 'age_start' and 'age_end'. Use "Inf" as 'age_end' for terminal age group.
 The age group intervals must be contiguous and cover the entire interval
 specified in the input life tables \code{dt}.}
+
+\item{quiet}{[\code{logical(1)}]\cr
+Should progress messages be suppressed as the function is run? Default is
+False.}
 
 \item{...}{Other arguments to pass to \code{\link[hierarchyUtils:agg_scale]{hierarchyUtils::agg()}}.}
 }
@@ -101,6 +105,71 @@ The aggregate ax can then be solved for.
 \deqn{{}_{n}a_x = \frac{\sum_{i = 1}^{A} ((x_i - x) + {}_{n_i}a_{x_i})
   \cdot {}_{n_i}d_{x_i}}{\sum_{i = 1}^{A} {}_{n_i}d_{x_i}}}
 }
+\section{Severity Arguments}{
+
+
+\strong{\code{missing_dt_severity}}:
+
+Check for missing levels of \code{col_stem}, the variable being aggregated or
+scaled over.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message and continue with
+aggregation/scaling for requested aggregations/scalings where expected input
+data in \code{dt} is available.
+\item \code{none}: don't throw error or warning, continue with aggregation/scaling
+for requested aggregations/scalings where expected input data in \code{dt} is
+available.
+\item \code{skip}: skip this check and continue with aggregation/scaling.
+}
+
+\strong{\code{present_agg_severity}} (\code{agg} only):
+
+Check for requested aggregates in \code{mapping} that are already present
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop aggregates and continue
+with aggregation.
+\item \code{none}: don't throw error or warning, drop aggregates and continue with
+aggregation.
+\item \code{skip}: skip this check and add to the values already present for the
+aggregates.
+}
+
+\strong{\code{na_value_severity}}:
+
+Check for 'NA' values in the \code{value_cols}.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop missing values and
+continue with aggregation/scaling where possible (this likely will cause
+another error because of \code{missing_dt_severity}, consider setting
+\code{missing_dt_severity = "skip"} for functionality similiar to \code{na.rm = TRUE}).
+\item \code{none}: don't throw error or warning, drop missing values and continue
+with aggregation/scaling where possible (this likely will cause another error
+because of \code{missing_dt_severity}, consider setting
+\code{missing_dt_severity = "skip"} for functionality similiar to \code{na.rm = TRUE}).
+\item \code{skip}: skip this check and propagate \code{NA} values through
+aggregation/scaling.
+}
+
+\strong{\code{overlapping_dt_severity}}:
+Check for overlapping intervals that prevent collapsing to the most detailed
+common set of intervals. Or check for overlapping intervals in \code{col_stem}
+when aggregating/scaling.
+\enumerate{
+\item \code{stop}: throw error (this is the default).
+\item \code{warning} or \code{message}: throw warning/message, drop overlapping intervals
+and continue with aggregation/scaling where possible (this may cause another
+error because of \code{missing_dt_severity}).
+\item \code{none}: don't throw error or warning, drop overlapping intervals and
+continue with aggregation/scaling where possible (this may cause another
+error because of \code{missing_dt_severity}).
+\item \code{skip}: skip this check and continue with aggregation/scaling.
+}
+
+}
+
 \examples{
 dt <- data.table::data.table(
   age_start = c(0:110),
@@ -114,8 +183,8 @@ dt <- agg_lt(
   dt = dt,
   id_cols = id_cols,
   age_mapping = data.table::data.table(
-    age_start = seq(0, 110, 5),
-    age_end = c(seq(5, 110, 5), Inf)
+    age_start = seq(0, 105, 5),
+    age_end = seq(5, 110, 5)
   )
 )
 }

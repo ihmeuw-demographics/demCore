@@ -6,6 +6,13 @@ testthat::test_that("check `matrix_dt_formatting functions work", {
   data.table::setindexv(thailand_initial_estimates$survival, NULL)
   testthat::expect_equal(thailand_initial_estimates$survival, output_dt)
 
+  # check with age and sex-specific data with only the terminal age group
+  input_dt <- thailand_initial_estimates$survival[is.infinite(age_end)]
+  output_matrix <- dt_to_matrix(input_dt)
+  output_dt <- matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
+  data.table::setindexv(input_dt, NULL)
+  testthat::expect_equal(input_dt, output_dt)
+
   # check with non age or sex-specific data
   output_matrix <- dt_to_matrix(thailand_initial_estimates$srb,
                                 id_cols = c("year_start", "year_end"))

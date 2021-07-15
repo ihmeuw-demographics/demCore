@@ -7,8 +7,8 @@
 calculate_nrr(
   dt,
   id_cols,
-  reproductive_age_start = 15,
-  reproductive_age_end = 50
+  reproductive_age_start = 10,
+  reproductive_age_end = 55
 )
 }
 \arguments{

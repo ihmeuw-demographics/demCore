@@ -10,7 +10,7 @@
 #'   Age in years of start of reproductive age span (default 15 years).
 #' @param reproductive_age_end \[`numeric(1)`\]\cr
 #'   Age in years of end of reproductive age span (default 50 years).
-#' @inheritParams gen_u5_ax
+#' @inheritParams gen_u5_ax_from_mx
 #'
 #' @return dt \[`data.table()`\]\cr
 #'   Data table with `nrr` by `id_cols` (excluding 'age_start' and 'age_end').

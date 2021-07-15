@@ -23,7 +23,7 @@ test_that("test that `iterate_ax` doesn't change mx", {
 
 test_that("test that `iterate_ax` doesn't change ax, qx, dx, lx too much", {
 
-  # subset to over-5 because under-5 should be using `gen_u5_ax`.
+  # subset to over-5 because under-5 should be using `gen_u5_ax_from_mx`.
   over5 <- dt[age_start >= 5]
 
   testthat::expect_true(all(abs(1 - over5$ax.x / over5$ax.y) < 0.1))
