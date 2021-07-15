@@ -133,4 +133,14 @@ lifetable <- function(dt,
       measure.vars = c("qx", "mx", "ax", "px", "lx", "dx", "nLx", "Tx", "ex"),
       variable.name = "life_table_parameter", value.name = "value"
     )
-    new_keys <- c(origi
+    new_keys <- c(original_keys, "life_table_parameter")
+    setkeyv(dt, new_keys)
+
+  } else {
+    setkeyv(dt, original_keys)
+  }
+
+  # return
+  return(dt)
+
+}

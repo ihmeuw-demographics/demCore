@@ -49,3 +49,12 @@ test_that("test that `lifetable` works when missing qx", {
                                        "age_length", param_cols)))
   assertable::assert_values(dt, param_cols, "not_na", quiet = T)
 })
+
+test_that("test that `lifetable` with long format works", {
+  dt <- lifetable(dt, id_cols = c("age_start", "age_end", "sex"), format_long = T)
+  testthat::expect_equal(
+    sort(names(dt)),
+    sort(c("sex", "age_start", "age_end", "age_length",
+           "life_table_parameter", "value"))
+  )
+})
