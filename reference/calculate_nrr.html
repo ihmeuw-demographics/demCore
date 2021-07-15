@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Scale qx values over age — scale_qx • demCore</title>
+<title>Calculate Net Reproductive Rate (NRR) — calculate_nrr • demCore</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,10 @@
 
 
 
-<meta property="og:title" content="Scale qx values over age — scale_qx" />
-<meta property="og:description" content="Scale granular qx values to be consistent with aggregate age
-interval qx values already present in the data." />
+<meta property="og:title" content="Calculate Net Reproductive Rate (NRR) — calculate_nrr" />
+<meta property="og:description" content="Calculate Net Reproductive Rate (NRR) from age-specific
+fertility rate (ASFR), sex-ratio at birth (SRB), and person-years
+(nLx) and generate nrr variable in the data.table." />
 
 
 
@@ -124,72 +125,77 @@ interval qx values already present in the data." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Scale qx values over age</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/scale_qx.R'><code>R/scale_qx.R</code></a></small>
-    <div class="hidden name"><code>scale_qx.Rd</code></div>
+    <h1>Calculate Net Reproductive Rate (NRR)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ihmeuw-demographics/demCore/blob/master/R/calculate_nrr.R'><code>R/calculate_nrr.R</code></a></small>
+    <div class="hidden name"><code>calculate_nrr.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Scale granular qx values to be consistent with aggregate age
-interval qx values already present in the data.</p>
+    <p>Calculate Net Reproductive Rate (NRR) from age-specific
+fertility rate (ASFR), sex-ratio at birth (SRB), and person-years
+(nLx) and generate <code>nrr</code> variable in the data.table.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>scale_qx</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span>, missing_dt_severity <span class='op'>=</span> <span class='st'>"stop"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calculate_nrr</span><span class='op'>(</span>
+  <span class='va'>dt</span>,
+  <span class='va'>id_cols</span>,
+  reproductive_age_start <span class='op'>=</span> <span class='fl'>10</span>,
+  reproductive_age_end <span class='op'>=</span> <span class='fl'>55</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dt</th>
-      <td><p>[<code>data.table()</code>]<br /> Data to be aggregated.</p><ul>
-<li><p>Must only include columns 'qx' and those specified in <code>id_cols</code></p></li>
-<li><p>Must include 'age_start' and 'age_end' columns</p></li>
-</ul></td>
+      <td><p>[<code>data.table()</code>]<br />
+Input data with 'asfr', sex-ratio at birth ('srb'), and 'nLx'.</p></td>
     </tr>
     <tr>
       <th>id_cols</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br />
-ID columns that uniquely identify each row of <code>dt</code>.</p></td>
+      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>]<br /> Columns that uniquely identify
+observations in <code>dt</code>. Must include 'age_start', 'age_end', and 'sex'.</p></td>
     </tr>
     <tr>
-      <th>missing_dt_severity</th>
-      <td><p>[<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>]<br />
-What should happen when <code>dt</code> is missing levels of <code>col_stem</code> that
-prevent aggregation or scaling from occurring? Can be either 'skip',
-'stop', 'warning', 'message', or 'none'. Default is 'stop'. See section on
-'Severity Arguments' for more information.</p></td>
+      <th>reproductive_age_start</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>]<br />
+Age in years of start of reproductive age span (default 15 years).</p></td>
+    </tr>
+    <tr>
+      <th>reproductive_age_end</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code>]<br />
+Age in years of end of reproductive age span (default 50 years).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>[<code>data.table()</code>]<br /> Scaled qx values, has <code>id_cols</code> and 'qx'
-columns for all age groups.</p>
+    <p>dt [<code>data.table()</code>]<br />
+Data table with <code>nrr</code> by <code>id_cols</code> (excluding 'age_start' and 'age_end').</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Convert to px-space, scale up age-hierarchy so that granular px
-values multiply to aggregate px values, convert back to qx-space.
-<code>scale_qx()</code> is a wrapper for <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code>.</p>
-<p>This function is unique to aggregating and scaling qx over age because of
-the dependence between age and the definition of qx. Aggregation of qx
-across sex, location, or other variables should be done by first aggregating
-ax and mx as population-weighted means (can use <code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::agg()</a></code> and
-<code><a href='https://rdrr.io/pkg/hierarchyUtils/man/agg_scale.html'>hierarchyUtils::scale()</a></code> directly), then recalculating qx from mx and ax
-(see <code><a href='mx_qx_ax_conversions.html'>mx_ax_to_qx()</a></code>).</p>
+    <p>Calculate proportion female: prop_female = (1 / srb) / (1 + (1 / srb)).
+Then, calculate NRR: sum(asfr * prop_female * nLx) over age, by id columns.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Vignette on scaling multiplicative aggregates in <code>hierarchyUtils</code>.</p></div>
+    <div class='dont-index'><p>Preston Demography textbook page 113 (Section 5.5 Reproduction Measures).</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># scale qx up single-year to abridged u5 hierarchy</span>
-<span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>
-  sex <span class='op'>=</span> <span class='st'>"male"</span>,
-  qx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.03</span>, <span class='fl'>0.015</span>, <span class='fl'>0.005</span>, <span class='fl'>0.004</span>, <span class='fl'>0.001</span>, <span class='fl'>0.03</span>, <span class='fl'>0.05</span><span class='op'>)</span>,
-  age_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,
-  age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>
+  age_start <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>45</span>, <span class='fl'>5</span><span class='op'>)</span>,
+  age_end <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>5</span><span class='op'>)</span>,
+  sex <span class='op'>=</span> <span class='st'>"female"</span>,
+  asfr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.00002</span>, <span class='fl'>0.009</span>, <span class='fl'>0.1</span>, <span class='fl'>0.18</span>, <span class='fl'>0.19</span>, <span class='fl'>0.11</span>, <span class='fl'>0.03</span><span class='op'>)</span>,
+  srb <span class='op'>=</span> <span class='fl'>1.057</span>,
+  nLx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4.61</span>, <span class='fl'>4.55</span>, <span class='fl'>4.48</span>, <span class='fl'>4.39</span>, <span class='fl'>4.30</span>, <span class='fl'>4.18</span>, <span class='fl'>4.03</span><span class='op'>)</span>
 <span class='op'>)</span>
-<span class='va'>dt</span> <span class='op'>&lt;-</span> <span class='fu'>scale_qx</span><span class='op'>(</span><span class='va'>dt</span>, id_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sex"</span>, <span class='st'>"age_start"</span>, <span class='st'>"age_end"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Scaling age</span></div><div class='output co'>#&gt; <span class='message'>Scaling 1 of 2: [0, 5)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='output co'>#&gt; <span class='message'>Scaling 2 of 2: [1, 5)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'as.is' should be specified by the caller; using TRUE</span></div><div class='input'>
+<span class='va'>output</span> <span class='op'>&lt;-</span> <span class='fu'>calculate_nrr</span><span class='op'>(</span>
+  <span class='va'>dt</span>,
+  id_cols <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"age_start"</span>, <span class='st'>"age_end"</span>, <span class='st'>"sex"</span><span class='op'>)</span>,
+  reproductive_age_start <span class='op'>=</span> <span class='fl'>15</span>,
+  reproductive_age_end <span class='op'>=</span> <span class='fl'>50</span>
+<span class='op'>)</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
