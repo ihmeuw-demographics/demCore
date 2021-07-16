@@ -138,7 +138,13 @@ many other functions in this package to calculate px, lx, dx, Tx, nLx,
 and ex.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>lifetable</span><span class='op'>(</span><span class='va'>dt</span>, <span class='va'>id_cols</span>, preserve_u5 <span class='op'>=</span> <span class='cn'>F</span>, assert_na <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>lifetable</span><span class='op'>(</span>
+  <span class='va'>dt</span>,
+  <span class='va'>id_cols</span>,
+  preserve_u5 <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  assert_na <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  format_long <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,12 +172,21 @@ based on mx and ax.</p></td>
       <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical()</a></code>]<br /> Whether to assert that there is no
 missingness.</p></td>
     </tr>
+    <tr>
+      <th>format_long</th>
+      <td><p>[<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>]<br />
+Whether to format output with a 'life_table_parameter' column and a column
+for each summary statistic (rather than a column for each
+'life_table_parameter' and summary statistic pair).</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>[<code>data.table()</code>]<br />
-Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex</p>
+Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex.
+Or, if <code>format_long</code> is TRUE, additional columns 'life_table_parameter'
+and 'value' with data long on life table parameter.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Note that while it typically takes estimation techniques to arrive at mx, ax,
