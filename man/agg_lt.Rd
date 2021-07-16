@@ -175,7 +175,7 @@ dt <- data.table::data.table(
   age_start = c(0:110),
   age_end = c(1:110, Inf),
   location = "Canada",
-  qx = .2,
+  qx = c(rep(.2, 110), 1),
   ax = .5
 )
 id_cols = c("age_start", "age_end", "location")
