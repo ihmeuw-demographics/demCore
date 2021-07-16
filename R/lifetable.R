@@ -16,9 +16,12 @@
 #'   based on mx and ax.
 #' @param assert_na \[`logical()`\]\cr Whether to assert that there is no
 #'   missingness.
+#' @inheritParams summarize_lt
 #'
 #' @return \[`data.table()`\]\cr
-#'   Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex
+#'   Input life table(s) with additional columns: px, lx, dx, Tx, nLx, ex.
+#'   Or, if `format_long` is TRUE, additional columns 'life_table_parameter'
+#'   and 'value' with data long on life table parameter.
 #'
 #' @details
 #' Note that while it typically takes estimation techniques to arrive at mx, ax,
@@ -48,7 +51,11 @@
 #' dt <- lifetable(dt, id_cols = c("sex", "age_start", "age_end"))
 #'
 #' @export
-lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
+lifetable <- function(dt,
+                      id_cols,
+                      preserve_u5 = FALSE,
+                      assert_na = TRUE,
+                      format_long = FALSE) {
 
   # validate and prep  ------------------------------------------------------
 
@@ -73,6 +80,9 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
 
   # create `id_cols` without age
   id_cols_no_age <- id_cols[!id_cols %in% c("age_start", "age_end")]
+
+  # check `format_long`
+  assertthat::assert_that(assertthat::is.flag(format_long))
 
   # set key
   original_keys <- key(dt)
@@ -115,8 +125,22 @@ lifetable <- function(dt, id_cols, preserve_u5 = F, assert_na = T) {
   # replace terminal ax with terminal ex
   dt[age_end == Inf, ax := ex]
 
+  # formatting -------------------------------------------------------------
+
+  if (format_long) {
+    dt <- melt(
+      data = dt,
+      measure.vars = c("qx", "mx", "ax", "px", "lx", "dx", "nLx", "Tx", "ex"),
+      variable.name = "life_table_parameter", value.name = "value"
+    )
+    new_keys <- c(original_keys, "life_table_parameter")
+    setkeyv(dt, new_keys)
+
+  } else {
+    setkeyv(dt, original_keys)
+  }
+
   # return
-  setkeyv(dt, original_keys)
   return(dt)
 
 }
