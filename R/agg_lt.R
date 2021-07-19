@@ -97,7 +97,7 @@
 #'   age_start = c(0:110),
 #'   age_end = c(1:110, Inf),
 #'   location = "Canada",
-#'   qx = .2,
+#'   qx = c(rep(.2, 110), 1),
 #'   ax = .5
 #' )
 #' id_cols = c("age_start", "age_end", "location")
@@ -235,12 +235,32 @@ agg_lt <- function(dt,
     dt <- merge(dt_qx, dt_ax, all = TRUE, by = id_cols)
   }
 
-  if (!only_qx) assertable::assert_values(dt, "ax", "gte", 0, quiet = T)
-  assertable::assert_values(dt, "qx", "gte", 0, quiet = T)
-  assertable::assert_values(dt, "qx", "lte", 1, quiet = T)
-  assertable::assert_values(dt, c("qx", if (!only_qx) "ax"), "not_na", quiet = T)
+  if ("qx" %in% param_cols) {
+    assertable::assert_values(dt, "qx", "gte", 0, quiet = T)
+    assertable::assert_values(dt, "qx", "lte", 1, quiet = T)
+  }
 
-  expected_cols <- c(id_cols, "qx", if (!only_qx) "ax")
+  if ("ax" %in% param_cols) {
+    assertable::assert_values(dt, "ax", "gte", 0, quiet = T)
+  }
+
+  if ("mx" %in% param_cols) {
+    if (!"age_length" %in% names(dt)) {
+      dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
+    }
+    dt[, mx := qx_ax_to_mx(qx, ax, age_length)]
+    assertable::assert_values(dt, "mx", "gte", 0, quiet = T)
+  }
+
+  assertable::assert_values(dt, param_cols, "not_na", quiet = T)
+
+  extra_cols_present <- setdiff(names(dt), original_col_order)
+  if (length(extra_cols_present) > 0) dt[, (extra_cols_present) := NULL]
+  if ("age_length" %in% original_col_order & !"age_length" %in% names(dt)) {
+    dt <- hierarchyUtils::gen_length(dt, col_stem = "age")
+  }
+
+  expected_cols <- c(id_cols, "qx", "mx", if (!only_qx) "ax")
   original_col_order <- original_col_order[original_col_order %in% expected_cols]
   data.table::setcolorder(dt, original_col_order)
   data.table::setkeyv(dt, original_keys)

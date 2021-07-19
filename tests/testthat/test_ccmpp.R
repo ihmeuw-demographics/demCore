@@ -158,7 +158,6 @@ test_that("test that `ccmpp` works with 'mx', 'ax', 'qx' inputs", {
     age_mapping = data.table(age_start = seq(0, 80, 5), age_end = c(seq(5, 80, 5), Inf)),
     present_agg_severity = "skip", quiet = TRUE
   )
-  hierarchyUtils::gen_length(lt, "age")
   lt[, mx := qx_ax_to_mx(qx, ax, age_length)]
 
   # add inputs for mx and ax

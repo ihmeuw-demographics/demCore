@@ -6,7 +6,7 @@ dt <- data.table(
   location = "Canada",
   age_start = c(0:110),
   age_end = c(1:110, Inf),
-  qx = .2,
+  qx = c(rep(.2, 110), 1),
   ax = .5
 )
 dt[age_end == Inf, qx := 1]
@@ -146,4 +146,27 @@ expected_dt <- data.table(
 test_that("test that `agg_lt` with age_mapping not covering the entire range", {
   output_dt <- agg_lt(input_dt, id_cols = id_cols, age_mapping = age_mapping)
   testthat::expect_equal(output_dt, expected_dt)
+})
+
+
+# test that `agg_lt` returns input parameters -----------------------------
+
+dt <- data.table::data.table(
+  age_start = c(0:110),
+  age_end = c(1:110, Inf),
+  location = "Canada",
+  qx = c(rep(.2, 110), 1),
+  mx = 0.22
+)
+id_cols = c("age_start", "age_end", "location")
+age_mapping = data.table::data.table(
+  age_start = seq(0, 105, 5),
+  age_end = seq(5, 110, 5)
+)
+
+test_that("test that `agg_lt` returns parameters we started with", {
+  output_dt <- agg_lt(dt, id_cols = id_cols, age_mapping = age_mapping)
+  testthat::expect_equal(
+    names(output_dt), c("age_start", "age_end", "location", "qx", "mx")
+  )
 })
