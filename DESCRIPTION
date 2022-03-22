@@ -22,7 +22,8 @@ Suggests:
     covr,
     devtools,
     ggplot2,
-    LexisPlotR
+    LexisPlotR,
+    demViz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
@@ -37,8 +38,7 @@ Imports:
     purrr,
     Rdpack,
     hierarchyUtils,
-    demUtils,
-    demViz
+    demUtils
 Remotes:
     ihmeuw-demographics/hierarchyUtils,
     ihmeuw-demographics/demUtils,
