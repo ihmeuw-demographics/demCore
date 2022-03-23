@@ -91,18 +91,25 @@ str(thailand_population)
 ```
 
 ```{r ccmpp_plot, fig.width = 8, fig.height = 20, echo = FALSE}
+library(ggplot2)
+
 hierarchyUtils::gen_name(thailand_population, col_stem = "age")
 thailand_population[, age_name := factor(age_name, levels = unique(thailand_population[, age_name]))]
 
-demViz::plot_line_graph(
-  dt = thailand_population,
-  x_col = "year",
-  x_axis_title = "Year",
-  y_col = "value",
-  y_axis_title = "Population",
-  y_axis_commas = TRUE,
-  plot_title = "Thailand Population"
-)
+ggplot(
+    data = thailand_population,
+    mapping = aes(x = year, y = value)
+  ) +
+  geom_line() +
+  facet_grid(rows = vars(age_name), cols = vars(sex), scales = "free_y") +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme_bw() +
+  labs(
+    title = "Thailand Population",
+    x = "Year",
+    y = "Population"
+  )
+
 ```
 
 ## CCMPP Details
