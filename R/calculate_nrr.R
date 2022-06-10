@@ -74,8 +74,13 @@ calculate_nrr <- function(dt,
   )
 
   # check `reproductive_age_start` and `reproductive_age_end`
-  hierarchyUtils::assert_no_overlapping_intervals(
-    unique(dt[, list(start = age_start, end = age_end)])
+  check <- unique(dt[, list(age_start, age_end)])
+  check[, id := 1]
+  hierarchyUtils::assert_no_overlapping_intervals_dt(
+    dt = check,
+    id_cols = c("id", "age_start", "age_end"),
+    col_stem = "age"
+
   )
   assertthat::assert_that(
     assertthat::is.count(reproductive_age_start),
