@@ -524,6 +524,8 @@ leslie_matrix <- function(survival,
 #'
 #' @return Invisibly returns `inputs` but throws error if not formatted
 #'   correctly.
+#'
+#' @keywords internal
 validate_ccmpp_inputs <- function(inputs,
                                   settings,
                                   value_col) {
