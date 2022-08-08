@@ -17,6 +17,9 @@ sbh_panama_1976_all <- sbh_panama_1976[
   by = c("age_start", "age_end", "n_women")
 ]
 sbh_panama_1976 <- rbind(sbh_panama_1976, sbh_panama_1976_all)
+sbh_panama_1976[, Pi := ceb / n_women]
+sbh_panama_1976[, Di := ced / ceb]
+
 usethis::use_data(sbh_panama_1976, overwrite = TRUE)
 
 # Example ceb data from Manual X handbook table 47 & 48 on pages 77-78.

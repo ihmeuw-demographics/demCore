@@ -7,30 +7,26 @@
 calc_nqx_brass(
   dt,
   id_cols = c("age_start", "age_end"),
-  n_women_col = "n_women",
-  ceb_col = "ceb",
-  ced_col = "ced",
+  parity_col = "Pi",
+  prop_died_col = "Di",
   model_schedule = "West"
 )
 }
 \arguments{
 \item{dt}{[\code{data.table()}]\cr
-sbh data with \code{id_cols}, \code{n_women_col}, \code{ceb_col}, \code{ced_col}}
+sbh data with \code{id_cols}, \code{parity_col}, \code{prop_died_col}.}
 
 \item{id_cols}{[\code{character()}]\cr
 ID columns that uniquely identify each row of \code{dt}. This must include
 'age_start' and 'age_end'.}
 
-\item{n_women_col}{[\code{character(1)}]\cr
-Name of column storing the number of women in each maternal age group.}
+\item{parity_col}{[\code{character(1)}]\cr
+Name of column storing the average parity for each maternal age group.
+Default is 'Pi'.}
 
-\item{ceb_col}{[\code{character(1)}]\cr
-Name of column storing the number of children ever born alive in each
-maternal age group.}
-
-\item{ced_col}{[\code{character(1)}]\cr
-Name of column storing the number of children ever born alive who have died
-in each maternal age group.}
+\item{prop_died_col}{[\code{character(1)}]\cr
+Name of column storing the proportion of children who have died for each
+maternal age group. Default is 'Di'.}
 
 \item{model_schedule}{[\code{character(1)}]\cr
 Name of model fertility schedule to use from \code{sbh_trussell_coeffs}. Default
@@ -52,9 +48,9 @@ census.
 
 Summary of steps:
 \enumerate{
-\item Calculate average parity for each maternal age group ('P(i)').
-\item Calculate proportion of children who have died for each maternal age
-group ('D(i)').
+\item Confirm average parity for each maternal age group ('P(i)') and
+proportion of children who have died for each maternal age group ('D(i)')
+are included in the input data.
 \item Use estimation equations to calculate probability of child mortality:
 \deqn{k(i)=a(i) + b(i) (P(1)/P(2)) + c(i) (P(2)/P(3))}
 \deqn{q(x) = k(i)D(i)}

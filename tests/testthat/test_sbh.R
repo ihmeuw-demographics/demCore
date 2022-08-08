@@ -35,6 +35,8 @@ input_dt <- data.table(
   ceb = c(2500, 2500, 5000),
   ced = c(350, 350, 700)
 )
+input_dt[, Pi := ceb / n_women]
+input_dt[, Di := ced / ceb]
 input_dt <- rbind(input_dt, sbh_panama_1976)
 
 test_that("test that `calc_nqx_brass` gives expected output when extra age groups are supplied", {
