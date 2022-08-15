@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">demCore</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -64,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ihmeuw-demographics/demCore/">
+  <a href="https://github.com/ihmeuw-demographics/demCore/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -79,22 +75,22 @@
 
       
 
-      </header><script src="ccmpp_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Cohort Component Method of Population Projection (CCMPP)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ihmeuw-demographics/demCore/blob/master/vignettes/ccmpp.Rmd"><code>vignettes/ccmpp.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ihmeuw-demographics/demCore/blob/HEAD/vignettes/ccmpp.Rmd" class="external-link"><code>vignettes/ccmpp.Rmd</code></a></small>
       <div class="hidden name"><code>ccmpp.Rmd</code></div>
 
     </div>
 
     
     
-<div id="demographic-balancing-equation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#demographic-balancing-equation" class="anchor"></a>Demographic Balancing Equation</h1>
+<div class="section level2">
+<h2 id="demographic-balancing-equation">Demographic Balancing Equation<a class="anchor" aria-label="anchor" href="#demographic-balancing-equation"></a>
+</h2>
 <p>The demographic balancing equation is one of the core concepts of demography. It says that the population at time <span class="math inline">\(T\)</span> is equal to the population at time <span class="math inline">\(0\)</span> plus all the people that entered the population through birth or immigration minus the people that left the population through death or emigration.</p>
 <p><span class="math display">\[\begin{aligned}
 N(T) =&amp; N(0) - E[0,T] - D[0,T] + B[0,T] + I[0,T] \\
@@ -111,15 +107,15 @@ I =&amp; \text{immigrants} \\
 G =&amp; \text{net migrants}
 \end{aligned}\]</span></p>
 </div>
-<div id="ccmpp" class="section level1">
-<h1 class="hasAnchor">
-<a href="#ccmpp" class="anchor"></a>CCMPP</h1>
+<div class="section level2">
+<h2 id="ccmpp">CCMPP<a class="anchor" aria-label="anchor" href="#ccmpp"></a>
+</h2>
 <p>The cohort component method of population projection (CCMPP) is the most common method for projecting populations forward in time. It satisfies the age- and sex-specific version of the demographic balancing equation.</p>
 <p>CCMPP takes as input age and sex specific estimates of the baseline population, survivorship ratios, net migration proportion, age-specific fertility rates and sex-ratio at birth to produce projected population estimates starting from the baseline.</p>
 <p>Below are two sections, the first gives a quick introduction to the <code><a href="../reference/ccmpp.html">demCore::ccmpp</a></code> function and the second actually gives a more detailed explanation of CCMPP.</p>
-<div id="demcoreccmpp-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#demcoreccmpp-function" class="anchor"></a>demCore::ccmpp function</h2>
+<div class="section level3">
+<h3 id="demcoreccmpp-function">demCore::ccmpp function<a class="anchor" aria-label="anchor" href="#demcoreccmpp-function"></a>
+</h3>
 <p>The <code>demCore</code> package implements <code><a href="../reference/ccmpp.html">ccmpp()</a></code> and includes some example inputs for Thailand from Wheldon et al 2015.</p>
 <p>There are two inputs needed for the <code><a href="../reference/ccmpp.html">demCore::ccmpp</a></code> function:</p>
 <ol style="list-style-type: decimal">
@@ -137,124 +133,124 @@ G =&amp; \text{net migrants}
 </ol>
 <p>Below is a summary of what the Thailand example inputs look like. The baseline population is for the year 1960 and includes both female and male populations for five year age groups up to 80+. The other four inputs define how the population changes every five calendar years between 1960 and 2000. The survivorship ratios go up to age 85+ while the asfr estimates are defined for the reproductive age groups between age 15 and 50.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihmeuw-demographics/demCore/">demCore</a></span><span class="op">)</span>
-
-<span class="co"># the list of data.tables for each of the inputs</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">)</span>
-<span class="co">#&gt; List of 5</span>
-<span class="co">#&gt;  $ srb          :Classes 'data.table' and 'data.frame':  8 obs. of  3 variables:</span>
-<span class="co">#&gt;   ..$ year_start: num [1:8] 1960 1965 1970 1975 1980 ...</span>
-<span class="co">#&gt;   ..$ year_end  : num [1:8] 1965 1970 1975 1980 1985 ...</span>
-<span class="co">#&gt;   ..$ value     : num [1:8] 1.11 1.08 1.07 1.05 1.04 ...</span>
-<span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:2] "year_start" "year_end"</span>
-<span class="co">#&gt;  $ asfr         :Classes 'data.table' and 'data.frame':  56 obs. of  5 variables:</span>
-<span class="co">#&gt;   ..$ year_start: num [1:56] 1960 1960 1960 1960 1960 ...</span>
-<span class="co">#&gt;   ..$ year_end  : num [1:56] 1965 1965 1965 1965 1965 ...</span>
-<span class="co">#&gt;   ..$ age_start : num [1:56] 15 20 25 30 35 40 45 15 20 25 ...</span>
-<span class="co">#&gt;   ..$ age_end   : num [1:56] 20 25 30 35 40 45 50 20 25 30 ...</span>
-<span class="co">#&gt;   ..$ value     : num [1:56] 0.0518 0.2402 0.2888 0.2721 0.2122 ...</span>
-<span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:4] "year_start" "year_end" "age_start" "age_end"</span>
-<span class="co">#&gt;  $ baseline     :Classes 'data.table' and 'data.frame':  34 obs. of  5 variables:</span>
-<span class="co">#&gt;   ..$ year     : int [1:34] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span>
-<span class="co">#&gt;   ..$ sex      : chr [1:34] "female" "female" "female" "female" ...</span>
-<span class="co">#&gt;   ..$ age_start: num [1:34] 0 5 10 15 20 25 30 35 40 45 ...</span>
-<span class="co">#&gt;   ..$ age_end  : num [1:34] 5 10 15 20 25 30 35 40 45 50 ...</span>
-<span class="co">#&gt;   ..$ value    : num [1:34] 2338000 1857000 1543000 1287000 1250000 ...</span>
-<span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;  $ survival     :Classes 'data.table' and 'data.frame':  288 obs. of  6 variables:</span>
-<span class="co">#&gt;   ..$ year_start: num [1:288] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span>
-<span class="co">#&gt;   ..$ year_end  : num [1:288] 1965 1965 1965 1965 1965 ...</span>
-<span class="co">#&gt;   ..$ sex       : chr [1:288] "female" "female" "female" "female" ...</span>
-<span class="co">#&gt;   ..$ age_start : num [1:288] 0 5 10 15 20 25 30 35 40 45 ...</span>
-<span class="co">#&gt;   ..$ age_end   : num [1:288] 5 10 15 20 25 30 35 40 45 50 ...</span>
-<span class="co">#&gt;   ..$ value     : num [1:288] 0.914 0.961 0.99 0.992 0.988 ...</span>
-<span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:5] "year_start" "year_end" "sex" "age_start" ...</span>
-<span class="co">#&gt;  $ net_migration:Classes 'data.table' and 'data.frame':  272 obs. of  6 variables:</span>
-<span class="co">#&gt;   ..$ year_start: num [1:272] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span>
-<span class="co">#&gt;   ..$ year_end  : num [1:272] 1965 1965 1965 1965 1965 ...</span>
-<span class="co">#&gt;   ..$ sex       : chr [1:272] "female" "female" "female" "female" ...</span>
-<span class="co">#&gt;   ..$ age_start : num [1:272] 0 5 10 15 20 25 30 35 40 45 ...</span>
-<span class="co">#&gt;   ..$ age_end   : num [1:272] 5 10 15 20 25 30 35 40 45 50 ...</span>
-<span class="co">#&gt;   ..$ value     : num [1:272] 0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:5] "year_start" "year_end" "sex" "age_start" ...</span>
-
-<span class="co"># the settings for this run of ccmpp</span>
-<span class="va">thailand_settings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
-  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1960</span>, <span class="fl">1995</span>, <span class="fl">5</span><span class="op">)</span>,
-  sexes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span>,
-  ages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span><span class="op">)</span>,
-  ages_mortality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span><span class="op">)</span>,
-  ages_asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">45</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ihmeuw-demographics/demCore/" class="external-link">demCore</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># the list of data.tables for each of the inputs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand.html">thailand_initial_estimates</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 5</span></span>
+<span><span class="co">#&gt;  $ srb          :Classes 'data.table' and 'data.frame':  8 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt;   ..$ year_start: num [1:8] 1960 1965 1970 1975 1980 ...</span></span>
+<span><span class="co">#&gt;   ..$ year_end  : num [1:8] 1965 1970 1975 1980 1985 ...</span></span>
+<span><span class="co">#&gt;   ..$ value     : num [1:8] 1.11 1.08 1.07 1.05 1.04 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:2] "year_start" "year_end"</span></span>
+<span><span class="co">#&gt;  $ asfr         :Classes 'data.table' and 'data.frame':  56 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..$ year_start: num [1:56] 1960 1960 1960 1960 1960 ...</span></span>
+<span><span class="co">#&gt;   ..$ year_end  : num [1:56] 1965 1965 1965 1965 1965 ...</span></span>
+<span><span class="co">#&gt;   ..$ age_start : num [1:56] 15 20 25 30 35 40 45 15 20 25 ...</span></span>
+<span><span class="co">#&gt;   ..$ age_end   : num [1:56] 20 25 30 35 40 45 50 20 25 30 ...</span></span>
+<span><span class="co">#&gt;   ..$ value     : num [1:56] 0.0518 0.2402 0.2888 0.2721 0.2122 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:4] "year_start" "year_end" "age_start" "age_end"</span></span>
+<span><span class="co">#&gt;  $ baseline     :Classes 'data.table' and 'data.frame':  34 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;   ..$ year     : int [1:34] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span></span>
+<span><span class="co">#&gt;   ..$ sex      : chr [1:34] "female" "female" "female" "female" ...</span></span>
+<span><span class="co">#&gt;   ..$ age_start: num [1:34] 0 5 10 15 20 25 30 35 40 45 ...</span></span>
+<span><span class="co">#&gt;   ..$ age_end  : num [1:34] 5 10 15 20 25 30 35 40 45 50 ...</span></span>
+<span><span class="co">#&gt;   ..$ value    : num [1:34] 2338000 1857000 1543000 1287000 1250000 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  $ survival     :Classes 'data.table' and 'data.frame':  288 obs. of  6 variables:</span></span>
+<span><span class="co">#&gt;   ..$ year_start: num [1:288] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span></span>
+<span><span class="co">#&gt;   ..$ year_end  : num [1:288] 1965 1965 1965 1965 1965 ...</span></span>
+<span><span class="co">#&gt;   ..$ sex       : chr [1:288] "female" "female" "female" "female" ...</span></span>
+<span><span class="co">#&gt;   ..$ age_start : num [1:288] 0 5 10 15 20 25 30 35 40 45 ...</span></span>
+<span><span class="co">#&gt;   ..$ age_end   : num [1:288] 5 10 15 20 25 30 35 40 45 50 ...</span></span>
+<span><span class="co">#&gt;   ..$ value     : num [1:288] 0.914 0.961 0.99 0.992 0.988 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:5] "year_start" "year_end" "sex" "age_start" ...</span></span>
+<span><span class="co">#&gt;  $ net_migration:Classes 'data.table' and 'data.frame':  272 obs. of  6 variables:</span></span>
+<span><span class="co">#&gt;   ..$ year_start: num [1:272] 1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span></span>
+<span><span class="co">#&gt;   ..$ year_end  : num [1:272] 1965 1965 1965 1965 1965 ...</span></span>
+<span><span class="co">#&gt;   ..$ sex       : chr [1:272] "female" "female" "female" "female" ...</span></span>
+<span><span class="co">#&gt;   ..$ age_start : num [1:272] 0 5 10 15 20 25 30 35 40 45 ...</span></span>
+<span><span class="co">#&gt;   ..$ age_end   : num [1:272] 5 10 15 20 25 30 35 40 45 50 ...</span></span>
+<span><span class="co">#&gt;   ..$ value     : num [1:272] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">#&gt;   ..- attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;   ..- attr(*, "sorted")= chr [1:5] "year_start" "year_end" "sex" "age_start" ...</span></span>
+<span></span>
+<span><span class="co"># the settings for this run of ccmpp</span></span>
+<span><span class="va">thailand_settings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1960</span>, <span class="fl">1995</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  sexes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span>,</span>
+<span>  ages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ages_mortality <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">85</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  ages_asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">45</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Once those inputs are ready <code>ccmpp</code> can be run to produce a full time series of projected populations between 1960 and 2000 in five year age groups up to 80+.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">thailand_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span><span class="op">(</span>
-  inputs <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span>,
-  settings <span class="op">=</span> <span class="va">thailand_settings</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">thailand_population</span><span class="op">)</span>
-<span class="co">#&gt; Classes 'data.table' and 'data.frame':   306 obs. of  5 variables:</span>
-<span class="co">#&gt;  $ year     : num  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span>
-<span class="co">#&gt;  $ sex      : chr  "female" "female" "female" "female" ...</span>
-<span class="co">#&gt;  $ age_start: num  0 5 10 15 20 25 30 35 40 45 ...</span>
-<span class="co">#&gt;  $ age_end  : num  5 10 15 20 25 30 35 40 45 50 ...</span>
-<span class="co">#&gt;  $ value    : num  2338000 1857000 1543000 1287000 1250000 ...</span>
-<span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span>
-<span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">thailand_population</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccmpp.html">ccmpp</a></span><span class="op">(</span></span>
+<span>  inputs <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand.html">thailand_initial_estimates</a></span>,</span>
+<span>  settings <span class="op">=</span> <span class="va">thailand_settings</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">thailand_population</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Classes 'data.table' and 'data.frame':   306 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;  $ year     : num  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...</span></span>
+<span><span class="co">#&gt;  $ sex      : chr  "female" "female" "female" "female" ...</span></span>
+<span><span class="co">#&gt;  $ age_start: num  0 5 10 15 20 25 30 35 40 45 ...</span></span>
+<span><span class="co">#&gt;  $ age_end  : num  5 10 15 20 25 30 35 40 45 50 ...</span></span>
+<span><span class="co">#&gt;  $ value    : num  2338000 1857000 1543000 1287000 1250000 ...</span></span>
+<span><span class="co">#&gt;  - attr(*, ".internal.selfref")=&lt;externalptr&gt; </span></span>
+<span><span class="co">#&gt;  - attr(*, "sorted")= chr [1:4] "year" "sex" "age_start" "age_end"</span></span></code></pre></div>
 <p><img src="ccmpp_files/figure-html/ccmpp_plot-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
-<div id="ccmpp-details" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ccmpp-details" class="anchor"></a>CCMPP Details</h2>
+<div class="section level3">
+<h3 id="ccmpp-details">CCMPP Details<a class="anchor" aria-label="anchor" href="#ccmpp-details"></a>
+</h3>
 <p>Explained below are some of the basics of CCMPP using notation from Preston et al 2001, this is a great resource for more detailed explanations of CCMPP and other demography concepts.</p>
-<div id="lexis-diagrams" class="section level3">
-<h3 class="hasAnchor">
-<a href="#lexis-diagrams" class="anchor"></a>Lexis Diagrams</h3>
+<div class="section level4">
+<h4 id="lexis-diagrams">Lexis Diagrams<a class="anchor" aria-label="anchor" href="#lexis-diagrams"></a>
+</h4>
 <p>In order to understand CCMPP it is helpful to use lexis diagrams. A lexis diagram is a simple tool often used in demography to clearly identify the ages, calendar years and cohorts included in a given population. The lexis diagrams in the following sections were created using <code>LexisPlotR</code> which is highly recommend.</p>
 <p><img src="ccmpp_files/figure-html/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div id="ccmpp-for-most-age-groups-with-out-migration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ccmpp-for-most-age-groups-with-out-migration" class="anchor"></a>CCMPP for most age groups with out migration</h3>
+<div class="section level4">
+<h4 id="ccmpp-for-most-age-groups-with-out-migration">CCMPP for most age groups with out migration<a class="anchor" aria-label="anchor" href="#ccmpp-for-most-age-groups-with-out-migration"></a>
+</h4>
 <p>CCMPP for all age groups except the youngest and oldest when ignoring migration is fairly simple. The example below (blue parallelogram) shows how to age the cohort of people that are 1 year old in 2017 <span class="math inline">\({_1}N_{1}(2017)\)</span> to 2018 when the same cohort is now 2 years old <span class="math inline">\({_1}N_{2}(2018)\)</span>. The survivorship ratio <span class="math inline">\(\frac{{_1}L_{2}[2017, 2018]}{{_1}L_{1}[2017, 2018]}\)</span> is used to calculate the proportion of <span class="math inline">\({_1}N_{1}(2017)\)</span> alive after one year. This ratio could for example come from a <span class="math inline">\([2017, 2018]\)</span> period specific life table and actually represents the proportion of people age 1 that survive another year in a stationary population subject to this life table. In the example below the orange square captures person years lived by 1 year olds <span class="math inline">\({_1}L_{1}[2017, 2018]\)</span> and the green square captures person years lived by 2 year olds <span class="math inline">\({_1}L_{2}[2017, 2018]\)</span></p>
 <p><strong>Example equation</strong>: <span class="math display">\[{_1}N_{2}(2018) = {_1}N_{1}(2017) \cdot \frac{{_1}L_{2}[2017, 2018]}{{_1}L_{1}[2017, 2018]}\]</span></p>
 <p><strong>General equation</strong>: <span class="math display">\[{_n}N_{x}(t + n) = {_n}N_{x - n}(t) \cdot \frac{{_n}L_{x}[t, t + n]}{{_n}L_{x - n}[t, t + n]}\]</span></p>
 <p><strong>where</strong>: <span class="math display">\[\begin{aligned} {_n}N_{x}(t) = &amp; \text{the population at time } t \text{ between age } x \text{ and } x + n \\ {_n}L_{x}[t, t + n] = &amp; \text{the number of person-years lived between time } t \text{ and } t + n \text{ and between age } x \text{ and } x + n \end{aligned}\]</span></p>
 <p><img src="ccmpp_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;"><img src="ccmpp_files/figure-html/unnamed-chunk-3-2.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div id="ccmpp-for-most-age-groups-with-migration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ccmpp-for-most-age-groups-with-migration" class="anchor"></a>CCMPP for most age groups with migration</h3>
+<div class="section level4">
+<h4 id="ccmpp-for-most-age-groups-with-migration">CCMPP for most age groups with migration<a class="anchor" aria-label="anchor" href="#ccmpp-for-most-age-groups-with-migration"></a>
+</h4>
 <p>When modeling actual populations migration needs to be accounted for. These migrants are also at risk of dying and giving birth in their new populations but it is unknown when exactly in the interval they migrated. A standard assumption is that half of the migrants in a given interval migrate at the beginning of the interval and the other half at the end of the interval.</p>
 <p><strong>Example equation</strong>: <span class="math display">\[{_1}N_{2}(2018) = \bigg[ \bigg( {_1}N_{1}(2017) + \frac{{_1}G_1[2017, 2018]}{2} \bigg) \cdot \frac{{_1}L_{2}[2017, 2018]}{{_1}L_{1}[2017, 2018]} \bigg] +  \frac{{_1}G_2[2017, 2018]}{2}\]</span></p>
 <p><strong>General equation</strong>: <span class="math display">\[{_n}N_{x}(t + n) = \bigg[ \bigg( {_n}N_{x - n}(t) + \frac{{_n}G_{x - n}[t, t + n]}{2} \bigg) \cdot \frac{{_1}L_{x}[t, t + n]}{{_n}L_{x - n}[t, t + n]} \bigg] + \frac{{_n}G_{x}[t, t + n]}{2}\]</span></p>
 <p><strong>where</strong>: <span class="math display">\[\begin{aligned} {_n}N_{x}(t) = &amp; \text{the population at time } t \text{ between age } x \text{ and } x + n \\ {_n}L_{x}[t, t + n] = &amp; \text{the number of person-years lived between time } t \text{ and } t + n \text{ and between age } x \text{ and } x + n \\ \frac{{_n}G_{x}[t, t + n]}{2} = &amp; \text{the net number of migrants between time } t \text{ and } t + n \text{ and between age } x \text{ and } x + n \end{aligned} \]</span></p>
 </div>
-<div id="ccmpp-for-the-youngest-age-group-with-out-migration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ccmpp-for-the-youngest-age-group-with-out-migration" class="anchor"></a>CCMPP for the youngest age group with out migration</h3>
+<div class="section level4">
+<h4 id="ccmpp-for-the-youngest-age-group-with-out-migration">CCMPP for the youngest age group with out migration<a class="anchor" aria-label="anchor" href="#ccmpp-for-the-youngest-age-group-with-out-migration"></a>
+</h4>
 <p>For the youngest age group the number of births occuring in the interval needs to be calculated and then the survivorship ratios are used to calculate the proportion that survive to the next time point.</p>
 <p><strong>Example equation</strong>: <span class="math display">\[\begin{aligned} {_1}N_{0}(2018) =&amp; \cdot B[2017, 2018] \cdot \frac{{_1}L_{0}[2017, 2018]}{1 \cdot l_0[2017, 2018]} \\ B[2017, 2018] =&amp; \sum_{x=0}^{A} \frac{1}{2} \cdot  {_1}F_x \cdot \frac{{_1}N^F_{x+1}(t) + {_1}N^F_x(t) \cdot \frac{{_1}L_{x+1}[t, t+1]}{{_1}L_{x}[t, t+1]}}{2} \end{aligned}\]</span></p>
 <p><strong>General equation</strong>: <span class="math display">\[\begin{aligned} {_n}N_{0}(t + n) =&amp; \cdot B[t, t + n] \cdot \frac{{_n}L_{0}[t, t + n]}{n \cdot l_0[t, t + n]} \\ B[t, t + n] =&amp; \sum_{x=0}^{A} \frac{n}{2} \cdot {_n}F_x[t, t + n] \cdot \frac{{_n}N^F_{x}(t) + {_n}N^F_{x - n}(t) \cdot \frac{{_n}L_{x}[t, t + n]}{{_n}L_{x - n}[t, t + n]}}{2} \end{aligned}\]</span></p>
 <p><strong>where</strong>: <span class="math display">\[\begin{aligned} {_n}N_{x}(t) =&amp; \text{the population at time } t \text{ between age } x \text{ and } x + n \\ {_n}L_{x}[t, t + n] =&amp; \text{the number of person-years lived between time } t \text{ and } t + n \text{ and between age } x \text{ and } x + n \\ B[t, t + n] =&amp; \text{the number of births between time } t \text{ and } t + n \\ {_n}F_x =&amp; \text{the age-specific fertility rate between time } t \text{ and } t + n \text{ for females between age } x \text{ and } x + n \end{aligned}\]</span></p>
 <p><img src="ccmpp_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div id="ccmpp-for-the-terminal-age-group-with-out-migration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ccmpp-for-the-terminal-age-group-with-out-migration" class="anchor"></a>CCMPP for the terminal age group with out migration</h3>
+<div class="section level4">
+<h4 id="ccmpp-for-the-terminal-age-group-with-out-migration">CCMPP for the terminal age group with out migration<a class="anchor" aria-label="anchor" href="#ccmpp-for-the-terminal-age-group-with-out-migration"></a>
+</h4>
 <p>The terminal age group at time <span class="math inline">\(t+n\)</span> is a combination of two age groups at time <span class="math inline">\(t\)</span>, both the people that are aging into the terminal age group and those that are still alive in the terminal age group.</p>
 <p><strong>Example equation</strong>: <span class="math display">\[\begin{aligned} {_\infty}N_{95}(2018) =&amp; \bigg( {_1}N_{94}(2017) \cdot \frac{{_1}L_{95}[2017, 2018]}{{_1}L_{94}[2017, 2018]} \bigg) + \bigg( {_\infty}N_{95}(2017) \cdot \frac{T_{96}[2017, 2018]}{T_{95}[2017, 2018]} \bigg) \\  \approx&amp; \bigg( {_1}N_{94}(t) + {_\infty}N_{95}(t) \bigg) \cdot \frac{T_{95}[t, t + 1]}{T_{94}[t, t + 1]} \end{aligned}\]</span></p>
 <p><strong>General equation</strong>: <span class="math display">\[\begin{aligned} {_\infty}N_{x}(t + n) =&amp; \bigg( {_n}N_{x - n}(t) \cdot \frac{{_n}L_{x}[t, t + n]}{{_n}L_{x - n}[t, t + n]} \bigg) + \bigg( {_\infty}N_{x}(t) \cdot \frac{T_{x + n}[t, t + 1]}{T_{x}[t, t + n]} \bigg) \\  \approx&amp; \bigg( {_n}N_{x - n}(t) + {_\infty}N_{x}(t) \bigg) \cdot \frac{T_{x}[t, t + n]}{T_{x - n}[t, t + n]} \end{aligned}\]</span></p>
 <p><strong>where</strong>: <span class="math display">\[\begin{aligned} {_n}N_{x}(t) = &amp; \text{the population at time } t \text{ between age } x \text{ and } x + n \\ {_n}L_{x}[t, t + n] = &amp; \text{the number of person-years lived between time } t \text{ and } t + n \text{ and between age } x \text{ and } x + n \\ T_{x}[t, t + n] = &amp; \text{the number of person-years lived between time } t \text{ and } t + n \text{ and above age } x \end{aligned}\]</span></p>
 <p><img src="ccmpp_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div id="leslie-matrix" class="section level3">
-<h3 class="hasAnchor">
-<a href="#leslie-matrix" class="anchor"></a>Leslie Matrix</h3>
+<div class="section level4">
+<h4 id="leslie-matrix">Leslie Matrix<a class="anchor" aria-label="anchor" href="#leslie-matrix"></a>
+</h4>
 <p>All these tedious ccmpp equations can be written in matrix notation which helps to speed up computation and can lead to other useful relationships from matrix algebra.</p>
 <p><span class="math display">\[\begin{aligned}
 \mathbf{n}(t + 1) =&amp; \mathbf{L}[t, t + 1] \cdot \mathbf{n}(t) \\
@@ -282,79 +278,79 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 \tilde{f_{a, t}} =&amp; s_{0, t} \cdot \frac{f_{a,t} + f_{a + 1, t} \cdot s_{a + 1, t}}{2} \end{aligned}\]</span></p>
 <p><code><a href="../reference/leslie_matrix.html">demCore::leslie_matrix</a></code> is a function to produce the leslie matrix from input vectors of the survivorship ratio, asfr, and the sex-ratio at birth. Below is the Thailand example leslie matrix for the rates between 1960 and 1965.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">leslie</span> <span class="op">&lt;-</span> <span class="fu">demCore</span><span class="fu">::</span><span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span><span class="op">(</span>
-  survival <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">survival</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span> <span class="op">&amp;</span>
-                                                  <span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="va">value</span><span class="op">]</span>,
-  asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,
-           <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">asfr</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="va">value</span><span class="op">]</span>,
-           <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span>,
-  srb <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand_data.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">srb</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="va">value</span><span class="op">]</span>,
-  n_ages <span class="op">=</span> <span class="fl">17</span>, int <span class="op">=</span> <span class="fl">5</span>, female <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">leslie</span><span class="op">)</span>
-<span class="co">#&gt;            0         5         10        15        20        25        30</span>
-<span class="co">#&gt; 0  0.0000000 0.0000000 0.05557411 0.3130232 0.5680982 0.6021338 0.5191943</span>
-<span class="co">#&gt; 5  0.9612171 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 10 0.0000000 0.9899652 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 15 0.0000000 0.0000000 0.99162975 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 20 0.0000000 0.0000000 0.00000000 0.9879148 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 25 0.0000000 0.0000000 0.00000000 0.0000000 0.9847624 0.0000000 0.0000000</span>
-<span class="co">#&gt; 30 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.9819919 0.0000000</span>
-<span class="co">#&gt; 35 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.9767998</span>
-<span class="co">#&gt; 40 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 45 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 50 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 55 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 60 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 65 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 70 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 75 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 80 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt;           35        40         45       50        55        60        65</span>
-<span class="co">#&gt; 0  0.3522083 0.1569095 0.03192933 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 5  0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 10 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 15 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 20 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 25 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 30 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 35 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 40 0.9711802 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 45 0.0000000 0.9676066 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 50 0.0000000 0.0000000 0.96175233 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 55 0.0000000 0.0000000 0.00000000 0.950749 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 60 0.0000000 0.0000000 0.00000000 0.000000 0.9328094 0.0000000 0.0000000</span>
-<span class="co">#&gt; 65 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.9054364 0.0000000</span>
-<span class="co">#&gt; 70 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.8594366</span>
-<span class="co">#&gt; 75 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt; 80 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span>
-<span class="co">#&gt;           70      75        80</span>
-<span class="co">#&gt; 0  0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 5  0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 10 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 15 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 20 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 25 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 30 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 35 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 40 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 45 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 50 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 55 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 60 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 65 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 70 0.0000000 0.00000 0.0000000</span>
-<span class="co">#&gt; 75 0.7909366 0.00000 0.0000000</span>
-<span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">leslie</span> <span class="op">&lt;-</span> <span class="fu">demCore</span><span class="fu">::</span><span class="fu"><a href="../reference/leslie_matrix.html">leslie_matrix</a></span><span class="op">(</span></span>
+<span>  survival <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">survival</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span> <span class="op">&amp;</span></span>
+<span>                                                  <span class="va">sex</span> <span class="op">==</span> <span class="st">"female"</span>, <span class="va">value</span><span class="op">]</span>,</span>
+<span>  asfr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>           <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">asfr</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="va">value</span><span class="op">]</span>,</span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  srb <span class="op">=</span> <span class="fu">demCore</span><span class="fu">::</span><span class="va"><a href="../reference/thailand.html">thailand_initial_estimates</a></span><span class="op">$</span><span class="va">srb</span><span class="op">[</span><span class="va">year_start</span> <span class="op">==</span> <span class="fl">1960</span>, <span class="va">value</span><span class="op">]</span>,</span>
+<span>  n_ages <span class="op">=</span> <span class="fl">17</span>, int <span class="op">=</span> <span class="fl">5</span>, female <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">leslie</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            0         5         10        15        20        25        30</span></span>
+<span><span class="co">#&gt; 0  0.0000000 0.0000000 0.05557411 0.3130232 0.5680982 0.6021338 0.5191943</span></span>
+<span><span class="co">#&gt; 5  0.9612171 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 10 0.0000000 0.9899652 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 15 0.0000000 0.0000000 0.99162975 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 20 0.0000000 0.0000000 0.00000000 0.9879148 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 25 0.0000000 0.0000000 0.00000000 0.0000000 0.9847624 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 30 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.9819919 0.0000000</span></span>
+<span><span class="co">#&gt; 35 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.9767998</span></span>
+<span><span class="co">#&gt; 40 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 45 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 50 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 55 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 60 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 65 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 70 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 75 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 80 0.0000000 0.0000000 0.00000000 0.0000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt;           35        40         45       50        55        60        65</span></span>
+<span><span class="co">#&gt; 0  0.3522083 0.1569095 0.03192933 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 5  0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 10 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 15 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 20 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 25 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 30 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 35 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 40 0.9711802 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 45 0.0000000 0.9676066 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 50 0.0000000 0.0000000 0.96175233 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 55 0.0000000 0.0000000 0.00000000 0.950749 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 60 0.0000000 0.0000000 0.00000000 0.000000 0.9328094 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 65 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.9054364 0.0000000</span></span>
+<span><span class="co">#&gt; 70 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.8594366</span></span>
+<span><span class="co">#&gt; 75 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; 80 0.0000000 0.0000000 0.00000000 0.000000 0.0000000 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt;           70      75        80</span></span>
+<span><span class="co">#&gt; 0  0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 5  0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 10 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 15 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 20 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 25 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 30 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 35 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 40 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 45 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 50 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 55 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 60 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 65 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 70 0.0000000 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 75 0.7909366 0.00000 0.0000000</span></span>
+<span><span class="co">#&gt; 80 0.0000000 0.69313 0.4830396</span></span></code></pre></div>
 </div>
 </div>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <p>Preston, Samuel, Patrick Heuveline, and Michel Guillot. 2001. Demography: Measuring and Modeling Population. Wiley.</p>
-<p>Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland. 2013. “Reconstructing Past Populations With Uncertainty From Fragmentary Data.” Journal of the American Statistical Association 108 (501): 96–110. <a href="https://doi.org/10.1080/01621459.2012.737729">https://doi.org/10.1080/01621459.2012.737729</a>.</p>
-<p>Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland. 2015. “Bayesian Reconstruction of Two-Sex Populations by Age: Estimating Sex Ratios at Birth and Sex Ratios of Mortality.” Journal of the Royal Statistical Society. Series A: Statistics in Society 178 (4): 977–1007. <a href="https://doi.org/10.1111/rssa.12104">https://doi.org/10.1111/rssa.12104</a>.</p>
+<p>Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland. 2013. “Reconstructing Past Populations With Uncertainty From Fragmentary Data.” Journal of the American Statistical Association 108 (501): 96–110. <a href="https://doi.org/10.1080/01621459.2012.737729" class="external-link">https://doi.org/10.1080/01621459.2012.737729</a>.</p>
+<p>Wheldon, Mark C., Adrian E. Raftery, Samuel J. Clark, and Patrick Gerland. 2015. “Bayesian Reconstruction of Two-Sex Populations by Age: Estimating Sex Ratios at Birth and Sex Ratios of Mortality.” Journal of the Royal Statistical Society. Series A: Statistics in Society 178 (4): 977–1007. <a href="https://doi.org/10.1111/rssa.12104" class="external-link">https://doi.org/10.1111/rssa.12104</a>.</p>
 </div>
   </div>
 
@@ -369,11 +365,13 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 
 
       <footer><div class="copyright">
-  <p>Developed by Katie Paulson, Grant Nguyen, Charlton Callender, Spencer Pease, Haidong Wang, Institute for Health Metrics and Evaluation.</p>
+  <p></p>
+<p>Developed by Katie Paulson, Grant Nguyen, Charlton Callender, Spencer Pease, Haidong Wang, Institute for Health Metrics and Evaluation.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -381,6 +379,8 @@ n_{0, t} \\ n_{1, t} \\ n_{2, t} \\ \vdots \\ n_{A - 2, t} \\ n_{A - 1, t} \\ n_
 
   
 
+
+  
 
   </body>
 </html>
