@@ -27,3 +27,4 @@ observations in \code{dt}. Must include 'age_start', 'age_end', and 'sex'.}
 \description{
 Helper for \code{gen_u5_ax} validations
 }
+\keyword{internal}

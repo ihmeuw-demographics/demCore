@@ -22,9 +22,10 @@ Suggests:
     covr,
     devtools,
     ggplot2,
+    scales,
     LexisPlotR
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Language: en-US
 Imports: 

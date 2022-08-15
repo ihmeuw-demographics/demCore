@@ -181,6 +181,7 @@ gen_u5_ax_from_qx <- function(dt, id_cols) {
 #' @param qx \[`numeric(1)`\] probability of death (1q0)
 #' @param A \[`numeric(1)`\] Intercept for 1m0 --> 1a0
 #' @param B \[`numeric(1)`\] Slope for 1m0 --> 1a0
+#' @keywords internal
 zero_u5_ax_from_qx <- function(ax, qx, A, B) {
   mx_inf <- demCore::qx_ax_to_mx(qx = qx, ax = ax, age_length = 1)
   zero <- (A + B * mx_inf) - ax
@@ -194,6 +195,7 @@ zero_u5_ax_from_qx <- function(ax, qx, A, B) {
 #' @description Function which solves for zero. Uses relationship between
 #'   under-5 mx and ax as described in [gen_u5_ax_from_mx()].
 #' @param dt \[`data.table()`\] A single life table.
+#' @keywords internal
 solve_u5_ax_from_qx <- function(dt) {
 
   dt <- copy(dt)
@@ -257,6 +259,7 @@ solve_u5_ax_from_qx <- function(dt) {
 #' @inheritParams gen_u5_ax_from_mx
 #' @param param_cols \[`character()`\] "mx" for `gen_u5_ax_from_mx` and "qx" for
 #'     `gen_u5_ax_from_qx`
+#' @keywords internal
 validate_gen_u5_ax <- function(dt, id_cols, param_cols) {
 
   # standard validations

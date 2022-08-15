@@ -191,7 +191,7 @@ agg_lt <- function(dt,
       old = c("age_start", "age_end"),
       new = c("common_start", "common_end")
     )
-    dt <- hierarchyUtils:::merge_common_intervals(
+    dt <- hierarchyUtils::merge_common_intervals(
       dt,
       common_intervals = common_interval_mapping,
       col_stem = "age"

@@ -2,6 +2,7 @@
 
 export(agg_lt)
 export(agg_tf)
+export(calc_nqx_brass)
 export(calculate_nrr)
 export(ccmpp)
 export(check_mx_ax_qx)

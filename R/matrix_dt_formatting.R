@@ -52,6 +52,7 @@
 #' output_dt <- demCore:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
 #'
 #' @rdname dt_matrix_format
+#' @keywords internal
 matrix_to_dt <- function(mdt,
                          year_right_most_endpoint,
                          age_right_most_endpoint = Inf,

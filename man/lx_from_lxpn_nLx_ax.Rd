@@ -23,3 +23,4 @@ Helper function to back calculate lx from the lx value of the
 next oldest age group (lxpn which is short for \eqn{l_{x+n}}), and the nLx
 and ax values at age x.
 }
+\keyword{internal}

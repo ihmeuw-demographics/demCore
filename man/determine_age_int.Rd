@@ -17,3 +17,4 @@ Input data that includes columns for \code{id_cols}, 'lx', 'nLx' and 'Tx'.}
 Identifies age intervals present excluding the terminal age
 group and asserts it is uniform across the input data.table.
 }
+\keyword{internal}
