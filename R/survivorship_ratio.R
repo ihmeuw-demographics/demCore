@@ -304,6 +304,8 @@ gen_lx_from_nLx_ax <- function(dt, id_cols) {
 #' @param age_int \[`integer(1)`\]\cr
 #'
 #' @return \[`numeric(1)`\]\cr
+#'
+#' @keywords internal
 lx_from_lxpn_nLx_ax <- function(lxpn, nLx, ax, age_int) {
   return((nLx - ((age_int - ax) * lxpn)) / ax)
 }
@@ -316,6 +318,8 @@ lx_from_lxpn_nLx_ax <- function(lxpn, nLx, ax, age_int) {
 #' @inheritParams nSx_from_lx_nLx_Tx
 #'
 #' @return \[`numeric(1)`\] unique age interval
+#'
+#' @keywords internal
 determine_age_int <- function(dt) {
   if (!"age_length" %in% names(dt)) {
     hierarchyUtils::gen_length(dt, col_stem = "age")

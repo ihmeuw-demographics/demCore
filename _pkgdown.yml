@@ -27,7 +27,7 @@ reference:
 - contents:
   - agg_lt
   - scale_qx
-  - gen_summary_lt
+  - summarize_lt
 
 - title: "Population Projection"
   desc: "Functions for projecting populations forward in time."
@@ -38,10 +38,17 @@ reference:
   - gen_nLx_from_nSx
   - gen_lx_from_nLx_ax
 
+- title: "Indirect estimation"
+  desc: "Estimate demographic indicators using data that is indirectly related to the indicator"
+- contents:
+  - calc_nqx_brass
+  - sbh_trussell_coeffs
+
 - title: "Fertility metrics"
   desc: "Functions for calculating fertility related metrics."
 - contents:
   - agg_tf
+  - calculate_nrr
 
 - title: "Other"
   desc: "Additional miscellaneous functions."
@@ -56,3 +63,4 @@ reference:
   - full_lt_pars
   - burkina_faso_data
   - thailand_data
+  - sbh_panama_1976

@@ -30,3 +30,4 @@ correctly.
 \description{
 Validate the ccmpp input arguments
 }
+\keyword{internal}

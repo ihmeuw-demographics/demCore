@@ -85,3 +85,4 @@ output_matrix <- demCore:::dt_to_matrix(thailand_initial_estimates$survival)
 output_dt <- demCore:::matrix_to_dt(output_matrix, year_right_most_endpoint = 2000)
 
 }
+\keyword{internal}
