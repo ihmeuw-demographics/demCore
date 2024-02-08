@@ -68,7 +68,7 @@ lifetable <- function(dt,
   )
 
   # check `preserve_u5`
-  assertive::assert_is_logical(preserve_u5)
+  checkmate::assert_logical(preserve_u5)
 
   # check for `age_length` and add if missing
   if(!"age_length" %in% names(dt)) {

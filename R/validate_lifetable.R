@@ -45,7 +45,7 @@ validate_lifetable <- function(dt,
   if(length(id_cols) > 0) {
 
     # character
-    assertive::assert_is_character(id_cols)
+    checkmate::assert_character(id_cols)
 
     # includes "age_start" and "age_end"
     assertthat::assert_that("age_start" %in% id_cols & "age_end" %in% id_cols,
@@ -68,7 +68,7 @@ validate_lifetable <- function(dt,
   # check `dt` ---------------------------------------------------------------
 
   # data.table
-  assertive::assert_is_data.table(dt)
+  checkmate::assert_data_table(dt)
 
   # unique
   if(length(id_cols) > 0) {
@@ -80,10 +80,10 @@ validate_lifetable <- function(dt,
                               only_colnames = F, quiet = T)
 
   # age and parameter columns numeric
-  if("age_start" %in% names(dt)) assertive::assert_is_numeric(dt[["age_start"]])
-  if("age_end" %in% names(dt)) assertive::assert_is_numeric(dt[["age_end"]])
+  if("age_start" %in% names(dt)) checkmate::assert_numeric(dt[["age_start"]])
+  if("age_end" %in% names(dt)) checkmate::assert_numeric(dt[["age_end"]])
   for(param in param_cols) {
-    assertive::assert_is_numeric(dt[[param]])
+    checkmate::assert_numeric(dt[[param]])
   }
 
   # check that age interval is constant in input lifetable
@@ -133,7 +133,7 @@ validate_lifetable <- function(dt,
   # check `assert_na` --------------------------------------------------------
 
   if(!is.na(assert_na)) {
-    assertive::assert_is_logical(assert_na)
+    checkmate::assert_logical(assert_na)
   }
   return(invisible(dt))
 }
@@ -167,7 +167,7 @@ validate_lifetable <- function(dt,
 check_mx_ax_qx <- function(dt) {
 
   # quick checks
-  assertive::assert_is_data.table(dt)
+  checkmate::assert_data_table(dt)
   assertable::assert_colnames(dt, c("age_length"), only_colnames = F, quiet = T)
 
   # check `dt` for 2/3 of mx, ax, qx

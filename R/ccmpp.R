@@ -470,7 +470,7 @@ leslie_matrix <- function(survival,
 
   # check `survival` argument
   assertthat::assert_that(
-    assertive::is_numeric(survival),
+    is.numeric(survival),
     length(survival) %in% c(n_ages, n_ages + 1),
     msg = "`survival` must be a numeric of length `n_ages` or (`n_ages` + 1)"
   )
@@ -478,7 +478,7 @@ leslie_matrix <- function(survival,
 
   # check `asfr` argument
   assertthat::assert_that(
-    assertive::is_numeric(asfr),
+    is.numeric(asfr),
     length(asfr) == n_ages,
     msg = "`asfr` must be a numeric of length `n_ages`"
   )
@@ -540,7 +540,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `settings$years` argument
   assertthat::assert_that(
-    assertive::is_numeric(settings$years),
+    is.numeric(settings$years),
     length(unique(diff(settings$years))) == 1,
     unique(diff(settings$years)) != 0,
     msg = paste0("`settings$years` must be a numeric vector defining the start ",
@@ -549,7 +549,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `settings$sexes` argument
   assertthat::assert_that(
-    assertive::is_character(settings$sexes),
+    is.character(settings$sexes),
     "female" %in% settings$sexes,
     all(settings$sexes %in% c("female", "male")),
     msg = paste0("`settings$sexes` must be a character vector containing ",
@@ -558,7 +558,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `settings$ages` argument
   assertthat::assert_that(
-    assertive::is_numeric(settings$ages),
+    is.numeric(settings$ages),
     length(unique(diff(settings$ages))) == 1,
     unique(diff(settings$ages)) != 0,
     msg = paste0("`settings$ages` must be a numeric vector defining the start ",
@@ -576,7 +576,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `settings$ages_mortality` argument
   assertthat::assert_that(
-    assertive::is_numeric(settings$ages_mortality),
+    is.numeric(settings$ages_mortality),
     length(unique(diff(settings$ages_mortality))) == 1,
     unique(diff(settings$ages_mortality)) != 0,
     all(settings$ages %in% settings$ages_mortality),
@@ -588,7 +588,7 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `settings$ages_asfr` argument
   assertthat::assert_that(
-    assertive::is_numeric(settings$ages_asfr),
+    is.numeric(settings$ages_asfr),
     length(unique(diff(settings$ages_asfr))) == 1,
     unique(diff(settings$ages_asfr)) != 0,
     all(settings$ages_asfr %in% settings$ages),
@@ -602,8 +602,8 @@ validate_ccmpp_inputs <- function(inputs,
 
   # check `inputs` argument
   assertthat::assert_that(
-    assertive::is_list(inputs),
-    all(mapply(assertive::is_data.table, inputs)),
+    is.list(inputs),
+    all(mapply(is.data.table, inputs)),
     msg = "`inputs` must be a list of data.tables"
   )
 

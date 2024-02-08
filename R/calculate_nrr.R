@@ -47,7 +47,7 @@ calculate_nrr <- function(dt,
   # validate ----------------------------------------------------------------
 
   # check `id_cols`
-  assertthat::assert_that(assertive::is_character(id_cols))
+  assertthat::assert_that(is.character(id_cols))
   assertthat::assert_that(
     all(c("age_start", "age_end", "sex") %in% id_cols),
     msg = "`id_cols` must have at least 'age_start', 'age_end', and 'sex'."

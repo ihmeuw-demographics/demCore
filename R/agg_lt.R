@@ -119,7 +119,7 @@ agg_lt <- function(dt,
   # validate -------------------------------------------------------
 
   # check `dt` for 2/3 of mx, ax, qx
-  assertive::assert_is_data.table(dt)
+  checkmate::assert_data_table(dt)
   param_cols <- intersect(names(dt), c("mx", "ax", "qx"))
   assertthat::assert_that(
     length(param_cols) >= 2 | "qx" %in% param_cols,
@@ -131,7 +131,7 @@ agg_lt <- function(dt,
   validate_lifetable(dt, id_cols, param_cols)
 
   # sort age mapping
-  assertive::assert_is_data.table(age_mapping)
+  checkmate::assert_data_table(age_mapping)
   assertable::assert_colnames(
     age_mapping,
     c("age_start", "age_end"),
