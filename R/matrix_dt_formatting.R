@@ -78,22 +78,22 @@ matrix_to_dt <- function(mdt,
 
     ## check `mdt` argument
     assertthat::assert_that(
-      assertive::is_matrix(mdt) |
-        (assertive::is_list(mdt) & all(mapply(assertive::is_matrix, mdt))),
+      is.matrix(mdt) |
+        (is.list(mdt) & all(mapply(is.matrix, mdt))),
       msg = "`mdt` must be a matrix or list of matrices"
     )
 
     # standardize to list format to make other checks easier
     check_mdt <- copy(mdt)
-    sex_specific <- assertive::is_list(mdt)
+    sex_specific <- is.list(mdt)
     if (!sex_specific) check_mdt <- list("none" = mdt)
     assertthat::assert_that(
-      all(assertive::is_not_null(unlist(mapply(rownames, check_mdt)))),
-      all(assertive::is_not_null(unlist(mapply(colnames, check_mdt)))),
+      all(!checkmate::test_null(unlist(mapply(rownames, check_mdt)))),
+      all(!checkmate::test_null(unlist(mapply(colnames, check_mdt)))),
       msg = "rownames (age_start) and colnames (year_start) of `mdt` must exist"
     )
     assertthat::assert_that(
-      all(assertive::is_numeric_string(unlist(mapply(colnames, check_mdt)))),
+      all(!is.na(as.numeric((unlist(mapply(colnames, check_mdt)))))),
       msg = "colnames (year_start) of `mdt` must be numeric strings"
     )
 
@@ -116,9 +116,9 @@ matrix_to_dt <- function(mdt,
 
   # Convert to data.table ---------------------------------------------------
 
-  sex_specific <- assertive::is_list(mdt)
+  sex_specific <- is.list(mdt)
   ages <- ifelse(sex_specific, rownames(mdt[[1]]), rownames(mdt))
-  ages <- ages[assertive::is_numeric_string(ages)]
+  ages <- ages[!is.na(as.numeric(ages))]
   age_specific <- length(ages) > 0
   id_cols <- c("year_start",
                if (gen_end_interval_col) "year_end",
@@ -207,7 +207,7 @@ dt_to_matrix <- function(dt,
 
   if (validate_arguments) {
     # check `id_cols` argument
-    assertive::assert_is_character(id_cols)
+    checkmate::assert_character(id_cols)
     possible_id_cols <- c("year_start", "year_end", "year",
                           "sex", "age_start", "age_end")
     assertthat::assert_that(
@@ -217,7 +217,7 @@ dt_to_matrix <- function(dt,
     )
 
     # check `dt` argument
-    assertive::assert_is_data.table(dt)
+    checkmate::assert_data_table(dt)
     assertable::assert_colnames(dt, c(id_cols, value_col), quiet = T)
     demUtils::assert_is_unique_dt(dt, id_cols)
   }

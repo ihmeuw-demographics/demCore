@@ -73,12 +73,12 @@ calc_nqx_brass <- function(dt,
   )
   coeffs <- sbh_trussell_coeffs[model == model_schedule]
 
-  assertive::assert_is_a_string(parity_col)
-  assertive::assert_is_a_string(prop_died_col)
+  checkmate::assert_string(parity_col)
+  checkmate::assert_string(prop_died_col)
 
   # check `id_cols` argument
   age_cols <- c("age_start", "age_end")
-  assertive::assert_is_character(id_cols)
+  checkmate::assert_character(id_cols)
   error_msg <- paste0(
     "`id_cols` must include '",
     paste(age_cols, collapse = "', '"),
@@ -87,7 +87,7 @@ calc_nqx_brass <- function(dt,
   assertthat::assert_that(all(age_cols %in% id_cols), msg = error_msg)
 
   # basic checks for `dt` argument
-  assertive::assert_is_data.table(dt)
+  checkmate::assert_data_table(dt)
   assertable::assert_colnames(
     data = dt,
     colnames = c(id_cols, parity_col, prop_died_col),

@@ -68,14 +68,14 @@ agg_tf <- function(dt,
 
   # basic checks for 'id_cols` argument
   assertthat::assert_that(
-    assertive::is_character(id_cols),
+    is.character(id_cols),
     all(c("age_start", "age_end") %in% id_cols),
     msg = c("`id_cols` must be a character vector that includes 'age_start',
             'age_end', & 'asfr'")
   )
 
   # basic checks for `dt` argument
-  assertive::assert_is_data.table(dt)
+  checkmate::assert_data_table(dt)
   assertable::assert_colnames(
     data = dt, colnames = c(id_cols, "asfr"),
     only_colnames = F, quiet = T
