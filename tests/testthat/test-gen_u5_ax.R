@@ -38,9 +38,9 @@ test_that("test that `gen_u5_ax_from_mx` gives errors when it should", {
 
 test_that("test that `gen_u5_ax_from_mx` modifies in place", {
   test_dt <- copy(dt)
-  mem1 <- pryr::address(test_dt) # memory address before
+  mem1 <- lobstr::obj_addr(test_dt) # memory address before
   gen_u5_ax_from_mx(test_dt, id_cols = c("age_start", "age_end", "sex", "location"))
-  mem2 <- pryr::address(test_dt) # memory address after
+  mem2 <- lobstr::obj_addr(test_dt) # memory address after
   testthat::expect_equal(mem1, mem2)
 })
 
