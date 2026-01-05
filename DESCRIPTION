@@ -34,7 +34,7 @@ Imports:
     checkmate,
     assertthat,
     testthat,
-    pryr,
+    lobstr,
     purrr,
     Rdpack,
     hierarchyUtils,
