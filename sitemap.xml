@@ -1,120 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/ccmpp.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/introduction_to_life_tables.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/agg_lt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/agg_tf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/austria_1992_lt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/burkina_faso.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calc_nqx_brass.html</loc>
-  </url>
-  <url>
-    <loc>/reference/calculate_nrr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ccmpp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_mx_ax_qx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/determine_age_int.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dt_matrix_format.html</loc>
-  </url>
-  <url>
-    <loc>/reference/full_lt_pars.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gen_lifetable_parameters.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gen_lx_from_nLx_ax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gen_nLx_from_nSx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gen_u5_ax_from_mx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/gen_u5_ax_from_qx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/iterate_ax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/leslie_matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lifetable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lx_from_lxpn_nLx_ax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mx_qx_ax_conversions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/nSx_from_lx_nLx_Tx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sbh_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/scale_qx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/solve_u5_ax_from_qx.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summarize_lt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/thailand.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validate_ccmpp_inputs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validate_gen_u5_ax.html</loc>
-  </url>
-  <url>
-    <loc>/reference/validate_lifetable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/zero_u5_ax_from_qx.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/ccmpp.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/introduction_to_life_tables.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/agg_lt.html</loc></url>
+<url><loc>/reference/agg_tf.html</loc></url>
+<url><loc>/reference/austria_1992_lt.html</loc></url>
+<url><loc>/reference/burkina_faso.html</loc></url>
+<url><loc>/reference/calc_nqx_brass.html</loc></url>
+<url><loc>/reference/calculate_nrr.html</loc></url>
+<url><loc>/reference/ccmpp.html</loc></url>
+<url><loc>/reference/check_mx_ax_qx.html</loc></url>
+<url><loc>/reference/determine_age_int.html</loc></url>
+<url><loc>/reference/dt_matrix_format.html</loc></url>
+<url><loc>/reference/full_lt_pars.html</loc></url>
+<url><loc>/reference/gen_lifetable_parameters.html</loc></url>
+<url><loc>/reference/gen_lx_from_nLx_ax.html</loc></url>
+<url><loc>/reference/gen_nLx_from_nSx.html</loc></url>
+<url><loc>/reference/gen_u5_ax_from_mx.html</loc></url>
+<url><loc>/reference/gen_u5_ax_from_qx.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/iterate_ax.html</loc></url>
+<url><loc>/reference/leslie_matrix.html</loc></url>
+<url><loc>/reference/lifetable.html</loc></url>
+<url><loc>/reference/lx_from_lxpn_nLx_ax.html</loc></url>
+<url><loc>/reference/mx_qx_ax_conversions.html</loc></url>
+<url><loc>/reference/nSx_from_lx_nLx_Tx.html</loc></url>
+<url><loc>/reference/sbh_data.html</loc></url>
+<url><loc>/reference/scale_qx.html</loc></url>
+<url><loc>/reference/solve_u5_ax_from_qx.html</loc></url>
+<url><loc>/reference/summarize_lt.html</loc></url>
+<url><loc>/reference/thailand.html</loc></url>
+<url><loc>/reference/validate_ccmpp_inputs.html</loc></url>
+<url><loc>/reference/validate_gen_u5_ax.html</loc></url>
+<url><loc>/reference/validate_lifetable.html</loc></url>
+<url><loc>/reference/zero_u5_ax_from_qx.html</loc></url>
 </urlset>
+
